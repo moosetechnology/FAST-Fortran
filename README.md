@@ -6,7 +6,8 @@ Initially for Fortran77, might be extended afterward
 To load:
 ```St
 Metacello new
-  githubUser: 'moosetechnology' project: 'FAST-Fortran' commitish: 'master' path: 'src';
   baseline: 'FASTFortran';
+  repository: 'github://moosetechnology/FAST-Fortran';
+	onConflict: [ :ex | ex allow ];
   load.
 ```
