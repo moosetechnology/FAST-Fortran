@@ -38,3 +38,15 @@ FortranProjectImporter >> jsonASTToFAST [
 		  (jsonAST readStreamDo: [ :str | 
 			   NeoJSONReader fromString: str contents ])
 ]
+
+{ #category : #'*FAST-Fortran-Visitors' }
+FortranProjectImporter >> syntaxJsonToFAST [
+
+	| jsonFile |
+	
+	jsonFile := 'test.json'.
+
+	^FASTFortranJsonVisitor new visitProgramFile:
+		  (jsonFile readStreamDo: [ :str | 
+			   NeoJSONReader fromString: str contents ])
+]
