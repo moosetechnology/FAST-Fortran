@@ -4,6 +4,24 @@ Class {
 	#category : #'FAST-Fortran-Visitors-Tests-Visitor'
 }
 
+{ #category : #'as yet unclassified' }
+SyntaxJsonToFASTTests class >> generateFortranSourcesFromTests [
+
+	| fileName filePath |
+	filePath := (FileLocator workingDirectory / 'tests')
+		            ensureCreateDirectory pathString.
+	self methods do: [ :method |
+		
+		"if the methos is a test"
+		(method selector includesSubstring: 'test') ifTrue: [
+			fileName := (filePath , '/' , method selector , '.FOR')
+				            asFileReference.
+			fileName writeStreamDo: [ :stream |
+				stream nextPutAll: (method ast body statements detect: [ :stmt |
+						 stmt class = RBAssignmentNode and: [
+							 stmt variable name = 'fortranCode' ] ]) value value ] ] ]
+]
+
 { #category : #running }
 SyntaxJsonToFASTTests >> jsonVisitor [
 
@@ -159,7 +177,125 @@ SyntaxJsonToFASTTests >> testArrayDeclaration [
       integer arr(10)
       END
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:21)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:20)","upper":{"anno":[],"span":"(2:19)-(2:20)","tag":"value","value":{"contents":["10",null],"tag":"integer"}}}],"span":"(2:19)-(2:20)"},"initial":null,"length":null,"span":"(2:15)-(2:21)","type":"array","variable":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"arr","tag":"variable"}}}],"span":"(2:15)-(2:21)"},"span":"(2:7)-(2:21)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '
+	{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/unit-tests/array-access.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "INTEGER"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "name": "ARR"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "tag": "literal_expression",
+                                    "literal": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "19"
+                                        },
+                                        "value": "10"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "3",
+                        "column": "7"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "3",
+                                "column": "7"
+                            },
+                            "name": "V"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "array_element_name",
+                            "name": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "3",
+                                    "column": "11"
+                                },
+                                "name": "ARR"
+                            },
+                            "qualifiers_list": [
+                                {
+                                    "tag": "arithmetic_expression",
+                                    "expression": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "3",
+                                            "column": "15"
+                                        },
+                                        "value": "1"
+                                    }
+                                },
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "3",
+                                        "column": "17"
+                                    },
+                                    "name": "I"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+'.
 	result := self visitJsonCode.
 	
 	stmt := result first statementBlock statements first.
@@ -287,7 +423,66 @@ SyntaxJsonToFASTTests >> testAssignement [
           c = 1
       END
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:11)-(2:15)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/unit-tests/assignment.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "8"
+                            },
+                            "name": "C"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "unsigned_int_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "12"
+                                },
+                                "value": "1"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+'.
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.

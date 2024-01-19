@@ -18,7 +18,8 @@ FASTFortranSyntaxJsonVisitor >> createPosition: start end: end [
 { #category : #initialization }
 FASTFortranSyntaxJsonVisitor >> initLineSizes: fortranSource [
 
-	lineSizes := fortranSource lines collect: #size
+	lineSizes := 0
+	"lineSizes := fortranSource lines collect: #size"
 ]
 
 { #category : #helpers }
@@ -79,17 +80,143 @@ FASTFortranSyntaxJsonVisitor >> setBodyPosition: aProgramUnit fromProgramUnitPos
 
 ]
 
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitArithmetic_if_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitAssignment_statement: aNode [
+
+	^ self visitJsonMap: aNode keys: #(start_pos right left)
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitBackspace_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitBlock_data: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitBlock_if_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitCall_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitClose_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitCommon_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
 { #category : #'visit statement' }
 FASTFortranSyntaxJsonVisitor >> visitContinue_statement: aContinueStatement [
 
 	^ self newEntity: FASTFortranContinueStatement
 ]
 
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitData_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitDimension_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitDo_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitEndfile_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitEntry_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitExternal_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitFunction: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitGoto_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitImplicit_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitInquire_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitIntrinsic_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitLeft: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitLogical_if_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
 { #category : #'visit statement' }
 FASTFortranSyntaxJsonVisitor >> visitMain: aMain [
 	"#(start_pos parameters end_pos statement_list name)"
 
-	| data main position |
+	"| data main position |
 	data := super visitMain: aMain.
 
 	position := self createPosition: data first end: data third.
@@ -102,7 +229,13 @@ FASTFortranSyntaxJsonVisitor >> visitMain: aMain [
 
 	self setBodyPosition: main fromProgramUnitPosition: position.
 
-	^ main
+	^ main"
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitOpen_statement: aNode [
+			      "comment"
+			      1 halt
 ]
 
 { #category : #'visit statement' }
@@ -113,6 +246,24 @@ FASTFortranSyntaxJsonVisitor >> visitParameter: aParameter [
 		yourself
 ]
 
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitParameter_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitPause_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitPrint_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
 { #category : #'visit statement' }
 FASTFortranSyntaxJsonVisitor >> visitProgramFile: aProgramFile [
 	
@@ -121,11 +272,41 @@ FASTFortranSyntaxJsonVisitor >> visitProgramFile: aProgramFile [
 	
 ]
 
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitRead_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitRewind_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitRight: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitSave_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitStop_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
 { #category : #'visit statement' }
 FASTFortranSyntaxJsonVisitor >> visitSubroutine: aSubroutine [
 	"#(start_pos parameters end_pos statement_list name)"
 
-	| data subroutine position |
+	"| data subroutine position |
 	data := super visitSubroutine: aSubroutine.
 	position := self createPosition: data first end: data third.
 	subroutine := (self
@@ -140,5 +321,17 @@ FASTFortranSyntaxJsonVisitor >> visitSubroutine: aSubroutine [
 
 	self setBodyPosition: subroutine fromProgramUnitPosition: position.
 
-	^ subroutine
+	^ subroutine"
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitType_statement: aNode [
+			      "comment"
+			      1 halt
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitWrite_statement: aNode [
+			      "comment"
+			      1 halt
 ]
