@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'nextBlock'
 	],
-	#category : #'FAST-Fortran-Visitors-CFG'
+	#category : #'FAST-Fortran-Analyses-CFG'
 }
 
 { #category : #accessing }

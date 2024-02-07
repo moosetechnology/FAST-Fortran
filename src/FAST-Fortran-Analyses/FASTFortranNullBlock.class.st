@@ -6,7 +6,7 @@ NullBlock are not added in the list of blocks of the CFG, they appear only as #n
 Class {
 	#name : #FASTFortranNullBlock,
 	#superclass : #FASTFortranAbstractBasicBlock,
-	#category : #'FAST-Fortran-Visitors-CFG'
+	#category : #'FAST-Fortran-Analyses-CFG'
 }
 
 { #category : #accessing }
