@@ -5,7 +5,7 @@ Class {
 		'cfg',
 		'blocks'
 	],
-	#category : #'FAST-Fortran-Visitors-Tests-Visitor'
+	#category : #'FAST-Fortran-Analyses-Tests-CFG'
 }
 
 { #category : #running }

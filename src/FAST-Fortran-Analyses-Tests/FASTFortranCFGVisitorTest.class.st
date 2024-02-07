@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'ast'
 	],
-	#category : #'FAST-Fortran-Visitors-Tests-Visitor'
+	#category : #'FAST-Fortran-Analyses-Tests-CFG'
 }
 
 { #category : #'entity creation' }
