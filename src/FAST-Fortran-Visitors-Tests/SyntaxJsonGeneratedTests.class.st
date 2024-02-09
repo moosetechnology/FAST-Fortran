@@ -16,6 +16,7 @@ SyntaxJsonGeneratedTests class >> generateTestsFortranSources [
 
 		(SyntaxJsonToFASTTests includesSelector: selector) ifTrue: [
 			| fortranCode jsonCode |
+			1 halt.
 			
 			fortranCode := (((SyntaxJsonToFASTTests compiledMethodAt: selector)
 				                method ast body statements detect: [ :stmt |
