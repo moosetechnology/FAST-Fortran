@@ -21,6 +21,7 @@ FASTFortranVisitor >> visitFASTFortranAmpersand: aFASTFortranAmpersand [
 
 { #category : #visiting }
 FASTFortranVisitor >> visitFASTFortranArrayBound: aFASTFortranArrayBound [
+	"visiting an expression in a FASTFortranArrayRange"
 
 	^aFASTFortranArrayBound
 		ifNil: [ nil ]
