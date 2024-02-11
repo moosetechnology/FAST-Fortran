@@ -2,10 +2,93 @@ Class {
 	#name : #FASTFortranAbstractVisitorTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'visitor'
+		'visitor',
+		'ast'
 	],
 	#category : #'FAST-Fortran-Visitors-Tests-Visitor'
 }
+
+{ #category : #'entity creation' }
+FASTFortranAbstractVisitorTest >> aFunctionWithConditional [
+	"
+	CHARACTER*20 FUNCTION fctBigSmall( x, y)
+	INTEGER x
+	INTEGER y
+	CHARACTER*20 str
+
+	x = 1
+
+	IF y .gt. 5 THEN
+	str = ""small""
+	y = fctSmall(x)
+
+	ELSE
+	str = ""big""
+	y = y - x
+	END IF
+
+	RETURN str
+	END
+	"
+
+	| ifStatement |
+	self function: #fctBigSmall type: #(character 20).
+	self addParameter: #x type: #integer.
+	self addParameter: #y type: #integer.
+	self addStatement: (self declarationStatement: #str type: #(character 20) ).
+	self addStatement: (self assignementStatement: #x value: 1).
+	ifStatement := self addStatement: (self ifBlock: (self binary: '.gt.' left: #y right: 5) then: #() else:  #()).
+	self addStatement: (self returnStatement: #str).
+
+	self
+		add: ifStatement thenStatementBlock
+		statement: (self assignementStatement: #str value: '"small"').
+	self
+		add: ifStatement thenStatementBlock
+		statement: (self
+			assignementStatement: #y
+			value: (self functionCall: #fctSmall arguments: { self scalarVariable: 'x' })).
+
+	self
+		add: ifStatement elseStatementBlock
+		statement: (self assignementStatement: #str value: '"big"').
+	self
+		add: ifStatement elseStatementBlock
+		statement: (self
+			assignementStatement: #y
+			value: (self binary: '-' left: #y right: #x)).
+
+	^ast
+
+]
+
+{ #category : #'entity creation' }
+FASTFortranAbstractVisitorTest >> add: statementBlock statement: aStatement [
+
+	aStatement startPos: (statementBlock statements size + 1).
+	statementBlock addStatement: aStatement.
+
+	^aStatement
+
+]
+
+{ #category : #'entity creation' }
+FASTFortranAbstractVisitorTest >> addParameter: name type: typeDescription [
+	"assume #ast contains a function definition"
+
+	self entity: ast parameters: ((ast parameters collect: #name)
+			 add: name asString;
+			 yourself).
+
+	^ self addStatement: (self declarationStatement: name type: typeDescription)
+]
+
+{ #category : #'entity creation' }
+FASTFortranAbstractVisitorTest >> addStatement: aStatement [
+
+	^self add: ast statementBlock statement: aStatement
+
+]
 
 { #category : #'entity creation' }
 FASTFortranAbstractVisitorTest >> array: name access: aCollection [
@@ -69,6 +152,12 @@ FASTFortranAbstractVisitorTest >> assignementStatement: aName value: rhs [
 		variable: (self makeSimpleExpression: aName) ;
 		expression: (self makeSimpleExpression: rhs) ;
 		yourself
+]
+
+{ #category : #accessing }
+FASTFortranAbstractVisitorTest >> ast [
+
+	^ast
 ]
 
 { #category : #'entity creation' }
@@ -191,6 +280,26 @@ FASTFortranAbstractVisitorTest >> externalStatement: aName [
 		startPos: 1 ;
 		endPos: 8 ;
 		yourself
+]
+
+{ #category : #running }
+FASTFortranAbstractVisitorTest >> findBasicBlocks: aClass with: aPharoBooleanBlock [
+
+	^visitor basicBlocks
+		select: [ :aBasicBlock |
+			(aBasicBlock class = aClass) and:
+			[ aPharoBooleanBlock value: aBasicBlock ]
+		]
+]
+
+{ #category : #'entity creation' }
+FASTFortranAbstractVisitorTest >> function: name type: typeDescription [
+
+	ast := self functionDeclaration: name.
+	ast returnType: (self makeType: typeDescription).
+
+	^ast
+
 ]
 
 { #category : #'entity creation' }
@@ -463,14 +572,15 @@ FASTFortranAbstractVisitorTest >> statementBlock: aCollection [
 
 { #category : #'entity creation' }
 FASTFortranAbstractVisitorTest >> subroutine: aName [
-	"end position is approximate, test should adjust if a real value is needed"
 
-	^FASTFortranSubroutine new
+	ast := FASTFortranSubroutine new
 		name: aName ;
 		statementBlock: (self statementBlock: #()) ;
 		startPos: 1 ;
 		endPos: 50 ;
-		yourself
+		yourself.
+
+	^ast
 ]
 
 { #category : #'entity creation' }
