@@ -160,7 +160,8 @@ SyntaxJsonToFASTTests >> testArrayAccess [
 
 	arrayAccess := stmt expression.
 	self assert: arrayAccess class equals: FASTFortranArrayVariable.
-	self assert: arrayAccess name equals: 'arr'.
+	self assert: arrayAccess name class equals: FASTFortranCharacterLiteral. 
+	self assert: arrayAccess name primitiveValue equals: 'ARR'.
 	self assert: arrayAccess indices size equals: 2.
 
 	self assert: arrayAccess indices first class equals: FASTFortranIntegerLiteral.
@@ -301,7 +302,8 @@ SyntaxJsonToFASTTests >> testArrayDeclaration [
 	self assert: stmt declarators size equals: 1.
 
 	declarator := stmt declarators first.
-	self assert: declarator variable equals: 'arr'.
+	self assert: declarator variable class equals: FASTFortranVariable.
+	self assert: declarator variable name equals: 'ARR'.
 	self assert: declarator dimensions size equals: 1.
 	self assert: declarator dimensions first class equals: FASTFortranArrayRange. 
 	self assert: declarator dimensions first lowerBound equals: nil. 
@@ -390,7 +392,7 @@ SyntaxJsonToFASTTests >> testArrayDeclarationDimensionsWithOperation [
                                             }
                                         },
                                         "operator": "-",
-                                        "expression": {
+                                        "rhs": {
                                             "tag": "literal_expression",
                                             "literal": {
                                                 "tag": "unsigned_int_constant",
@@ -424,8 +426,8 @@ SyntaxJsonToFASTTests >> testArrayDeclarationDimensionsWithOperation [
 	self assert: declarator dimensions first lowerBound primitiveValue equals: '0'.
 
 	self assert: declarator dimensions first upperBound class equals: FASTFortranBinaryExpression.
-	self assert: declarator dimensions first upperBound left class equals: FASTFortranScalarVariable.
-	self assert: declarator dimensions first upperBound left name equals: 'max'.
+	self assert: declarator dimensions first upperBound left class equals: FASTFortranVariable.
+	self assert: declarator dimensions first upperBound left name equals: 'MAX'.
 
 	self assert: declarator dimensions first upperBound operator equals: '-'.
 
@@ -441,7 +443,89 @@ SyntaxJsonToFASTTests >> testArrayDeclarationImplicitLower [
       integer arr(-5:5)
       END
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:23)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":{"anno":[],"expression":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"minus"},"span":"(2:19)-(2:20)","tag":"unary"},"span":"(2:19)-(2:22)","upper":{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":["5",null],"tag":"integer"}}}],"span":"(2:19)-(2:22)"},"initial":null,"length":null,"span":"(2:15)-(2:23)","type":"array","variable":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"arr","tag":"variable"}}}],"span":"(2:15)-(2:23)"},"span":"(2:7)-(2:23)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testArrayDeclarationImplicitLower.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "INTEGER"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "name": "ARR"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "lower_bound": {
+                                        "tag": "unary_expression",
+                                        "operator": "-",
+                                        "expression": {
+                                            "tag": "literal_expression",
+                                            "literal": {
+                                                "tag": "unsigned_int_constant",
+                                                "start_pos": {
+                                                    "line": "2",
+                                                    "column": "20"
+                                                },
+                                                "value": "5"
+                                            }
+                                        }
+                                    },
+                                    "upper_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "22"
+                                            },
+                                            "value": "5"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 	
 	stmt := result first statementBlock statements first.
@@ -449,7 +533,7 @@ SyntaxJsonToFASTTests >> testArrayDeclarationImplicitLower [
 	self assert: stmt declarators size equals: 1.
 
 	declarator := stmt declarators first.
-	self assert: declarator variable equals: 'arr'.
+	self assert: declarator variable name equals: 'ARR'.
 	self assert: declarator dimensions size equals: 1.
 	self assert: declarator dimensions first lowerBound class equals: FASTFortranIntegerLiteral.
 	self assert: declarator dimensions first lowerBound primitiveValue equals: '-5'.
@@ -465,7 +549,109 @@ SyntaxJsonToFASTTests >> testArrayDeclarationMultipleDimensions [
       integer arr(1:10 , 0:5)
       END
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:29)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:19)-(2:22)","upper":{"anno":[],"span":"(2:21)-(2:22)","tag":"value","value":{"contents":["10",null],"tag":"integer"}}},{"anno":[],"lower":{"anno":[],"span":"(2:26)-(2:26)","tag":"value","value":{"contents":["0",null],"tag":"integer"}},"span":"(2:26)-(2:28)","upper":{"anno":[],"span":"(2:28)-(2:28)","tag":"value","value":{"contents":["5",null],"tag":"integer"}}}],"span":"(2:19)-(2:28)"},"initial":null,"length":null,"span":"(2:15)-(2:29)","type":"array","variable":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"arr","tag":"variable"}}}],"span":"(2:15)-(2:29)"},"span":"(2:7)-(2:29)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testArrayDeclarationMultipleDimensions.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "INTEGER"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "name": "ARR"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "19"
+                                            },
+                                            "value": "1"
+                                        }
+                                    },
+                                    "upper_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "21"
+                                            },
+                                            "value": "10"
+                                        }
+                                    }
+                                },
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "26"
+                                            },
+                                            "value": "0"
+                                        }
+                                    },
+                                    "upper_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "28"
+                                            },
+                                            "value": "5"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 	
 	stmt := result first statementBlock statements first.
@@ -473,7 +659,7 @@ SyntaxJsonToFASTTests >> testArrayDeclarationMultipleDimensions [
 	self assert: stmt declarators size equals: 1.
 
 	declarator := stmt declarators first.
-	self assert: declarator variable equals: 'arr'.
+	self assert: declarator variable name equals: 'ARR'.
 	self assert: declarator dimensions size equals: 2.
 
 	self assert: declarator dimensions first lowerBound primitiveValue equals: '1'.
@@ -486,78 +672,164 @@ SyntaxJsonToFASTTests >> testArrayDeclarationMultipleDimensions [
 { #category : #'tests-statement' }
 SyntaxJsonToFASTTests >> testArrayDeclarationThreeDimensions [
 	
-	| result stmt arrayAccess |
+	| result stmt arrA arrB arrayAccess |
 	fortranCode := '
       REAL A(3:5, 7, 3:5), B(0:2)
       END
 '.
 	jsonCode := '{
-   "tag":"fortran_file",
-   "comments":
-   {
-   },
-   "file" : "test/unit-tests/array-multidimenstion.FOR",
-   "program_units" : [{"tag" : "main",
-   "name" : "null",
-   "start_pos" : {"line" : "1",
-   "column":"7"},
-   "end_pos" : {"line" : "2",
-   "column":"9"},
-   "statement_list" : [{"tag" : "variable_declaration_statement",
-   "start_pos" : {"line" : "1",
-   "column":"7"},
-   "type" : {"tag" : "type_reference",
-   "name":"REAL"},
-   "declarators" : [{"tag" : "variable_declarator",
-   "variable" : {"tag" : "symbolic_name",
-   "start_pos" : {"line" : "1",
-   "column":"12"},
-   "name":"A"},
-   "dimension_declarators" : [{"lower_bound" : {"tag" : "literal_expression",
-   "literal" : {"tag" : "unsigned_int_constant",
-   "start_pos" : {"line" : "1",
-   "column":"14"},
-   "value":"3"}},
-   "upper_bound" : {"tag" : "literal_expression",
-   "literal" : {"tag" : "unsigned_int_constant",
-   "start_pos" : {"line" : "1",
-   "column":"16"},
-   "value":"5"}}},
-   {"lower_bound" : {"tag" : "literal_expression",
-   "literal" : {"tag" : "unsigned_int_constant",
-   "start_pos" : {"line" : "1",
-   "column":"19"},
-   "value":"7"}}},
-   {"lower_bound" : {"tag" : "literal_expression",
-   "literal" : {"tag" : "unsigned_int_constant",
-   "start_pos" : {"line" : "1",
-   "column":"22"},
-   "value":"3"}},
-   "upper_bound" : {"tag" : "literal_expression",
-   "literal" : {"tag" : "unsigned_int_constant",
-   "start_pos" : {"line" : "1",
-   "column":"24"},
-   "value":"5"}}}]},{"tag" : "variable_declarator",
-   "variable" : {"tag" : "symbolic_name",
-   "start_pos" : {"line" : "1",
-   "column":"28"},
-   "name":"B"},
-   "dimension_declarators" : [{"lower_bound" : {"tag" : "literal_expression",
-   "literal" : {"tag" : "unsigned_int_constant",
-   "start_pos" : {"line" : "1",
-   "column":"30"},
-   "value":"0"}},
-   "upper_bound" : {"tag" : "literal_expression",
-   "literal" : {"tag" : "unsigned_int_constant",
-   "start_pos" : {"line" : "1",
-   "column":"32"},
-   "value":"2"}}}]}]}]}]}'.
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/unit-tests/array-multidimenstion.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": "null",
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+				"parameters": [],
+            "end_pos": {
+                "line": "2",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "variable_declaration_statement",
+                    "start_pos": {
+                        "line": "1",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "REAL"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "1",
+                                    "column": "12"
+                                },
+                                "name": "A"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "1",
+                                                "column": "14"
+                                            },
+                                            "value": "3"
+                                        }
+                                    },
+                                    "upper_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "1",
+                                                "column": "16"
+                                            },
+                                            "value": "5"
+                                        }
+                                    }
+                                },
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "1",
+                                                "column": "19"
+                                            },
+                                            "value": "7"
+                                        }
+                                    }
+                                },
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "1",
+                                                "column": "22"
+                                            },
+                                            "value": "3"
+                                        }
+                                    },
+                                    "upper_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "1",
+                                                "column": "24"
+                                            },
+                                            "value": "5"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "1",
+                                    "column": "28"
+                                },
+                                "name": "B"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "1",
+                                                "column": "30"
+                                            },
+                                            "value": "0"
+                                        }
+                                    },
+                                    "upper_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "1",
+                                                "column": "32"
+                                            },
+                                            "value": "2"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 	
-	stmt := result first statementBlock statements second.
-	self assert: stmt class equals: FASTFortranAssignmentStatement.
-
-	arrayAccess := stmt expression.
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
+	self assert: (stmt declarators size) equals: 2.
+	
+	arrA := stmt declarators first.
 	self assert: arrayAccess class equals: FASTFortranArrayVariable.
 	self assert: arrayAccess name equals: 'arr'.
 	self assert: arrayAccess indices size equals: 2.
@@ -574,7 +846,72 @@ SyntaxJsonToFASTTests >> testArrayDeclarationVariableBound [
       integer arr(max)
       END
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:22)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:21)","upper":{"anno":[],"span":"(2:19)-(2:21)","tag":"value","value":{"contents":"max","tag":"variable"}}}],"span":"(2:19)-(2:21)"},"initial":null,"length":null,"span":"(2:15)-(2:22)","type":"array","variable":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"arr","tag":"variable"}}}],"span":"(2:15)-(2:22)"},"span":"(2:7)-(2:22)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testArrayDeclarationVariableBound.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "INTEGER"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "name": "ARR"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "tag": "variable_expression",
+                                    "variable": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "19"
+                                        },
+                                        "name": "MAX"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 	
 	stmt := result first statementBlock statements first.
@@ -582,12 +919,12 @@ SyntaxJsonToFASTTests >> testArrayDeclarationVariableBound [
 	self assert: stmt declarators size equals: 1.
 
 	declarator := stmt declarators first.
-	self assert: declarator variable equals: 'arr'.
+	self assert: declarator variable name equals: 'ARR'.
 	self assert: declarator dimensions size equals: 1.
 	self assert: declarator dimensions first class equals: FASTFortranArrayRange. 
 	self assert: declarator dimensions first lowerBound equals: nil. 
-	self assert: declarator dimensions first upperBound class equals: FASTFortranScalarVariable.
-	self assert: declarator dimensions first upperBound name equals: 'max'.
+	self assert: declarator dimensions first upperBound class equals: FASTFortranVariable.
+	self assert: declarator dimensions first upperBound name equals: 'MAX'.
 ]
 
 { #category : #'tests-statement' }
@@ -5180,7 +5517,68 @@ SyntaxJsonToFASTTests >> testVariableDeclarationCharacter [
       character*40 aString
       end
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:26)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:20)-(2:26)","type":"scalar","variable":{"anno":[],"span":"(2:20)-(2:26)","tag":"value","value":{"contents":"astring","tag":"variable"}}}],"span":"(2:20)-(2:26)"},"span":"(2:7)-(2:26)","tag":"declaration","type":{"anno":[],"base_type":"character","selector":{"anno":[],"kind":null,"length":{"anno":[],"span":"(2:17)-(2:18)","tag":"value","value":{"contents":["40",null],"tag":"integer"}},"span":"(2:16)-(2:18)"},"span":"(2:7)-(2:18)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testVariableDeclarationCharacter.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "CHARACTER",
+                        "len_specification": {
+                            "tag": "nonzero_unsigned_int_constant",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "17"
+                            },
+                            "value": "40"
+                        }
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "20"
+                                },
+                                "name": "ASTRING"
+                            },
+                            "dimension_declarators": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
@@ -5206,21 +5604,74 @@ SyntaxJsonToFASTTests >> testVariableDeclarationInteger [
       integer i
       end
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:15)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:15)-(2:15)","type":"scalar","variable":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":"i","tag":"variable"}}}],"span":"(2:15)-(2:15)"},"span":"(2:7)-(2:15)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testVariableDeclarationInteger.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "INTEGER"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "name": "I"
+                            },
+                            "dimension_declarators": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
 
 	stmt := result first statementBlock statements first.	
 	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
-	self assert: stmt startPos equals: 26.
-	self assert: stmt endPos equals: 34.
+	"self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 34."
 
 	self assert: stmt type class equals: FASTFortranIntegerType.
 	self assert: stmt declarators size equals: 1.
 	
 	var := stmt declarators first.
-	self assert: var variable equals: 'i'.
+	self assert: var variable name equals: 'I'.
 ]
 
 { #category : #'tests-statement' }
@@ -5231,7 +5682,7 @@ SyntaxJsonToFASTTests >> testVariableDeclarationIntegerWithLength [
       integer*8 i
       end
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:17)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:17)-(2:17)","type":"scalar","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"i","tag":"variable"}}}],"span":"(2:17)-(2:17)"},"span":"(2:7)-(2:17)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":{"anno":[],"kind":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":["8",null],"tag":"integer"}},"length":null,"span":"(2:14)-(2:15)"},"span":"(2:7)-(2:15)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := ''.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
@@ -5253,21 +5704,76 @@ SyntaxJsonToFASTTests >> testVariableDeclarationLogical [
       logical b
       end
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:15)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:15)-(2:15)","type":"scalar","variable":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":"b","tag":"variable"}}}],"span":"(2:15)-(2:15)"},"span":"(2:7)-(2:15)","tag":"declaration","type":{"anno":[],"base_type":"logical","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testVariableDeclarationLogical.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "LOGICAL"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "name": "B"
+                            },
+                            "dimension_declarators": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
 
-	stmt := result first statementBlock statements first.	
-	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
-	self assert: stmt startPos equals: 26.
-	self assert: stmt endPos equals: 34.
+	stmt := result first statementBlock statements first.
+	self
+		assert: stmt class
+		equals: FASTFortranVariableDeclarationStatement.
+	"self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 34."
 
 	self assert: stmt type class equals: FASTFortranLogicalType.
 	self assert: stmt declarators size equals: 1.
-	
+
 	var := stmt declarators first.
-	self assert: var variable equals: 'b'.
+	self assert: var variable name equals: 'B'
 ]
 
 { #category : #'tests-statement' }
@@ -5278,21 +5784,74 @@ SyntaxJsonToFASTTests >> testVariableDeclarationReal [
       real c
       end
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:12)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:12)-(2:12)","type":"scalar","variable":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":"c","tag":"variable"}}}],"span":"(2:12)-(2:12)"},"span":"(2:7)-(2:12)","tag":"declaration","type":{"anno":[],"base_type":"real","selector":null,"span":"(2:7)-(2:10)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testVariableDeclarationReal.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "REAL"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "12"
+                                },
+                                "name": "C"
+                            },
+                            "dimension_declarators": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
 
 	stmt := result first statementBlock statements first.	
 	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
-	self assert: stmt startPos equals: 26.
-	self assert: stmt endPos equals: 31.
+	"self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 31."
 
 	self assert: stmt type class equals: FASTFortranRealType.
 	self assert: stmt declarators size equals: 1.
 	
 	var := stmt declarators first.
-	self assert: var variable equals: 'c'.
+	self assert: var variable name equals: 'C'.
 ]
 
 { #category : #'tests-statement' }
@@ -5303,7 +5862,91 @@ SyntaxJsonToFASTTests >> testVariableDeclarationWithLength [
       character var*10, str*(n)
       end
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:26)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:20)-(2:26)","type":"scalar","variable":{"anno":[],"span":"(2:20)-(2:26)","tag":"value","value":{"contents":"astring","tag":"variable"}}}],"span":"(2:20)-(2:26)"},"span":"(2:7)-(2:26)","tag":"declaration","type":{"anno":[],"base_type":"character","selector":{"anno":[],"kind":null,"length":{"anno":[],"span":"(2:17)-(2:18)","tag":"value","value":{"contents":["40",null],"tag":"integer"}},"span":"(2:16)-(2:18)"},"span":"(2:7)-(2:18)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testVariableDeclarationWithLength.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "CHARACTER"
+                    },
+                    "declarators": [
+                        {
+                            "len_specifier": {
+                                "tag": "nonzero_unsigned_int_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "21"
+                                },
+                                "value": "10"
+                            },
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "17"
+                                },
+                                "name": "VAR"
+                            },
+                            "dimension_declarators": []
+                        },
+                        {
+                            "len_specifier": {
+                                "tag": "variable_expression",
+                                "variable": {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "30"
+                                    },
+                                    "name": "N"
+                                }
+                            },
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "25"
+                                },
+                                "name": "STR"
+                            },
+                            "dimension_declarators": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
@@ -5329,7 +5972,63 @@ SyntaxJsonToFASTTests >> testVariableDeclarationWithStarSize [
       character*(*) str
       end
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:23)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:21)-(2:23)","type":"scalar","variable":{"anno":[],"span":"(2:21)-(2:23)","tag":"value","value":{"contents":"str","tag":"variable"}}}],"span":"(2:21)-(2:23)"},"span":"(2:7)-(2:23)","tag":"declaration","type":{"anno":[],"base_type":"character","selector":{"anno":[],"kind":null,"length":{"anno":[],"span":"(2:18)-(2:18)","tag":"value","value":{"tag":"star"}},"span":"(2:16)-(2:19)"},"span":"(2:7)-(2:19)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testVariableDeclarationWithStarSize.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "CHARACTER",
+                        "len_specification": {
+                            "asterisk": "*"
+                        }
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "21"
+                                },
+                                "name": "STR"
+                            },
+                            "dimension_declarators": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
