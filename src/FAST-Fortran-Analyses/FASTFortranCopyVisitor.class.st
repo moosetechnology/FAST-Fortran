@@ -8,841 +8,1005 @@ Class {
 FASTFortranCopyVisitor >> copy: aNode [
 
 	aNode ifNil: [ ^nil ].
+	aNode isLiteral ifTrue: [ ^aNode ].
 	aNode isCollection ifFalse: [ ^aNode accept: self ].
 	^aNode collect: [ :each | self copy: each ]
+
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranAbstractExpression: aFASTFortranAbstractExpression [
 	<generated>
-	^(aFASTFortranAbstractExpression copy)
+	^FASTFortranAbstractExpression new
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranAbstractLiteral: aFASTFortranAbstractLiteral [
 	<generated>
-	^(self visitFASTFortranAbstractExpression: aFASTFortranAbstractLiteral)
+	^FASTFortranAbstractLiteral new
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranAbstractStatement: aFASTFortranAbstractStatement [
 	<generated>
-	^(aFASTFortranAbstractStatement copy)
+	^FASTFortranAbstractStatement new
+		label: (self copy: aFASTFortranAbstractStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranAcceptStatement: aFASTFortranAcceptStatement [
 	<generated>
-	^(aFASTFortranAcceptStatement copy)
+	^FASTFortranAcceptStatement new
+		label: (self copy: aFASTFortranAcceptStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranAmpersand: aFASTFortranAmpersand [
 	<generated>
-	^(self visitFASTFortranAbstractLiteral: aFASTFortranAmpersand)
+	^FASTFortranAmpersand new
+		primitiveValue: (self copy: aFASTFortranAmpersand primitiveValue) ;
 		yourself
 
 ]
 
-{ #category : #visiting }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranArrayRange: aFASTFortranArrayRange [
 	<generated>
-	^(aFASTFortranArrayRange copy)
-		upperBound: (self copy: aFASTFortranArrayRange upperBound)
+	^FASTFortranArrayRange new
+		lowerBound: (self copy: aFASTFortranArrayRange lowerBound) ;
+		upperBound: (self copy: aFASTFortranArrayRange upperBound) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariable [
 	<generated>
-	^(self visitFASTFortranVariable: aFASTFortranArrayVariable)
+	^FASTFortranArrayVariable new
+		name: (self copy: aFASTFortranArrayVariable name) ;
+		indices: (self copy: aFASTFortranArrayVariable indices) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranAssignmentExpression: aFASTFortranAssignmentExpression [
 	<generated>
-	^(self visitFASTFortranAbstractExpression: aFASTFortranAssignmentExpression)
+	^FASTFortranAssignmentExpression new
+		variable: (self copy: aFASTFortranAssignmentExpression variable) ;
+		expression: (self copy: aFASTFortranAssignmentExpression expression) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranAssignmentStatement: aFASTFortranAssignmentStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranAssignmentStatement)
+	^FASTFortranAssignmentStatement new
+		variable: (self copy: aFASTFortranAssignmentStatement variable) ;
+		label: (self copy: aFASTFortranAssignmentStatement label) ;
+		expression: (self copy: aFASTFortranAssignmentStatement expression) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranAsterisk: aFASTFortranAsterisk [
 	<generated>
-	^(aFASTFortranAsterisk copy)
+	^FASTFortranAsterisk new
+		primitiveValue: (self copy: aFASTFortranAsterisk primitiveValue) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranAutomaticStatement: aFASTFortranAutomaticStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranAutomaticStatement)
+	^FASTFortranAutomaticStatement new
+		label: (self copy: aFASTFortranAutomaticStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranBackspaceStatement: aFASTFortranBackspaceStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranBackspaceStatement)
+	^FASTFortranBackspaceStatement new
+		label: (self copy: aFASTFortranBackspaceStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranBinaryExpression: aFASTFortranBinaryExpression [
 	<generated>
-	^(self visitFASTFortranAbstractExpression: aFASTFortranBinaryExpression)
+	^FASTFortranBinaryExpression new
+		right: (self copy: aFASTFortranBinaryExpression right) ;
+		left: (self copy: aFASTFortranBinaryExpression left) ;
+		operator: (self copy: aFASTFortranBinaryExpression operator) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - programUnits' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranBlockData: aFASTFortranBlockData [
 	<generated>
-	^(self visitFASTFortranSubprogram: aFASTFortranBlockData)
+	^FASTFortranBlockData new
+		comments: (self copy: aFASTFortranBlockData comments) ;
+		name: (self copy: aFASTFortranBlockData name) ;
+		parameters: (self copy: aFASTFortranBlockData parameters) ;
+		statementBlock: (self copy: aFASTFortranBlockData statementBlock) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranBooleanLiteral: aFASTFortranBooleanLiteral [
 	<generated>
-	^(self visitFASTFortranAbstractLiteral: aFASTFortranBooleanLiteral)
+	^FASTFortranBooleanLiteral new
+		primitiveValue: (self copy: aFASTFortranBooleanLiteral primitiveValue) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranByteType: aFASTFortranByteType [
 	<generated>
-	^(self visitFASTFortranType: aFASTFortranByteType)
+	^FASTFortranByteType new
+		size: (self copy: aFASTFortranByteType size) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranCallStatement: aFASTFortranCallStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranCallStatement)
+	^FASTFortranCallStatement new
+		name: (self copy: aFASTFortranCallStatement name) ;
+		arguments: (self copy: aFASTFortranCallStatement arguments) ;
+		label: (self copy: aFASTFortranCallStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranCharacterLiteral: aFASTFortranCharacterLiteral [
 	<generated>
-	^(self visitFASTFortranAbstractLiteral: aFASTFortranCharacterLiteral)
+	^FASTFortranCharacterLiteral new
+		primitiveValue: (self copy: aFASTFortranCharacterLiteral primitiveValue) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranCharacterType: aFASTFortranCharacterType [
 	<generated>
-	^(self visitFASTFortranType: aFASTFortranCharacterType)
+	^FASTFortranCharacterType new
+		size: (self copy: aFASTFortranCharacterType size) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranCloseStatement: aFASTFortranCloseStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranCloseStatement)
+	^FASTFortranCloseStatement new
+		label: (self copy: aFASTFortranCloseStatement label) ;
 		yourself
 
 ]
 
-{ #category : #visiting }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranComment: aFASTFortranComment [
 	<generated>
-	^(aFASTFortranComment copy)
+	^FASTFortranComment new
+		content: (self copy: aFASTFortranComment content) ;
 		yourself
 
 ]
 
-{ #category : #visiting }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranCommonGroup: aFASTFortranCommonGroup [
 	<generated>
-	^(aFASTFortranCommonGroup copy)
+	^FASTFortranCommonGroup new
+		name: (self copy: aFASTFortranCommonGroup name) ;
+		declarators: (self copy: aFASTFortranCommonGroup declarators) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranCommonStatement: aFASTFortranCommonStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranCommonStatement)
+	^FASTFortranCommonStatement new
+		groups: (self copy: aFASTFortranCommonStatement groups) ;
+		label: (self copy: aFASTFortranCommonStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranComplexLiteral: aFASTFortranComplexLiteral [
 	<generated>
-	^(self visitFASTFortranAbstractLiteral: aFASTFortranComplexLiteral)
+	^FASTFortranComplexLiteral new
+		primitiveValue: (self copy: aFASTFortranComplexLiteral primitiveValue) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranComplexType: aFASTFortranComplexType [
 	<generated>
-	^(self visitFASTFortranType: aFASTFortranComplexType)
+	^FASTFortranComplexType new
+		size: (self copy: aFASTFortranComplexType size) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranContinueStatement: aFASTFortranContinueStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranContinueStatement)
+	^FASTFortranContinueStatement new
+		label: (self copy: aFASTFortranContinueStatement label) ;
 		yourself
 
 ]
 
-{ #category : #visiting }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranDataGroup: aFASTFortranDataGroup [
 	<generated>
-	^(aFASTFortranDataGroup copy)
+	^FASTFortranDataGroup new
+		dataConstants: (self copy: aFASTFortranDataGroup dataConstants) ;
+		variables: (self copy: aFASTFortranDataGroup variables) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranDataStatement: aFASTFortranDataStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranDataStatement)
+	^FASTFortranDataStatement new
+		variableGroups: (self copy: aFASTFortranDataStatement variableGroups) ;
+		label: (self copy: aFASTFortranDataStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranDecodeStatement: aFASTFortranDecodeStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranDecodeStatement)
+	^FASTFortranDecodeStatement new
+		label: (self copy: aFASTFortranDecodeStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranDimensionStatement: aFASTFortranDimensionStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranDimensionStatement)
+	^FASTFortranDimensionStatement new
+		label: (self copy: aFASTFortranDimensionStatement label) ;
+		declarators: (self copy: aFASTFortranDimensionStatement declarators) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranDoStatement)
-		statementBlock: (self copy: aFASTFortranDoStatement statementBlock)
+	^FASTFortranDoStatement new
+		labelReferences: (self copy: aFASTFortranDoStatement labelReferences) ;
+		loopControl: (self copy: aFASTFortranDoStatement loopControl) ;
+		label: (self copy: aFASTFortranDoStatement label) ;
+		statementBlock: (self copy: aFASTFortranDoStatement statementBlock) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranDoWhileStatement: aFASTFortranDoWhileStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranDoWhileStatement)
+	^FASTFortranDoWhileStatement new
+		label: (self copy: aFASTFortranDoWhileStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranDoubleComplexLiteral: aFASTFortranDoubleComplexLiteral [
 	<generated>
-	^(self visitFASTFortranAbstractLiteral: aFASTFortranDoubleComplexLiteral)
+	^FASTFortranDoubleComplexLiteral new
+		primitiveValue: (self copy: aFASTFortranDoubleComplexLiteral primitiveValue) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranDoubleComplexType: aFASTFortranDoubleComplexType [
 	<generated>
-	^(self visitFASTFortranType: aFASTFortranDoubleComplexType)
+	^FASTFortranDoubleComplexType new
+		size: (self copy: aFASTFortranDoubleComplexType size) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranDoublePrecisionLiteral: aFASTFortranDoublePrecisionLiteral [
 	<generated>
-	^(self visitFASTFortranAbstractLiteral: aFASTFortranDoublePrecisionLiteral)
+	^FASTFortranDoublePrecisionLiteral new
+		primitiveValue: (self copy: aFASTFortranDoublePrecisionLiteral primitiveValue) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranDoublePrecisionType: aFASTFortranDoublePrecisionType [
 	<generated>
-	^(self visitFASTFortranType: aFASTFortranDoublePrecisionType)
+	^FASTFortranDoublePrecisionType new
+		size: (self copy: aFASTFortranDoublePrecisionType size) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranElseStatement: aFASTFortranElseStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranElseStatement)
+	^FASTFortranElseStatement new
+		label: (self copy: aFASTFortranElseStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranEncodeStatement: aFASTFortranEncodeStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranEncodeStatement)
+	^FASTFortranEncodeStatement new
+		label: (self copy: aFASTFortranEncodeStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranEndFileStatement: aFASTFortranEndFileStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranEndFileStatement)
+	^FASTFortranEndFileStatement new
+		label: (self copy: aFASTFortranEndFileStatement label) ;
 		yourself
 
 ]
 
-{ #category : #visiting }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranEntity: aFASTFortranEntity [
 	<generated>
-	^(aFASTFortranEntity copy)
+	^FASTFortranEntity new
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranEntryStatement: aFASTFortranEntryStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranEntryStatement)
+	^FASTFortranEntryStatement new
+		name: (self copy: aFASTFortranEntryStatement name) ;
+		label: (self copy: aFASTFortranEntryStatement label) ;
+		entryArguments: (self copy: aFASTFortranEntryStatement entryArguments) ;
 		yourself
 
 ]
 
-{ #category : #visiting }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranEquivalenceGroup: aFASTFortranEquivalenceGroup [
 	<generated>
-	^(aFASTFortranEquivalenceGroup copy)
+	^FASTFortranEquivalenceGroup new
+		variables: (self copy: aFASTFortranEquivalenceGroup variables) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranEquivalenceStatement: aFASTFortranEquivalenceStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranEquivalenceStatement)
+	^FASTFortranEquivalenceStatement new
+		variableGroups: (self copy: aFASTFortranEquivalenceStatement variableGroups) ;
+		label: (self copy: aFASTFortranEquivalenceStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranExitStatement: aFASTFortranExitStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranExitStatement)
+	^FASTFortranExitStatement new
+		label: (self copy: aFASTFortranExitStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranExternalStatement: aFASTFortranExternalStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranExternalStatement)
+	^FASTFortranExternalStatement new
+		name: (self copy: aFASTFortranExternalStatement name) ;
+		label: (self copy: aFASTFortranExternalStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranFormatStatement: aFASTFortranFormatStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranFormatStatement)
+	^FASTFortranFormatStatement new
+		format: (self copy: aFASTFortranFormatStatement format) ;
+		label: (self copy: aFASTFortranFormatStatement label) ;
+		formatDescription: (self copy: aFASTFortranFormatStatement formatDescription) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - programUnits' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranFunction: aFASTFortranFunction [
 	<generated>
-	^(self visitFASTFortranProcedure: aFASTFortranFunction)
-		returnType: (self copy: aFASTFortranFunction returnType)
+	^FASTFortranFunction new
+		comments: (self copy: aFASTFortranFunction comments) ;
+		name: (self copy: aFASTFortranFunction name) ;
+		parameters: (self copy: aFASTFortranFunction parameters) ;
+		returnType: (self copy: aFASTFortranFunction returnType) ;
+		statementBlock: (self copy: aFASTFortranFunction statementBlock) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranFunctionCall: aFASTFortranFunctionCall [
 	<generated>
-	^(self visitFASTFortranAbstractExpression: aFASTFortranFunctionCall)
+	^FASTFortranFunctionCall new
+		name: (self copy: aFASTFortranFunctionCall name) ;
+		arguments: (self copy: aFASTFortranFunctionCall arguments) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranFunctionStatement: aFASTFortranFunctionStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranFunctionStatement)
-		expression: (self copy: aFASTFortranFunctionStatement expression)
+	^FASTFortranFunctionStatement new
+		name: (self copy: aFASTFortranFunctionStatement name) ;
+		arguments: (self copy: aFASTFortranFunctionStatement arguments) ;
+		label: (self copy: aFASTFortranFunctionStatement label) ;
+		expression: (self copy: aFASTFortranFunctionStatement expression) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranGoToAssignedStatement: aFASTFortranGoToAssignedStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranGoToAssignedStatement)
-		selectorExpression: (self copy: aFASTFortranGoToAssignedStatement selectorExpression)
+	^FASTFortranGoToAssignedStatement new
+		labelReferences: (self copy: aFASTFortranGoToAssignedStatement labelReferences) ;
+		label: (self copy: aFASTFortranGoToAssignedStatement label) ;
+		selectorExpression: (self copy: aFASTFortranGoToAssignedStatement selectorExpression) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranGoToComputedStatement: aFASTFortranGoToComputedStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranGoToComputedStatement)
-		selectorExpression: (self copy: aFASTFortranGoToComputedStatement selectorExpression)
+	^FASTFortranGoToComputedStatement new
+		labelReferences: (self copy: aFASTFortranGoToComputedStatement labelReferences) ;
+		label: (self copy: aFASTFortranGoToComputedStatement label) ;
+		selectorExpression: (self copy: aFASTFortranGoToComputedStatement selectorExpression) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranGoToStatement: aFASTFortranGoToStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranGoToStatement)
+	^FASTFortranGoToStatement new
+		labelReferences: (self copy: aFASTFortranGoToStatement labelReferences) ;
+		label: (self copy: aFASTFortranGoToStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortranIfArithmeticStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranIfArithmeticStatement)
-		greaterLabel: (self copy: aFASTFortranIfArithmeticStatement greaterLabel) ;
+	^FASTFortranIfArithmeticStatement new
+		condition: (self copy: aFASTFortranIfArithmeticStatement condition) ;
 		lessLabel: (self copy: aFASTFortranIfArithmeticStatement lessLabel) ;
+		label: (self copy: aFASTFortranIfArithmeticStatement label) ;
 		equalLabel: (self copy: aFASTFortranIfArithmeticStatement equalLabel) ;
+		greaterLabel: (self copy: aFASTFortranIfArithmeticStatement greaterLabel) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranIfBlockStatement: aFASTFortranIfBlockStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranIfBlockStatement)
-		elseStatementBlock: (self copy: aFASTFortranIfBlockStatement elseStatementBlock)
+	^FASTFortranIfBlockStatement new
+		condition: (self copy: aFASTFortranIfBlockStatement condition) ;
+		elseStatementBlock: (self copy: aFASTFortranIfBlockStatement elseStatementBlock) ;
+		thenStatementBlock: (self copy: aFASTFortranIfBlockStatement thenStatementBlock) ;
+		label: (self copy: aFASTFortranIfBlockStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranIfLogicalStatement: aFASTFortranIfLogicalStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranIfLogicalStatement)
-		statement: (self copy: aFASTFortranIfLogicalStatement statement)
+	^FASTFortranIfLogicalStatement new
+		condition: (self copy: aFASTFortranIfLogicalStatement condition) ;
+		statement: (self copy: aFASTFortranIfLogicalStatement statement) ;
+		label: (self copy: aFASTFortranIfLogicalStatement label) ;
 		yourself
 
 ]
 
-{ #category : #visiting }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranImplicitRange: aFASTFortranImplicitRange [
 	<generated>
-	^(aFASTFortranImplicitRange copy)
+	^FASTFortranImplicitRange new
+		to: (self copy: aFASTFortranImplicitRange to) ;
+		from: (self copy: aFASTFortranImplicitRange from) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranImplicitStatement: aFASTFortranImplicitStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranImplicitStatement)
+	^FASTFortranImplicitStatement new
+		label: (self copy: aFASTFortranImplicitStatement label) ;
+		typingRules: (self copy: aFASTFortranImplicitStatement typingRules) ;
 		yourself
 
 ]
 
-{ #category : #visiting }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranImplicitTypingRule: aFASTFortranImplicitTypingRule [
 	<generated>
-	^(aFASTFortranImplicitTypingRule copy)
-		type: (self copy: aFASTFortranImplicitTypingRule type)
+	^FASTFortranImplicitTypingRule new
+		type: (self copy: aFASTFortranImplicitTypingRule type) ;
+		ranges: (self copy: aFASTFortranImplicitTypingRule ranges) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
-FASTFortranCopyVisitor >> visitFASTFortranImpliedDo: aFASTFortranImpliedDo [
-
-	^(aFASTFortranImpliedDo copy)
-		variables: (self copy: aFASTFortranImpliedDo variables) ;
-		loopControl: (self copy: aFASTFortranImpliedDo loopControl) ;
-		yourself
-]
-
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranImpliedDoExpression: aFASTFortranImpliedDoExpression [
 	<generated>
-	^(aFASTFortranImpliedDoExpression copy)
+	^FASTFortranImpliedDoExpression new
+		loopControl: (self copy: aFASTFortranImpliedDoExpression loopControl) ;
+		variables: (self copy: aFASTFortranImpliedDoExpression variables) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranIncludeStatement: aFASTFortranIncludeStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranIncludeStatement)
+	^FASTFortranIncludeStatement new
+		label: (self copy: aFASTFortranIncludeStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranInquireStatement: aFASTFortranInquireStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranInquireStatement)
+	^FASTFortranInquireStatement new
+		ioParameters: (self copy: aFASTFortranInquireStatement ioParameters) ;
+		label: (self copy: aFASTFortranInquireStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranIntegerLiteral: aFASTFortranIntegerLiteral [
 	<generated>
-	^(self visitFASTFortranAbstractLiteral: aFASTFortranIntegerLiteral)
+	^FASTFortranIntegerLiteral new
+		primitiveValue: (self copy: aFASTFortranIntegerLiteral primitiveValue) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranIntegerType: aFASTFortranIntegerType [
 	<generated>
-	^(self visitFASTFortranType: aFASTFortranIntegerType)
+	^FASTFortranIntegerType new
+		size: (self copy: aFASTFortranIntegerType size) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranIntrinsicStatement: aFASTFortranIntrinsicStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranIntrinsicStatement)
+	^FASTFortranIntrinsicStatement new
+		variables: (self copy: aFASTFortranIntrinsicStatement variables) ;
+		label: (self copy: aFASTFortranIntrinsicStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranLabelReference: aFASTFortranLabelReference [
 	<generated>
-	^(aFASTFortranLabelReference copy)
+	^FASTFortranLabelReference new
+		label: (self copy: aFASTFortranLabelReference label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranLogicalType: aFASTFortranLogicalType [
 	<generated>
-	^(self visitFASTFortranType: aFASTFortranLogicalType)
+	^FASTFortranLogicalType new
+		size: (self copy: aFASTFortranLogicalType size) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranLoopControlExpression: aFASTFortranLoopControlExpression [
 	<generated>
-	^(aFASTFortranLoopControlExpression copy)
-		init: (self copy: aFASTFortranLoopControlExpression init) ;
-		limit: (self copy: aFASTFortranLoopControlExpression limit) ;
+	^FASTFortranLoopControlExpression new
 		increment: (self copy: aFASTFortranLoopControlExpression increment) ;
+		limit: (self copy: aFASTFortranLoopControlExpression limit) ;
+		init: (self copy: aFASTFortranLoopControlExpression init) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranMapStatement: aFASTFortranMapStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranMapStatement)
+	^FASTFortranMapStatement new
+		label: (self copy: aFASTFortranMapStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranNameListStatement: aFASTFortranNameListStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranNameListStatement)
+	^FASTFortranNameListStatement new
+		label: (self copy: aFASTFortranNameListStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranOpenStatement: aFASTFortranOpenStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranOpenStatement)
+	^FASTFortranOpenStatement new
+		ioParameters: (self copy: aFASTFortranOpenStatement ioParameters) ;
+		label: (self copy: aFASTFortranOpenStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranOptionsStatement: aFASTFortranOptionsStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranOptionsStatement)
+	^FASTFortranOptionsStatement new
+		label: (self copy: aFASTFortranOptionsStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranParameterStatement: aFASTFortranParameterStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranParameterStatement)
+	^FASTFortranParameterStatement new
+		label: (self copy: aFASTFortranParameterStatement label) ;
+		declarators: (self copy: aFASTFortranParameterStatement declarators) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranPauseStatement: aFASTFortranPauseStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranPauseStatement)
+	^FASTFortranPauseStatement new
+		label: (self copy: aFASTFortranPauseStatement label) ;
+		displayArgument: (self copy: aFASTFortranPauseStatement displayArgument) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranPragmaStatement: aFASTFortranPragmaStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranPragmaStatement)
+	^FASTFortranPragmaStatement new
+		label: (self copy: aFASTFortranPragmaStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranPrintStatement: aFASTFortranPrintStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranPrintStatement)
+	^FASTFortranPrintStatement new
+		format: (self copy: aFASTFortranPrintStatement format) ;
+		arguments: (self copy: aFASTFortranPrintStatement arguments) ;
+		label: (self copy: aFASTFortranPrintStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - programUnits' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranProcedure: aFASTFortranProcedure [
 	<generated>
-	^(self visitFASTFortranSubprogram: aFASTFortranProcedure)
+	^FASTFortranProcedure new
+		comments: (self copy: aFASTFortranProcedure comments) ;
+		name: (self copy: aFASTFortranProcedure name) ;
+		parameters: (self copy: aFASTFortranProcedure parameters) ;
+		statementBlock: (self copy: aFASTFortranProcedure statementBlock) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - programUnits' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranProgramFile: aFASTFortranProgramFile [
 	<generated>
-	^(aFASTFortranProgramFile copy)
+	^FASTFortranProgramFile new
+		comments: (self copy: aFASTFortranProgramFile comments) ;
+		programUnit: (self copy: aFASTFortranProgramFile programUnit) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - programUnits' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranProgramMain: aFASTFortranProgramMain [
 	<generated>
-	^(self visitFASTFortranProgramUnit: aFASTFortranProgramMain)
+	^FASTFortranProgramMain new
+		comments: (self copy: aFASTFortranProgramMain comments) ;
+		name: (self copy: aFASTFortranProgramMain name) ;
+		parameters: (self copy: aFASTFortranProgramMain parameters) ;
+		statementBlock: (self copy: aFASTFortranProgramMain statementBlock) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - programUnits' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranProgramUnit: aFASTFortranProgramUnit [
 	<generated>
-	^(aFASTFortranProgramUnit copy)
+	^FASTFortranProgramUnit new
+		comments: (self copy: aFASTFortranProgramUnit comments) ;
+		name: (self copy: aFASTFortranProgramUnit name) ;
+		parameters: (self copy: aFASTFortranProgramUnit parameters) ;
+		statementBlock: (self copy: aFASTFortranProgramUnit statementBlock) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranReadStatement: aFASTFortranReadStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranReadStatement)
+	^FASTFortranReadStatement new
+		ioParameters: (self copy: aFASTFortranReadStatement ioParameters) ;
+		arguments: (self copy: aFASTFortranReadStatement arguments) ;
+		label: (self copy: aFASTFortranReadStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranRealLiteral: aFASTFortranRealLiteral [
 	<generated>
-	^(self visitFASTFortranAbstractLiteral: aFASTFortranRealLiteral)
+	^FASTFortranRealLiteral new
+		primitiveValue: (self copy: aFASTFortranRealLiteral primitiveValue) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranRealType: aFASTFortranRealType [
 	<generated>
-	^(self visitFASTFortranType: aFASTFortranRealType)
+	^FASTFortranRealType new
+		size: (self copy: aFASTFortranRealType size) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranReturnStatement: aFASTFortranReturnStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranReturnStatement)
+	^FASTFortranReturnStatement new
+		label: (self copy: aFASTFortranReturnStatement label) ;
+		expression: (self copy: aFASTFortranReturnStatement expression) ;
+		alternateReturnLable: (self copy: aFASTFortranReturnStatement alternateReturnLable) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranRewindStatement: aFASTFortranRewindStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranRewindStatement)
+	^FASTFortranRewindStatement new
+		ioParameters: (self copy: aFASTFortranRewindStatement ioParameters) ;
+		label: (self copy: aFASTFortranRewindStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranSaveStatement: aFASTFortranSaveStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranSaveStatement)
+	^FASTFortranSaveStatement new
+		label: (self copy: aFASTFortranSaveStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranScalarVariable: aFASTFortranScalarVariable [
 	<generated>
-	^(self visitFASTFortranVariable: aFASTFortranScalarVariable)
+	^FASTFortranScalarVariable new
+		name: (self copy: aFASTFortranScalarVariable name) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBlock [
 	<generated>
-	^(aFASTFortranStatementBlock copy)
+	^FASTFortranStatementBlock new
+		comments: (self copy: aFASTFortranStatementBlock comments) ;
+		label: (self copy: aFASTFortranStatementBlock label) ;
+		statements: (self copy: aFASTFortranStatementBlock statements) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranStaticStatement: aFASTFortranStaticStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranStaticStatement)
+	^FASTFortranStaticStatement new
+		label: (self copy: aFASTFortranStaticStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranStopStatement: aFASTFortranStopStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranStopStatement)
+	^FASTFortranStopStatement new
+		label: (self copy: aFASTFortranStopStatement label) ;
+		displayArgument: (self copy: aFASTFortranStopStatement displayArgument) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - programUnits' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranSubprogram: aFASTFortranSubprogram [
 	<generated>
-	^(self visitFASTFortranProgramUnit: aFASTFortranSubprogram)
+	^FASTFortranSubprogram new
+		comments: (self copy: aFASTFortranSubprogram comments) ;
+		name: (self copy: aFASTFortranSubprogram name) ;
+		parameters: (self copy: aFASTFortranSubprogram parameters) ;
+		statementBlock: (self copy: aFASTFortranSubprogram statementBlock) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - programUnits' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranSubroutine: aFASTFortranSubroutine [
 	<generated>
-	^(self visitFASTFortranProcedure: aFASTFortranSubroutine)
+	^FASTFortranSubroutine new
+		comments: (self copy: aFASTFortranSubroutine comments) ;
+		name: (self copy: aFASTFortranSubroutine name) ;
+		parameters: (self copy: aFASTFortranSubroutine parameters) ;
+		statementBlock: (self copy: aFASTFortranSubroutine statementBlock) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranSubstring: aFASTFortranSubstring [
 	<generated>
-	^(self visitFASTFortranAbstractExpression: aFASTFortranSubstring)
+	^FASTFortranSubstring new
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranType: aFASTFortranType [
 	<generated>
-	^(aFASTFortranType copy)
-		size: (self copy: aFASTFortranType size)
+	^FASTFortranType new
+		size: (self copy: aFASTFortranType size) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranUnaryExpression: aFASTFortranUnaryExpression [
 	<generated>
-	^(self visitFASTFortranAbstractExpression: aFASTFortranUnaryExpression)
+	^FASTFortranUnaryExpression new
+		expression: (self copy: aFASTFortranUnaryExpression expression) ;
+		operator: (self copy: aFASTFortranUnaryExpression operator) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranUnionStatement: aFASTFortranUnionStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranUnionStatement)
+	^FASTFortranUnionStatement new
+		label: (self copy: aFASTFortranUnionStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranVariable: aFASTFortranVariable [
 	<generated>
-	^(self visitFASTFortranAbstractExpression: aFASTFortranVariable)
-		parentVariableGroup: (self copy: aFASTFortranVariable parentVariableGroup)
+	^FASTFortranVariable new
+		name: (self copy: aFASTFortranVariable name) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFortranVariableDeclarationStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranVariableDeclarationStatement)
-		type: (self copy: aFASTFortranVariableDeclarationStatement type)
+	^FASTFortranVariableDeclarationStatement new
+		type: (self copy: aFASTFortranVariableDeclarationStatement type) ;
+		label: (self copy: aFASTFortranVariableDeclarationStatement label) ;
+		declarators: (self copy: aFASTFortranVariableDeclarationStatement declarators) ;
 		yourself
 
 ]
 
-{ #category : #visiting }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranVariableDeclarator: aFASTFortranVariableDeclarator [
 	<generated>
-	^(aFASTFortranVariableDeclarator copy)
+	^FASTFortranVariableDeclarator new
+		variable: (self copy: aFASTFortranVariableDeclarator variable) ;
+		dimensions: (self copy: aFASTFortranVariableDeclarator dimensions) ;
+		expression: (self copy: aFASTFortranVariableDeclarator expression) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranVirtualStatement: aFASTFortranVirtualStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranVirtualStatement)
+	^FASTFortranVirtualStatement new
+		label: (self copy: aFASTFortranVirtualStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranVolatileStatement: aFASTFortranVolatileStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranVolatileStatement)
+	^FASTFortranVolatileStatement new
+		label: (self copy: aFASTFortranVolatileStatement label) ;
 		yourself
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : #'as yet unclassified' }
 FASTFortranCopyVisitor >> visitFASTFortranWriteStatement: aFASTFortranWriteStatement [
 	<generated>
-	^(self visitFASTFortranAbstractStatement: aFASTFortranWriteStatement)
+	^FASTFortranWriteStatement new
+		ioParameters: (self copy: aFASTFortranWriteStatement ioParameters) ;
+		arguments: (self copy: aFASTFortranWriteStatement arguments) ;
+		label: (self copy: aFASTFortranWriteStatement label) ;
 		yourself
 
 ]
