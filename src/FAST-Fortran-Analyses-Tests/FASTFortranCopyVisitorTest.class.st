@@ -1,26 +1,14 @@
 Class {
 	#name : #FASTFortranCopyVisitorTest,
 	#superclass : #FASTFortranAbstractVisitorTest,
-	#instVars : [
-		'copy'
-	],
 	#category : #'FAST-Fortran-Analyses-Tests-SSA'
 }
 
 { #category : #running }
-FASTFortranCopyVisitorTest >> assertExportCopy: anEntity equals: expectedString [
+FASTFortranCopyVisitorTest >> assertExportCopy: stmt equals: string [
+	"raising explicit error to remember which tests have not been reimplemented yet"
 
-	| generated exporter |
-self skip.
-	copy := visitor copy: anEntity.
-	
-	self deny: copy equals: anEntity.
-
-	exporter := FASTFortranExporterVisitor new.
-	copy accept: exporter.
-	generated := exporter outputStream contents.
-
-	self assert: generated equals: expectedString
+	self shouldNotImplement 
 ]
 
 { #category : #running }
@@ -84,7 +72,7 @@ FASTFortranCopyVisitorTest >> testArrayRange [
 
 { #category : #tests }
 FASTFortranCopyVisitorTest >> testArrayVariable [
-	| stmt |
+	| stmt copy |
 	stmt := FASTFortranArrayVariable new
 		name: 'arr'.
 
@@ -97,7 +85,7 @@ FASTFortranCopyVisitorTest >> testArrayVariable [
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testAssignementFunctionCall [
 
-	| stmt |
+	| stmt copy |
 	stmt := self
 		assignementStatement: #a 
 		value: (self 
@@ -132,19 +120,26 @@ FASTFortranCopyVisitorTest >> testAssignementStatementArrayAssigned [
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testAssignementStatementLiteralValue [
-	| stmt |
+	"aVar = .true."
+
+	| stmt copy |
 	stmt := self assignementStatement: #aVar value: (self logicalLiteral: '.true.').
 
-	self
-		assertExportCopy: stmt
-		equals: 
-'      aVar = .true.
-'
+
+	copy := visitor copy: stmt.
+
+	self deny: copy equals: stmt.
+
+	self deny: copy expression equals: stmt expression.
+	self assert: copy expression primitiveValue equals: stmt expression primitiveValue.
+
 ]
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testAssignementStatementVariable [
-	| stmt |
+	"a = b"
+
+	| stmt copy |
 	stmt := self assignementStatement: #a value: #b.
 
 	copy := visitor copy: stmt.
@@ -506,7 +501,7 @@ FASTFortranCopyVisitorTest >> testFormatStatement [
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testFunctionNoParameterNoStatement [
-	| node |
+	| node copy |
 	node := self functionDeclaration: 'BLAH'.
 
 	copy := visitor copy: node.
@@ -524,7 +519,7 @@ FASTFortranCopyVisitorTest >> testFunctionNoParameterWithStatement [
   	return i
    end
 	"
-	| node stmt |
+	| node stmt copy |
 
 	stmt := self returnStatement: (self scalarVariable: 'i').
 
@@ -538,8 +533,11 @@ FASTFortranCopyVisitorTest >> testFunctionNoParameterWithStatement [
 	self deny: copy statementBlock equals: node statementBlock.
 	self assert: copy statementBlock statements size equals: node statementBlock statements size.
 
-	self deny: copy statementBlock statements anyOne equals: node statementBlock statements anyOne.
-	self deny: copy statementBlock statements anyOne class equals: node statementBlock statements anyOne class.
+	self assert:copy statementBlock statements isNotEmpty. 
+	copy statementBlock statements with: node statementBlock statements do: [ :copyStmt :nodeStmt |
+		self deny: copyStmt equals: nodeStmt.
+		self assert: copyStmt class equals: nodeStmt class.
+	]
 
 ]
 
@@ -549,7 +547,7 @@ FASTFortranCopyVisitorTest >> testFunctionNoReturnType [
       end
 	"
 
-	| fct |
+	| fct copy |
 	fct := self functionDeclaration: 'blah'.
 	fct returnType: nil.
 
@@ -576,16 +574,25 @@ FASTFortranCopyVisitorTest >> testFunctionStatement [
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testFunctionWithParameterNoStatement [
-	| node |
+	"real function BLAH(i,j)
+      end"
+	| node copy |
 	node := self functionDeclaration: 'BLAH'.
 	self entity: node parameters: #(i j).
 
-	self
-		assertExportCopy: node
-		equals: 
-'      real function BLAH(i,j)
-      end
-'
+	copy := visitor copy: node.
+
+	self deny: copy equals: node.
+
+	self deny: copy parameters equals: node parameters.
+	self assert: copy parameters size equals: node parameters size.
+
+	copy parameters with: node parameters do: [ :copyParam :nodeParam |
+		self deny: copyParam equals: nodeParam.
+		self assert: copyParam class equals: nodeParam class.
+		self assert: copyParam name equals: nodeParam name	
+	]
+
 ]
 
 { #category : #'tests - statements' }
@@ -678,7 +685,7 @@ FASTFortranCopyVisitorTest >> testIfBlockStatementNested [
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testIfBlockStatementWithElseBlock [
-	| stmt |
+	| stmt copy |
 	stmt := self
 		ifBlock: (self scalarVariable: 'bool')
 		then: #()
@@ -698,7 +705,7 @@ FASTFortranCopyVisitorTest >> testIfBlockStatementWithElseBlock [
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testIfBlockStatementWithThenBlock [
-	| stmt |
+	| stmt copy |
 	stmt := self
 		ifBlock: (self scalarVariable: 'bool')
 		then: {  self returnStatement: nil }
@@ -1242,7 +1249,12 @@ FASTFortranCopyVisitorTest >> testStringLiteralWithQuote [
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testTwoDeclarationsTwoVariables [
-	| sub stmt |
+	"subroutine blah()
+        integer i
+        integer j
+      end"
+
+	| sub stmt copy |
 	sub := self subroutine: 'blah'.
 
 	stmt := self
@@ -1257,14 +1269,24 @@ FASTFortranCopyVisitorTest >> testTwoDeclarationsTwoVariables [
 	stmt endPos: 15.
 	sub statementBlock addStatement: stmt.
 
-	self
-		assertExportCopy: sub
-		equals: 
-'      subroutine blah()
-        integer i
-        integer j
-      end
-'
+	copy := visitor copy: sub.
+
+	self deny: copy equals: sub.
+
+	self deny: copy statementBlock equals: sub statementBlock.
+	self assert: copy statementBlock statements size equals: sub statementBlock statements size.
+
+	self assert: copy statementBlock statements isNotEmpty. 
+	copy statementBlock statements with: sub statementBlock statements do: [ :copyStmt :nodeStmt |
+		self deny: copyStmt equals: nodeStmt.
+		self assert: copyStmt class equals: nodeStmt class.
+		self assert: copyStmt type class equals: nodeStmt type class.
+		
+		self assert: copyStmt declarators size equals: nodeStmt declarators size.
+		self assert: copyStmt declarators anyOne class equals: nodeStmt declarators anyOne class.
+		self assert: copyStmt declarators anyOne variable equals: nodeStmt declarators anyOne variable.
+	]
+
 ]
 
 { #category : #'tests - statements' }
