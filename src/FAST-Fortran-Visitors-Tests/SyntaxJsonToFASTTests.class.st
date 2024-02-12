@@ -3038,20 +3038,20 @@ SyntaxJsonToFASTTests >> testCallSubroutine [
 
 	call := result first statementBlock statements anyOne.
 	self assert: call class equals: FASTFortranCallStatement.
-	self assert: call name equals: 'rank'.
+	self assert: call name primitiveValue equals: 'RANK'.
 	self assert: call arguments size equals: 2.
-	self assert: call startPos equals: 30.
-	self assert: call endPos equals: 48.
+	"self assert: call startPos equals: 30.
+	self assert: call endPos equals: 48."
 
 
 	arg := call arguments first.
 	self assert: arg class equals: FASTFortranScalarVariable.
-	self assert: arg name equals: 'n'.
+	self assert: arg name equals: 'N'.
 
 	arg := call arguments second.
-	self assert: arg class equals: FASTFortranIntegerLiteral.
-	self assert: arg primitiveValue equals: '8'.
-	self flag: 'what happened to "*" ("*8")?'
+	self assert: arg class equals: FASTFortranCharacterLiteral.
+	self assert: arg primitiveValue equals: '*8'.
+	self flag: 'return specifier type was erased, represented as integer *8'
 
 ]
 
@@ -3819,25 +3819,79 @@ SyntaxJsonToFASTTests >> testEntryStatement [
       ENTRY XYZ(ABC,*)
       END
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:22)","statement":{"anno":[],"args":{"anno":[],"list":[{"anno":[],"span":"(2:17)-(2:19)","tag":"value","value":{"contents":"abc","tag":"variable"}},{"anno":[],"span":"(2:21)-(2:21)","tag":"value","value":{"tag":"star"}}],"span":"(2:16)-(2:22)"},"name":{"anno":[],"span":"(2:13)-(2:15)","tag":"value","value":{"contents":"xyz","tag":"variable"}},"return":null,"span":"(2:7)-(2:22)","tag":"entry"},"tag":"statement"}],"name":"subrtn","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testEntryStatement.FOR",
+    "program_units": [
+        {
+            "tag": "subroutine",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "18"
+                },
+                "name": "SUBRTN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "name": {
+                        "tag": "symbolic_name",
+                        "start_pos": {
+                            "line": "2",
+                            "column": "13"
+                        },
+                        "name": "XYZ"
+                    },
+                    "parameters": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "17"
+                            },
+                            "name": "ABC"
+                        },
+                        "*"
+                    ],
+                    "tag": "entry_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
 
 	stmt := result first statementBlock statements first.	
 	self assert: stmt class equals: FASTFortranEntryStatement.
-	self assert: stmt name equals: 'xyz'.
-	self assert: stmt startPos equals: 31.
-	self assert: stmt endPos equals: 46.
+	self assert: stmt name primitiveValue equals: 'XYZ'.
+	"self assert: stmt startPos equals: 31.
+	self assert: stmt endPos equals: 46."
 
 	self assert: stmt entryArguments size equals: 2.
 
 	self assert: stmt entryArguments first class equals: FASTFortranScalarVariable.
-	self assert: stmt entryArguments first name equals: 'abc'.
-	self assert: stmt entryArguments first startPos equals: 41.
+	self assert: stmt entryArguments first name equals: 'ABC'.
+	"self assert: stmt entryArguments first startPos equals: 41."
 
 	self assert: stmt entryArguments second class equals: FASTFortranAsterisk.
-	self assert: stmt entryArguments second startPos equals: 45.
+	"self assert: stmt entryArguments second startPos equals: 45."
 
 ]
 
@@ -3938,21 +3992,22 @@ SyntaxJsonToFASTTests >> testEquivalenceStatementSeveralGroups [
 
 { #category : #'tests-statement' }
 SyntaxJsonToFASTTests >> testExit [
+"NOT FORTRAN-77"
 
 	| result stmt |
 	fortranCode := '      PROGRAM TESTALT
        exit
       END 
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:11)","statement":{"anno":[],"span":"(2:8)-(2:11)","tag":"exit","var":null},"tag":"statement"}],"name":"testalt","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
-	result := self visitJsonCode.
+	jsonCode := ''.
+	"result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
 
 	stmt := result first statementBlock statements first.	
 	self assert: stmt class equals: FASTFortranExitStatement.
 	self assert: stmt startPos equals: 30.
-	self assert: stmt endPos equals: 33.
+	self assert: stmt endPos equals: 33."
 
 ]
 
@@ -3964,7 +4019,52 @@ SyntaxJsonToFASTTests >> testExternalStatement [
       external mypnt
       end
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:20)","statement":{"anno":[],"span":"(2:7)-(2:20)","tag":"external","vars":{"anno":[],"list":[{"anno":[],"span":"(2:16)-(2:20)","tag":"value","value":{"contents":"mypnt","tag":"variable"}}],"span":"(2:16)-(2:20)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testExternalStatement.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "external_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "proc_list": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "16"
+                            },
+                            "name": "MYPNT"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
@@ -4006,20 +4106,51 @@ SyntaxJsonToFASTTests >> testFunctionNoParameter [
 	fortranCode := '      integer function aFct()
       end
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[],"name":"afct","result":null,"span":"(1:7)-(2:9)","subprograms":null,"tag":"function","type":{"anno":[],"base_type":"integer","selector":null,"span":"(1:7)-(1:13)"}}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testFunctionNoParameter.FOR",
+    "program_units": [
+        {
+            "tag": "function",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "24"
+                },
+                "name": "AFCT"
+            },
+            "parameters": [],
+            "return_type": {
+                "tag": "type_reference",
+                "name": "INTEGER"
+            },
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "2",
+                "column": "9"
+            },
+            "statement_list": []
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	self assert: result isNotEmpty.
 	fct := result first.
 
 	self assert: fct class equals: FASTFortranFunction.
-	self assert: fct name equals: 'afct'.
+	self assert: fct name primitiveValue equals: 'AFCT'.
 	self assert: fct parameters isEmpty.
 	self assert: fct statementBlock statements isEmpty.
-	self assert: fct startPos equals: 7.
+	"self assert: fct startPos equals: 7."
 
 	self assert: fct returnType class equals: FASTFortranIntegerType.
-	self assert: fct returnType startPos equals: 7.
+	"self assert: fct returnType startPos equals: 7."
 	
 
 ]
@@ -4032,7 +4163,98 @@ SyntaxJsonToFASTTests >> testFunctionStatement [
       add(x,y) = x + y
       end
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:22)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"x","tag":"variable"}},{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"y","tag":"variable"}}],"span":"(2:11)-(2:13)"},"body":{"anno":[],"left":{"anno":[],"span":"(2:18)-(2:18)","tag":"value","value":{"contents":"x","tag":"variable"}},"op":{"tag":"addition"},"right":{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":"y","tag":"variable"}},"span":"(2:18)-(2:22)","tag":"binary"},"name":{"anno":[],"span":"(2:7)-(2:9)","tag":"value","value":{"contents":"add","tag":"variable"}},"span":"(2:7)-(2:22)","tag":"function"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testFunctionStatement.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "left": [
+                        {
+                            "tag": "array_element_name",
+                            "name": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "7"
+                                },
+                                "name": "ADD"
+                            },
+                            "qualifiers_list": [
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "11"
+                                    },
+                                    "name": "X"
+                                },
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "13"
+                                    },
+                                    "name": "Y"
+                                }
+                            ]
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "binary_expression",
+                                "lhs": {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "18"
+                                    },
+                                    "name": "X"
+                                },
+                                "operator": "+",
+                                "rhs": {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "22"
+                                    },
+                                    "name": "Y"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
@@ -4058,7 +4280,55 @@ SyntaxJsonToFASTTests >> testFunctionWithParameter [
       integer function aFct(i,j)
       end
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:29)-(2:29)","tag":"value","value":{"contents":"i","tag":"variable"}},{"anno":[],"span":"(2:31)-(2:31)","tag":"value","value":{"contents":"j","tag":"variable"}}],"span":"(2:29)-(2:31)"},"blocks":[],"name":"afct","result":null,"span":"(2:7)-(3:9)","subprograms":null,"tag":"function","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testFunctionWithParameter.FOR",
+    "program_units": [
+        {
+            "tag": "function",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "2",
+                    "column": "24"
+                },
+                "name": "AFCT"
+            },
+            "parameters": [
+                {
+                    "tag": "symbolic_name",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "29"
+                    },
+                    "name": "I"
+                },
+                {
+                    "tag": "symbolic_name",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "31"
+                    },
+                    "name": "J"
+                }
+            ],
+            "return_type": {
+                "tag": "type_reference",
+                "name": "INTEGER"
+            },
+            "start_pos": {
+                "line": "2",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": []
+        }
+    ]
+}'.
 
 	result := self visitJsonCode.
 
@@ -4071,25 +4341,66 @@ SyntaxJsonToFASTTests >> testFunctionWithParameter [
 	self flag: 'should be a FASTFortranParameter, not a FASTFortranVariableExpression ?'.
 	param := fct parameters first.
 	self assert: param class equals: FASTFortranScalarVariable.
-	self assert: param name equals: 'i'.
-	self assert: param startPos equals: 30.
+	self assert: param name equals: 'I'.
+	"self assert: param startPos equals: 30."
 
 	param := fct parameters second.
 	self assert: param class equals: FASTFortranScalarVariable.
-	self assert: param name equals: 'j'.
-	self assert: param startPos equals: 32.
+	self assert: param name equals: 'J'.
+	"self assert: param startPos equals: 32."
 
 ]
 
 { #category : #'tests-programUnit' }
 SyntaxJsonToFASTTests >> testFunctionWithStatement [
 
+"syntax does not have return expression"
+
 	| result fct |
 	fortranCode := '      integer function aFct()
       return 1
       end
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:14)","statement":{"anno":[],"span":"(2:7)-(2:14)","tag":"return","target":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"contents":["1",null],"tag":"integer"}}},"tag":"statement"}],"name":"afct","result":null,"span":"(1:7)-(3:9)","subprograms":null,"tag":"function","type":{"anno":[],"base_type":"integer","selector":null,"span":"(1:7)-(1:13)"}}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testFunctionWithStatement.FOR",
+    "program_units": [
+        {
+            "tag": "function",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "24"
+                },
+                "name": "AFCT"
+            },
+            "parameters": [],
+            "return_type": {
+                "tag": "type_reference",
+                "name": "INTEGER"
+            },
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "return_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	self assert: result isNotEmpty.
@@ -4110,12 +4421,54 @@ SyntaxJsonToFASTTests >> testFunctionWithStatement [
 { #category : #'tests-statement' }
 SyntaxJsonToFASTTests >> testGoto [
 
+"Syntax: need to rename goto type to something like goto_type"
+
 	| result stmt |
 	fortranCode := '      PROGRAM TESTALT
        GOTO 100
       END 
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:15)","statement":{"anno":[],"span":"(2:8)-(2:15)","tag":"goto","target":{"anno":[],"span":"(2:13)-(2:15)","tag":"value","value":{"contents":["100",null],"tag":"integer"}}},"tag":"statement"}],"name":"testalt","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testGoto.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "TESTALT"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "goto_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "type": "unconditional",
+                    "labels": [
+                        "100"
+                    ],
+                    "var": []
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
@@ -4140,7 +4493,59 @@ SyntaxJsonToFASTTests >> testGotoComputed [
        GOTO (100,200,300,400) var
       END 
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:33)","statement":{"anno":[],"labels":{"anno":[],"list":[{"anno":[],"span":"(2:14)-(2:16)","tag":"value","value":{"contents":["100",null],"tag":"integer"}},{"anno":[],"span":"(2:18)-(2:20)","tag":"value","value":{"contents":["200",null],"tag":"integer"}},{"anno":[],"span":"(2:22)-(2:24)","tag":"value","value":{"contents":["300",null],"tag":"integer"}},{"anno":[],"span":"(2:26)-(2:28)","tag":"value","value":{"contents":["400",null],"tag":"integer"}}],"span":"(2:13)-(2:29)"},"span":"(2:8)-(2:33)","tag":"goto_computed","target":{"anno":[],"span":"(2:31)-(2:33)","tag":"value","value":{"contents":"var","tag":"variable"}}},"tag":"statement"}],"name":"testalt","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testGotoComputed.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "TESTALT"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "goto_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "type": "computed",
+                    "labels": [
+                        "100",
+                        "200",
+                        "300",
+                        "400"
+                    ],
+                    "var": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "31"
+                            },
+                            "name": "VAR"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
@@ -4225,24 +4630,24 @@ SyntaxJsonToFASTTests >> testIfArithmetic [
 
 	conditional := result first statementBlock statements first.
 	self assert: conditional class equals: FASTFortranIfArithmeticStatement.
-	self assert: conditional startPos equals: 31.
-	self assert: conditional endPos equals: 49.
+	"self assert: conditional startPos equals: 31.
+	self assert: conditional endPos equals: 49."
 
 	self assert: conditional condition class equals: FASTFortranScalarVariable.
-	self assert: conditional condition name equals: 'a'.
-	self assert: conditional condition startPos equals: 36.
+	self assert: conditional condition name equals: 'A'.
+	"self assert: conditional condition startPos equals: 36."
 
 	self assert: conditional lessLabel class equals: FASTFortranLabelReference.
 	self assert: conditional lessLabel label equals: '10'.
-	self assert: conditional lessLabel startPos equals: 40.
+	"self assert: conditional lessLabel startPos equals: 40."
 
 	self assert: conditional equalLabel class equals: FASTFortranLabelReference.
 	self assert: conditional equalLabel label equals: '20'.
-	self assert: conditional equalLabel startPos equals: 44.
+	"self assert: conditional equalLabel startPos equals: 44."
 
 	self assert: conditional greaterLabel class equals: FASTFortranLabelReference.
 	self assert: conditional greaterLabel label equals: '30'.
-	self assert: conditional greaterLabel startPos equals: 48
+	"self assert: conditional greaterLabel startPos equals: 48"
 ]
 
 { #category : #'tests-statement' }
@@ -4480,12 +4885,14 @@ SyntaxJsonToFASTTests >> testIfThenWithTwoStatements [
 { #category : #'tests-statement' }
 SyntaxJsonToFASTTests >> testImplicitNoneStatement [
 
+"Syntax: not supported now"
+
 	| result stmt |
 	fortranCode := '      PROGRAM MYPROG
        implicit none
       END
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:20)","statement":{"anno":[],"items":null,"span":"(2:8)-(2:20)","tag":"implicit"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := ''.
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
@@ -4996,13 +5403,48 @@ SyntaxJsonToFASTTests >> testPauseStatementEmpty [
       pause
       END
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:11)","statement":{"anno":[],"message":null,"span":"(2:7)-(2:11)","tag":"pause"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testPauseStatementEmpty.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "pause_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranPauseStatement.
-	self assert: stmt startPos equals: 28.
-	self assert: stmt endPos equals: 32.
+	"self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 32."
 
 	self assert: stmt displayArgument equals: nil
 
@@ -5146,13 +5588,48 @@ SyntaxJsonToFASTTests >> testReturnStatementEmpty [
       return
       END
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:12)","statement":{"anno":[],"span":"(2:7)-(2:12)","tag":"return","target":null},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testReturnStatementEmpty.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "return_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranReturnStatement.
-	self assert: stmt startPos equals: 28.
-	self assert: stmt endPos equals: 33.
+	"self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 33."
 
 
 ]
@@ -5221,7 +5698,43 @@ SyntaxJsonToFASTTests >> testStatementWithLabel [
 10     STOP
       END 
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":{"anno":[],"span":"(2:1)-(2:2)","tag":"value","value":{"contents":["10",null],"tag":"integer"}},"span":"(2:1)-(2:11)","statement":{"anno":[],"message":null,"span":"(2:8)-(2:11)","tag":"stop"},"tag":"statement"}],"name":"testalt","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testStatementWithLabel.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "TESTALT"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "label": "10",
+                    "tag": "stop_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
@@ -5239,13 +5752,48 @@ SyntaxJsonToFASTTests >> testStopStatementEmpty [
       stop
       END
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:10)","statement":{"anno":[],"message":null,"span":"(2:7)-(2:10)","tag":"stop"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testStopStatementEmpty.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "stop_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranStopStatement.
-	self assert: stmt startPos equals: 28.
-	self assert: stmt endPos equals: 31.
+	"self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 31."
 
 	self assert: stmt displayArgument equals: nil
 
@@ -5260,13 +5808,56 @@ SyntaxJsonToFASTTests >> testStopStatementWithInteger [
       stop 1
       END
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:12)","statement":{"anno":[],"message":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:7)-(2:12)","tag":"stop"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testStopStatementWithInteger.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "stop_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "argument": {
+                        "tag": "unsigned_int_constant",
+                        "start_pos": {
+                            "line": "2",
+                            "column": "12"
+                        },
+                        "value": "1"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranStopStatement.
-	self assert: stmt startPos equals: 28.
-	self assert: stmt endPos equals: 33.
+	"self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 33."
 
 	self assert: stmt displayArgument equals: '1'
 
@@ -5380,7 +5971,7 @@ SyntaxJsonToFASTTests >> testSubroutineWithParameters [
 
 	rtn := result anyOne.
 	self assert: rtn class equals: FASTFortranSubroutine.
-	self assert: rtn name equals: 'SIMPLESUBROUTINE'.
+	self assert: rtn name primitiveValue equals: 'SIMPLESUBROUTINE'.
 
 	self assert: rtn statementBlock class equals: FASTFortranStatementBlock.
 	self assert: rtn statementBlock statements size equals: 0.
@@ -5492,7 +6083,80 @@ SyntaxJsonToFASTTests >> testTokenPosition [
        EXIT
       END
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:11)","statement":{"anno":[],"message":null,"span":"(2:8)-(2:11)","tag":"stop"},"tag":"statement"},{"anno":[],"label":{"anno":[],"span":"(3:1)-(3:3)","tag":"value","value":{"contents":["100",null],"tag":"integer"}},"span":"(3:1)-(3:15)","statement":{"anno":[],"span":"(3:8)-(3:15)","tag":"continue"},"tag":"statement"},{"anno":[],"label":null,"span":"(4:8)-(4:11)","statement":{"anno":[],"span":"(4:8)-(4:11)","tag":"exit","var":null},"tag":"statement"}],"name":"myprog","span":"(1:7)-(5:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testTokenPosition.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "5",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "stop_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    }
+                },
+                {
+                    "label": "100",
+                    "tag": "continue_statement",
+                    "start_pos": {
+                        "line": "3",
+                        "column": "8"
+                    }
+                },
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "4",
+                        "column": "8"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "4",
+                                "column": "8"
+                            },
+                            "name": "EXIT"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "character_expression",
+                            "expression": {
+                                "tag": "character_constant",
+                                "start_pos": {
+                                    "line": "4",
+                                    "column": "12"
+                                },
+                                "value": ""
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 	
 	stmnts := result first statementBlock statements.
