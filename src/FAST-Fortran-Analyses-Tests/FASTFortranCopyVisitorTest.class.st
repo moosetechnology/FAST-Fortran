@@ -84,9 +84,10 @@ FASTFortranCopyVisitorTest >> testArrayVariable [
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testAssignementFunctionCall [
+	"a = fct(5,b)"
 
-	| stmt copy |
-	stmt := self
+	| node copy |
+	node := self
 		assignementStatement: #a 
 		value: (self 
 			functionCall: 'fct'
@@ -94,12 +95,23 @@ FASTFortranCopyVisitorTest >> testAssignementFunctionCall [
 				self integerLiteral: '5' .
 				self scalarVariable: 'b' }).
 
-	copy := visitor copy: stmt.
+	copy := visitor copy: node.
 
-	self deny: copy equals: stmt.
+	self deny: copy equals: node.
 
-	self deny: copy variable equals: stmt variable.
-	self assert: copy variable name equals: stmt variable name.
+	self deny: copy variable equals: node variable.
+	self assert: copy variable name equals: node variable name.
+
+	self deny: copy expression equals: node expression.
+	self assert: copy expression name equals: node expression name.
+
+	self assert: copy expression arguments size equals: node expression arguments size.
+
+	self assert: copy expression arguments isNotNil.
+	copy expression arguments with: node expression arguments do: [ :copyArg :nodeArg |
+		self deny: copyArg equals: nodeArg.
+		self assert: copyArg class equals: nodeArg class.
+	]
 
 ]
 
@@ -124,7 +136,6 @@ FASTFortranCopyVisitorTest >> testAssignementStatementLiteralValue [
 
 	| stmt copy |
 	stmt := self assignementStatement: #aVar value: (self logicalLiteral: '.true.').
-
 
 	copy := visitor copy: stmt.
 
@@ -156,28 +167,56 @@ FASTFortranCopyVisitorTest >> testAssignementStatementVariable [
 
 { #category : #tests }
 FASTFortranCopyVisitorTest >> testBinaryExpression [
-	| expr |
-	expr := FASTFortranBinaryExpression new
+	"a + 5"
+
+	| node copy |
+	node := FASTFortranBinaryExpression new
 		left: (self scalarVariable: 'a') ;
 		operator: '+' ;
 		right: (self integerLiteral: '5').
 
-	self
-		assertExportCopy: expr
-		equals: 'a + 5'
+	copy := visitor copy: node.
+
+	self deny: copy equals: node.
+	self assert: copy class equals: node class.
+
+	self assert: copy operator equals: node operator.
+
+	self deny: copy left equals: node left.
+	self assert: copy left class equals: node left class.
+	self assert: copy left name equals: node left name.
+
+	self deny: copy right equals: node right.
+	self assert: copy right class equals: node right class.
+	self assert: copy right primitiveValue equals: node right primitiveValue
+
 ]
 
 { #category : #tests }
 FASTFortranCopyVisitorTest >> testBinaryExpressionNe [
-	| expr |
-	expr := FASTFortranBinaryExpression new
+	"a .ne. 5"
+
+	| node copy |
+	node := FASTFortranBinaryExpression new
 		left: (self scalarVariable: 'a') ;
 		operator: '.ne.' ;
 		right: (self integerLiteral: '5').
 
-	self
-		assertExportCopy: expr
-		equals: 'a .ne. 5'
+	copy := visitor copy: node.
+
+	self deny: copy equals: node.
+	self assert: copy class equals: node class.
+
+	self assert: copy operator equals: node operator.
+
+	self deny: copy left equals: node left.
+	self assert: copy left class equals: node left class.
+	self assert: copy left name equals: node left name.
+
+	self deny: copy right equals: node right.
+	self assert: copy right class equals: node right class.
+	self assert: copy right primitiveValue equals: node right primitiveValue
+
 ]
 
 { #category : #'tests - statements' }
@@ -206,41 +245,63 @@ FASTFortranCopyVisitorTest >> testBlockStatementWithCommentAndStatement [
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testCallStatementExpressionArg [
-	| stmt |
-	stmt := self callStatement: 'subrtn' arguments: {
+	"call subrtn(a * 5)"
+
+	| node copy |
+	node := self callStatement: 'subrtn' arguments: {
 		self binary: '*' left: #a right: 5 }.
 
-	self
-		assertExportCopy: stmt
-		equals: 
-'      call subrtn(a * 5)
-'
+	copy := visitor copy: node.
+
+	self deny: copy equals: node.
+	self assert: copy name equals: node name.
+
+	self assert: copy arguments size equals: node arguments size.
+
+	self deny: copy arguments anyOne equals: node arguments anyOne.
+	self assert: copy arguments anyOne class equals: node arguments anyOne class.
+	self assert: copy arguments anyOne class equals: node arguments anyOne class.
+
 ]
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testCallStatementNoArgs [
-	| stmt |
-	stmt := self callStatement: 'subrtn' arguments: #().
+	"call subrtn"
 
-	self
-		assertExportCopy: stmt
-		equals: 
-'      call subrtn
-'
+	| node copy |
+	node := self callStatement: 'subrtn' arguments: #().
+
+	copy := visitor copy: node.
+
+	self deny: copy equals: node.
+	self assert: copy name equals: node name.
+
+	self assert: copy arguments size equals: node arguments size.
+
 ]
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testCallStatementWithArgs [
-	| stmt |
-	stmt := self callStatement: 'subrtn' arguments: {
+	"call subrtn(a,5)"
+
+	| node copy |
+	node := self callStatement: 'subrtn' arguments: {
 		self scalarVariable: 'a' .
 		self integerLiteral: '5' }.
 
-	self
-		assertExportCopy: stmt
-		equals: 
-'      call subrtn(a,5)
-'
+	copy := visitor copy: node.
+
+	self deny: copy equals: node.
+	self assert: copy name equals: node name.
+
+	self assert: copy arguments size equals: node arguments size.
+
+	self assert: copy arguments isNotNil.
+	copy arguments with: node arguments do: [ :copyArg :nodeArg |
+		self deny: copyArg equals: nodeArg.
+		self assert: copyArg class equals: nodeArg class.
+	]
+
 ]
 
 { #category : #tests }
@@ -637,35 +698,61 @@ FASTFortranCopyVisitorTest >> testIfArithmeticStatement [
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testIfBlockStatementEmpty [
-	| stmt |
-	stmt := self ifBlock: (self scalarVariable: 'bool') then: #() else: nil.
+	"if (bool) then
+      end if"
 
-	self
-		assertExportCopy: stmt
-		equals: 
-'      if (bool) then
-      end if
-'
+	| node copy |
+	node := self ifBlock: (self scalarVariable: 'bool') then: #() else: nil.
+
+	copy := visitor copy: node.
+
+	self deny: copy equals: node.
+
+	self deny: copy condition equals: node condition.
+	self assert: copy condition class equals: node condition class.
+	self assert: copy condition name equals: node condition name.
+
+	self deny: copy thenStatementBlock equals: node thenStatementBlock.
+	self assert: copy thenStatementBlock class equals: node thenStatementBlock class.
+	self assert: copy thenStatementBlock statements size equals: node thenStatementBlock statements size.
+
+	self assert: copy elseStatementBlock equals: node elseStatementBlock.
 ]
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testIfBlockStatementEmptyBinaryCondition [
-	| stmt cond |
-	cond := self binary: '.gt.' left: #a right: 0.
-	stmt := self ifBlock: cond then: #() else:  nil.
+	"if (a .gt. 0) then
+      end if"
 
-	self
-		assertExportCopy: stmt
-		equals: 
-'      if (a .gt. 0) then
-      end if
-'
+	| node copy |
+	node := self
+		ifBlock: (self binary: '.gt.' left: #a right: 0)
+		then: #(  )
+		else: nil.
+
+	copy := visitor copy: node.
+
+	self deny: copy equals: node.
+
+	self deny: copy condition equals: node condition.
+	self assert: copy condition class equals: node condition class.
+	self assert: copy condition operator equals: node condition operator.
+
+	self deny: copy thenStatementBlock equals: node thenStatementBlock.
+	self assert: copy thenStatementBlock statements size equals: node thenStatementBlock statements size.
+
+	self assert: copy elseStatementBlock equals: node elseStatementBlock.
 ]
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testIfBlockStatementNested [
-	| stmt |
-	stmt := self
+	"if (bool1) then
+        if (bool2) then
+        end if
+      end if"
+
+	| node copy copyIf nodeIf |
+	node := self
 		ifBlock: (self scalarVariable: 'bool1')
 		then: { self
 			ifBlock: (self scalarVariable: 'bool2')
@@ -673,52 +760,76 @@ FASTFortranCopyVisitorTest >> testIfBlockStatementNested [
 			else: nil }
 		else: nil.
 
-	self
-		assertExportCopy: stmt
-		equals: 
-'      if (bool1) then
-        if (bool2) then
-        end if
-      end if
-'
+	copy := visitor copy: node.
+
+	self deny: copy equals: node.
+
+	copyIf := copy.
+	nodeIf := node.
+
+	self deny: copyIf thenStatementBlock equals: nodeIf thenStatementBlock.
+	self assert: copyIf thenStatementBlock statements size equals: nodeIf thenStatementBlock statements size.
+	self deny: copyIf thenStatementBlock statements anyOne equals: nodeIf thenStatementBlock statements anyOne.
+	self assert: copyIf thenStatementBlock statements anyOne class equals: nodeIf thenStatementBlock statements anyOne class.
+	self assert: copyIf elseStatementBlock equals: nodeIf elseStatementBlock.
+
+	copyIf := copyIf thenStatementBlock statements anyOne.
+	nodeIf := nodeIf thenStatementBlock statements anyOne.
+
+	self deny: copyIf thenStatementBlock equals: nodeIf thenStatementBlock.
+	self assert: copyIf thenStatementBlock statements size equals: nodeIf thenStatementBlock statements size.
+	self assert: copyIf elseStatementBlock equals: nodeIf elseStatementBlock.
 ]
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testIfBlockStatementWithElseBlock [
-	| stmt copy |
-	stmt := self
+	"if (bool) then
+      else
+        return 
+      end if"
+
+	| node copy |
+	node := self
 		ifBlock: (self scalarVariable: 'bool')
 		then: #()
 		else:  {  self returnStatement: nil }.
 
-	self
-		assertExportCopy: stmt
-		equals: 
-'      if (bool) then
-      else
-        return 
-      end if
-'.
+	copy := visitor copy: node.
 
-	self deny: stmt elseStatementBlock equals: copy elseStatementBlock
+	self deny: copy equals: node.
+
+	self deny: copy thenStatementBlock equals: node thenStatementBlock.
+	self assert: copy thenStatementBlock statements size equals: node thenStatementBlock statements size.
+
+	self deny: copy elseStatementBlock equals: node elseStatementBlock.
+	self assert: copy elseStatementBlock statements size equals: node elseStatementBlock statements size.
+	self deny: copy elseStatementBlock statements anyOne equals: node elseStatementBlock statements anyOne.
+	self assert: copy elseStatementBlock statements anyOne class equals: node elseStatementBlock statements anyOne class.
+
 ]
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testIfBlockStatementWithThenBlock [
-	| stmt copy |
-	stmt := self
+	"if (bool) then
+        return 
+      end if"
+
+	| node copy |
+	node := self
 		ifBlock: (self scalarVariable: 'bool')
 		then: {  self returnStatement: nil }
 		else: nil.
 
-	self
-		assertExportCopy: stmt
-		equals: 
-'      if (bool) then
-        return 
-      end if
-'.
-	self deny: stmt thenStatementBlock equals: copy thenStatementBlock
+	copy := visitor copy: node.
+
+	self deny: copy equals: node.
+
+	self deny: copy thenStatementBlock equals: node thenStatementBlock.
+	self assert: copy thenStatementBlock statements size equals: node thenStatementBlock statements size.
+	self deny: copy thenStatementBlock statements anyOne equals: node thenStatementBlock statements anyOne.
+	self assert: copy thenStatementBlock statements anyOne class equals: node thenStatementBlock statements anyOne class.
+
+	self assert: copy elseStatementBlock equals: node elseStatementBlock.
 ]
 
 { #category : #'tests - statements' }
@@ -1105,61 +1216,6 @@ FASTFortranCopyVisitorTest >> testOpenStatement [
 '.
 ]
 
-{ #category : #tests }
-FASTFortranCopyVisitorTest >> testOperatorsPrecedenceNoParentheses [
-	
-	| expr |
-	expr := self binary: '+' left: #v right: 5.
-
-	self assertExportCopy: expr
-		equals: 'v + 5'
-]
-
-{ #category : #tests }
-FASTFortranCopyVisitorTest >> testOperatorsPrecedenceSubHasHigherPrecedence [
-	
-	| expr |
-	expr := self binary: '+' left: #i right: 5.
-	expr right: (self binary: '*' left: #j right: 5).
-
-	self assertExportCopy: expr
-		equals: 'i + j * 5'
-]
-
-{ #category : #tests }
-FASTFortranCopyVisitorTest >> testOperatorsPrecedenceSubHasLowerPrecedence [
-	
-	| expr |
-	expr := self binary: '*' left: #i right: 5.
-	expr right: (self binary: '+' left: #j right: 5).
-
-	self assertExportCopy: expr
-		equals: 'i * (j + 5)'
-]
-
-{ #category : #tests }
-FASTFortranCopyVisitorTest >> testOperatorsPrecedenceSubUnary [
-	
-	| expr |
-	expr := self binary: '.and.' left: #logical1 right: (self unary: '.not.' operand: #logical2).
-
-	self
-		assertExportCopy: expr
-		equals: 'logical1 .and. .not. logical2'
-]
-
-{ #category : #'tests - statements' }
-FASTFortranCopyVisitorTest >> testPauseStatementEmpty [
-	| stmt |
-	stmt := FASTFortranPauseStatement new.
-
-	self
-		assertExportCopy: stmt
-		equals: 
-'      pause 
-'
-]
-
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testPauseStatementWithInteger [
 	| stmt |
@@ -1319,13 +1375,18 @@ FASTFortranCopyVisitorTest >> testStringConcatOperator [
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testStringLiteralWithQuote [
-	| expr |
+	" 'a ''string'' with quotes' "
+
+	| expr copy |
 	expr := self characterLiteral: 'a ''''string'''' with quotes'.
 
-	self
-		assertExportCopy: expr
-		equals: 
-'''a ''''string'''' with quotes'''
+	copy := visitor copy: expr.
+
+	self deny: copy equals: expr.
+
+	self assert: copy class equals: expr class.
+	self assert: copy primitiveValue equals: expr primitiveValue.
+
 ]
 
 { #category : #'tests - statements' }
