@@ -990,7 +990,7 @@ FASTFortranExporterVisitorTest >> testOpenStatement [
 '.
 ]
 
-{ #category : #tests }
+{ #category : #'tests - operator precedence' }
 FASTFortranExporterVisitorTest >> testOperatorsPrecedenceNoParentheses [
 	
 	| expr |
@@ -1000,7 +1000,7 @@ FASTFortranExporterVisitorTest >> testOperatorsPrecedenceNoParentheses [
 		equals: 'v + 5'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - operator precedence' }
 FASTFortranExporterVisitorTest >> testOperatorsPrecedenceSubHasHigherPrecedence [
 	
 	| expr |
@@ -1011,7 +1011,7 @@ FASTFortranExporterVisitorTest >> testOperatorsPrecedenceSubHasHigherPrecedence 
 		equals: 'i + j * 5'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - operator precedence' }
 FASTFortranExporterVisitorTest >> testOperatorsPrecedenceSubHasLowerPrecedence [
 	
 	| expr |
@@ -1022,7 +1022,7 @@ FASTFortranExporterVisitorTest >> testOperatorsPrecedenceSubHasLowerPrecedence [
 		equals: 'i * (j + 5)'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - operator precedence' }
 FASTFortranExporterVisitorTest >> testOperatorsPrecedenceSubUnary [
 	
 	| expr |
