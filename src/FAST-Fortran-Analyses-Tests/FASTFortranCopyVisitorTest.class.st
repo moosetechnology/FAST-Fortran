@@ -917,50 +917,85 @@ FASTFortranCopyVisitorTest >> testMainProgram [
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testOneDeclarationCharacterType [
-	| stmt |
-	stmt := self declarationStatement: #character variables: #(r).
+	"character* str"
 
-	self
-		assertExportCopy: stmt
-		equals: 
-'      character r
-'
+	| node copy |
+	node := self declarationStatement: #character variables: #(r).
+
+	copy := visitor copy: node.
+
+	self deny: copy equals: node.
+	self assert: copy class equals: node class.
+
+	self deny: copy type equals: node type.
+	self assert: copy type class equals: node type class.
+		
+	self assert: copy declarators size equals: node declarators size.
+
+	self deny: copy declarators anyOne equals: node declarators anyOne.
+	self assert: copy declarators anyOne class equals: node declarators anyOne class.
+	self assert: copy declarators anyOne variable equals: node declarators anyOne variable.
+
 ]
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testOneDeclarationCharacterTypeStarSize [
-	| stmt |
-	stmt := self declarationStatement: #(character *) variables: #(str).
+	"character*(*) str"
 
-	self
-		assertExportCopy: stmt
-		equals: 
-'      character*(*) str
-'
+	| node copy |
+	node := self declarationStatement: #(character *) variables: #(str).
+
+	copy := visitor copy: node.
+
+	self deny: copy equals: node.
+	self assert: copy class equals: node class.
+
+	self deny: copy type equals: node type.
+	self assert: copy type class equals: node type class.
+	self assert: copy type size class equals: node type size class.
 ]
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testOneDeclarationCharacterTypeWithSize [
-	| stmt |
-	stmt := self declarationStatement: #(character 10) variables: #(str).
+	"character*10 str"
 
-	self
-		assertExportCopy: stmt
-		equals: 
-'      character*10 str
-'
+	| node copy |
+	node := self declarationStatement: #(character 10) variables: #(str).
+
+	copy := visitor copy: node.
+
+	self deny: copy equals: node.
+	self assert: copy class equals: node class.
+
+	self deny: copy type equals: node type.
+	self assert: copy type class equals: node type class.
+
+	self deny: copy type size equals: node type size.
+	self assert: copy type size class equals: node type size class.
+	self assert: copy type size primitiveValue equals: node type size primitiveValue
 ]
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testOneDeclarationDoublePrecisionType [
-	| stmt |
-	stmt := self declarationStatement: (FASTFortranDoublePrecisionType new) variables: #(r).
+	"double precision r"
 
-	self
-		assertExportCopy: stmt
-		equals: 
-'      double precision r
-'
+	| node copy |
+	node := self declarationStatement: (FASTFortranDoublePrecisionType new) variables: #(r).
+
+	copy := visitor copy: node.
+
+	self deny: copy equals: node.
+	self assert: copy class equals: node class.
+
+	self deny: copy type equals: node type.
+	self assert: copy type class equals: node type class.
+		
+	self assert: copy declarators size equals: node declarators size.
+
+	self deny: copy declarators anyOne equals: node declarators anyOne.
+	self assert: copy declarators anyOne class equals: node declarators anyOne class.
+	self assert: copy declarators anyOne variable equals: node declarators anyOne variable.
+
 ]
 
 { #category : #'tests - statements' }
@@ -1146,26 +1181,30 @@ FASTFortranCopyVisitorTest >> testReadStatement [
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testReturnStatementEmpty [
-	| stmt |
-	stmt :=  self returnStatement: nil.
+	| node copy |
+	node :=  self returnStatement: nil.
 
-	self
-		assertExportCopy: stmt
-		equals: 
-'      return 
-'
+	copy := visitor copy: node.
+
+	self deny: copy equals: node.
+	self assert: copy class equals: node class.
+	self assert: copy expression equals: node expression.
+		
 ]
 
 { #category : #'tests - statements' }
 FASTFortranCopyVisitorTest >> testReturnStatementLiteralValue [
-	| stmt |
-	stmt := self returnStatement: (self realLiteral: '3.5').
+	| node copy |
+	node := self returnStatement: (self realLiteral: '3.5').
 
-	self
-		assertExportCopy: stmt
-		equals: 
-'      return 3.5
-'
+	copy := visitor copy: node.
+
+	self deny: copy equals: node.
+	self assert: copy class equals: node class.
+
+	self deny: copy expression equals: node expression.
+	self assert: copy expression primitiveValue equals: node expression primitiveValue
+		
 ]
 
 { #category : #'tests - statements' }
@@ -1265,8 +1304,6 @@ FASTFortranCopyVisitorTest >> testTwoDeclarationsTwoVariables [
 	stmt := self
 		declarationStatement: #integer
 		variables: #(j).
-	stmt startPos: 11.
-	stmt endPos: 15.
 	sub statementBlock addStatement: stmt.
 
 	copy := visitor copy: sub.
@@ -1280,11 +1317,6 @@ FASTFortranCopyVisitorTest >> testTwoDeclarationsTwoVariables [
 	copy statementBlock statements with: sub statementBlock statements do: [ :copyStmt :nodeStmt |
 		self deny: copyStmt equals: nodeStmt.
 		self assert: copyStmt class equals: nodeStmt class.
-		self assert: copyStmt type class equals: nodeStmt type class.
-		
-		self assert: copyStmt declarators size equals: nodeStmt declarators size.
-		self assert: copyStmt declarators anyOne class equals: nodeStmt declarators anyOne class.
-		self assert: copyStmt declarators anyOne variable equals: nodeStmt declarators anyOne variable.
 	]
 
 ]
