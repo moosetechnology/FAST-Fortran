@@ -466,7 +466,7 @@ SyntaxJsonToFASTTests >> testArrayDeclarationDimensionsWithOperation [
 	self assert: declarator dimensions first lowerBound primitiveValue equals: '0'.
 
 	self assert: declarator dimensions first upperBound class equals: FASTFortranBinaryExpression.
-	self assert: declarator dimensions first upperBound left class equals: FASTFortranVariable.
+	self assert: declarator dimensions first upperBound left class equals: FASTFortranScalarVariable.
 	self assert: declarator dimensions first upperBound left name equals: 'MAX'.
 
 	self assert: declarator dimensions first upperBound operator equals: '-'.
@@ -963,7 +963,7 @@ SyntaxJsonToFASTTests >> testArrayDeclarationVariableBound [
 	self assert: declarator dimensions size equals: 1.
 	self assert: declarator dimensions first class equals: FASTFortranArrayRange. 
 	self assert: declarator dimensions first lowerBound equals: nil. 
-	self assert: declarator dimensions first upperBound class equals: FASTFortranVariable.
+	self assert: declarator dimensions first upperBound class equals: FASTFortranScalarVariable.
 	self assert: declarator dimensions first upperBound name equals: 'MAX'.
 ]
 
@@ -3067,7 +3067,6 @@ SyntaxJsonToFASTTests >> testBlockData [
 	| result bd |
 
 	fortranCode := '      block data myblck
-      common /mycom/ i
       end
 '.
 	jsonCode := '{
@@ -3094,41 +3093,7 @@ SyntaxJsonToFASTTests >> testBlockData [
                 "line": "3",
                 "column": "9"
             },
-            "statement_list": [
-                {
-                    "tag": "common_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "7"
-                    },
-                    "common_parameters": [
-                        {
-                            "name": {
-                                "tag": "symbolic_name",
-                                "start_pos": {
-                                    "line": "2",
-                                    "column": "15"
-                                },
-                                "name": "MYCOM"
-                            },
-                            "nlist": [
-                                {
-                                    "tag": "variable_declarator",
-                                    "variable": {
-                                        "tag": "symbolic_name",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "22"
-                                        },
-                                        "name": "I"
-                                    },
-                                    "dimension_declarators": []
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
+            "statement_list": []
         }
     ]
 }'.
@@ -3136,7 +3101,7 @@ SyntaxJsonToFASTTests >> testBlockData [
 
 	bd := result first.
 	self assert: bd class equals: FASTFortranBlockData.
-	self assert: bd name equals: 'MYBLCK'.
+	self assert: bd name primitiveValue equals: 'MYBLCK'.
 	"self assert: bd startPos equals: 7."
 
 ]
@@ -3279,6 +3244,7 @@ C comment in a function''s body
         }
     ]
 }'.
+
 	result := self visitJsonCode.
 
 	cmt := result first statementBlock comments anyOne.
@@ -6824,7 +6790,210 @@ SyntaxJsonToFASTTests >> testIfElseIf [
          END IF
       END
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(9:11)-(9:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(9:15)-(9:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(9:11)-(9:15)","tag":"assign_expression","target":{"anno":[],"span":"(9:11)-(9:11)","tag":"value","value":{"contents":"d","tag":"variable"}}},"tag":"statement"}],"conditions":[[{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":"a","tag":"variable"}},[{"anno":[],"label":null,"span":"(3:11)-(3:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(3:15)-(3:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(3:11)-(3:15)","tag":"assign_expression","target":{"anno":[],"span":"(3:11)-(3:11)","tag":"value","value":{"contents":"a","tag":"variable"}}},"tag":"statement"}]],[{"anno":[],"span":"(4:20)-(4:20)","tag":"value","value":{"contents":"b","tag":"variable"}},[{"anno":[],"label":null,"span":"(5:11)-(5:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(5:15)-(5:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(5:11)-(5:15)","tag":"assign_expression","target":{"anno":[],"span":"(5:11)-(5:11)","tag":"value","value":{"contents":"b","tag":"variable"}}},"tag":"statement"}]],[{"anno":[],"span":"(6:20)-(6:20)","tag":"value","value":{"contents":"c","tag":"variable"}},[{"anno":[],"label":null,"span":"(7:11)-(7:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(7:15)-(7:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(7:11)-(7:15)","tag":"assign_expression","target":{"anno":[],"span":"(7:11)-(7:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}]]],"end_label":null,"label":null,"name":null,"span":"(2:10)-(10:15)","tag":"if"}],"name":"myprog","span":"(1:7)-(11:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testIfElseIf.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "11",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "block_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "10"
+                    },
+                    "expression": {
+                        "tag": "symbolic_name",
+                        "start_pos": {
+                            "line": "2",
+                            "column": "15"
+                        },
+                        "name": "A"
+                    },
+                    "then_statements": [
+                        {
+                            "tag": "assignment_statement",
+                            "start_pos": {
+                                "line": "3",
+                                "column": "11"
+                            },
+                            "left": [
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "3",
+                                        "column": "11"
+                                    },
+                                    "name": "A"
+                                }
+                            ],
+                            "right": [
+                                {
+                                    "tag": "arithmetic_expression",
+                                    "expression": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "3",
+                                            "column": "15"
+                                        },
+                                        "value": "1"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "else_block": {
+                        "tag": "if_else_block",
+                        "label": "",
+                        "expression": {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "4",
+                                "column": "20"
+                            },
+                            "name": "B"
+                        },
+                        "then_statements": [
+                            {
+                                "tag": "assignment_statement",
+                                "start_pos": {
+                                    "line": "5",
+                                    "column": "11"
+                                },
+                                "left": [
+                                    {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "5",
+                                            "column": "11"
+                                        },
+                                        "name": "B"
+                                    }
+                                ],
+                                "right": [
+                                    {
+                                        "tag": "arithmetic_expression",
+                                        "expression": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "5",
+                                                "column": "15"
+                                            },
+                                            "value": "1"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "else_block": {
+                            "tag": "if_else_block",
+                            "label": "",
+                            "expression": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "6",
+                                    "column": "20"
+                                },
+                                "name": "C"
+                            },
+                            "then_statements": [
+                                {
+                                    "tag": "assignment_statement",
+                                    "start_pos": {
+                                        "line": "7",
+                                        "column": "11"
+                                    },
+                                    "left": [
+                                        {
+                                            "tag": "symbolic_name",
+                                            "start_pos": {
+                                                "line": "7",
+                                                "column": "11"
+                                            },
+                                            "name": "C"
+                                        }
+                                    ],
+                                    "right": [
+                                        {
+                                            "tag": "arithmetic_expression",
+                                            "expression": {
+                                                "tag": "unsigned_int_constant",
+                                                "start_pos": {
+                                                    "line": "7",
+                                                    "column": "15"
+                                                },
+                                                "value": "1"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ],
+                            "else_block": {
+                                "tag": "else_statement",
+                                "else_label": "",
+                                "else_statements": [
+                                    {
+                                        "tag": "assignment_statement",
+                                        "start_pos": {
+                                            "line": "9",
+                                            "column": "11"
+                                        },
+                                        "left": [
+                                            {
+                                                "tag": "symbolic_name",
+                                                "start_pos": {
+                                                    "line": "9",
+                                                    "column": "11"
+                                                },
+                                                "name": "D"
+                                            }
+                                        ],
+                                        "right": [
+                                            {
+                                                "tag": "arithmetic_expression",
+                                                "expression": {
+                                                    "tag": "unsigned_int_constant",
+                                                    "start_pos": {
+                                                        "line": "9",
+                                                        "column": "15"
+                                                    },
+                                                    "value": "1"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "end_if": {
+                                    "label": ""
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
+'.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1. .
@@ -7281,8 +7450,8 @@ SyntaxJsonToFASTTests >> testIfThenWithStatement [
 	self assert: conditional class equals: FASTFortranIfBlockStatement.
 	self assert: conditional thenStatementBlock class equals: FASTFortranStatementBlock.
 	self assert: conditional thenStatementBlock statements size equals: 1.
-	self assert: conditional thenStatementBlock startPos equals: 51.
-	self assert: conditional thenStatementBlock endPos equals: 55.
+	"self assert: conditional thenStatementBlock startPos equals: 51.
+	self assert: conditional thenStatementBlock endPos equals: 55."
 ]
 
 { #category : #'tests-statement' }

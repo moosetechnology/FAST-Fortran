@@ -10,9 +10,26 @@ Class {
 }
 
 { #category : #helpers }
+FASTFortranSyntaxJsonVisitor >> checkAndwrapToScalarVariable: aNode [
+
+	aNode = FASTFortranCharacterLiteral
+		ifTrue: [
+			^ (self newEntity: FASTFortranScalarVariable)
+				  name: aNode primitiveValue;
+				  yourself ]
+		ifFalse: [ ^ aNode ]
+]
+
+{ #category : #helpers }
 FASTFortranSyntaxJsonVisitor >> createPosition: start end: end [ 
 
 	^ { start . end }
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> generateKeys: aNode [
+	
+	^ aNode keys reject: [ :e | e = 'tag' ]
 ]
 
 { #category : #initialization }
@@ -170,6 +187,7 @@ FASTFortranSyntaxJsonVisitor >> visitBinaryExpression: aNode [
 	"rhs lhs operator"
 
 	| data |
+
 	data := super visitBinaryExpression: aNode.
 	^ (self newEntity: FASTFortranBinaryExpression)
 		  left: (data at: 'lhs');
@@ -180,13 +198,18 @@ FASTFortranSyntaxJsonVisitor >> visitBinaryExpression: aNode [
 
 { #category : #'as yet unclassified' }
 FASTFortranSyntaxJsonVisitor >> visitBlockData: aNode [
-			  		<generated>
-					"start_pos parameters end_pos statement_list name tag"
-					
-					| data |    
-					data := super visitBlockData:aNode.
-			      1 halt.
-					^ data
+	"start_pos parameters end_pos statement_list name tag"
+
+	| data |
+	data := super visitBlockData: aNode.
+
+	^ (self newEntity: FASTFortranBlockData)
+		  name: (data at: 'name');
+		  parameters: (data at: 'parameters');
+		  statementBlock: ((self newEntity: FASTFortranStatementBlock)
+				   statements: (data at: 'statement_list');
+				   yourself);
+		  yourself
 ]
 
 { #category : #'as yet unclassified' }
@@ -396,6 +419,13 @@ FASTFortranSyntaxJsonVisitor >> visitElseBlock: aNode [
 ]
 
 { #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitElseLabel: aNode [
+	"no keys in data"
+
+	^ super visitElseLabel: aNode
+]
+
+{ #category : #'as yet unclassified' }
 FASTFortranSyntaxJsonVisitor >> visitElseStatements: aNode [
 	"no keys in data"
 
@@ -602,9 +632,10 @@ FASTFortranSyntaxJsonVisitor >> visitLhs: aNode [
 	"start_pos tag value"
 
 	| data |
+
 	data := super visitLhs: aNode.
-	data isArray ifTrue: [ ^ data first ].
-	^ data
+	data isArray ifTrue: [ ^ self checkAndwrapToScalarVariable: data first ].
+	^ self checkAndwrapToScalarVariable: data
 ]
 
 { #category : #'as yet unclassified' }
@@ -813,9 +844,15 @@ FASTFortranSyntaxJsonVisitor >> visitProgramUnits: aNode [
 
 { #category : #'as yet unclassified' }
 FASTFortranSyntaxJsonVisitor >> visitQualifiersList: aNode [
-	"no keys in data"
+	"we wrap all character literals into a scalar variable since we know that they can represent only an integer expression and not an array variable"
 
-	^ super visitQualifiersList: aNode
+	^ (super visitQualifiersList: aNode) collect: [ :each |
+		  each class = FASTFortranCharacterLiteral
+			  ifTrue: [
+				  (self newEntity: FASTFortranScalarVariable)
+					  name: each primitiveValue;
+					  yourself ]
+			  ifFalse: [ each ] ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -873,8 +910,9 @@ FASTFortranSyntaxJsonVisitor >> visitRhs: aNode [
 
 	| data |
 	data := super visitRhs: aNode.
-	data isArray ifTrue: [ ^ data first ].
-	^ data
+	data isArray ifTrue: [
+		^ self checkAndwrapToScalarVariable: data first ].
+	^ self checkAndwrapToScalarVariable: data
 ]
 
 { #category : #'as yet unclassified' }
