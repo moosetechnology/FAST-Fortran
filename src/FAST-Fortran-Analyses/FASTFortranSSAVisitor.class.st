@@ -4,10 +4,21 @@ Class {
 	#category : #'FAST-Fortran-Analyses-SSA'
 }
 
-{ #category : #private }
-FASTFortranSSAVisitor >> currentVariableVersion: aFASTFortranVariable [
+{ #category : #visiting }
+FASTFortranSSAVisitor class >> visit: anAST [
 
-	^aFASTFortranVariable
+	^self new
+		visit: anAST 
+]
+
+{ #category : #api }
+FASTFortranSSAVisitor >> visit: anAST [
+
+	| copy |
+	copy := FASTFortranCopyVisitor visit: anAST.
+	copy accept: FASTFortranLocalResolverVisitor new.
+	copy accept: self.
+	^copy
 ]
 
 { #category : #'visiting - expressions' }
@@ -17,16 +28,17 @@ FASTFortranSSAVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariabl
 ]
 
 { #category : #'visiting - statements' }
+FASTFortranSSAVisitor >> visitFASTFortranAssignmentStatement: aFASTFortranAssignmentStatement [
+
+	aFASTFortranAssignmentStatement variable newVersion.
+	aFASTFortranAssignmentStatement expression accept: self.
+]
+
+{ #category : #'visiting - statements' }
 FASTFortranSSAVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
 
 	^super visitFASTFortranDoStatement: aFASTFortranDoStatement
 
-]
-
-{ #category : #visiting }
-FASTFortranSSAVisitor >> visitFASTFortranEntity: aFASTFortranEntity [
-
-	^aFASTFortranEntity copy
 ]
 
 { #category : #'visiting - statements' }
@@ -50,15 +62,6 @@ FASTFortranSSAVisitor >> visitFASTFortranIfLogicalStatement: aFASTFortranIfLogic
 
 ]
 
-{ #category : #'visiting - programUnits' }
-FASTFortranSSAVisitor >> visitFASTFortranProgramUnit: aFASTFortranProgramUnit [
-
-	^aFASTFortranProgramUnit copy
-		parameters: (aFASTFortranProgramUnit parameters accept: self) ;
-		body: (aFASTFortranProgramUnit body accept: self) ;
-		yourself
-]
-
 { #category : #'visiting - expressions' }
 FASTFortranSSAVisitor >> visitFASTFortranScalarVariable: aFASTFortranScalarVariable [
 
@@ -66,14 +69,14 @@ FASTFortranSSAVisitor >> visitFASTFortranScalarVariable: aFASTFortranScalarVaria
 ]
 
 { #category : #'visiting - statements' }
-FASTFortranSSAVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatement [
+FASTFortranSSAVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBlock [
 
-	super visitFASTFortranStatementBlock: aFASTFortranStatement.
+	self visitFASTFortranTStatementBlock: aFASTFortranStatementBlock.
 
 ]
 
 { #category : #'visiting - expressions' }
 FASTFortranSSAVisitor >> visitFASTFortranVariable: aFASTFortranVariable [
 
-	^self currentVariableVersion: aFASTFortranVariable
+	aFASTFortranVariable activeVersion
 ]
