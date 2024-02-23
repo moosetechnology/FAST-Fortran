@@ -8,16 +8,16 @@ an abstract Fortran Variable, could be an array or a scalar
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `entryStatement` | `FASTFortranTEntryStatement` | `entryArguments` | `FASTFortranEntryStatement` | |
-| `parameterOwner` | `FASTFortranTVariableEntity` | `parameters` | `FASTFortranTWithParameters` | parameterOwner|
+| `parameterOwner` | `FASTTVariableEntity` | `parameters` | `FASTTWithParameters` | parameterOwner|
 | `parentFormatedStatement` | `FASTFortranTFormat` | `format` | `FASTFortranTWithFormat` | A format description in a Format/Print/Read/Write statement|
 | `parentIOStatement` | `FASTFortranTIOParameter` | `ioParameters` | `FASTFortranTWithIOParameters` | |
-| `parentImpliedExpression` | `FASTFortranTVariableEntity` | `variables` | `FASTFortranImpliedDoExpression` | |
+| `parentImpliedExpression` | `FASTTVariableEntity` | `variables` | `FASTFortranImpliedDoExpression` | |
 
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
-| `parentAssignmentExpression` | `FASTFortranTVariableEntity` | `variable` | `FASTFortranTAssignment` | Optional assignment to the variable|
+| `invokedIn` | `FASTTNamedEntity` | `invoked` | `FASTTInvocation` | Optional invocation where this name is used|
+| `parentAssignmentExpression` | `FASTTVariableEntity` | `variable` | `FASTTAssignment` | Optional assignment to the variable|
 | `parentVariableGroup` | `FASTFortranVariable` | `variables` | `FASTFortranTVariableGroup` | |
 
 
@@ -27,17 +27,15 @@ an abstract Fortran Variable, could be an array or a scalar
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
 | `name` | `String` | nil | |
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : #FASTFortranVariable,
 	#superclass : #FASTFortranAbstractExpression,
-	#traits : 'FASTFortranTEntryStatement + FASTFortranTFormat + FASTFortranTVariableEntity',
-	#classTraits : 'FASTFortranTEntryStatement classTrait + FASTFortranTFormat classTrait + FASTFortranTVariableEntity classTrait',
+	#traits : 'FASTFortranTEntryStatement + FASTFortranTFormat + FASTTVariableEntity',
+	#classTraits : 'FASTFortranTEntryStatement classTrait + FASTFortranTFormat classTrait + FASTTVariableEntity classTrait',
 	#instVars : [
 		'#parentVariableGroup => FMOne type: #FASTFortranTVariableGroup opposite: #variables'
 	],

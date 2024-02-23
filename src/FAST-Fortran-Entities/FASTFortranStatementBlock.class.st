@@ -7,22 +7,22 @@ Contains the block of Fortran statements
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `fastBehaviouralParent` | `FASTFortranTStatementBlock` | `statementBlock` | `FASTFortranTBehaviouralEntity` | Behavioural entity containing the statement block.|
-| `parentDoStatement` | `FASTFortranTStatementBlock` | `statementBlock` | `FASTFortranDoStatement` | Parent do statement|
-| `parentIfBlock` | `FASTFortranTStatementBlock` | `thenStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
-| `parentIfBlock` | `FASTFortranTStatementBlock` | `elseStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
-| `parentIfStatement` | `FASTFortranTStatement` | `statement` | `FASTFortranIfLogicalStatement` | Parent if statement|
-| `statementContainer` | `FASTFortranTStatement` | `statements` | `FASTFortranTStatementBlock` | Block containing this statement.|
+| `fastBehaviouralParent` | `FASTTStatementBlock` | `statementBlock` | `FASTTBehaviouralEntity` | Behavioural entity containing the statement block.|
+| `parentDoStatement` | `FASTTStatementBlock` | `statementBlock` | `FASTFortranDoStatement` | Parent do statement|
+| `parentIfBlock` | `FASTTStatementBlock` | `thenStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
+| `parentIfBlock` | `FASTTStatementBlock` | `elseStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
+| `parentIfStatement` | `FASTTStatement` | `statement` | `FASTFortranIfLogicalStatement` | Parent if statement|
+| `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `statements` | `FASTFortranTStatementBlock` | `statementContainer` | `FASTFortranTStatement` | Statements enclosed in this block|
+| `statements` | `FASTTStatementBlock` | `statementContainer` | `FASTTStatement` | Statements enclosed in this block|
 
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `comments` | `FASTFortranTWithComments` | `container` | `FASTFortranTComment` | list of comments defined in the entity|
+| `comments` | `FASTTWithComments` | `container` | `FASTTComment` | list of comments defined in the entity|
 
 
 ## Properties
@@ -31,17 +31,15 @@ Contains the block of Fortran statements
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
 | `label` | `String` | nil | Determines the statement label which consists of 1 to 5 digits, with at least one nonzero|
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : #FASTFortranStatementBlock,
 	#superclass : #FASTFortranEntity,
-	#traits : 'FASTFortranTStatementBlock + FASTFortranTWithComments',
-	#classTraits : 'FASTFortranTStatementBlock classTrait + FASTFortranTWithComments classTrait',
+	#traits : 'FASTTStatementBlock + FASTTWithComments',
+	#classTraits : 'FASTTStatementBlock classTrait + FASTTWithComments classTrait',
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 

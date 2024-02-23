@@ -7,35 +7,35 @@ I represent an array lower/upper bounds
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `argumentOwner` | `FASTFortranTExpression` | `arguments` | `FASTFortranTWithArguments` | my owner|
-| `assignementExpressionOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranFunctionStatement` | The AssignementExpression owner (if possible)|
-| `expressionStatementOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTExpressionStatement` | The expression statement that own me (if it's the case|
-| `parentArrayDimensionDeclarator` | `FASTFortranTExpression` | `lowerBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
-| `parentArrayDimensionDeclarator` | `FASTFortranTExpression` | `upperBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
-| `parentConditionalStatement` | `FASTFortranTExpression` | `condition` | `FASTFortranTConditionalStatement` | Parent conditional statement (if-block, if-logical, ...)|
-| `parentExpression` | `FASTFortranTExpression` | `expression` | `FASTFortranTUnaryExpression` | Parent expression (if possible)|
-| `parentExpressionLeft` | `FASTFortranTExpression` | `left` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am left side|
-| `parentExpressionRight` | `FASTFortranTExpression` | `right` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am right side|
-| `parentLoopControlIncrement` | `FASTFortranTExpression` | `increment` | `FASTFortranLoopControlExpression` | |
-| `parentLoopControlLimit` | `FASTFortranTExpression` | `limit` | `FASTFortranLoopControlExpression` | |
+| `argumentOwner` | `FASTTExpression` | `arguments` | `FASTTWithArguments` | my owner|
+| `assignementExpressionOwner` | `FASTTExpression` | `expression` | `FASTFortranFunctionStatement` | The AssignementExpression owner (if possible)|
+| `expressionStatementOwner` | `FASTTExpression` | `expression` | `FASTTExpressionStatement` | The expression statement that own me (if it's the case|
+| `parentArrayDimensionDeclarator` | `FASTTExpression` | `upperBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
+| `parentArrayDimensionDeclarator` | `FASTTExpression` | `lowerBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
+| `parentConditionalStatement` | `FASTTExpression` | `condition` | `FASTFortranTConditionalStatement` | Parent conditional statement (if-block, if-logical, ...)|
+| `parentExpression` | `FASTTExpression` | `expression` | `FASTTUnaryExpression` | Parent expression (if possible)|
+| `parentExpressionLeft` | `FASTTExpression` | `left` | `FASTTBinaryExpression` | Parent (binary) expression of which I am left side|
+| `parentExpressionRight` | `FASTTExpression` | `right` | `FASTTBinaryExpression` | Parent (binary) expression of which I am right side|
+| `parentLoopControlIncrement` | `FASTTExpression` | `increment` | `FASTFortranLoopControlExpression` | |
+| `parentLoopControlLimit` | `FASTTExpression` | `limit` | `FASTFortranLoopControlExpression` | |
 | `parentVariableDeclarator` | `FASTFortranArrayRange` | `dimensions` | `FASTFortranVariableDeclarator` | The variable declarator I am part of|
-| `returnOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTReturnStatement` | The return statement that own the expression (if it's the case)|
-| `variableDeclaratorOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTVariableDeclarator` | |
+| `returnOwner` | `FASTTExpression` | `expression` | `FASTTReturnStatement` | The return statement that own the expression (if it's the case)|
+| `variableDeclaratorOwner` | `FASTTExpression` | `expression` | `FASTFortranTVariableDeclarator` | |
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `lowerBound` | `FASTFortranArrayRange` | `parentArrayDimensionDeclarator` | `FASTFortranTExpression` | A lower bound of an array dimension|
-| `upperBound` | `FASTFortranArrayRange` | `parentArrayDimensionDeclarator` | `FASTFortranTExpression` | An upper bound of an array dimension|
+| `lowerBound` | `FASTFortranArrayRange` | `parentArrayDimensionDeclarator` | `FASTTExpression` | A lower bound of an array dimension|
+| `upperBound` | `FASTFortranArrayRange` | `parentArrayDimensionDeclarator` | `FASTTExpression` | An upper bound of an array dimension|
 
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `assignedIn` | `FASTFortranTExpression` | `expression` | `FASTFortranTAssignment` | Optional assignment where this expression is used|
-| `parentArrayExpression` | `FASTFortranTExpression` | `indices` | `FASTFortranArrayVariable` | an ArrayVariable expression of which I am an indice|
-| `parentDataStatement` | `FASTFortranTExpression` | `dataConstants` | `FASTFortranDataGroup` | |
-| `parentGotoAssignedStatement` | `FASTFortranTExpression` | `selectorExpression` | `FASTFortranGoToAssignedStatement` | |
-| `parentGotoComputedStatement` | `FASTFortranTExpression` | `selectorExpression` | `FASTFortranGoToComputedStatement` | |
+| `assignedIn` | `FASTTExpression` | `expression` | `FASTTAssignment` | Optional assignment where this expression is used|
+| `parentArrayExpression` | `FASTTExpression` | `indices` | `FASTFortranArrayVariable` | an ArrayVariable expression of which I am an indice|
+| `parentDataStatement` | `FASTTExpression` | `dataConstants` | `FASTFortranDataGroup` | |
+| `parentGotoAssignedStatement` | `FASTTExpression` | `selectorExpression` | `FASTFortranGoToAssignedStatement` | |
+| `parentGotoComputedStatement` | `FASTTExpression` | `selectorExpression` | `FASTFortranGoToComputedStatement` | |
 
 
 ## Properties
@@ -44,19 +44,15 @@ I represent an array lower/upper bounds
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : #FASTFortranArrayRange,
 	#superclass : #FASTFortranEntity,
-	#traits : 'FASTFortranTExpression',
-	#classTraits : 'FASTFortranTExpression classTrait',
+	#traits : 'FASTTExpression',
+	#classTraits : 'FASTTExpression classTrait',
 	#instVars : [
-		'#upperBound => FMOne type: #FASTFortranTExpression opposite: #parentArrayDimensionDeclarator',
-		'#lowerBound => FMOne type: #FASTFortranTExpression opposite: #parentArrayDimensionDeclarator',
 		'#parentVariableDeclarator => FMOne type: #FASTFortranVariableDeclarator opposite: #dimensions'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
@@ -73,18 +69,26 @@ FASTFortranArrayRange class >> annotation [
 
 { #category : #accessing }
 FASTFortranArrayRange >> lowerBound [
-	"Relation named: #lowerBound type: #FASTFortranTExpression opposite: #parentArrayDimensionDeclarator"
+	"Relation named: #lowerBound type: #FASTTExpression opposite: #parentArrayDimensionDeclarator"
 
 	<generated>
 	<FMComment: 'A lower bound of an array dimension'>
-	^ lowerBound
+	<FMProperty: #lowerBound type: #FASTTExpression opposite: #parentArrayDimensionDeclarator>
+	^ self attributeAt: #lowerBound ifAbsent: [ nil ]
 ]
 
 { #category : #accessing }
 FASTFortranArrayRange >> lowerBound: anObject [
 
 	<generated>
-	lowerBound := anObject
+	(self attributeAt: #lowerBound ifAbsentPut: [nil]) == anObject ifTrue: [ ^ anObject ].
+	anObject ifNil: [ | otherSide |
+		otherSide :=  self lowerBound.
+		self attributeAt: #lowerBound put: anObject.
+		otherSide parentArrayDimensionDeclarator: nil ]
+	ifNotNil: [ 
+		self attributeAt: #lowerBound put: anObject.
+		anObject parentArrayDimensionDeclarator: self ]
 ]
 
 { #category : #navigation }
@@ -120,18 +124,26 @@ FASTFortranArrayRange >> parentVariableDeclaratorGroup [
 
 { #category : #accessing }
 FASTFortranArrayRange >> upperBound [
-	"Relation named: #upperBound type: #FASTFortranTExpression opposite: #parentArrayDimensionDeclarator"
+	"Relation named: #upperBound type: #FASTTExpression opposite: #parentArrayDimensionDeclarator"
 
 	<generated>
 	<FMComment: 'An upper bound of an array dimension'>
-	^ upperBound
+	<FMProperty: #upperBound type: #FASTTExpression opposite: #parentArrayDimensionDeclarator>
+	^ self attributeAt: #upperBound ifAbsent: [ nil ]
 ]
 
 { #category : #accessing }
 FASTFortranArrayRange >> upperBound: anObject [
 
 	<generated>
-	upperBound := anObject
+	(self attributeAt: #upperBound ifAbsentPut: [nil]) == anObject ifTrue: [ ^ anObject ].
+	anObject ifNil: [ | otherSide |
+		otherSide :=  self upperBound.
+		self attributeAt: #upperBound put: anObject.
+		otherSide parentArrayDimensionDeclarator: nil ]
+	ifNotNil: [ 
+		self attributeAt: #upperBound put: anObject.
+		anObject parentArrayDimensionDeclarator: self ]
 ]
 
 { #category : #navigation }

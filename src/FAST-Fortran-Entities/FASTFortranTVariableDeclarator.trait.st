@@ -12,7 +12,7 @@ I represent a variable declarator: variable declared + optional initial value
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `expression` | `FASTFortranTVariableDeclarator` | `variableDeclaratorOwner` | `FASTFortranTExpression` | Expression assigned to the variable declared|
+| `expression` | `FASTFortranTVariableDeclarator` | `variableDeclaratorOwner` | `FASTTExpression` | Expression assigned to the variable declared|
 
 
 ## Properties
@@ -26,9 +26,8 @@ I represent a variable declarator: variable declared + optional initial value
 Trait {
 	#name : #FASTFortranTVariableDeclarator,
 	#instVars : [
-		'#variable => FMProperty',
 		'#parentDeclaration => FMOne type: #FASTFortranTWithDeclarators opposite: #declarators',
-		'#expression => FMOne type: #FASTFortranTExpression opposite: #variableDeclaratorOwner'
+		'#variable => FMProperty'
 	],
 	#category : #'FAST-Fortran-Entities-Traits'
 }
@@ -44,18 +43,26 @@ FASTFortranTVariableDeclarator classSide >> annotation [
 
 { #category : #accessing }
 FASTFortranTVariableDeclarator >> expression [
-	"Relation named: #expression type: #FASTFortranTExpression opposite: #variableDeclaratorOwner"
+	"Relation named: #expression type: #FASTTExpression opposite: #variableDeclaratorOwner"
 
 	<generated>
 	<FMComment: 'Expression assigned to the variable declared'>
-	^ expression
+	<FMProperty: #expression type: #FASTTExpression opposite: #variableDeclaratorOwner>
+	^ self attributeAt: #expression ifAbsent: [ nil ]
 ]
 
 { #category : #accessing }
 FASTFortranTVariableDeclarator >> expression: anObject [
 
 	<generated>
-	expression := anObject
+	(self attributeAt: #expression ifAbsentPut: [nil]) == anObject ifTrue: [ ^ anObject ].
+	anObject ifNil: [ | otherSide |
+		otherSide :=  self expression.
+		self attributeAt: #expression put: anObject.
+		otherSide variableDeclaratorOwner: nil ]
+	ifNotNil: [ 
+		self attributeAt: #expression put: anObject.
+		anObject variableDeclaratorOwner: self ]
 ]
 
 { #category : #navigation }

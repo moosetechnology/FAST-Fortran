@@ -14,7 +14,7 @@ I represent Fortran Type statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `size` | `FASTFortranType` | `parentTypeSize` | `FASTFortranTNumericalLiteral` | a data size in bytes|
+| `size` | `FASTFortranType` | `parentTypeSize` | `FASTTNumericalLiteral` | a data size in bytes|
 
 
 
@@ -25,8 +25,7 @@ Class {
 	#instVars : [
 		'#parentDeclaration => FMOne type: #FASTFortranVariableDeclarationStatement opposite: #type',
 		'#typedFunctions => FMOne type: #FASTFortranFunction opposite: #returnType',
-		'#parentImplicitRule => FMOne type: #FASTFortranImplicitTypingRule opposite: #type',
-		'#size => FMOne type: #FASTFortranTNumericalLiteral opposite: #parentTypeSize'
+		'#parentImplicitRule => FMOne type: #FASTFortranImplicitTypingRule opposite: #type'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
@@ -91,18 +90,26 @@ FASTFortranType >> parentImplicitRuleGroup [
 
 { #category : #accessing }
 FASTFortranType >> size [
-	"Relation named: #size type: #FASTFortranTNumericalLiteral opposite: #parentTypeSize"
+	"Relation named: #size type: #FASTTNumericalLiteral opposite: #parentTypeSize"
 
 	<generated>
 	<FMComment: 'a data size in bytes'>
-	^ size
+	<FMProperty: #size type: #FASTTNumericalLiteral opposite: #parentTypeSize>
+	^ self attributeAt: #size ifAbsent: [ nil ]
 ]
 
 { #category : #accessing }
 FASTFortranType >> size: anObject [
 
 	<generated>
-	size := anObject
+	(self attributeAt: #size ifAbsentPut: [nil]) == anObject ifTrue: [ ^ anObject ].
+	anObject ifNil: [ | otherSide |
+		otherSide :=  self size.
+		self attributeAt: #size put: anObject.
+		otherSide parentTypeSize: nil ]
+	ifNotNil: [ 
+		self attributeAt: #size put: anObject.
+		anObject parentTypeSize: self ]
 ]
 
 { #category : #navigation }

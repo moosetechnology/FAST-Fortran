@@ -1,6 +1,6 @@
 Class {
 	#name : #FASTFortranGenerator,
-	#superclass : #FASTMetamodelGenerator,
+	#superclass : #FamixMetamodelGenerator,
 	#instVars : [
 		'acceptStatement',
 		'assignmentStatement',
@@ -113,7 +113,29 @@ Class {
 		'implicitTypingRule',
 		'implicitRange',
 		'impliedDoExpression',
-		'tWithLoopControl'
+		'tWithLoopControl',
+		'tEntity',
+		'tComment',
+		'tWithComments',
+		'tExpression',
+		'tStatement',
+		'tCharacterLiteral',
+		'tLiteral',
+		'tNamedBehaviouralEntity',
+		'tStringLiteral',
+		'tVariableEntity',
+		'tStatementBlock',
+		'tWithParameters',
+		'tNamedEntity',
+		'tReturnStatement',
+		'tBooleanLiteral',
+		'tInvocation',
+		'tAssignment',
+		'tBehaviouralEntity',
+		'tWithArguments',
+		'tBinaryExpression',
+		'tNumericalLiteral',
+		'tUnaryExpression'
 	],
 	#category : #'FAST-Fortran-Generator'
 }
@@ -399,8 +421,6 @@ FASTFortranGenerator >> defineFamixClasses [
 FASTFortranGenerator >> defineHierarchy [
 
 	super defineHierarchy.
-	
-	tEntity --|> #TEntity.  "FASTFortranTEntity --|> FASTTEntity"
 
 	programUnit --|> tEntity.
 	programUnit --|> tBehaviouralEntity.
@@ -1022,4 +1042,28 @@ FASTFortranGenerator >> defineTraits [
 
 	tWithLabelReferences := builder newTraitNamed: #TWithLabelReferences comment: 'I represent a statement (various kind of goto) that can have label references'.
 
+
+	"From FAST"
+	tEntity := self remoteTrait: #TEntity withPrefix: #FAST.
+	tAssignment := self remoteTrait: #TAssignment withPrefix: #FAST.
+	tBehaviouralEntity := self remoteTrait: #TBehaviouralEntity withPrefix: #FAST.
+	tBinaryExpression := self remoteTrait: #TBinaryExpression withPrefix: #FAST.
+	tUnaryExpression := self remoteTrait: #TUnaryExpression withPrefix: #FAST.
+	tComment := self remoteTrait: #TComment withPrefix: #FAST.
+	tWithComments := self remoteTrait: #TWithComments withPrefix: #FAST.
+	tExpression := self remoteTrait: #TExpression withPrefix: #FAST. 
+	tStatement := self remoteTrait: #TStatement withPrefix: #FAST.
+	tCharacterLiteral := self remoteTrait: #TCharacterLiteral withPrefix: #FAST.
+	tLiteral := self remoteTrait: #TLiteral withPrefix: #FAST.
+	tNamedBehaviouralEntity := self remoteTrait: #TNamedBehaviouralEntity withPrefix: #FAST.
+	tStringLiteral := self remoteTrait: #TStringLiteral withPrefix: #FAST.
+	tVariableEntity := self remoteTrait: #TVariableEntity withPrefix: #FAST.
+	tStatementBlock := self remoteTrait: #TStatementBlock withPrefix: #FAST.
+	tWithParameters := self remoteTrait: #TWithParameters withPrefix: #FAST.
+	tNamedEntity := self remoteTrait: #TNamedEntity withPrefix: #FAST.
+	tReturnStatement := self remoteTrait: #TReturnStatement withPrefix: #FAST.
+	tBooleanLiteral := self remoteTrait: #TBooleanLiteral withPrefix: #FAST.
+	tNumericalLiteral  := self remoteTrait: #TNumericalLiteral withPrefix: #FAST.
+	tInvocation := self remoteTrait: #TInvocation withPrefix: #FAST.
+	tWithArguments := self remoteTrait: #TWithArguments withPrefix: #FAST.
 ]

@@ -12,9 +12,9 @@ a Fortran Loop Control Expression
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `increment` | `FASTFortranLoopControlExpression` | `parentLoopControlIncrement` | `FASTFortranTExpression` | Loop control increment value|
+| `increment` | `FASTFortranLoopControlExpression` | `parentLoopControlIncrement` | `FASTTExpression` | Loop control increment value|
 | `init` | `FASTFortranLoopControlExpression` | `parentLoopControlInitialization` | `FASTFortranAssignmentExpression` | initial assignment|
-| `limit` | `FASTFortranLoopControlExpression` | `parentLoopControlLimit` | `FASTFortranTExpression` | Loop control limit value|
+| `limit` | `FASTFortranLoopControlExpression` | `parentLoopControlLimit` | `FASTTExpression` | Loop control limit value|
 
 
 
@@ -24,9 +24,7 @@ Class {
 	#superclass : #FASTFortranEntity,
 	#instVars : [
 		'#parentLoop => FMOne type: #FASTFortranTWithLoopControl opposite: #loopControl',
-		'#init => FMOne type: #FASTFortranAssignmentExpression opposite: #parentLoopControlInitialization',
-		'#increment => FMOne type: #FASTFortranTExpression opposite: #parentLoopControlIncrement',
-		'#limit => FMOne type: #FASTFortranTExpression opposite: #parentLoopControlLimit'
+		'#init => FMOne type: #FASTFortranAssignmentExpression opposite: #parentLoopControlInitialization'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
@@ -42,18 +40,26 @@ FASTFortranLoopControlExpression class >> annotation [
 
 { #category : #accessing }
 FASTFortranLoopControlExpression >> increment [
-	"Relation named: #increment type: #FASTFortranTExpression opposite: #parentLoopControlIncrement"
+	"Relation named: #increment type: #FASTTExpression opposite: #parentLoopControlIncrement"
 
 	<generated>
 	<FMComment: 'Loop control increment value'>
-	^ increment
+	<FMProperty: #increment type: #FASTTExpression opposite: #parentLoopControlIncrement>
+	^ self attributeAt: #increment ifAbsent: [ nil ]
 ]
 
 { #category : #accessing }
 FASTFortranLoopControlExpression >> increment: anObject [
 
 	<generated>
-	increment := anObject
+	(self attributeAt: #increment ifAbsentPut: [nil]) == anObject ifTrue: [ ^ anObject ].
+	anObject ifNil: [ | otherSide |
+		otherSide :=  self increment.
+		self attributeAt: #increment put: anObject.
+		otherSide parentLoopControlIncrement: nil ]
+	ifNotNil: [ 
+		self attributeAt: #increment put: anObject.
+		anObject parentLoopControlIncrement: self ]
 ]
 
 { #category : #navigation }
@@ -88,18 +94,26 @@ FASTFortranLoopControlExpression >> initGroup [
 
 { #category : #accessing }
 FASTFortranLoopControlExpression >> limit [
-	"Relation named: #limit type: #FASTFortranTExpression opposite: #parentLoopControlLimit"
+	"Relation named: #limit type: #FASTTExpression opposite: #parentLoopControlLimit"
 
 	<generated>
 	<FMComment: 'Loop control limit value'>
-	^ limit
+	<FMProperty: #limit type: #FASTTExpression opposite: #parentLoopControlLimit>
+	^ self attributeAt: #limit ifAbsent: [ nil ]
 ]
 
 { #category : #accessing }
 FASTFortranLoopControlExpression >> limit: anObject [
 
 	<generated>
-	limit := anObject
+	(self attributeAt: #limit ifAbsentPut: [nil]) == anObject ifTrue: [ ^ anObject ].
+	anObject ifNil: [ | otherSide |
+		otherSide :=  self limit.
+		self attributeAt: #limit put: anObject.
+		otherSide parentLoopControlLimit: nil ]
+	ifNotNil: [ 
+		self attributeAt: #limit put: anObject.
+		anObject parentLoopControlLimit: self ]
 ]
 
 { #category : #navigation }

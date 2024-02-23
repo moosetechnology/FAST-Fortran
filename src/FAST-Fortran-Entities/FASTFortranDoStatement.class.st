@@ -9,7 +9,7 @@ I represent Fortran Do statement
 |---|
 | `labelReferences` | `FASTFortranTWithLabelReferences` | `referencer` | `FASTFortranLabelReference` | the label(s) referenced|
 | `loopControl` | `FASTFortranTWithLoopControl` | `parentLoop` | `FASTFortranLoopControlExpression` | loop control|
-| `statementBlock` | `FASTFortranDoStatement` | `parentDoStatement` | `FASTFortranTStatementBlock` | Statement block containing statements of the do body |
+| `statementBlock` | `FASTFortranDoStatement` | `parentDoStatement` | `FASTTStatementBlock` | Statement block containing statements of the do body |
 
 
 
@@ -19,9 +19,6 @@ Class {
 	#superclass : #FASTFortranAbstractStatement,
 	#traits : 'FASTFortranTWithLabelReferences + FASTFortranTWithLoopControl',
 	#classTraits : 'FASTFortranTWithLabelReferences classTrait + FASTFortranTWithLoopControl classTrait',
-	#instVars : [
-		'#statementBlock => FMOne type: #FASTFortranTStatementBlock opposite: #parentDoStatement'
-	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
@@ -36,18 +33,26 @@ FASTFortranDoStatement class >> annotation [
 
 { #category : #accessing }
 FASTFortranDoStatement >> statementBlock [
-	"Relation named: #statementBlock type: #FASTFortranTStatementBlock opposite: #parentDoStatement"
+	"Relation named: #statementBlock type: #FASTTStatementBlock opposite: #parentDoStatement"
 
 	<generated>
 	<FMComment: 'Statement block containing statements of the do body '>
-	^ statementBlock
+	<FMProperty: #statementBlock type: #FASTTStatementBlock opposite: #parentDoStatement>
+	^ self attributeAt: #statementBlock ifAbsent: [ nil ]
 ]
 
 { #category : #accessing }
 FASTFortranDoStatement >> statementBlock: anObject [
 
 	<generated>
-	statementBlock := anObject
+	(self attributeAt: #statementBlock ifAbsentPut: [nil]) == anObject ifTrue: [ ^ anObject ].
+	anObject ifNil: [ | otherSide |
+		otherSide :=  self statementBlock.
+		self attributeAt: #statementBlock put: anObject.
+		otherSide parentDoStatement: nil ]
+	ifNotNil: [ 
+		self attributeAt: #statementBlock put: anObject.
+		anObject parentDoStatement: self ]
 ]
 
 { #category : #navigation }
