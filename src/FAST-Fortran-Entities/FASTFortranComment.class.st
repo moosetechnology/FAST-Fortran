@@ -7,7 +7,7 @@ A fortran comment
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `container` | `FASTFortranTComment` | `comments` | `FASTFortranTWithComments` | Source code entity containing the comment|
+| `container` | `FASTTComment` | `comments` | `FASTTWithComments` | Source code entity containing the comment|
 
 
 ## Properties
@@ -15,19 +15,17 @@ A fortran comment
 
 | Name | Type | Default value | Comment |
 |---|
-| `content` | `String` | nil | Determines a content of a comment|
 | `content` | `String` | nil | Content of the comment as a String|
+| `content` | `String` | nil | Determines a content of a comment|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : #FASTFortranComment,
 	#superclass : #FASTFortranEntity,
-	#traits : 'FASTFortranTComment + FASTFortranTEntity',
-	#classTraits : 'FASTFortranTComment classTrait + FASTFortranTEntity classTrait',
+	#traits : 'FASTTComment + FASTTEntity',
+	#classTraits : 'FASTTComment classTrait + FASTTEntity classTrait',
 	#instVars : [
 		'#content => FMProperty'
 	],

@@ -12,7 +12,7 @@ An entity that can contain fortran program units and comments
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `comments` | `FASTFortranTWithComments` | `container` | `FASTFortranTComment` | list of comments defined in the entity|
+| `comments` | `FASTTWithComments` | `container` | `FASTTComment` | list of comments defined in the entity|
 
 
 
@@ -20,8 +20,8 @@ An entity that can contain fortran program units and comments
 Class {
 	#name : #FASTFortranProgramFile,
 	#superclass : #FASTFortranEntity,
-	#traits : 'FASTFortranTWithComments',
-	#classTraits : 'FASTFortranTWithComments classTrait',
+	#traits : 'FASTTWithComments',
+	#classTraits : 'FASTTWithComments classTrait',
 	#instVars : [
 		'#programUnit => FMMany type: #FASTFortranProgramUnit opposite: #parentProgramFile'
 	],

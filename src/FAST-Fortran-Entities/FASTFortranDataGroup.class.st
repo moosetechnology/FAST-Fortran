@@ -12,7 +12,7 @@ I represent a Fortran Data group in a Data statement
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `dataConstants` | `FASTFortranDataGroup` | `parentDataStatement` | `FASTFortranTExpression` | |
+| `dataConstants` | `FASTFortranDataGroup` | `parentDataStatement` | `FASTTExpression` | |
 | `variables` | `FASTFortranTVariableGroup` | `parentVariableGroup` | `FASTFortranVariable` | |
 
 
@@ -23,9 +23,6 @@ Class {
 	#superclass : #FASTFortranEntity,
 	#traits : 'FASTFortranTVariableGroup',
 	#classTraits : 'FASTFortranTVariableGroup classTrait',
-	#instVars : [
-		'#dataConstants => FMMany type: #FASTFortranTExpression opposite: #parentDataStatement'
-	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
@@ -46,16 +43,17 @@ FASTFortranDataGroup >> addDataConstant: anObject [
 
 { #category : #accessing }
 FASTFortranDataGroup >> dataConstants [
-	"Relation named: #dataConstants type: #FASTFortranTExpression opposite: #parentDataStatement"
+	"Relation named: #dataConstants type: #FASTTExpression opposite: #parentDataStatement"
 
 	<generated>
 	<derived>
-	^ dataConstants
+	<FMProperty: #dataConstants type: #FASTTExpression opposite: #parentDataStatement>
+	^ self attributeAt: #dataConstants ifAbsentPut: [ FMMultivalueLink on: self opposite: #parentDataStatement: ]
 ]
 
 { #category : #accessing }
 FASTFortranDataGroup >> dataConstants: anObject [
 
 	<generated>
-	dataConstants value: anObject
+	self dataConstants value: anObject
 ]

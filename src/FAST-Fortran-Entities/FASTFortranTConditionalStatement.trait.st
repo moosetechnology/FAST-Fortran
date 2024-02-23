@@ -7,16 +7,13 @@ I represent a fortran statement with a condition: if-block, if-logical
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `condition` | `FASTFortranTConditionalStatement` | `parentConditionalStatement` | `FASTFortranTExpression` | Condition|
+| `condition` | `FASTFortranTConditionalStatement` | `parentConditionalStatement` | `FASTTExpression` | Condition|
 
 
 
 "
 Trait {
 	#name : #FASTFortranTConditionalStatement,
-	#instVars : [
-		'#condition => FMOne type: #FASTFortranTExpression opposite: #parentConditionalStatement'
-	],
 	#category : #'FAST-Fortran-Entities-Traits'
 }
 
@@ -31,18 +28,26 @@ FASTFortranTConditionalStatement classSide >> annotation [
 
 { #category : #accessing }
 FASTFortranTConditionalStatement >> condition [
-	"Relation named: #condition type: #FASTFortranTExpression opposite: #parentConditionalStatement"
+	"Relation named: #condition type: #FASTTExpression opposite: #parentConditionalStatement"
 
 	<generated>
 	<FMComment: 'Condition'>
-	^ condition
+	<FMProperty: #condition type: #FASTTExpression opposite: #parentConditionalStatement>
+	^ self attributeAt: #condition ifAbsent: [ nil ]
 ]
 
 { #category : #accessing }
 FASTFortranTConditionalStatement >> condition: anObject [
 
 	<generated>
-	condition := anObject
+	(self attributeAt: #condition ifAbsentPut: [nil]) == anObject ifTrue: [ ^ anObject ].
+	anObject ifNil: [ | otherSide |
+		otherSide :=  self condition.
+		self attributeAt: #condition put: anObject.
+		otherSide parentConditionalStatement: nil ]
+	ifNotNil: [ 
+		self attributeAt: #condition put: anObject.
+		anObject parentConditionalStatement: self ]
 ]
 
 { #category : #navigation }

@@ -12,7 +12,7 @@ I represent Fortran Go To (Computed) statement
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `selectorExpression` | `FASTFortranGoToComputedStatement` | `parentGotoComputedStatement` | `FASTFortranTExpression` | The expression which value selects the label to go to|
+| `selectorExpression` | `FASTFortranGoToComputedStatement` | `parentGotoComputedStatement` | `FASTTExpression` | The expression which value selects the label to go to|
 
 
 
@@ -22,9 +22,6 @@ Class {
 	#superclass : #FASTFortranAbstractStatement,
 	#traits : 'FASTFortranTWithLabelReferences',
 	#classTraits : 'FASTFortranTWithLabelReferences classTrait',
-	#instVars : [
-		'#selectorExpression => FMOne type: #FASTFortranTExpression opposite: #parentGotoComputedStatement'
-	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
@@ -39,16 +36,24 @@ FASTFortranGoToComputedStatement class >> annotation [
 
 { #category : #accessing }
 FASTFortranGoToComputedStatement >> selectorExpression [
-	"Relation named: #selectorExpression type: #FASTFortranTExpression opposite: #parentGotoComputedStatement"
+	"Relation named: #selectorExpression type: #FASTTExpression opposite: #parentGotoComputedStatement"
 
 	<generated>
 	<FMComment: 'The expression which value selects the label to go to'>
-	^ selectorExpression
+	<FMProperty: #selectorExpression type: #FASTTExpression opposite: #parentGotoComputedStatement>
+	^ self attributeAt: #selectorExpression ifAbsent: [ nil ]
 ]
 
 { #category : #accessing }
 FASTFortranGoToComputedStatement >> selectorExpression: anObject [
 
 	<generated>
-	selectorExpression := anObject
+	(self attributeAt: #selectorExpression ifAbsentPut: [nil]) == anObject ifTrue: [ ^ anObject ].
+	anObject ifNil: [ | otherSide |
+		otherSide :=  self selectorExpression.
+		self attributeAt: #selectorExpression put: anObject.
+		otherSide parentGotoComputedStatement: nil ]
+	ifNotNil: [ 
+		self attributeAt: #selectorExpression put: anObject.
+		anObject parentGotoComputedStatement: self ]
 ]

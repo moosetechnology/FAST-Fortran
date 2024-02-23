@@ -7,7 +7,7 @@ I represent Fortran External statement
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
+| `invokedIn` | `FASTTNamedEntity` | `invoked` | `FASTTInvocation` | Optional invocation where this name is used|
 
 
 ## Properties
@@ -16,17 +16,15 @@ I represent Fortran External statement
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
 | `name` | `String` | nil | |
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : #FASTFortranExternalStatement,
 	#superclass : #FASTFortranAbstractStatement,
-	#traits : 'FASTFortranTNamedEntity',
-	#classTraits : 'FASTFortranTNamedEntity classTrait',
+	#traits : 'FASTTNamedEntity',
+	#classTraits : 'FASTTNamedEntity classTrait',
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
