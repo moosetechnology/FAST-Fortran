@@ -9,7 +9,7 @@ I represent a group of variables in an Equivalence statement
 |---|
 | `withVariableGroups` | `FASTFortranTVariableGroup` | `variableGroups` | `FASTFortranTWithVariableGroups` | |
 
-### Other
+### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `variables` | `FASTFortranTVariableGroup` | `parentVariableGroup` | `FASTFortranVariable` | |

@@ -7,6 +7,7 @@ A fortran program unit is a sequence of statements, terminated by an END stateme
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
+| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
 | `parentProgramFile` | `FASTFortranProgramUnit` | `programUnit` | `FASTFortranProgramFile` | Parent program file|
 
 ### Children
@@ -19,7 +20,6 @@ A fortran program unit is a sequence of statements, terminated by an END stateme
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `comments` | `FASTFortranTWithComments` | `container` | `FASTFortranTComment` | list of comments defined in the entity|
-| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
 
 
 ## Properties

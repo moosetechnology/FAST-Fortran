@@ -9,7 +9,7 @@ I represent Fortran Intrinsic statement
 |---|
 | `withVariableGroups` | `FASTFortranTVariableGroup` | `variableGroups` | `FASTFortranTWithVariableGroups` | |
 
-### Other
+### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `variables` | `FASTFortranTVariableGroup` | `parentVariableGroup` | `FASTFortranVariable` | |

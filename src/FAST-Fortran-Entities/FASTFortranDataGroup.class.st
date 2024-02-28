@@ -9,11 +9,15 @@ I represent a Fortran Data group in a Data statement
 |---|
 | `withVariableGroups` | `FASTFortranTVariableGroup` | `variableGroups` | `FASTFortranTWithVariableGroups` | |
 
+### Children
+| Relation | Origin | Opposite | Type | Comment |
+|---|
+| `variables` | `FASTFortranTVariableGroup` | `parentVariableGroup` | `FASTFortranVariable` | |
+
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `dataConstants` | `FASTFortranDataGroup` | `parentDataStatement` | `FASTFortranTExpression` | |
-| `variables` | `FASTFortranTVariableGroup` | `parentVariableGroup` | `FASTFortranVariable` | |
 
 
 

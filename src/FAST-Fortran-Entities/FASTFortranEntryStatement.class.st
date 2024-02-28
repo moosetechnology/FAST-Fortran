@@ -4,15 +4,15 @@ I represent Fortran Entry statement
 ## Relations
 ======================
 
+### Parents
+| Relation | Origin | Opposite | Type | Comment |
+|---|
+| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
+
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `entryArguments` | `FASTFortranEntryStatement` | `entryStatement` | `FASTFortranTEntryStatement` | |
-
-### Other
-| Relation | Origin | Opposite | Type | Comment |
-|---|
-| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
 
 
 ## Properties

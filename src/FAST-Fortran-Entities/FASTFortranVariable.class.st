@@ -8,16 +8,12 @@ an abstract Fortran Variable, could be an array or a scalar
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `entryStatement` | `FASTFortranTEntryStatement` | `entryArguments` | `FASTFortranEntryStatement` | |
+| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
 | `parameterOwner` | `FASTFortranTVariableEntity` | `parameters` | `FASTFortranTWithParameters` | parameterOwner|
+| `parentAssignmentExpression` | `FASTFortranTVariableEntity` | `variable` | `FASTFortranTAssignment` | Optional assignment to the variable|
 | `parentFormatedStatement` | `FASTFortranTFormat` | `format` | `FASTFortranTWithFormat` | A format description in a Format/Print/Read/Write statement|
 | `parentIOStatement` | `FASTFortranTIOParameter` | `ioParameters` | `FASTFortranAbstractIOStatement` | |
 | `parentImpliedExpression` | `FASTFortranTVariableEntity` | `variables` | `FASTFortranImpliedDoExpression` | |
-
-### Other
-| Relation | Origin | Opposite | Type | Comment |
-|---|
-| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
-| `parentAssignmentExpression` | `FASTFortranTVariableEntity` | `variable` | `FASTFortranTAssignment` | Optional assignment to the variable|
 | `parentVariableGroup` | `FASTFortranVariable` | `variables` | `FASTFortranTVariableGroup` | |
 
 
@@ -56,6 +52,7 @@ FASTFortranVariable >> parentVariableGroup [
 	"Relation named: #parentVariableGroup type: #FASTFortranTVariableGroup opposite: #variables"
 
 	<generated>
+	<container>
 	^ parentVariableGroup
 ]
 
@@ -64,4 +61,11 @@ FASTFortranVariable >> parentVariableGroup: anObject [
 
 	<generated>
 	parentVariableGroup := anObject
+]
+
+{ #category : #navigation }
+FASTFortranVariable >> parentVariableGroupGroup [
+	<generated>
+	<navigation: 'ParentVariableGroup'>
+	^ MooseSpecializedGroup with: self parentVariableGroup
 ]
