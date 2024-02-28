@@ -13,13 +13,9 @@ A fortran program unit is a sequence of statements, terminated by an END stateme
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
+| `comments` | `FASTFortranTWithComments` | `container` | `FASTFortranTComment` | list of comments defined in the entity|
 | `parameters` | `FASTFortranTWithParameters` | `parameterOwner` | `FASTFortranTVariableEntity` | My parameters|
 | `statementBlock` | `FASTFortranTBehaviouralEntity` | `fastBehaviouralParent` | `FASTFortranTStatementBlock` | Statements block of the behavioural entity|
-
-### Other
-| Relation | Origin | Opposite | Type | Comment |
-|---|
-| `comments` | `FASTFortranTWithComments` | `container` | `FASTFortranTComment` | list of comments defined in the entity|
 
 
 ## Properties

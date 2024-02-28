@@ -4,7 +4,7 @@ A fortran comment
 ## Relations
 ======================
 
-### Other
+### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `container` | `FASTFortranTComment` | `comments` | `FASTFortranTWithComments` | Source code entity containing the comment|
@@ -15,8 +15,8 @@ A fortran comment
 
 | Name | Type | Default value | Comment |
 |---|
-| `content` | `String` | nil | Determines a content of a comment|
 | `content` | `String` | nil | Content of the comment as a String|
+| `content` | `String` | nil | Determines a content of a comment|
 | `endPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
