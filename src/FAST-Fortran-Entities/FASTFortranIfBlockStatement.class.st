@@ -7,9 +7,9 @@ I represent Fortran If (BLock) statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `condition` | `FASTFortranTConditionalStatement` | `parentConditionalStatement` | `FASTTExpression` | Condition|
-| `elseStatementBlock` | `FASTFortranIfBlockStatement` | `parentIfBlock` | `FASTTStatementBlock` | Statement block containing statements of else branch |
-| `thenStatementBlock` | `FASTFortranIfBlockStatement` | `parentIfBlock` | `FASTTStatementBlock` | Statement block containing statements of then branch |
+| `condition` | `FASTFortranTConditionalStatement` | `parentConditionalStatement` | `FASTFortranTExpression` | Condition|
+| `elseStatementBlock` | `FASTFortranIfBlockStatement` | `parentIfBlock` | `FASTFortranTStatementBlock` | Statement block containing statements of else branch |
+| `thenStatementBlock` | `FASTFortranIfBlockStatement` | `parentIfBlock` | `FASTFortranTStatementBlock` | Statement block containing statements of then branch |
 
 
 
@@ -19,6 +19,10 @@ Class {
 	#superclass : #FASTFortranAbstractStatement,
 	#traits : 'FASTFortranTConditionalStatement',
 	#classTraits : 'FASTFortranTConditionalStatement classTrait',
+	#instVars : [
+		'#thenStatementBlock => FMOne type: #FASTFortranTStatementBlock opposite: #parentIfBlock',
+		'#elseStatementBlock => FMOne type: #FASTFortranTStatementBlock opposite: #parentIfBlock'
+	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
@@ -33,26 +37,18 @@ FASTFortranIfBlockStatement class >> annotation [
 
 { #category : #accessing }
 FASTFortranIfBlockStatement >> elseStatementBlock [
-	"Relation named: #elseStatementBlock type: #FASTTStatementBlock opposite: #parentIfBlock"
+	"Relation named: #elseStatementBlock type: #FASTFortranTStatementBlock opposite: #parentIfBlock"
 
 	<generated>
 	<FMComment: 'Statement block containing statements of else branch '>
-	<FMProperty: #elseStatementBlock type: #FASTTStatementBlock opposite: #parentIfBlock>
-	^ self attributeAt: #elseStatementBlock ifAbsent: [ nil ]
+	^ elseStatementBlock
 ]
 
 { #category : #accessing }
 FASTFortranIfBlockStatement >> elseStatementBlock: anObject [
 
 	<generated>
-	(self attributeAt: #elseStatementBlock ifAbsentPut: [nil]) == anObject ifTrue: [ ^ anObject ].
-	anObject ifNil: [ | otherSide |
-		otherSide :=  self elseStatementBlock.
-		self attributeAt: #elseStatementBlock put: anObject.
-		otherSide parentIfBlock: nil ]
-	ifNotNil: [ 
-		self attributeAt: #elseStatementBlock put: anObject.
-		anObject parentIfBlock: self ]
+	elseStatementBlock := anObject
 ]
 
 { #category : #navigation }
@@ -64,26 +60,18 @@ FASTFortranIfBlockStatement >> elseStatementBlockGroup [
 
 { #category : #accessing }
 FASTFortranIfBlockStatement >> thenStatementBlock [
-	"Relation named: #thenStatementBlock type: #FASTTStatementBlock opposite: #parentIfBlock"
+	"Relation named: #thenStatementBlock type: #FASTFortranTStatementBlock opposite: #parentIfBlock"
 
 	<generated>
 	<FMComment: 'Statement block containing statements of then branch '>
-	<FMProperty: #thenStatementBlock type: #FASTTStatementBlock opposite: #parentIfBlock>
-	^ self attributeAt: #thenStatementBlock ifAbsent: [ nil ]
+	^ thenStatementBlock
 ]
 
 { #category : #accessing }
 FASTFortranIfBlockStatement >> thenStatementBlock: anObject [
 
 	<generated>
-	(self attributeAt: #thenStatementBlock ifAbsentPut: [nil]) == anObject ifTrue: [ ^ anObject ].
-	anObject ifNil: [ | otherSide |
-		otherSide :=  self thenStatementBlock.
-		self attributeAt: #thenStatementBlock put: anObject.
-		otherSide parentIfBlock: nil ]
-	ifNotNil: [ 
-		self attributeAt: #thenStatementBlock put: anObject.
-		anObject parentIfBlock: self ]
+	thenStatementBlock := anObject
 ]
 
 { #category : #navigation }

@@ -7,7 +7,7 @@ I represent Fortran Read statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `arguments` | `FASTTWithArguments` | `argumentOwner` | `FASTTExpression` | My arguments|
+| `arguments` | `FASTFortranTWithArguments` | `argumentOwner` | `FASTFortranTExpression` | My arguments|
 | `ioParameters` | `FASTFortranTWithIOParameters` | `parentIOStatement` | `FASTFortranTIOParameter` | I represent a statement with IO-parameters (read or write)|
 
 
@@ -16,8 +16,8 @@ I represent Fortran Read statement
 Class {
 	#name : #FASTFortranReadStatement,
 	#superclass : #FASTFortranAbstractStatement,
-	#traits : 'FASTFortranTWithIOParameters + FASTTWithArguments',
-	#classTraits : 'FASTFortranTWithIOParameters classTrait + FASTTWithArguments classTrait',
+	#traits : 'FASTFortranTWithArguments + FASTFortranTWithIOParameters',
+	#classTraits : 'FASTFortranTWithArguments classTrait + FASTFortranTWithIOParameters classTrait',
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 

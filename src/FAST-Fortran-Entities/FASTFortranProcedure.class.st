@@ -7,7 +7,7 @@ I represent a fortran subroutine or a function
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parameters` | `FASTTWithParameters` | `parameterOwner` | `FASTTVariableEntity` | My parameters|
+| `parameters` | `FASTFortranTWithParameters` | `parameterOwner` | `FASTFortranTVariableEntity` | My parameters|
 
 
 
@@ -15,8 +15,8 @@ I represent a fortran subroutine or a function
 Class {
 	#name : #FASTFortranProcedure,
 	#superclass : #FASTFortranSubprogram,
-	#traits : 'FASTTWithParameters',
-	#classTraits : 'FASTTWithParameters classTrait',
+	#traits : 'FASTFortranTWithParameters',
+	#classTraits : 'FASTFortranTWithParameters classTrait',
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 

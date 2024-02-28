@@ -7,13 +7,13 @@ a Fortran Return Statement
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parentIfStatement` | `FASTTStatement` | `statement` | `FASTFortranIfLogicalStatement` | Parent if statement|
-| `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
+| `parentIfStatement` | `FASTFortranTStatement` | `statement` | `FASTFortranIfLogicalStatement` | Parent if statement|
+| `statementContainer` | `FASTFortranTStatement` | `statements` | `FASTFortranTStatementBlock` | Block containing this statement.|
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `expression` | `FASTTReturnStatement` | `returnOwner` | `FASTTExpression` | The expression returned|
+| `expression` | `FASTFortranTReturnStatement` | `returnOwner` | `FASTFortranTExpression` | The expression returned|
 
 
 ## Properties
@@ -30,8 +30,8 @@ a Fortran Return Statement
 Class {
 	#name : #FASTFortranReturnStatement,
 	#superclass : #FASTFortranAbstractStatement,
-	#traits : 'FASTTReturnStatement',
-	#classTraits : 'FASTTReturnStatement classTrait',
+	#traits : 'FASTFortranTReturnStatement',
+	#classTraits : 'FASTFortranTReturnStatement classTrait',
 	#instVars : [
 		'#alternateReturnLable => FMProperty'
 	],

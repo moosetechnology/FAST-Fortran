@@ -13,7 +13,7 @@ Part of a variable declaration: name of the variable + optional initial value
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `dimensions` | `FASTFortranVariableDeclarator` | `parentVariableDeclarator` | `FASTFortranArrayRange` | Possible dimensions in case this is an array declaration|
-| `expression` | `FASTFortranTVariableDeclarator` | `variableDeclaratorOwner` | `FASTTExpression` | Expression assigned to the variable declared|
+| `expression` | `FASTFortranTVariableDeclarator` | `variableDeclaratorOwner` | `FASTFortranTExpression` | Expression assigned to the variable declared|
 
 
 ## Properties

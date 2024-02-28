@@ -7,13 +7,13 @@ I represent a function statement - a function-like declaration, made in a single
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `arguments` | `FASTTWithArguments` | `argumentOwner` | `FASTTExpression` | My arguments|
-| `expression` | `FASTFortranFunctionStatement` | `assignementExpressionOwner` | `FASTTExpression` | Expression thats being assigned upon declaration to the var|
+| `arguments` | `FASTFortranTWithArguments` | `argumentOwner` | `FASTFortranTExpression` | My arguments|
+| `expression` | `FASTFortranFunctionStatement` | `assignementExpressionOwner` | `FASTFortranTExpression` | Expression thats being assigned upon declaration to the var|
 
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `invokedIn` | `FASTTNamedEntity` | `invoked` | `FASTTInvocation` | Optional invocation where this name is used|
+| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
 
 
 ## Properties
@@ -29,8 +29,11 @@ I represent a function statement - a function-like declaration, made in a single
 Class {
 	#name : #FASTFortranFunctionStatement,
 	#superclass : #FASTFortranAbstractStatement,
-	#traits : 'FASTTNamedEntity + FASTTWithArguments',
-	#classTraits : 'FASTTNamedEntity classTrait + FASTTWithArguments classTrait',
+	#traits : 'FASTFortranTNamedEntity + FASTFortranTWithArguments',
+	#classTraits : 'FASTFortranTNamedEntity classTrait + FASTFortranTWithArguments classTrait',
+	#instVars : [
+		'#expression => FMOne type: #FASTFortranTExpression opposite: #assignementExpressionOwner'
+	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
@@ -45,26 +48,18 @@ FASTFortranFunctionStatement class >> annotation [
 
 { #category : #accessing }
 FASTFortranFunctionStatement >> expression [
-	"Relation named: #expression type: #FASTTExpression opposite: #assignementExpressionOwner"
+	"Relation named: #expression type: #FASTFortranTExpression opposite: #assignementExpressionOwner"
 
 	<generated>
 	<FMComment: 'Expression thats being assigned upon declaration to the var'>
-	<FMProperty: #expression type: #FASTTExpression opposite: #assignementExpressionOwner>
-	^ self attributeAt: #expression ifAbsent: [ nil ]
+	^ expression
 ]
 
 { #category : #accessing }
 FASTFortranFunctionStatement >> expression: anObject [
 
 	<generated>
-	(self attributeAt: #expression ifAbsentPut: [nil]) == anObject ifTrue: [ ^ anObject ].
-	anObject ifNil: [ | otherSide |
-		otherSide :=  self expression.
-		self attributeAt: #expression put: anObject.
-		otherSide assignementExpressionOwner: nil ]
-	ifNotNil: [ 
-		self attributeAt: #expression put: anObject.
-		anObject assignementExpressionOwner: self ]
+	expression := anObject
 ]
 
 { #category : #navigation }

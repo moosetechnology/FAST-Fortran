@@ -7,7 +7,7 @@ I represent Fortran Call statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `arguments` | `FASTTWithArguments` | `argumentOwner` | `FASTTExpression` | My arguments|
+| `arguments` | `FASTFortranTWithArguments` | `argumentOwner` | `FASTFortranTExpression` | My arguments|
 
 
 ## Properties
@@ -21,8 +21,8 @@ I represent Fortran Call statement
 Class {
 	#name : #FASTFortranCallStatement,
 	#superclass : #FASTFortranAbstractStatement,
-	#traits : 'FASTTWithArguments',
-	#classTraits : 'FASTTWithArguments classTrait',
+	#traits : 'FASTFortranTWithArguments',
+	#classTraits : 'FASTFortranTWithArguments classTrait',
 	#instVars : [
 		'#name => FMProperty'
 	],

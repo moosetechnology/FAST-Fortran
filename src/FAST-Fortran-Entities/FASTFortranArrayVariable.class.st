@@ -7,7 +7,7 @@ An array Fortran Variable, accessed in the code
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `indices` | `FASTFortranArrayVariable` | `parentArrayExpression` | `FASTTExpression` | Indices used in the array access|
+| `indices` | `FASTFortranArrayVariable` | `parentArrayExpression` | `FASTFortranTExpression` | Indices used in the array access|
 
 
 
@@ -15,6 +15,9 @@ An array Fortran Variable, accessed in the code
 Class {
 	#name : #FASTFortranArrayVariable,
 	#superclass : #FASTFortranVariable,
+	#instVars : [
+		'#indices => FMMany type: #FASTFortranTExpression opposite: #parentArrayExpression'
+	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
@@ -35,18 +38,17 @@ FASTFortranArrayVariable >> addIndice: anObject [
 
 { #category : #accessing }
 FASTFortranArrayVariable >> indices [
-	"Relation named: #indices type: #FASTTExpression opposite: #parentArrayExpression"
+	"Relation named: #indices type: #FASTFortranTExpression opposite: #parentArrayExpression"
 
 	<generated>
 	<FMComment: 'Indices used in the array access'>
 	<derived>
-	<FMProperty: #indices type: #FASTTExpression opposite: #parentArrayExpression>
-	^ self attributeAt: #indices ifAbsentPut: [ FMMultivalueLink on: self opposite: #parentArrayExpression: ]
+	^ indices
 ]
 
 { #category : #accessing }
 FASTFortranArrayVariable >> indices: anObject [
 
 	<generated>
-	self indices value: anObject
+	indices value: anObject
 ]

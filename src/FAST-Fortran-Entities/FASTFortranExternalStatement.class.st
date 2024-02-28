@@ -7,7 +7,7 @@ I represent Fortran External statement
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `invokedIn` | `FASTTNamedEntity` | `invoked` | `FASTTInvocation` | Optional invocation where this name is used|
+| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
 
 
 ## Properties
@@ -23,8 +23,8 @@ I represent Fortran External statement
 Class {
 	#name : #FASTFortranExternalStatement,
 	#superclass : #FASTFortranAbstractStatement,
-	#traits : 'FASTTNamedEntity',
-	#classTraits : 'FASTTNamedEntity classTrait',
+	#traits : 'FASTFortranTNamedEntity',
+	#classTraits : 'FASTFortranTNamedEntity classTrait',
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
