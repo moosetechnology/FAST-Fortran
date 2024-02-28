@@ -17,12 +17,8 @@ Contains the block of Fortran statements
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `statements` | `FASTFortranTStatementBlock` | `statementContainer` | `FASTFortranTStatement` | Statements enclosed in this block|
-
-### Other
-| Relation | Origin | Opposite | Type | Comment |
-|---|
 | `comments` | `FASTFortranTWithComments` | `container` | `FASTFortranTComment` | list of comments defined in the entity|
+| `statements` | `FASTFortranTStatementBlock` | `statementContainer` | `FASTFortranTStatement` | Statements enclosed in this block|
 
 
 ## Properties
