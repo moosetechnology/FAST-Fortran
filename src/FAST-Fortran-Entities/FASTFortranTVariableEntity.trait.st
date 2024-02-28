@@ -23,9 +23,7 @@ A node for variable name not in a expression (example: assigned variable or para
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
 | `name` | `String` | nil | |
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "

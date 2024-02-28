@@ -18,8 +18,6 @@ A fortran comment
 | `content` | `String` | nil | Determines a content of a comment|
 | `content` | `String` | nil | Content of the comment as a String|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "

@@ -37,9 +37,7 @@ A string literal
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
 | `primitiveValue` | `String` | nil | The literal itself as found in the source code. We use primitiveValue in order to override value from Object|
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "

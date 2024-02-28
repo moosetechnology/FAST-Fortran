@@ -31,9 +31,7 @@ Contains the block of Fortran statements
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
 | `label` | `String` | nil | Determines the statement label which consists of 1 to 5 digits, with at least one nonzero|
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "

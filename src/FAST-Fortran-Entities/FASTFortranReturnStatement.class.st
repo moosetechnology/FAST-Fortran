@@ -23,9 +23,7 @@ a Fortran Return Statement
 |---|
 | `alternateReturnLable` | `String` | nil | Optional. Expression of type INTEGER or REAL|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
 | `label` | `String` | nil | Determines the statement label which consists of 1 to 5 digits, with at least one nonzero|
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "

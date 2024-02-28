@@ -41,9 +41,7 @@ I represent an Asterisk Character Literal (Constant) that is often used as a for
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
 | `primitiveValue` | `String` | nil | The literal itself as found in the source code. We use primitiveValue in order to override value from Object|
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "

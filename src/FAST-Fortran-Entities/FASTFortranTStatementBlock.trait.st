@@ -26,9 +26,7 @@ A block of statements as ones in C-like langs with {}
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
 | `label` | `String` | nil | Determines the statement label which consists of 1 to 5 digits, with at least one nonzero|
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
@@ -36,9 +34,9 @@ Trait {
 	#name : #FASTFortranTStatementBlock,
 	#instVars : [
 		'#fastBehaviouralParent => FMOne type: #FASTFortranTBehaviouralEntity opposite: #statementBlock',
+		'#statements => FMMany type: #FASTFortranTStatement opposite: #statementContainer',
 		'#parentDoStatement => FMOne type: #FASTFortranDoStatement opposite: #statementBlock',
-		'#parentIfBlock => FMOne type: #FASTFortranIfBlockStatement opposite: #thenStatementBlock',
-		'#statements => FMMany type: #FASTFortranTStatement opposite: #statementContainer'
+		'#parentIfBlock => FMOne type: #FASTFortranIfBlockStatement opposite: #thenStatementBlock'
 	],
 	#traits : 'FASTFortranTStatement',
 	#classTraits : 'FASTFortranTStatement classTrait',
