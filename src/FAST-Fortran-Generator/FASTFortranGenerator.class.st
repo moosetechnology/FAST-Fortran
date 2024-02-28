@@ -108,12 +108,12 @@ Class {
 		'tWithFormat',
 		'tFormat',
 		'tIOParameter',
-		'tWithIOParameters',
 		'arrayRange',
 		'implicitTypingRule',
 		'implicitRange',
 		'impliedDoExpression',
-		'tWithLoopControl'
+		'tWithLoopControl',
+		'abstractIOStatement'
 	],
 	#category : #'FAST-Fortran-Generator'
 }
@@ -420,19 +420,20 @@ FASTFortranGenerator >> defineHierarchy [
 
 	"FORTRAN STATEMENTS"
 	abstractStatement --|> tStatement.
+	abstractIOStatement --|> abstractStatement.
 	acceptStatement  --|> tStatement.
 	assignmentStatement --|> abstractStatement.
 	assignmentStatement --|> tAssignment.
 	automaticStatement --|> abstractStatement.
-	backspaceStatement --|> abstractStatement.
+	backspaceStatement --|> abstractIOStatement.
 	callStatement --|> abstractStatement.
 	callStatement --|> tWithArguments.
-	closeStatement --|> abstractStatement.
+	closeStatement --|> abstractIOStatement.
 	commonStatement --|> abstractStatement.
 	continueStatement --|> abstractStatement.
 	dataStatement --|> abstractStatement.
 	dataStatement --|> tWithVariableGroup.
-	decodeStatement --|> abstractStatement.
+	decodeStatement --|> abstractIOStatement.
 	dimensionStatement --|> abstractStatement.
 	dimensionStatement --|> tWithDeclarators.
 	doStatement --|> abstractStatement.
@@ -440,8 +441,8 @@ FASTFortranGenerator >> defineHierarchy [
 	doStatement --|> tWithLoopControl.
 	doWhileStatement --|> abstractStatement.
 	elseStatement --|> abstractStatement.
-	encodeStatement --|> abstractStatement.
-	endFileStatement --|> abstractStatement.
+	encodeStatement --|> abstractIOStatement.
+	endFileStatement --|> abstractIOStatement.
 	entryStatement --|> abstractStatement.
 	entryStatement --|> tNamedEntity.
 	equivalenceStatement --|> abstractStatement.
@@ -468,14 +469,12 @@ FASTFortranGenerator >> defineHierarchy [
 	ifLogicalStatement --|> tConditionalStatement.
 	implicitStatement --|> abstractStatement.
 	includeStatement --|> abstractStatement.
-	inquireStatement --|> abstractStatement.
-	inquireStatement --|> tWithIOParameters.
+	inquireStatement --|> abstractIOStatement.
 	intrinsicStatement --|> abstractStatement.
 	intrinsicStatement --|> tVariableGroup.
 	mapStatement --|> abstractStatement.
 	nameListStatement --|> abstractStatement.
-	openStatement --|> abstractStatement.
-	openStatement --|> tWithIOParameters.
+	openStatement --|> abstractIOStatement.
 	optionsStatement --|> abstractStatement.
 	parameterStatement --|> abstractStatement.
 	parameterStatement --|> tWithDeclarators.
@@ -484,13 +483,11 @@ FASTFortranGenerator >> defineHierarchy [
 	printStatement --|> abstractStatement.
 	printStatement --|> tWithFormat.
 	printStatement --|> tWithArguments.
-	readStatement --|> abstractStatement.
-	readStatement --|> tWithIOParameters.
+	readStatement --|> abstractIOStatement.
 	readStatement --|> tWithArguments.
 	returnStatement --|> abstractStatement.
 	returnStatement --|> tReturnStatement.
-	rewindStatement --|> abstractStatement.
-	rewindStatement --|> tWithIOParameters.
+	rewindStatement --|> abstractIOStatement.
 	saveStatement --|> abstractStatement.
 	statementBlock --|> tStatementBlock. 
 	statementBlock --|> tWithComments. 
@@ -501,8 +498,7 @@ FASTFortranGenerator >> defineHierarchy [
 	variableDeclarationStatement --|> tWithDeclarators.
 	virtualStatement --|> abstractStatement.
 	volatileStatement --|> abstractStatement.
-	writeStatement --|> abstractStatement.
-	writeStatement --|> tWithIOParameters.
+	writeStatement --|> abstractIOStatement.
 	writeStatement --|> tWithArguments.
 
 
@@ -650,7 +646,7 @@ FASTFortranGenerator >> defineRelations [
 	(tVariableGroup property: #variables)
 	-* (variable property: #parentVariableGroup).
 
-	((tWithIOParameters property: #ioParameters) comment: 'I represent a statement with IO-parameters (read or write)')
+	((abstractIOStatement property: #ioParameters) comment: 'IO-Parameters of an IO-statement (READ, WRITE...)')
 	<>-* (tIOParameter property: #parentIOStatement).
 
 	tWithVariableGroup <>-* tVariableGroup.
@@ -781,6 +777,10 @@ FASTFortranGenerator >> defineStatements [
 	abstractStatement := builder
 		                   newClassNamed: #AbstractStatement
 		                   comment: 'I am the super class of all Fortran statements'.
+
+	abstractIOStatement := builder
+		newClassNamed: #AbstractIOStatement
+		comment: 'I am the abstract superclass of all IO-statements (READ, WRITE, CLOSE, ENCODE...)'.
 
 	acceptStatement := builder
 		                   newClassNamed: #AcceptStatement
@@ -1007,8 +1007,6 @@ FASTFortranGenerator >> defineTraits [
 	tVariableDeclarator := builder newTraitNamed: #TVariableDeclarator comment: 'I represent a variable declarator: variable declared + optional initial value'.
 
 	tVariableGroup := builder newTraitNamed: #TVariableGroup comment: 'I represent an entity with several variables like in a DataStatement or an EquivalenceStatement'.
-
-	tWithIOParameters := builder newTraitNamed: #TWithIOParameters.
 
 	tWithLoopControl := builder newTraitNamed: #TWithLoopControl comment: 'I represent a loop control: initialization/limit/increment'.
  

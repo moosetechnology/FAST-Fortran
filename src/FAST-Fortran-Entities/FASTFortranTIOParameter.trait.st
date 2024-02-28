@@ -7,7 +7,7 @@ I represent a parameter to an IO-statement (read or write)
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parentIOStatement` | `FASTFortranTIOParameter` | `ioParameters` | `FASTFortranTWithIOParameters` | |
+| `parentIOStatement` | `FASTFortranTIOParameter` | `ioParameters` | `FASTFortranAbstractIOStatement` | |
 
 
 
@@ -15,7 +15,7 @@ I represent a parameter to an IO-statement (read or write)
 Trait {
 	#name : #FASTFortranTIOParameter,
 	#instVars : [
-		'#parentIOStatement => FMOne type: #FASTFortranTWithIOParameters opposite: #ioParameters'
+		'#parentIOStatement => FMOne type: #FASTFortranAbstractIOStatement opposite: #ioParameters'
 	],
 	#category : #'FAST-Fortran-Entities-Traits'
 }
@@ -31,7 +31,7 @@ FASTFortranTIOParameter classSide >> annotation [
 
 { #category : #accessing }
 FASTFortranTIOParameter >> parentIOStatement [
-	"Relation named: #parentIOStatement type: #FASTFortranTWithIOParameters opposite: #ioParameters"
+	"Relation named: #parentIOStatement type: #FASTFortranAbstractIOStatement opposite: #ioParameters"
 
 	<generated>
 	<container>

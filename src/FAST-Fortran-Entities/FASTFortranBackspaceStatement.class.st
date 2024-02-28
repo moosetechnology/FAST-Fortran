@@ -5,14 +5,14 @@ I represent Fortran Backspace statement
 "
 Class {
 	#name : #FASTFortranBackspaceStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#superclass : #FASTFortranAbstractIOStatement,
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
 { #category : #meta }
 FASTFortranBackspaceStatement class >> annotation [
 
-	<FMClass: #BackspaceStatement super: #FASTFortranAbstractStatement>
+	<FMClass: #BackspaceStatement super: #FASTFortranAbstractIOStatement>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
