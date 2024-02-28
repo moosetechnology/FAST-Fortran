@@ -12,12 +12,8 @@ I represent a Fortran Data group in a Data statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `variables` | `FASTFortranTVariableGroup` | `parentVariableGroup` | `FASTFortranVariable` | |
-
-### Other
-| Relation | Origin | Opposite | Type | Comment |
-|---|
 | `dataConstants` | `FASTFortranDataGroup` | `parentDataStatement` | `FASTFortranTExpression` | |
+| `variables` | `FASTFortranTVariableGroup` | `parentVariableGroup` | `FASTFortranVariable` | |
 
 
 
@@ -62,4 +58,11 @@ FASTFortranDataGroup >> dataConstants: anObject [
 
 	<generated>
 	dataConstants value: anObject
+]
+
+{ #category : #navigation }
+FASTFortranDataGroup >> dataConstantsGroup [
+	<generated>
+	<navigation: 'DataConstants'>
+	^ MooseSpecializedGroup withAll: self dataConstants asSet
 ]
