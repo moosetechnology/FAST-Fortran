@@ -9,7 +9,7 @@ I represent an entity with several variables like in a DataStatement or an Equiv
 |---|
 | `withVariableGroups` | `FASTFortranTVariableGroup` | `variableGroups` | `FASTFortranTWithVariableGroups` | |
 
-### Other
+### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `variables` | `FASTFortranTVariableGroup` | `parentVariableGroup` | `FASTFortranVariable` | |
@@ -55,6 +55,13 @@ FASTFortranTVariableGroup >> variables: anObject [
 
 	<generated>
 	variables value: anObject
+]
+
+{ #category : #navigation }
+FASTFortranTVariableGroup >> variablesGroup [
+	<generated>
+	<navigation: 'Variables'>
+	^ MooseSpecializedGroup withAll: self variables asSet
 ]
 
 { #category : #accessing }

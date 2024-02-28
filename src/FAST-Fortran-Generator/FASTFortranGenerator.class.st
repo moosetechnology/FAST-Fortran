@@ -630,7 +630,7 @@ FASTFortranGenerator >> defineRelations [
 			comment: 'The variable declarator I am part of').
 
 	((arrayVariable property: #indices) comment: 'Indices used in the array access')
-	-* ((tExpression property: #parentArrayExpression) comment: 'an ArrayVariable expression of which I am an indice').
+	<>-* ((tExpression property: #parentArrayExpression) comment: 'an ArrayVariable expression of which I am an indice').
 
 	((commonStatement property: #groups) comment:
 		 'List common groups in this common statement')
@@ -644,7 +644,7 @@ FASTFortranGenerator >> defineRelations [
 	<>-* (tVariableEntity property: #parentImpliedExpression).
 
 	(tVariableGroup property: #variables)
-	-* (variable property: #parentVariableGroup).
+	<>-* (variable property: #parentVariableGroup).
 
 	((abstractIOStatement property: #ioParameters) comment: 'IO-Parameters of an IO-statement (READ, WRITE...)')
 	<>-* (tIOParameter property: #parentIOStatement).
@@ -686,7 +686,7 @@ FASTFortranGenerator >> defineRelations [
 	- (tExpression property: #parentGotoComputedStatement).
 
 	((goToAssignedStatement property: #selectorExpression) comment: 'The expression which value selects the label to go to')
-	- (tExpression property: #parentGotoAssignedStatement).
+	<>- (tExpression property: #parentGotoAssignedStatement).
 
 	((tConditionalStatement property: #condition) comment: 'Condition')
 	<>-

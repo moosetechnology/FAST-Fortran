@@ -8,14 +8,17 @@ An abstract superclass representing an expression node of a source code.
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `argumentOwner` | `FASTFortranTExpression` | `arguments` | `FASTFortranTWithArguments` | my owner|
+| `assignedIn` | `FASTFortranTExpression` | `expression` | `FASTFortranTAssignment` | Optional assignment where this expression is used|
 | `assignementExpressionOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranFunctionStatement` | The AssignementExpression owner (if possible)|
 | `expressionStatementOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTExpressionStatement` | The expression statement that own me (if it's the case|
-| `parentArrayDimensionDeclarator` | `FASTFortranTExpression` | `lowerBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
 | `parentArrayDimensionDeclarator` | `FASTFortranTExpression` | `upperBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
+| `parentArrayDimensionDeclarator` | `FASTFortranTExpression` | `lowerBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
+| `parentArrayExpression` | `FASTFortranTExpression` | `indices` | `FASTFortranArrayVariable` | an ArrayVariable expression of which I am an indice|
 | `parentConditionalStatement` | `FASTFortranTExpression` | `condition` | `FASTFortranTConditionalStatement` | Parent conditional statement (if-block, if-logical, ...)|
 | `parentExpression` | `FASTFortranTExpression` | `expression` | `FASTFortranTUnaryExpression` | Parent expression (if possible)|
 | `parentExpressionLeft` | `FASTFortranTExpression` | `left` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am left side|
 | `parentExpressionRight` | `FASTFortranTExpression` | `right` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am right side|
+| `parentGotoAssignedStatement` | `FASTFortranTExpression` | `selectorExpression` | `FASTFortranGoToAssignedStatement` | |
 | `parentLoopControlIncrement` | `FASTFortranTExpression` | `increment` | `FASTFortranLoopControlExpression` | |
 | `parentLoopControlLimit` | `FASTFortranTExpression` | `limit` | `FASTFortranLoopControlExpression` | |
 | `returnOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTReturnStatement` | The return statement that own the expression (if it's the case)|
@@ -24,10 +27,7 @@ An abstract superclass representing an expression node of a source code.
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `assignedIn` | `FASTFortranTExpression` | `expression` | `FASTFortranTAssignment` | Optional assignment where this expression is used|
-| `parentArrayExpression` | `FASTFortranTExpression` | `indices` | `FASTFortranArrayVariable` | an ArrayVariable expression of which I am an indice|
 | `parentDataStatement` | `FASTFortranTExpression` | `dataConstants` | `FASTFortranDataGroup` | |
-| `parentGotoAssignedStatement` | `FASTFortranTExpression` | `selectorExpression` | `FASTFortranGoToAssignedStatement` | |
 | `parentGotoComputedStatement` | `FASTFortranTExpression` | `selectorExpression` | `FASTFortranGoToComputedStatement` | |
 
 
@@ -105,6 +105,7 @@ FASTFortranTExpression >> assignedIn [
 
 	<generated>
 	<FMComment: 'Optional assignment where this expression is used'>
+	<container>
 	<derived>
 	^ assignedIn
 ]
@@ -114,6 +115,13 @@ FASTFortranTExpression >> assignedIn: anObject [
 
 	<generated>
 	assignedIn := anObject
+]
+
+{ #category : #navigation }
+FASTFortranTExpression >> assignedInGroup [
+	<generated>
+	<navigation: 'AssignedIn'>
+	^ MooseSpecializedGroup with: self assignedIn
 ]
 
 { #category : #accessing }
@@ -197,6 +205,7 @@ FASTFortranTExpression >> parentArrayExpression [
 
 	<generated>
 	<FMComment: 'an ArrayVariable expression of which I am an indice'>
+	<container>
 	^ parentArrayExpression
 ]
 
@@ -205,6 +214,13 @@ FASTFortranTExpression >> parentArrayExpression: anObject [
 
 	<generated>
 	parentArrayExpression := anObject
+]
+
+{ #category : #navigation }
+FASTFortranTExpression >> parentArrayExpressionGroup [
+	<generated>
+	<navigation: 'ParentArrayExpression'>
+	^ MooseSpecializedGroup with: self parentArrayExpression
 ]
 
 { #category : #accessing }
@@ -327,6 +343,7 @@ FASTFortranTExpression >> parentGotoAssignedStatement [
 	"Relation named: #parentGotoAssignedStatement type: #FASTFortranGoToAssignedStatement opposite: #selectorExpression"
 
 	<generated>
+	<container>
 	<derived>
 	^ parentGotoAssignedStatement
 ]
@@ -336,6 +353,13 @@ FASTFortranTExpression >> parentGotoAssignedStatement: anObject [
 
 	<generated>
 	parentGotoAssignedStatement := anObject
+]
+
+{ #category : #navigation }
+FASTFortranTExpression >> parentGotoAssignedStatementGroup [
+	<generated>
+	<navigation: 'ParentGotoAssignedStatement'>
+	^ MooseSpecializedGroup with: self parentGotoAssignedStatement
 ]
 
 { #category : #accessing }

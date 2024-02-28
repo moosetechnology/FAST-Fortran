@@ -4,7 +4,7 @@ I represent Fortran External statement
 ## Relations
 ======================
 
-### Other
+### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|

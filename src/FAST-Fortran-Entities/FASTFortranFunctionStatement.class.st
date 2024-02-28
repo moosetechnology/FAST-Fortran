@@ -4,16 +4,16 @@ I represent a function statement - a function-like declaration, made in a single
 ## Relations
 ======================
 
+### Parents
+| Relation | Origin | Opposite | Type | Comment |
+|---|
+| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
+
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `arguments` | `FASTFortranTWithArguments` | `argumentOwner` | `FASTFortranTExpression` | My arguments|
 | `expression` | `FASTFortranFunctionStatement` | `assignementExpressionOwner` | `FASTFortranTExpression` | Expression thats being assigned upon declaration to the var|
-
-### Other
-| Relation | Origin | Opposite | Type | Comment |
-|---|
-| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
 
 
 ## Properties

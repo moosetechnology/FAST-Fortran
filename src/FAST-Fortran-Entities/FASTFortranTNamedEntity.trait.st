@@ -4,7 +4,7 @@ A entity with a name
 ## Relations
 ======================
 
-### Other
+### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
@@ -46,6 +46,7 @@ FASTFortranTNamedEntity >> invokedIn [
 
 	<generated>
 	<FMComment: 'Optional invocation where this name is used'>
+	<container>
 	<derived>
 	^ invokedIn
 ]
@@ -55,6 +56,13 @@ FASTFortranTNamedEntity >> invokedIn: anObject [
 
 	<generated>
 	invokedIn := anObject
+]
+
+{ #category : #navigation }
+FASTFortranTNamedEntity >> invokedInGroup [
+	<generated>
+	<navigation: 'InvokedIn'>
+	^ MooseSpecializedGroup with: self invokedIn
 ]
 
 { #category : #accessing }

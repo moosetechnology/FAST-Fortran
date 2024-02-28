@@ -4,7 +4,7 @@ An array Fortran Variable, accessed in the code
 ## Relations
 ======================
 
-### Other
+### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `indices` | `FASTFortranArrayVariable` | `parentArrayExpression` | `FASTFortranTExpression` | Indices used in the array access|
@@ -51,4 +51,11 @@ FASTFortranArrayVariable >> indices: anObject [
 
 	<generated>
 	indices value: anObject
+]
+
+{ #category : #navigation }
+FASTFortranArrayVariable >> indicesGroup [
+	<generated>
+	<navigation: 'Indices'>
+	^ MooseSpecializedGroup withAll: self indices asSet
 ]

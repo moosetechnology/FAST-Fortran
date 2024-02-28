@@ -7,17 +7,13 @@ I represent Common group inside a Common statement
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
+| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
 | `parentCommonStatement` | `FASTFortranCommonGroup` | `groups` | `FASTFortranCommonStatement` | Parent common statement I belong to|
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `declarators` | `FASTFortranTWithDeclarators` | `parentDeclaration` | `FASTFortranTVariableDeclarator` | variables declared|
-
-### Other
-| Relation | Origin | Opposite | Type | Comment |
-|---|
-| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
 
 
 ## Properties
