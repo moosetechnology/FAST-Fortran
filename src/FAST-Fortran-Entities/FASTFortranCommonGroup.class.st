@@ -17,7 +17,7 @@ I represent Common group inside a Common statement
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `invokedIn` | `FASTTNamedEntity` | `invoked` | `FASTTInvocation` | Optional invocation where this name is used|
+| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
 
 
 ## Properties
@@ -33,8 +33,8 @@ I represent Common group inside a Common statement
 Class {
 	#name : #FASTFortranCommonGroup,
 	#superclass : #FASTFortranEntity,
-	#traits : 'FASTFortranTWithDeclarators + FASTTNamedEntity',
-	#classTraits : 'FASTFortranTWithDeclarators classTrait + FASTTNamedEntity classTrait',
+	#traits : 'FASTFortranTNamedEntity + FASTFortranTWithDeclarators',
+	#classTraits : 'FASTFortranTNamedEntity classTrait + FASTFortranTWithDeclarators classTrait',
 	#instVars : [
 		'#parentCommonStatement => FMOne type: #FASTFortranCommonStatement opposite: #groups'
 	],

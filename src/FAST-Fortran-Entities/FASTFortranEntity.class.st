@@ -1,6 +1,20 @@
+"
+any entity
+
+## Properties
+======================
+
+| Name | Type | Default value | Comment |
+|---|
+| `endPos` | `Number` | nil | |
+| `startPos` | `Number` | nil | |
+
+"
 Class {
 	#name : #FASTFortranEntity,
 	#superclass : #MooseEntity,
+	#traits : 'FASTFortranTEntity',
+	#classTraits : 'FASTFortranTEntity classTrait',
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 

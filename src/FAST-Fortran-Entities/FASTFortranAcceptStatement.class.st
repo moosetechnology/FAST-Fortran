@@ -7,8 +7,8 @@ I represent Fortran accept statement
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parentIfStatement` | `FASTTStatement` | `statement` | `FASTFortranIfLogicalStatement` | Parent if statement|
-| `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
+| `parentIfStatement` | `FASTFortranTStatement` | `statement` | `FASTFortranIfLogicalStatement` | Parent if statement|
+| `statementContainer` | `FASTFortranTStatement` | `statements` | `FASTFortranTStatementBlock` | Block containing this statement.|
 
 
 ## Properties
@@ -24,8 +24,8 @@ I represent Fortran accept statement
 Class {
 	#name : #FASTFortranAcceptStatement,
 	#superclass : #FASTFortranEntity,
-	#traits : 'FASTTStatement',
-	#classTraits : 'FASTTStatement classTrait',
+	#traits : 'FASTFortranTStatement',
+	#classTraits : 'FASTFortranTStatement classTrait',
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 

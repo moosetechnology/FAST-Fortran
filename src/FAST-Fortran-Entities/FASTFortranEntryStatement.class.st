@@ -12,7 +12,7 @@ I represent Fortran Entry statement
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `invokedIn` | `FASTTNamedEntity` | `invoked` | `FASTTInvocation` | Optional invocation where this name is used|
+| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
 
 
 ## Properties
@@ -28,8 +28,8 @@ I represent Fortran Entry statement
 Class {
 	#name : #FASTFortranEntryStatement,
 	#superclass : #FASTFortranAbstractStatement,
-	#traits : 'FASTTNamedEntity',
-	#classTraits : 'FASTTNamedEntity classTrait',
+	#traits : 'FASTFortranTNamedEntity',
+	#classTraits : 'FASTFortranTNamedEntity classTrait',
 	#instVars : [
 		'#entryArguments => FMMany type: #FASTFortranTEntryStatement opposite: #entryStatement'
 	],

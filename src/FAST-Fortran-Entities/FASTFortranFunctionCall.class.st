@@ -7,7 +7,7 @@ I represent a call to a function (or function statement)
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `arguments` | `FASTTWithArguments` | `argumentOwner` | `FASTTExpression` | My arguments|
+| `arguments` | `FASTFortranTWithArguments` | `argumentOwner` | `FASTFortranTExpression` | My arguments|
 
 
 ## Properties
@@ -21,8 +21,8 @@ I represent a call to a function (or function statement)
 Class {
 	#name : #FASTFortranFunctionCall,
 	#superclass : #FASTFortranAbstractExpression,
-	#traits : 'FASTTWithArguments',
-	#classTraits : 'FASTTWithArguments classTrait',
+	#traits : 'FASTFortranTWithArguments',
+	#classTraits : 'FASTFortranTWithArguments classTrait',
 	#instVars : [
 		'#name => FMProperty'
 	],

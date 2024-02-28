@@ -12,14 +12,14 @@ A fortran program unit is a sequence of statements, terminated by an END stateme
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parameters` | `FASTTWithParameters` | `parameterOwner` | `FASTTVariableEntity` | My parameters|
-| `statementBlock` | `FASTTBehaviouralEntity` | `fastBehaviouralParent` | `FASTTStatementBlock` | Statements block of the behavioural entity|
+| `parameters` | `FASTFortranTWithParameters` | `parameterOwner` | `FASTFortranTVariableEntity` | My parameters|
+| `statementBlock` | `FASTFortranTBehaviouralEntity` | `fastBehaviouralParent` | `FASTFortranTStatementBlock` | Statements block of the behavioural entity|
 
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `comments` | `FASTTWithComments` | `container` | `FASTTComment` | list of comments defined in the entity|
-| `invokedIn` | `FASTTNamedEntity` | `invoked` | `FASTTInvocation` | Optional invocation where this name is used|
+| `comments` | `FASTFortranTWithComments` | `container` | `FASTFortranTComment` | list of comments defined in the entity|
+| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
 
 
 ## Properties
@@ -35,8 +35,8 @@ A fortran program unit is a sequence of statements, terminated by an END stateme
 Class {
 	#name : #FASTFortranProgramUnit,
 	#superclass : #FASTFortranEntity,
-	#traits : 'FASTTBehaviouralEntity + FASTTEntity + FASTTNamedEntity + FASTTWithComments',
-	#classTraits : 'FASTTBehaviouralEntity classTrait + FASTTEntity classTrait + FASTTNamedEntity classTrait + FASTTWithComments classTrait',
+	#traits : 'FASTFortranTBehaviouralEntity + FASTFortranTEntity + FASTFortranTNamedEntity + FASTFortranTWithComments',
+	#classTraits : 'FASTFortranTBehaviouralEntity classTrait + FASTFortranTEntity classTrait + FASTFortranTNamedEntity classTrait + FASTFortranTWithComments classTrait',
 	#instVars : [
 		'#parentProgramFile => FMOne type: #FASTFortranProgramFile opposite: #programUnit'
 	],

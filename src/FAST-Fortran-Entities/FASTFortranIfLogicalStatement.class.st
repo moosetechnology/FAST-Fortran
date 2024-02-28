@@ -7,8 +7,8 @@ The logical IF statement executes one single statement, or does not execute it, 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `condition` | `FASTFortranTConditionalStatement` | `parentConditionalStatement` | `FASTTExpression` | Condition|
-| `statement` | `FASTFortranIfLogicalStatement` | `parentIfStatement` | `FASTTStatement` | Statement of the logical if|
+| `condition` | `FASTFortranTConditionalStatement` | `parentConditionalStatement` | `FASTFortranTExpression` | Condition|
+| `statement` | `FASTFortranIfLogicalStatement` | `parentIfStatement` | `FASTFortranTStatement` | Statement of the logical if|
 
 
 
@@ -18,6 +18,9 @@ Class {
 	#superclass : #FASTFortranAbstractStatement,
 	#traits : 'FASTFortranTConditionalStatement',
 	#classTraits : 'FASTFortranTConditionalStatement classTrait',
+	#instVars : [
+		'#statement => FMOne type: #FASTFortranTStatement opposite: #parentIfStatement'
+	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
@@ -32,26 +35,18 @@ FASTFortranIfLogicalStatement class >> annotation [
 
 { #category : #accessing }
 FASTFortranIfLogicalStatement >> statement [
-	"Relation named: #statement type: #FASTTStatement opposite: #parentIfStatement"
+	"Relation named: #statement type: #FASTFortranTStatement opposite: #parentIfStatement"
 
 	<generated>
 	<FMComment: 'Statement of the logical if'>
-	<FMProperty: #statement type: #FASTTStatement opposite: #parentIfStatement>
-	^ self attributeAt: #statement ifAbsent: [ nil ]
+	^ statement
 ]
 
 { #category : #accessing }
 FASTFortranIfLogicalStatement >> statement: anObject [
 
 	<generated>
-	(self attributeAt: #statement ifAbsentPut: [nil]) == anObject ifTrue: [ ^ anObject ].
-	anObject ifNil: [ | otherSide |
-		otherSide :=  self statement.
-		self attributeAt: #statement put: anObject.
-		otherSide parentIfStatement: nil ]
-	ifNotNil: [ 
-		self attributeAt: #statement put: anObject.
-		anObject parentIfStatement: self ]
+	statement := anObject
 ]
 
 { #category : #navigation }
