@@ -638,7 +638,7 @@ FASTFortranGenerator >> defineRelations [
 			 'Parent common statement I belong to').
 
 	(dataGroup property: #dataConstants)
-	-* (tExpression property: #parentDataStatement).
+	<>-* (tExpression property: #parentDataStatement).
 
 	(impliedDoExpression property: #variables)
 	<>-* (tVariableEntity property: #parentImpliedExpression).
@@ -683,7 +683,7 @@ FASTFortranGenerator >> defineRelations [
 			 'The AssignementExpression owner (if possible)').
 
 	((goToComputed property: #selectorExpression) comment: 'The expression which value selects the label to go to')
-	- (tExpression property: #parentGotoComputedStatement).
+	<>- (tExpression property: #parentGotoComputedStatement).
 
 	((goToAssignedStatement property: #selectorExpression) comment: 'The expression which value selects the label to go to')
 	<>- (tExpression property: #parentGotoAssignedStatement).
