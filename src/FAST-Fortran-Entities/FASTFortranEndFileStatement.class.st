@@ -5,14 +5,14 @@ I represent Fortran End File statement
 "
 Class {
 	#name : #FASTFortranEndFileStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#superclass : #FASTFortranAbstractIOStatement,
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
 { #category : #meta }
 FASTFortranEndFileStatement class >> annotation [
 
-	<FMClass: #EndFileStatement super: #FASTFortranAbstractStatement>
+	<FMClass: #EndFileStatement super: #FASTFortranAbstractIOStatement>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
