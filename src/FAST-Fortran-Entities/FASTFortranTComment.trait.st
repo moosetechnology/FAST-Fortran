@@ -4,7 +4,7 @@ FASTComment represents one instance of a comment (in the sense of programming la
 ## Relations
 ======================
 
-### Other
+### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `container` | `FASTFortranTComment` | `comments` | `FASTFortranTWithComments` | Source code entity containing the comment|
@@ -42,6 +42,7 @@ FASTFortranTComment >> container [
 
 	<generated>
 	<FMComment: 'Source code entity containing the comment'>
+	<container>
 	^ container
 ]
 
@@ -50,6 +51,13 @@ FASTFortranTComment >> container: anObject [
 
 	<generated>
 	container := anObject
+]
+
+{ #category : #navigation }
+FASTFortranTComment >> containerGroup [
+	<generated>
+	<navigation: 'Container'>
+	^ MooseSpecializedGroup with: self container
 ]
 
 { #category : #accessing }
