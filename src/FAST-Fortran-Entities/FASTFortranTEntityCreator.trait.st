@@ -26,6 +26,13 @@ FASTFortranTEntityCreator >> newAbstractExpression [
 ]
 
 { #category : #'entity creation' }
+FASTFortranTEntityCreator >> newAbstractIOStatement [
+
+	<generated>
+	^ self add: FASTFortranAbstractIOStatement new
+]
+
+{ #category : #'entity creation' }
 FASTFortranTEntityCreator >> newAbstractLiteral [
 
 	<generated>

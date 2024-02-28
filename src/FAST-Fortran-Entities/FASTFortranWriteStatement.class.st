@@ -8,23 +8,22 @@ I represent Fortran Write statement
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `arguments` | `FASTFortranTWithArguments` | `argumentOwner` | `FASTFortranTExpression` | My arguments|
-| `ioParameters` | `FASTFortranTWithIOParameters` | `parentIOStatement` | `FASTFortranTIOParameter` | I represent a statement with IO-parameters (read or write)|
 
 
 
 "
 Class {
 	#name : #FASTFortranWriteStatement,
-	#superclass : #FASTFortranAbstractStatement,
-	#traits : 'FASTFortranTWithArguments + FASTFortranTWithIOParameters',
-	#classTraits : 'FASTFortranTWithArguments classTrait + FASTFortranTWithIOParameters classTrait',
+	#superclass : #FASTFortranAbstractIOStatement,
+	#traits : 'FASTFortranTWithArguments',
+	#classTraits : 'FASTFortranTWithArguments classTrait',
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
 { #category : #meta }
 FASTFortranWriteStatement class >> annotation [
 
-	<FMClass: #WriteStatement super: #FASTFortranAbstractStatement>
+	<FMClass: #WriteStatement super: #FASTFortranAbstractIOStatement>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
