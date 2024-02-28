@@ -8,10 +8,6 @@ I represent Fortran Go To( Assigned) statement
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `labelReferences` | `FASTFortranTWithLabelReferences` | `referencer` | `FASTFortranLabelReference` | the label(s) referenced|
-
-### Other
-| Relation | Origin | Opposite | Type | Comment |
-|---|
 | `selectorExpression` | `FASTFortranGoToAssignedStatement` | `parentGotoAssignedStatement` | `FASTFortranTExpression` | The expression which value selects the label to go to|
 
 
@@ -51,4 +47,11 @@ FASTFortranGoToAssignedStatement >> selectorExpression: anObject [
 
 	<generated>
 	selectorExpression := anObject
+]
+
+{ #category : #navigation }
+FASTFortranGoToAssignedStatement >> selectorExpressionGroup [
+	<generated>
+	<navigation: 'SelectorExpression'>
+	^ MooseSpecializedGroup with: self selectorExpression
 ]

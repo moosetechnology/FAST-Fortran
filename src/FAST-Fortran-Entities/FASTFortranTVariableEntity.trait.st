@@ -7,14 +7,10 @@ A node for variable name not in a expression (example: assigned variable or para
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parameterOwner` | `FASTFortranTVariableEntity` | `parameters` | `FASTFortranTWithParameters` | parameterOwner|
-| `parentImpliedExpression` | `FASTFortranTVariableEntity` | `variables` | `FASTFortranImpliedDoExpression` | |
-
-### Other
-| Relation | Origin | Opposite | Type | Comment |
-|---|
 | `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
+| `parameterOwner` | `FASTFortranTVariableEntity` | `parameters` | `FASTFortranTWithParameters` | parameterOwner|
 | `parentAssignmentExpression` | `FASTFortranTVariableEntity` | `variable` | `FASTFortranTAssignment` | Optional assignment to the variable|
+| `parentImpliedExpression` | `FASTFortranTVariableEntity` | `variables` | `FASTFortranImpliedDoExpression` | |
 
 
 ## Properties
@@ -78,6 +74,7 @@ FASTFortranTVariableEntity >> parentAssignmentExpression [
 
 	<generated>
 	<FMComment: 'Optional assignment to the variable'>
+	<container>
 	<derived>
 	^ parentAssignmentExpression
 ]
@@ -87,6 +84,13 @@ FASTFortranTVariableEntity >> parentAssignmentExpression: anObject [
 
 	<generated>
 	parentAssignmentExpression := anObject
+]
+
+{ #category : #navigation }
+FASTFortranTVariableEntity >> parentAssignmentExpressionGroup [
+	<generated>
+	<navigation: 'ParentAssignmentExpression'>
+	^ MooseSpecializedGroup with: self parentAssignmentExpression
 ]
 
 { #category : #accessing }
