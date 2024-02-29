@@ -21,7 +21,7 @@ a Fortran Return Statement
 
 | Name | Type | Default value | Comment |
 |---|
-| `alternateReturnLable` | `String` | nil | Optional. Expression of type INTEGER or REAL|
+| `alternateReturnLabel` | `String` | nil | Optional. Expression of type INTEGER or REAL|
 | `endPos` | `Number` | nil | |
 | `label` | `String` | nil | Determines the statement label which consists of 1 to 5 digits, with at least one nonzero|
 | `startPos` | `Number` | nil | |
@@ -33,7 +33,7 @@ Class {
 	#traits : 'FASTFortranTReturnStatement',
 	#classTraits : 'FASTFortranTReturnStatement classTrait',
 	#instVars : [
-		'#alternateReturnLable => FMProperty'
+		'#alternateReturnLabel => FMProperty'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
@@ -48,16 +48,16 @@ FASTFortranReturnStatement class >> annotation [
 ]
 
 { #category : #accessing }
-FASTFortranReturnStatement >> alternateReturnLable [
+FASTFortranReturnStatement >> alternateReturnLabel [
 
-	<FMProperty: #alternateReturnLable type: #String>
+	<FMProperty: #alternateReturnLabel type: #String>
 	<generated>
 	<FMComment: 'Optional. Expression of type INTEGER or REAL'>
-	^ alternateReturnLable
+	^ alternateReturnLabel
 ]
 
 { #category : #accessing }
-FASTFortranReturnStatement >> alternateReturnLable: anObject [
+FASTFortranReturnStatement >> alternateReturnLabel: anObject [
 	<generated>
-	alternateReturnLable := anObject
+	alternateReturnLabel := anObject
 ]
