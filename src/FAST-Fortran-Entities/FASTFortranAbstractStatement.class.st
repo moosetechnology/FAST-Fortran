@@ -7,7 +7,7 @@ I am the super class of all Fortran statements
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parentIfStatement` | `FASTFortranTStatement` | `statement` | `FASTFortranIfLogicalStatement` | Parent if statement|
+| `parentIfStatement` | `FASTFortranAbstractStatement` | `statement` | `FASTFortranIfLogicalStatement` | Parent if statement|
 | `statementContainer` | `FASTFortranTStatement` | `statements` | `FASTFortranTStatementBlock` | Block containing this statement.|
 
 
@@ -26,6 +26,10 @@ Class {
 	#superclass : #FASTFortranEntity,
 	#traits : 'FASTFortranTStatement',
 	#classTraits : 'FASTFortranTStatement classTrait',
+	#instVars : [
+		'#label => FMProperty',
+		'#parentIfStatement => FMOne type: #FASTFortranIfLogicalStatement opposite: #statement'
+	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
@@ -36,4 +40,44 @@ FASTFortranAbstractStatement class >> annotation [
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
+]
+
+{ #category : #accessing }
+FASTFortranAbstractStatement >> label [
+
+	<FMProperty: #label type: #String>
+	<generated>
+	<FMComment: 'Determines the statement label which consists of 1 to 5 digits, with at least one nonzero'>
+	^ label
+]
+
+{ #category : #accessing }
+FASTFortranAbstractStatement >> label: anObject [
+	<generated>
+	label := anObject
+]
+
+{ #category : #accessing }
+FASTFortranAbstractStatement >> parentIfStatement [
+	"Relation named: #parentIfStatement type: #FASTFortranIfLogicalStatement opposite: #statement"
+
+	<generated>
+	<FMComment: 'Parent if statement'>
+	<container>
+	<derived>
+	^ parentIfStatement
+]
+
+{ #category : #accessing }
+FASTFortranAbstractStatement >> parentIfStatement: anObject [
+
+	<generated>
+	parentIfStatement := anObject
+]
+
+{ #category : #navigation }
+FASTFortranAbstractStatement >> parentIfStatementGroup [
+	<generated>
+	<navigation: 'ParentIfStatement'>
+	^ MooseSpecializedGroup with: self parentIfStatement
 ]

@@ -7,7 +7,6 @@ a Fortran Return Statement
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parentIfStatement` | `FASTFortranTStatement` | `statement` | `FASTFortranIfLogicalStatement` | Parent if statement|
 | `statementContainer` | `FASTFortranTStatement` | `statements` | `FASTFortranTStatementBlock` | Block containing this statement.|
 
 ### Children
@@ -23,7 +22,6 @@ a Fortran Return Statement
 |---|
 | `alternateReturnLabel` | `String` | nil | Optional. Expression of type INTEGER or REAL|
 | `endPos` | `Number` | nil | |
-| `label` | `String` | nil | Determines the statement label which consists of 1 to 5 digits, with at least one nonzero|
 | `startPos` | `Number` | nil | |
 
 "

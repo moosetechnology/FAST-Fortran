@@ -8,7 +8,7 @@ The logical IF statement executes one single statement, or does not execute it, 
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `condition` | `FASTFortranTConditionalStatement` | `parentConditionalStatement` | `FASTFortranAbstractExpression` | Condition|
-| `statement` | `FASTFortranIfLogicalStatement` | `parentIfStatement` | `FASTFortranTStatement` | Statement of the logical if|
+| `statement` | `FASTFortranIfLogicalStatement` | `parentIfStatement` | `FASTFortranAbstractStatement` | Statement of the logical if|
 
 
 
@@ -19,7 +19,7 @@ Class {
 	#traits : 'FASTFortranTConditionalStatement',
 	#classTraits : 'FASTFortranTConditionalStatement classTrait',
 	#instVars : [
-		'#statement => FMOne type: #FASTFortranTStatement opposite: #parentIfStatement'
+		'#statement => FMOne type: #FASTFortranAbstractStatement opposite: #parentIfStatement'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
@@ -35,7 +35,7 @@ FASTFortranIfLogicalStatement class >> annotation [
 
 { #category : #accessing }
 FASTFortranIfLogicalStatement >> statement [
-	"Relation named: #statement type: #FASTFortranTStatement opposite: #parentIfStatement"
+	"Relation named: #statement type: #FASTFortranAbstractStatement opposite: #parentIfStatement"
 
 	<generated>
 	<FMComment: 'Statement of the logical if'>
