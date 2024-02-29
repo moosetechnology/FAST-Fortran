@@ -415,7 +415,7 @@ FASTFortranGenerator >> defineHierarchy [
 	"FORTRAN STATEMENTS"
 	abstractStatement --|> tStatement.
 	abstractIOStatement --|> abstractStatement.
-	acceptStatement  --|> tStatement.
+	acceptStatement  --|> abstractStatement.
 	assignmentStatement --|> abstractStatement.
 	assignmentStatement --|> tAssignment.
 	automaticStatement --|> abstractStatement.
@@ -593,7 +593,7 @@ FASTFortranGenerator >> defineProperties [
 	(tBinaryExpression property: #operator type: #String) comment:
 		'Binary expression operator'.
 
-	(tStatement property: #label type: #String) comment:
+	(abstractStatement property: #label type: #String) comment:
 		'Determines the statement label which consists of 1 to 5 digits, with at least one nonzero'.
 
 	(tUnaryExpression property: #operator type: #String) comment:
@@ -685,7 +685,7 @@ FASTFortranGenerator >> defineRelations [
 
 	((ifLogicalStatement property: #statement) comment:
 		 'Statement of the logical if')
-	<>- ((tStatement property: #parentIfStatement) comment: 'Parent if statement').
+	<>- ((abstractStatement property: #parentIfStatement) comment: 'Parent if statement').
 
 	((ifBlockStatement property: #thenStatementBlock) comment:
 		 'Statement block containing statements of then branch ')
