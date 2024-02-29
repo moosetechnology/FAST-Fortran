@@ -11,7 +11,6 @@ A block of statements as ones in C-like langs with {}
 | `parentDoStatement` | `FASTFortranTStatementBlock` | `statementBlock` | `FASTFortranDoStatement` | Parent do statement|
 | `parentIfBlock` | `FASTFortranTStatementBlock` | `elseStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
 | `parentIfBlock` | `FASTFortranTStatementBlock` | `thenStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
-| `parentIfStatement` | `FASTFortranTStatement` | `statement` | `FASTFortranIfLogicalStatement` | Parent if statement|
 | `statementContainer` | `FASTFortranTStatement` | `statements` | `FASTFortranTStatementBlock` | Block containing this statement.|
 
 ### Children
@@ -26,7 +25,6 @@ A block of statements as ones in C-like langs with {}
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
-| `label` | `String` | nil | Determines the statement label which consists of 1 to 5 digits, with at least one nonzero|
 | `startPos` | `Number` | nil | |
 
 "
