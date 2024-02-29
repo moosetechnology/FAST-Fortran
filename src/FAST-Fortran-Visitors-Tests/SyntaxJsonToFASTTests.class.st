@@ -4122,12 +4122,12 @@ SyntaxJsonToFASTTests >> testDataStatement [
                         "line": "2",
                         "column": "7"
                     },
-                    "parameters": [
+                    "data_parameters": [
                         {
                             "nlist": [
                                 {
                                     "tag": "symbolic_name",
-                                    "start_pos": {
+                                   "start_pos": {
                                         "line": "2",
                                         "column": "12"
                                     },
@@ -4204,6 +4204,116 @@ SyntaxJsonToFASTTests >> testDataStatement [
 =======
 	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:47)","statement":{"anno":[],"data_groups":{"anno":[],"list":[{"anno":[],"initializers":{"anno":[],"list":[{"anno":[],"span":"(2:31)-(2:36)","tag":"value","value":{"contents":"Blah","tag":"string"}},{"anno":[],"span":"(2:40)-(2:45)","tag":"value","value":{"contents":"Deux","tag":"string"}}],"span":"(2:31)-(2:45)"},"names":{"anno":[],"list":[{"anno":[],"span":"(2:12)-(2:18)","tag":"value","value":{"contents":"chaine1","tag":"variable"}},{"anno":[],"span":"(2:21)-(2:27)","tag":"value","value":{"contents":"chaine2","tag":"variable"}}],"span":"(2:12)-(2:27)"},"span":"(2:12)-(2:47)"},{"anno":[],"initializers":{"anno":[],"list":[{"anno":[],"span":"(2:61)-(2:68)","tag":"value","value":{"contents":"Encore","tag":"string"}}],"span":"(2:61)-(2:68)"},"names":{"anno":[],"list":[{"anno":[],"span":"(2:51)-(2:57)","tag":"value","value":{"contents":"chaine3","tag":"variable"}}],"span":"(2:51)-(2:57)"},"span":"(2:51)-(2:70)"}],"span":"(2:12)-(2:70)"},"span":"(2:7)-(2:47)","tag":"data"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
 >>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranDataStatement.
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 95.
+
+	self assert: stmt variableGroups size equals: 2.
+
+	dataGroup := stmt variableGroups first.
+	self assert: dataGroup variables size equals: 2.
+	self assert: dataGroup variables first class equals: FASTFortranScalarVariable.
+	self assert: dataGroup variables first name equals: 'chaine1'.
+	self assert: dataGroup variables first startPos equals: 37.
+
+	self assert: dataGroup dataConstants size equals: 2.
+	self assert: dataGroup dataConstants first class equals: FASTFortranCharacterLiteral.
+	self assert: dataGroup dataConstants first primitiveValue equals: 'Blah'.
+	self assert: dataGroup dataConstants first startPos equals: 56.
+
+	dataGroup := stmt variableGroups second.
+	self assert: dataGroup variables size equals: 1.
+	self assert: dataGroup variables first class equals: FASTFortranScalarVariable.
+	self assert: dataGroup variables first name equals: 'chaine3'.
+	self assert: dataGroup variables first startPos equals: 76.
+
+	self assert: dataGroup dataConstants size equals: 1.
+	self assert: dataGroup dataConstants first class equals: FASTFortranCharacterLiteral.
+	self assert: dataGroup dataConstants first primitiveValue equals: 'Encore'.
+	self assert: dataGroup dataConstants first startPos equals: 86.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDataStatementOccurence [
+
+	| result stmt dataGroup |
+	fortranCode := '       DATA VEC /3*9.0/
+       END
+'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/data-occurence.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": "null",
+				"parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "8"
+            },
+            "end_pos": {
+                "line": "2",
+                "column": "10"
+            },
+            "statement_list": [
+                {
+                    "tag": "data_statement",
+                    "start_pos": {
+                        "line": "1",
+                        "column": "8"
+                    },
+                    "data_parameters": [
+                        {
+                            "nlist": [
+                                {
+                                    "tag": "variable_declarator",
+                                    "variable": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "1",
+                                            "column": "13"
+                                        },
+                                        "name": "VEC"
+                                    },
+                                    "dimension_declarators": []
+                                }
+                            ],
+                            "clist": [
+                                {
+                                    "tag": "data_statement_constant",
+                                    "occurence": {
+                                        "tag": "nonzero_unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "1",
+                                            "column": "18"
+                                        },
+                                        "value": "3"
+                                    },
+                                    "constant": {
+                                        "tag": "unsigned_real_constant",
+                                        "start_pos": {
+                                            "line": "1",
+                                            "column": "20"
+                                        },
+                                        "value": "9.0"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
@@ -6452,7 +6562,7 @@ SyntaxJsonToFASTTests >> testEquivalenceStatementSeveralGroups [
                         "line": "2",
                         "column": "7"
                     },
-                    "parameters": [
+                    "equivalence_parameters": [
                         [
                             {
                                 "tag": "symbolic_name",
@@ -9487,7 +9597,7 @@ SyntaxJsonToFASTTests >> testOpenStatement [
                         "line": "2",
                         "column": "7"
                     },
-                    "parameters": [
+                    "open_parameters": [
                         {
                             "name": "UNIT",
                             "parameter": {

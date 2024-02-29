@@ -13,7 +13,7 @@ Class {
 <<<<<<< HEAD
 FASTFortranSyntaxJsonVisitor >> checkAndwrapToScalarVariable: aNode [
 
-	aNode = FASTFortranCharacterLiteral
+	aNode class = FASTFortranCharacterLiteral
 		ifTrue: [
 			^ (self newEntity: FASTFortranScalarVariable)
 				  name: aNode primitiveValue;
@@ -279,6 +279,12 @@ FASTFortranSyntaxJsonVisitor >> visitCharacterType: aNode [
 ]
 
 { #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitClist: aNode [
+
+	^ super visitClist: aNode
+]
+
+{ #category : #'as yet unclassified' }
 FASTFortranSyntaxJsonVisitor >> visitCommonParameters: aNode [
 	"data is an array of dict-s with keys name, nlist"
 
@@ -364,6 +370,22 @@ FASTFortranSyntaxJsonVisitor >> visitControlInfoList: aNode [
 ]
 
 { #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitDataParameters: aNode [
+	"no keys in data"
+
+	<generated>
+	| data dataGroups |
+	data := super visitDataParameters: aNode.
+	1 halt.
+
+	^ data collect: [ :dataGroup |
+		  dataGroups add: ((self newEntity: FASTFortranDataGroup)
+				   variables: dataGroup second;
+				   dataConstants: dataGroup first;
+				   yourself) ]
+]
+
+{ #category : #'as yet unclassified' }
 FASTFortranSyntaxJsonVisitor >> visitDataStatement: aNode [
 			  		<generated>
 					"start_pos tag parameters"
@@ -372,6 +394,21 @@ FASTFortranSyntaxJsonVisitor >> visitDataStatement: aNode [
 					data := super visitDataStatement:aNode.
 			      1 halt.
 					^ data
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitDataStatementConstant: aNode [
+			  		<generated>
+					"occurence tag constant"
+					
+					| data |    
+					data := super visitDataStatementConstant:aNode.
+			      1 halt.
+					^ (self newEntity: FASTFortranDataStatementConstant ) 
+						occurrence: (data at: 'occurence');
+						constant: (data at: 'constant');
+						yourself
+						
 ]
 
 { #category : #'as yet unclassified' }
@@ -468,6 +505,30 @@ FASTFortranSyntaxJsonVisitor >> visitEntryStatement: aNode [
 ]
 
 { #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitEquivalenceParameters: aNode [
+	"consists of nlists, each nlist is a list of variable names, array element names, array names, and character substring names separated by commas
+	so could be either  - CharacterLiteral (as a wrappping for SymbolicName), - ArrayElement or - Substring
+	CharacterLiteral we need to wrap as a ScalarVariable
+	"
+
+	<generated>
+	| data equivalence_st test|
+	data := super visitEquivalenceParameters: aNode.
+	
+	data collect: [:nlist |
+		
+		nlist asOrderedCollection collect: [ :var |
+			self checkAndwrapToScalarVariable: var
+			 ].
+		1 halt.
+		 ]. 
+	
+	1 halt.
+	
+	^ (self newEntity: FASTFortranEquivalenceStatement) addVariableGroup: (FASTFortranEquivalenceGroup new variables: test)
+]
+
+{ #category : #'as yet unclassified' }
 FASTFortranSyntaxJsonVisitor >> visitEquivalenceStatement: aNode [
 			  		<generated>
 					"start_pos tag parameters"
@@ -506,6 +567,17 @@ FASTFortranSyntaxJsonVisitor >> visitFormat: aNode [
 					
 					| data |    
 					data := super visitFormat:aNode.
+			      1 halt.
+					^ data
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitFormatSpecification: aNode [
+			  		<generated>
+					"slash tag repeat_factor descriptor"
+					
+					| data |    
+					data := super visitFormatSpecification:aNode.
 			      1 halt.
 					^ data
 ]
@@ -786,6 +858,34 @@ FASTFortranSyntaxJsonVisitor >> visitNlist: aNode [
 ]
 
 { #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitNonzeroUnsignedIntConstant: aNode [
+	"start_pos tag value"
+
+	| data |
+	data := super visitNonzeroUnsignedIntConstant: aNode.
+
+	^ (self newEntity: FASTFortranIntegerLiteral) primitiveValue:
+		  (data at: 'value')
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitOccurence: aNode [
+
+	^ super visitOccurence: aNode
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitOpenParameters: aNode [
+			  		<generated>
+					"no keys in data"
+					
+					| data |    
+					data := super visitOpenParameters:aNode.
+			      1 halt.
+					^ data
+]
+
+{ #category : #'as yet unclassified' }
 FASTFortranSyntaxJsonVisitor >> visitOpenStatement: aNode [
 			  		<generated>
 					"start_pos tag parameters"
@@ -993,6 +1093,17 @@ FASTFortranSyntaxJsonVisitor >> visitSign: aNode [
 	"no keys in data"
 
 	^ super visitSign: aNode
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitSlash: aNode [
+			  		<generated>
+					"no keys in data"
+					
+					| data |    
+					data := super visitSlash:aNode.
+			      1 halt.
+					^ data
 ]
 
 { #category : #'as yet unclassified' }
