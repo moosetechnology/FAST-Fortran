@@ -7,7 +7,6 @@ An abstract subclass which represents a source code statemnet
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parentIfStatement` | `FASTFortranTStatement` | `statement` | `FASTFortranIfLogicalStatement` | Parent if statement|
 | `statementContainer` | `FASTFortranTStatement` | `statements` | `FASTFortranTStatementBlock` | Block containing this statement.|
 
 
@@ -17,16 +16,13 @@ An abstract subclass which represents a source code statemnet
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
-| `label` | `String` | nil | Determines the statement label which consists of 1 to 5 digits, with at least one nonzero|
 | `startPos` | `Number` | nil | |
 
 "
 Trait {
 	#name : #FASTFortranTStatement,
 	#instVars : [
-		'#label => FMProperty',
-		'#statementContainer => FMOne type: #FASTFortranTStatementBlock opposite: #statements',
-		'#parentIfStatement => FMOne type: #FASTFortranIfLogicalStatement opposite: #statement'
+		'#statementContainer => FMOne type: #FASTFortranTStatementBlock opposite: #statements'
 	],
 	#traits : 'FASTFortranTEntity',
 	#classTraits : 'FASTFortranTEntity classTrait',
@@ -47,46 +43,6 @@ FASTFortranTStatement >> isStatement [
 
 	<generated>
 	^ true
-]
-
-{ #category : #accessing }
-FASTFortranTStatement >> label [
-
-	<FMProperty: #label type: #String>
-	<generated>
-	<FMComment: 'Determines the statement label which consists of 1 to 5 digits, with at least one nonzero'>
-	^ label
-]
-
-{ #category : #accessing }
-FASTFortranTStatement >> label: anObject [
-	<generated>
-	label := anObject
-]
-
-{ #category : #accessing }
-FASTFortranTStatement >> parentIfStatement [
-	"Relation named: #parentIfStatement type: #FASTFortranIfLogicalStatement opposite: #statement"
-
-	<generated>
-	<FMComment: 'Parent if statement'>
-	<container>
-	<derived>
-	^ parentIfStatement
-]
-
-{ #category : #accessing }
-FASTFortranTStatement >> parentIfStatement: anObject [
-
-	<generated>
-	parentIfStatement := anObject
-]
-
-{ #category : #navigation }
-FASTFortranTStatement >> parentIfStatementGroup [
-	<generated>
-	<navigation: 'ParentIfStatement'>
-	^ MooseSpecializedGroup with: self parentIfStatement
 ]
 
 { #category : #accessing }
