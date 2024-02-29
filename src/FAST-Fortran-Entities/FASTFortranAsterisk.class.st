@@ -16,7 +16,7 @@ I represent an Asterisk Character Literal (Constant) that is often used as a for
 "
 Class {
 	#name : #FASTFortranAsterisk,
-	#superclass : #FASTFortranNumericalConstant,
+	#superclass : #FASTFortranIntegerLiteral,
 	#traits : 'FASTFortranTEntryStatement + FASTFortranTFormat',
 	#classTraits : 'FASTFortranTEntryStatement classTrait + FASTFortranTFormat classTrait',
 	#category : #'FAST-Fortran-Entities-Entities'
@@ -25,7 +25,7 @@ Class {
 { #category : #meta }
 FASTFortranAsterisk class >> annotation [
 
-	<FMClass: #Asterisk super: #FASTFortranNumericalConstant>
+	<FMClass: #Asterisk super: #FASTFortranIntegerLiteral>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
