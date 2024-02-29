@@ -7,7 +7,7 @@ The logical IF statement executes one single statement, or does not execute it, 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `condition` | `FASTFortranTConditionalStatement` | `parentConditionalStatement` | `FASTFortranTExpression` | Condition|
+| `condition` | `FASTFortranTConditionalStatement` | `parentConditionalStatement` | `FASTFortranAbstractExpression` | Condition|
 | `statement` | `FASTFortranIfLogicalStatement` | `parentIfStatement` | `FASTFortranTStatement` | Statement of the logical if|
 
 

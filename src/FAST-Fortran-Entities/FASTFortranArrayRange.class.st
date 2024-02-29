@@ -7,50 +7,23 @@ I represent an array lower/upper bounds
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `argumentOwner` | `FASTFortranTExpression` | `arguments` | `FASTFortranTWithArguments` | my owner|
-| `assignedIn` | `FASTFortranTExpression` | `expression` | `FASTFortranTAssignment` | Optional assignment where this expression is used|
-| `assignementExpressionOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranFunctionStatement` | The AssignementExpression owner (if possible)|
-| `expressionStatementOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTExpressionStatement` | The expression statement that own me (if it's the case|
-| `parentArrayDimensionDeclarator` | `FASTFortranTExpression` | `upperBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
-| `parentArrayDimensionDeclarator` | `FASTFortranTExpression` | `lowerBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
-| `parentArrayExpression` | `FASTFortranTExpression` | `indices` | `FASTFortranArrayVariable` | an ArrayVariable expression of which I am an indice|
-| `parentConditionalStatement` | `FASTFortranTExpression` | `condition` | `FASTFortranTConditionalStatement` | Parent conditional statement (if-block, if-logical, ...)|
-| `parentDataStatement` | `FASTFortranTExpression` | `dataConstants` | `FASTFortranDataGroup` | |
-| `parentExpression` | `FASTFortranTExpression` | `expression` | `FASTFortranTUnaryExpression` | Parent expression (if possible)|
-| `parentExpressionLeft` | `FASTFortranTExpression` | `left` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am left side|
-| `parentExpressionRight` | `FASTFortranTExpression` | `right` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am right side|
-| `parentGotoAssignedStatement` | `FASTFortranTExpression` | `selectorExpression` | `FASTFortranGoToAssignedStatement` | |
-| `parentGotoComputedStatement` | `FASTFortranTExpression` | `selectorExpression` | `FASTFortranGoToComputedStatement` | |
-| `parentLoopControlIncrement` | `FASTFortranTExpression` | `increment` | `FASTFortranLoopControlExpression` | |
-| `parentLoopControlLimit` | `FASTFortranTExpression` | `limit` | `FASTFortranLoopControlExpression` | |
 | `parentVariableDeclarator` | `FASTFortranArrayRange` | `dimensions` | `FASTFortranVariableDeclarator` | The variable declarator I am part of|
-| `returnOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTReturnStatement` | The return statement that own the expression (if it's the case)|
-| `variableDeclaratorOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTVariableDeclarator` | |
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `lowerBound` | `FASTFortranArrayRange` | `parentArrayDimensionDeclarator` | `FASTFortranTExpression` | A lower bound of an array dimension|
-| `upperBound` | `FASTFortranArrayRange` | `parentArrayDimensionDeclarator` | `FASTFortranTExpression` | An upper bound of an array dimension|
+| `lowerBound` | `FASTFortranArrayRange` | `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | A lower bound of an array dimension|
+| `upperBound` | `FASTFortranArrayRange` | `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | An upper bound of an array dimension|
 
 
-## Properties
-======================
-
-| Name | Type | Default value | Comment |
-|---|
-| `endPos` | `Number` | nil | |
-| `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : #FASTFortranArrayRange,
-	#superclass : #FASTFortranEntity,
-	#traits : 'FASTFortranTExpression',
-	#classTraits : 'FASTFortranTExpression classTrait',
+	#superclass : #FASTFortranAbstractExpression,
 	#instVars : [
-		'#upperBound => FMOne type: #FASTFortranTExpression opposite: #parentArrayDimensionDeclarator',
-		'#lowerBound => FMOne type: #FASTFortranTExpression opposite: #parentArrayDimensionDeclarator',
+		'#upperBound => FMOne type: #FASTFortranAbstractExpression opposite: #parentArrayDimensionDeclarator',
+		'#lowerBound => FMOne type: #FASTFortranAbstractExpression opposite: #parentArrayDimensionDeclarator',
 		'#parentVariableDeclarator => FMOne type: #FASTFortranVariableDeclarator opposite: #dimensions'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
@@ -59,7 +32,7 @@ Class {
 { #category : #meta }
 FASTFortranArrayRange class >> annotation [
 
-	<FMClass: #ArrayRange super: #FASTFortranEntity>
+	<FMClass: #ArrayRange super: #FASTFortranAbstractExpression>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
@@ -67,7 +40,7 @@ FASTFortranArrayRange class >> annotation [
 
 { #category : #accessing }
 FASTFortranArrayRange >> lowerBound [
-	"Relation named: #lowerBound type: #FASTFortranTExpression opposite: #parentArrayDimensionDeclarator"
+	"Relation named: #lowerBound type: #FASTFortranAbstractExpression opposite: #parentArrayDimensionDeclarator"
 
 	<generated>
 	<FMComment: 'A lower bound of an array dimension'>
@@ -114,7 +87,7 @@ FASTFortranArrayRange >> parentVariableDeclaratorGroup [
 
 { #category : #accessing }
 FASTFortranArrayRange >> upperBound [
-	"Relation named: #upperBound type: #FASTFortranTExpression opposite: #parentArrayDimensionDeclarator"
+	"Relation named: #upperBound type: #FASTFortranAbstractExpression opposite: #parentArrayDimensionDeclarator"
 
 	<generated>
 	<FMComment: 'An upper bound of an array dimension'>
