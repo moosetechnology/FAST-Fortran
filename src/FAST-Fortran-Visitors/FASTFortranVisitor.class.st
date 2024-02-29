@@ -561,8 +561,7 @@ FASTFortranVisitor >> visitFASTFortranScalarVariable: aFASTFortranScalarVariable
 
 { #category : #'visiting - statements' }
 FASTFortranVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBlock [
-	<generated>
-	self visitFASTFortranTStatementBlock: aFASTFortranStatementBlock.
+
 	self visitFASTFortranTStatement: aFASTFortranStatementBlock.
 	self visitFASTFortranTWithComments: aFASTFortranStatementBlock.
 ]
