@@ -113,7 +113,8 @@ Class {
 		'implicitRange',
 		'impliedDoExpression',
 		'tWithLoopControl',
-		'abstractIOStatement'
+		'abstractIOStatement',
+		'numericalConstant'
 	],
 	#category : #'FAST-Fortran-Generator'
 }
@@ -150,7 +151,7 @@ FASTFortranGenerator >> defineClasses [
 
 	super defineClasses.
 
-	self defineFamixClasses. 
+	self defineFASTClasses. 
 	self defineStatements.
 	self defineData
 ]
@@ -200,7 +201,7 @@ FASTFortranGenerator >> defineData [
 	booleanConstant := builder
 		                   newClassNamed: #BooleanLiteral
 		                   comment:
-		                   'I represent Fortran Boolean Literal (Constant) statement'.
+		                   'I represent Fortran Boolean Literal (Constant)'.
 
 	byteType := builder
 		            newClassNamed: #ByteType
@@ -212,12 +213,12 @@ f77 allows the BYTE type as an array index, just as it allows the REAL type, but
 	characterConstant := builder
 		                     newClassNamed: #CharacterLiteral
 		                     comment:
-		                     'I represent Fortran Character Literal (Constant) statement'.
+		                     'I represent Fortran Character Literal (Constant)'.
 
 	characterType := builder
 		                 newClassNamed: #CharacterType
 		                 comment:
-		                 'I represent Fortran Character statement. The character data type, CHARACTER, which has the synonym, CHARACTER*1, holds one character. The character is enclosed in apostrophes ('') or quotes (""). @ Allowing quotes ("") is nonstandard; if you compile with the -xl option, quotes mean something else, and you must use apostrophes to enclose a string. The data of type CHARACTER is always unsigned. A CHARACTER item occupies 1 byte (8 bits) of storage and is aligned on 1-byte boundaries.'.
+		                 'I represent Fortran Character Literal'.
 
 	commonGroup := builder
 		                   newClassNamed: #CommonGroup
@@ -226,32 +227,32 @@ f77 allows the BYTE type as an array index, just as it allows the REAL type, but
 	complexConstant := builder
 		                   newClassNamed: #ComplexLiteral
 		                   comment:
-		                   'I represent Fortran Arithmetic Complex Literal (Constant) statement'.
+		                   'I represent Fortran Arithmetic Complex Literal (Constant)'.
 
 	complexType := builder
 		               newClassNamed: #ComplexType
 		               comment:
-		               'I represent Fortran Complex statement. A complex datum is an approximation of a complex number. The complex data type, COMPLEX, which defaults to a synonym for COMPLEX*8, is a pair of REAL*4 values that represent a complex number. The first element represents the real part and the second represents the imaginary part.The default size for a COMPLEX item (no size specified) is 8 bytes. The default alignment is on 4-byte boundaries. However, these defaults can be changed by compiling with certain special options'.
+		               'I represent Fortran Complex type COMPLEX, ie. a pair of REAL*4 values'.
 
 	doubleComplexConstant := builder
 		                         newClassNamed: #DoubleComplexLiteral
 		                         comment:
-		                         'I represent Fortran Arithmetic Double Complex Literal (Constant) statement'.
+		                         'I represent Fortran Arithmetic Double Complex Literal (Constant)'.
 
 	doubleComplexType := builder
 		                     newClassNamed: #DoubleComplexType
 		                     comment:
-		                     'I represent Fortran Double Complex statement. The complex data type, DOUBLE COMPLEX, which usually has the synonym, COMPLEX*16, is a pair of DOUBLE PRECISION (REAL*8)values that represents a complex number. The first element represents the real part; the second represents the imaginary part.The default size for DOUBLE COMPLEX with no size specified is 16.'.
+		                     'I represent Fortran Double type'.
 
 	doublePrecisionConstant := builder
 		                           newClassNamed: #DoublePrecisionLiteral
 		                           comment:
-		                           'I represent Fortran Arithmetic Double Precision Literal (Constant) statement'.
+		                           'I represent Fortran Arithmetic Double Precision Literal (Constant)'.
 
 	doublePrecisionType := builder
 		                       newClassNamed: #DoublePrecisionType
 		                       comment:
-		                       'I represent Fortran Double Precision statement. A double-precision datum is an approximation of a real number. The double-precision data type, DOUBLE PRECISION, which has the synonym, REAL*8, holds one double-precision datum.The default size for DOUBLE PRECISION with no size specified is 8 bytes.A DOUBLE PRECISION element has a sign bit, an 11-bit exponent, and a 52-bit fraction. These DOUBLE PRECISION elements in f77 conform to the IEEE standard for double-precision floating-point data.'.
+		                       'I represent Fortran Double Precision type, synonym of REAL*8'.
 
 	impliedDoExpression := builder
 		                   newClassNamed: #ImpliedDoExpression
@@ -261,14 +262,12 @@ f77 allows the BYTE type as an array index, just as it allows the REAL type, but
 	integerConstant := builder
 		                   newClassNamed: #IntegerLiteral
 		                   comment:
-		                   'I represent Fortran Arithmetic Integer Literal (Constant) statement'.
+		                   'I represent Fortran Arithmetic Integer Literal (Constant)'.
 
 	integerType := builder
 		               newClassNamed: #IntegerType
 		               comment:
-			               'I represent Fortran Integer statement. The integer data type, INTEGER, holds a signed integer.
-The default size for INTEGER with no size specified is 4, and is aligned on 4-byte boundaries. However, these defaults can be
-changed by compiling with certain special options.'.
+			               'I represent Fortran Integer type'.
 
 	labelReference := builder
 		newClassNamed: #LabelReference
@@ -278,22 +277,26 @@ I contain the value of the label referred to'.
 	logicalType := builder
 		               newClassNamed: #LogicalType
 		               comment:
-		               'I represent Fortran Logical statement. The logical data type, LOGICAL, holds a logical value .TRUE. or .FALSE. The value 0 represents .FALSE.; any other value represents .TRUE.The usual default size for an LOGICAL item with no size specified is 4, and is aligned on 4-byte boundaries. However, these defaults can be changed by compiling with certain special options.'.
+		               'I represent Fortran boolean type'.
 
 	loopControlExpression := builder
 		                         newClassNamed: #LoopControlExpression
 		                         comment:
 		                         'a Fortran Loop Control Expression'.
 
+	numericalConstant := builder
+		newClassNamed: #NumericalConstant
+		comment: 'I represent Fortran numerical Literals (Integer, Real, Complex)'.
+
 	realConstant := builder
 		                newClassNamed: #RealLiteral
 		                comment:
-		                'I represent Fortran Arithmetic Real Literal (Constant) statement'.
+		                'I represent Fortran Arithmetic Real Literal (Constant)'.
 
 	realType := builder
 		            newClassNamed: #RealType
 		            comment:
-		            'I represent Fortran Real statement. A real datum is an approximation of a real number. The real data type, REAL, which usually has the synonym, REAL*4, holds one real datum.The usual default size for a REAL item with no size specified is 4 bytes, and is aligned on 4-byte boundaries. However, these defaults can be changed by compiling with certain special options.A REAL element has a sign bit, an 8-bit exponent, and a 23-bit fraction. These REAL elements in f77 conform to the IEEE standard.'.
+		            'I represent Fortran Real type, synonym REAL*4'.
 
 	scalarVariable := builder
 		                             newClassNamed: #ScalarVariable
@@ -323,20 +326,10 @@ I contain the value of the label referred to'.
 		                   comment:
 		                   'a Fortran Unary Expression (arithmetic, logical, character)'
 
-	"
-	arithmeticExpression := builder
-		                        newClassNamed: #ArithmeticExpression
-		                        comment: 'a Fortran Arithmetic Expression'.
-	characterExpression := builder
-		                       newClassNamed: #CharacterExpression
-		                       comment: 'a Fortran Character Expression'.
-	logicalExpression := builder
-		                     newClassNamed: #LogicalExpression
-		                     comment: 'a Fortran Logical Expression'."
 ]
 
 { #category : #definition }
-FASTFortranGenerator >> defineFamixClasses [
+FASTFortranGenerator >> defineFASTClasses [
 	"FAMIX-level classes (might be removed later)"
 
 	programFile := builder
@@ -393,6 +386,7 @@ FASTFortranGenerator >> defineFamixClasses [
 		             newClassNamed: #StatementBlock
 		             comment:
 		             'Contains the block of Fortran statements'.
+
 ]
 
 { #category : #definition }
