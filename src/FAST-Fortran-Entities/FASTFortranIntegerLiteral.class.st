@@ -9,6 +9,7 @@ I represent Fortran Arithmetic Integer Literal (Constant)
 |---|
 | `parentFormatedStatement` | `FASTFortranTFormat` | `format` | `FASTFortranTWithFormat` | A format description in a Format/Print/Read/Write statement|
 | `parentIOStatement` | `FASTFortranTIOParameter` | `ioParameters` | `FASTFortranAbstractIOStatement` | |
+| `parentTypeSize` | `FASTFortranIntegerLiteral` | `size` | `FASTFortranType` | |
 
 
 
@@ -18,6 +19,9 @@ Class {
 	#superclass : #FASTFortranNumericalConstant,
 	#traits : 'FASTFortranTFormat',
 	#classTraits : 'FASTFortranTFormat classTrait',
+	#instVars : [
+		'#parentTypeSize => FMOne type: #FASTFortranType opposite: #size'
+	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
@@ -28,4 +32,28 @@ FASTFortranIntegerLiteral class >> annotation [
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
+]
+
+{ #category : #accessing }
+FASTFortranIntegerLiteral >> parentTypeSize [
+	"Relation named: #parentTypeSize type: #FASTFortranType opposite: #size"
+
+	<generated>
+	<container>
+	<derived>
+	^ parentTypeSize
+]
+
+{ #category : #accessing }
+FASTFortranIntegerLiteral >> parentTypeSize: anObject [
+
+	<generated>
+	parentTypeSize := anObject
+]
+
+{ #category : #navigation }
+FASTFortranIntegerLiteral >> parentTypeSizeGroup [
+	<generated>
+	<navigation: 'ParentTypeSize'>
+	^ MooseSpecializedGroup with: self parentTypeSize
 ]
