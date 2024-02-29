@@ -515,24 +515,21 @@ FASTFortranGenerator >> defineHierarchy [
 	characterConstant --|> tFormat.
 	commonGroup  --|> tWithDeclarators.
 	commonGroup  --|> tNamedEntity.
-	complexConstant --|> abstractLiteral.
-	complexConstant --|> tNumericalLiteral.
+	complexConstant --|> numericalConstant.
 	dataGroup --|> tVariableGroup.
-	doubleComplexConstant --|> abstractLiteral.
-	doubleComplexConstant --|> tNumericalLiteral.
-	doublePrecisionConstant --|> abstractLiteral.
-	doublePrecisionConstant --|> tNumericalLiteral.
+	doubleComplexConstant --|> numericalConstant.
+	doublePrecisionConstant --|> numericalConstant.
 	equivalenceGroup --|> tVariableGroup.
 	functionCall --|> abstractExpression.
 	functionCall --|> tWithArguments.
 	impliedDoExpression --|> tWithLoopControl.
 	impliedDoExpression --|> abstractExpression.
 	impliedDoExpression --|> tVariableGroup.
-	integerConstant --|> abstractLiteral.
-	integerConstant --|> tNumericalLiteral.
+	integerConstant --|> numericalConstant.
 	integerConstant --|> tFormat.
-	realConstant --|> abstractLiteral.
-	realConstant --|> tNumericalLiteral.
+	numericalConstant  --|> abstractLiteral.
+	numericalConstant --|> tNumericalLiteral.
+	realConstant --|> numericalConstant.
 	scalarVariable --|> variable.
 	substring --|> abstractExpression.
 	unaryExpression --|> abstractExpression.
@@ -553,7 +550,7 @@ FASTFortranGenerator >> defineHierarchy [
 	logicalType --|> type.
 	realType --|> type.
 
-	asterisk --|> tNumericalLiteral.
+	asterisk --|> numericalConstant.
 	asterisk --|> tEntryArgument.
 	asterisk --|> tFormat.
 
@@ -752,7 +749,7 @@ FASTFortranGenerator >> defineRelations [
 			 'Parent expression (if possible)').
 
 	((type property: #size) comment: 'a data size in bytes')
-	<>- (tNumericalLiteral property: #parentTypeSize).
+	<>- (numericalConstant property: #parentTypeSize).
 
 	((tWithFormat property: #format) comment: 'The description of the format')
 	<>- ((tFormat property: #parentFormatedStatement) comment: 'A format description in a Format/Print/Read/Write statement').
