@@ -607,7 +607,6 @@ FASTFortranVisitor >> visitFASTFortranTAssignment: aFASTFortranTAssignment [
 FASTFortranVisitor >> visitFASTFortranTBehaviouralEntity: aFASTFortranTBehaviouralEntity [
 
 	self visitFASTFortranTScopableEntity: aFASTFortranTBehaviouralEntity.
-	self visitFASTFortranTWithParameters: aFASTFortranTBehaviouralEntity.
 	
 	aFASTFortranTBehaviouralEntity statementBlock accept: self
 
