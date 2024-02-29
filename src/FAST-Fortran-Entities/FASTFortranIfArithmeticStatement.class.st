@@ -7,7 +7,7 @@ I represent Fortran If (Arithmetic) statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `condition` | `FASTFortranTConditionalStatement` | `parentConditionalStatement` | `FASTFortranTExpression` | Condition|
+| `condition` | `FASTFortranTConditionalStatement` | `parentConditionalStatement` | `FASTFortranAbstractExpression` | Condition|
 | `equalLabel` | `FASTFortranIfArithmeticStatement` | `parentIfArithmeticEqualBranch` | `FASTFortranLabelReference` | |
 | `greaterLabel` | `FASTFortranIfArithmeticStatement` | `parentIfArithmeticMoreBranch` | `FASTFortranLabelReference` | |
 | `lessLabel` | `FASTFortranIfArithmeticStatement` | `parentIfArithmeticLessBranch` | `FASTFortranLabelReference` | |

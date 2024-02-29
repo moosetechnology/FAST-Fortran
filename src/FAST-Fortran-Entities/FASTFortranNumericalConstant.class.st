@@ -1,5 +1,5 @@
 "
-I represent an Ampersand Character Literal (Constant) that is often used in parameters and format identifiers
+I represent Fortran numerical Literals (Integer, Real, Complex)
 
 ## Relations
 ======================
@@ -10,6 +10,7 @@ I represent an Ampersand Character Literal (Constant) that is often used in para
 | `argumentOwner` | `FASTFortranTExpression` | `arguments` | `FASTFortranTWithArguments` | my owner|
 | `assignedIn` | `FASTFortranTExpression` | `expression` | `FASTFortranTAssignment` | Optional assignment where this expression is used|
 | `expressionStatementOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTExpressionStatement` | The expression statement that own me (if it's the case|
+| `parentTypeSize` | `FASTFortranNumericalConstant` | `size` | `FASTFortranType` | |
 | `returnOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTReturnStatement` | The return statement that own the expression (if it's the case)|
 
 
@@ -24,18 +25,45 @@ I represent an Ampersand Character Literal (Constant) that is often used in para
 
 "
 Class {
-	#name : #FASTFortranAmpersand,
+	#name : #FASTFortranNumericalConstant,
 	#superclass : #FASTFortranAbstractLiteral,
-	#traits : 'FASTFortranTCharacterLiteral',
-	#classTraits : 'FASTFortranTCharacterLiteral classTrait',
+	#traits : 'FASTFortranTNumericalLiteral',
+	#classTraits : 'FASTFortranTNumericalLiteral classTrait',
+	#instVars : [
+		'#parentTypeSize => FMOne type: #FASTFortranType opposite: #size'
+	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
 { #category : #meta }
-FASTFortranAmpersand class >> annotation [
+FASTFortranNumericalConstant class >> annotation [
 
-	<FMClass: #Ampersand super: #FASTFortranAbstractLiteral>
+	<FMClass: #NumericalConstant super: #FASTFortranAbstractLiteral>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
+]
+
+{ #category : #accessing }
+FASTFortranNumericalConstant >> parentTypeSize [
+	"Relation named: #parentTypeSize type: #FASTFortranType opposite: #size"
+
+	<generated>
+	<container>
+	<derived>
+	^ parentTypeSize
+]
+
+{ #category : #accessing }
+FASTFortranNumericalConstant >> parentTypeSize: anObject [
+
+	<generated>
+	parentTypeSize := anObject
+]
+
+{ #category : #navigation }
+FASTFortranNumericalConstant >> parentTypeSizeGroup [
+	<generated>
+	<navigation: 'ParentTypeSize'>
+	^ MooseSpecializedGroup with: self parentTypeSize
 ]

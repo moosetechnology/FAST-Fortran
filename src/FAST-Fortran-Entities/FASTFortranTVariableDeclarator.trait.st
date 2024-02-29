@@ -12,7 +12,7 @@ I represent a variable declarator: variable declared + optional initial value
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `expression` | `FASTFortranTVariableDeclarator` | `variableDeclaratorOwner` | `FASTFortranTExpression` | Expression assigned to the variable declared|
+| `expression` | `FASTFortranTVariableDeclarator` | `variableDeclaratorOwner` | `FASTFortranAbstractExpression` | Expression assigned to the variable declared|
 
 
 ## Properties
@@ -28,7 +28,7 @@ Trait {
 	#instVars : [
 		'#variable => FMProperty',
 		'#parentDeclaration => FMOne type: #FASTFortranTWithDeclarators opposite: #declarators',
-		'#expression => FMOne type: #FASTFortranTExpression opposite: #variableDeclaratorOwner'
+		'#expression => FMOne type: #FASTFortranAbstractExpression opposite: #variableDeclaratorOwner'
 	],
 	#category : #'FAST-Fortran-Entities-Traits'
 }
@@ -44,7 +44,7 @@ FASTFortranTVariableDeclarator classSide >> annotation [
 
 { #category : #accessing }
 FASTFortranTVariableDeclarator >> expression [
-	"Relation named: #expression type: #FASTFortranTExpression opposite: #variableDeclaratorOwner"
+	"Relation named: #expression type: #FASTFortranAbstractExpression opposite: #variableDeclaratorOwner"
 
 	<generated>
 	<FMComment: 'Expression assigned to the variable declared'>

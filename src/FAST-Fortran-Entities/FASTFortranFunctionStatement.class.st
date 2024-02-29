@@ -13,7 +13,7 @@ I represent a function statement - a function-like declaration, made in a single
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `arguments` | `FASTFortranTWithArguments` | `argumentOwner` | `FASTFortranTExpression` | My arguments|
-| `expression` | `FASTFortranFunctionStatement` | `assignementExpressionOwner` | `FASTFortranTExpression` | Expression thats being assigned upon declaration to the var|
+| `expression` | `FASTFortranFunctionStatement` | `assignementExpressionOwner` | `FASTFortranAbstractExpression` | Expression thats being assigned upon declaration to the var|
 
 
 ## Properties
@@ -32,7 +32,7 @@ Class {
 	#traits : 'FASTFortranTNamedEntity + FASTFortranTWithArguments',
 	#classTraits : 'FASTFortranTNamedEntity classTrait + FASTFortranTWithArguments classTrait',
 	#instVars : [
-		'#expression => FMOne type: #FASTFortranTExpression opposite: #assignementExpressionOwner'
+		'#expression => FMOne type: #FASTFortranAbstractExpression opposite: #assignementExpressionOwner'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
@@ -48,7 +48,7 @@ FASTFortranFunctionStatement class >> annotation [
 
 { #category : #accessing }
 FASTFortranFunctionStatement >> expression [
-	"Relation named: #expression type: #FASTFortranTExpression opposite: #assignementExpressionOwner"
+	"Relation named: #expression type: #FASTFortranAbstractExpression opposite: #assignementExpressionOwner"
 
 	<generated>
 	<FMComment: 'Expression thats being assigned upon declaration to the var'>

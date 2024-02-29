@@ -502,6 +502,13 @@ FASTFortranTEntityCreator >> newNameListStatement [
 ]
 
 { #category : #'entity creation' }
+FASTFortranTEntityCreator >> newNumericalConstant [
+
+	<generated>
+	^ self add: FASTFortranNumericalConstant new
+]
+
+{ #category : #'entity creation' }
 FASTFortranTEntityCreator >> newOpenStatement [
 
 	<generated>
