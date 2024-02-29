@@ -507,7 +507,7 @@ FASTFortranGenerator >> defineHierarchy [
 	abstractLiteral --|> abstractExpression.
 	ampersand --|> abstractLiteral.
 	ampersand --|> tCharacterLiteral.
-	arrayRange --|> tExpression.
+	arrayRange --|> abstractExpression.
 	arrayVariable --|> variable.
 	assignmentExpression --|> abstractExpression.
 	assignmentExpression --|> tAssignment.
@@ -532,7 +532,7 @@ FASTFortranGenerator >> defineHierarchy [
 	functionCall --|> abstractExpression.
 	functionCall --|> tWithArguments.
 	impliedDoExpression --|> tWithLoopControl.
-	impliedDoExpression --|> tExpression.
+	impliedDoExpression --|> abstractExpression.
 	impliedDoExpression --|> tVariableGroup.
 	integerConstant --|> abstractLiteral.
 	integerConstant --|> tNumericalLiteral.
@@ -618,11 +618,11 @@ FASTFortranGenerator >> defineRelations [
 	super defineRelations.
 
 	((arrayRange property: #upperBound) comment: 'An upper bound of an array dimension')
-	<>- ((tExpression property: #parentArrayDimensionDeclarator) comment:
+	<>- ((abstractExpression property: #parentArrayDimensionDeclarator) comment:
 			 'Parent array dimension declarator').
 
 	((arrayRange property: #lowerBound) comment: 'A lower bound of an array dimension')
-	<>- ((tExpression property: #parentArrayDimensionDeclarator) comment:
+	<>- ((abstractExpression property: #parentArrayDimensionDeclarator) comment:
 			 'Parent array dimension declarator').
 
 	((variableDeclarator property: #dimensions) comment: 'Possible dimensions in case this is an array declaration')
@@ -630,7 +630,7 @@ FASTFortranGenerator >> defineRelations [
 			comment: 'The variable declarator I am part of').
 
 	((arrayVariable property: #indices) comment: 'Indices used in the array access')
-	<>-* ((tExpression property: #parentArrayExpression) comment: 'an ArrayVariable expression of which I am an indice').
+	<>-* ((abstractExpression property: #parentArrayExpression) comment: 'an ArrayVariable expression of which I am an indice').
 
 	((commonStatement property: #groups) comment:
 		 'List common groups in this common statement')
@@ -638,7 +638,7 @@ FASTFortranGenerator >> defineRelations [
 			 'Parent common statement I belong to').
 
 	(dataGroup property: #dataConstants)
-	<>-* (tExpression property: #parentDataStatement).
+	<>-* (abstractExpression property: #parentDataStatement).
 
 	(impliedDoExpression property: #variables)
 	<>-* (tVariableEntity property: #parentImpliedExpression).
@@ -656,7 +656,7 @@ FASTFortranGenerator >> defineRelations [
 
 	((tVariableDeclarator property: #expression) comment:
 		 'Expression assigned to the variable declared')
-	<>- (tExpression property: #variableDeclaratorOwner) .
+	<>- (abstractExpression property: #variableDeclaratorOwner) .
 
 	((variableDeclarationStatement property: #type) comment: 'type')
 	<>-
@@ -679,18 +679,18 @@ FASTFortranGenerator >> defineRelations [
 
 	((functionStatement property: #expression) comment:
 		 'Expression thats being assigned upon declaration to the var')
-	<>- ((tExpression property: #assignementExpressionOwner) comment:
+	<>- ((abstractExpression property: #assignementExpressionOwner) comment:
 			 'The AssignementExpression owner (if possible)').
 
 	((goToComputed property: #selectorExpression) comment: 'The expression which value selects the label to go to')
-	<>- (tExpression property: #parentGotoComputedStatement).
+	<>- (abstractExpression property: #parentGotoComputedStatement).
 
 	((goToAssignedStatement property: #selectorExpression) comment: 'The expression which value selects the label to go to')
-	<>- (tExpression property: #parentGotoAssignedStatement).
+	<>- (abstractExpression property: #parentGotoAssignedStatement).
 
 	((tConditionalStatement property: #condition) comment: 'Condition')
 	<>-
-	((tExpression property: #parentConditionalStatement) comment: 'Parent conditional statement (if-block, if-logical, ...)').
+	((abstractExpression property: #parentConditionalStatement) comment: 'Parent conditional statement (if-block, if-logical, ...)').
 
 	((ifLogicalStatement property: #statement) comment:
 		 'Statement of the logical if')
@@ -732,11 +732,11 @@ FASTFortranGenerator >> defineRelations [
 
 	((loopControlExpression property: #increment) comment:
 		'Loop control increment value')
-	<>- (tExpression property: #parentLoopControlIncrement).
+	<>- (abstractExpression property: #parentLoopControlIncrement).
 
 	((loopControlExpression property: #limit) comment:
 		'Loop control limit value')
-	<>- (tExpression property: #parentLoopControlLimit).
+	<>- (abstractExpression property: #parentLoopControlLimit).
 
 	((programFile property: #programUnit) comment:
 		 'Program Units in a program file')
@@ -745,16 +745,16 @@ FASTFortranGenerator >> defineRelations [
 
 	((tBinaryExpression property: #left) comment:
 		 'left part of a binary expression')
-	<>- ((tExpression property: #parentExpressionLeft) comment:
+	<>- ((abstractExpression property: #parentExpressionLeft) comment:
 			 'Parent (binary) expression of which I am left side').
 
 	((tBinaryExpression property: #right) comment:
 		 'left part of the expression')
-	<>- ((tExpression property: #parentExpressionRight) comment:
+	<>- ((abstractExpression property: #parentExpressionRight) comment:
 			 'Parent (binary) expression of which I am right side').
 
 	((tUnaryExpression property: #expression) comment: 'expression')
-	<>- ((tExpression property: #parentExpression) comment:
+	<>- ((abstractExpression property: #parentExpression) comment:
 			 'Parent expression (if possible)').
 
 	((type property: #size) comment: 'a data size in bytes')
