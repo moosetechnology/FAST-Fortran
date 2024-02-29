@@ -12,9 +12,9 @@ a Fortran Loop Control Expression
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `increment` | `FASTFortranLoopControlExpression` | `parentLoopControlIncrement` | `FASTFortranTExpression` | Loop control increment value|
+| `increment` | `FASTFortranLoopControlExpression` | `parentLoopControlIncrement` | `FASTFortranAbstractExpression` | Loop control increment value|
 | `init` | `FASTFortranLoopControlExpression` | `parentLoopControlInitialization` | `FASTFortranAssignmentExpression` | initial assignment|
-| `limit` | `FASTFortranLoopControlExpression` | `parentLoopControlLimit` | `FASTFortranTExpression` | Loop control limit value|
+| `limit` | `FASTFortranLoopControlExpression` | `parentLoopControlLimit` | `FASTFortranAbstractExpression` | Loop control limit value|
 
 
 
@@ -25,8 +25,8 @@ Class {
 	#instVars : [
 		'#parentLoop => FMOne type: #FASTFortranTWithLoopControl opposite: #loopControl',
 		'#init => FMOne type: #FASTFortranAssignmentExpression opposite: #parentLoopControlInitialization',
-		'#increment => FMOne type: #FASTFortranTExpression opposite: #parentLoopControlIncrement',
-		'#limit => FMOne type: #FASTFortranTExpression opposite: #parentLoopControlLimit'
+		'#increment => FMOne type: #FASTFortranAbstractExpression opposite: #parentLoopControlIncrement',
+		'#limit => FMOne type: #FASTFortranAbstractExpression opposite: #parentLoopControlLimit'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
@@ -42,7 +42,7 @@ FASTFortranLoopControlExpression class >> annotation [
 
 { #category : #accessing }
 FASTFortranLoopControlExpression >> increment [
-	"Relation named: #increment type: #FASTFortranTExpression opposite: #parentLoopControlIncrement"
+	"Relation named: #increment type: #FASTFortranAbstractExpression opposite: #parentLoopControlIncrement"
 
 	<generated>
 	<FMComment: 'Loop control increment value'>
@@ -88,7 +88,7 @@ FASTFortranLoopControlExpression >> initGroup [
 
 { #category : #accessing }
 FASTFortranLoopControlExpression >> limit [
-	"Relation named: #limit type: #FASTFortranTExpression opposite: #parentLoopControlLimit"
+	"Relation named: #limit type: #FASTFortranAbstractExpression opposite: #parentLoopControlLimit"
 
 	<generated>
 	<FMComment: 'Loop control limit value'>

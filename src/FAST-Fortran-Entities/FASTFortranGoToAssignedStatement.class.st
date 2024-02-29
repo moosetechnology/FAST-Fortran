@@ -8,7 +8,7 @@ I represent Fortran Go To( Assigned) statement
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `labelReferences` | `FASTFortranTWithLabelReferences` | `referencer` | `FASTFortranLabelReference` | the label(s) referenced|
-| `selectorExpression` | `FASTFortranGoToAssignedStatement` | `parentGotoAssignedStatement` | `FASTFortranTExpression` | The expression which value selects the label to go to|
+| `selectorExpression` | `FASTFortranGoToAssignedStatement` | `parentGotoAssignedStatement` | `FASTFortranAbstractExpression` | The expression which value selects the label to go to|
 
 
 
@@ -19,7 +19,7 @@ Class {
 	#traits : 'FASTFortranTWithLabelReferences',
 	#classTraits : 'FASTFortranTWithLabelReferences classTrait',
 	#instVars : [
-		'#selectorExpression => FMOne type: #FASTFortranTExpression opposite: #parentGotoAssignedStatement'
+		'#selectorExpression => FMOne type: #FASTFortranAbstractExpression opposite: #parentGotoAssignedStatement'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
@@ -35,7 +35,7 @@ FASTFortranGoToAssignedStatement class >> annotation [
 
 { #category : #accessing }
 FASTFortranGoToAssignedStatement >> selectorExpression [
-	"Relation named: #selectorExpression type: #FASTFortranTExpression opposite: #parentGotoAssignedStatement"
+	"Relation named: #selectorExpression type: #FASTFortranAbstractExpression opposite: #parentGotoAssignedStatement"
 
 	<generated>
 	<FMComment: 'The expression which value selects the label to go to'>

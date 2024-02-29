@@ -12,7 +12,7 @@ I represent a Fortran Data group in a Data statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `dataConstants` | `FASTFortranDataGroup` | `parentDataStatement` | `FASTFortranTExpression` | |
+| `dataConstants` | `FASTFortranDataGroup` | `parentDataStatement` | `FASTFortranAbstractExpression` | |
 | `variables` | `FASTFortranTVariableGroup` | `parentVariableGroup` | `FASTFortranVariable` | |
 
 
@@ -24,7 +24,7 @@ Class {
 	#traits : 'FASTFortranTVariableGroup',
 	#classTraits : 'FASTFortranTVariableGroup classTrait',
 	#instVars : [
-		'#dataConstants => FMMany type: #FASTFortranTExpression opposite: #parentDataStatement'
+		'#dataConstants => FMMany type: #FASTFortranAbstractExpression opposite: #parentDataStatement'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
@@ -46,7 +46,7 @@ FASTFortranDataGroup >> addDataConstant: anObject [
 
 { #category : #accessing }
 FASTFortranDataGroup >> dataConstants [
-	"Relation named: #dataConstants type: #FASTFortranTExpression opposite: #parentDataStatement"
+	"Relation named: #dataConstants type: #FASTFortranAbstractExpression opposite: #parentDataStatement"
 
 	<generated>
 	<derived>

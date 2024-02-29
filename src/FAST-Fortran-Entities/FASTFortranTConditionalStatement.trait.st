@@ -7,7 +7,7 @@ I represent a fortran statement with a condition: if-block, if-logical
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `condition` | `FASTFortranTConditionalStatement` | `parentConditionalStatement` | `FASTFortranTExpression` | Condition|
+| `condition` | `FASTFortranTConditionalStatement` | `parentConditionalStatement` | `FASTFortranAbstractExpression` | Condition|
 
 
 
@@ -15,7 +15,7 @@ I represent a fortran statement with a condition: if-block, if-logical
 Trait {
 	#name : #FASTFortranTConditionalStatement,
 	#instVars : [
-		'#condition => FMOne type: #FASTFortranTExpression opposite: #parentConditionalStatement'
+		'#condition => FMOne type: #FASTFortranAbstractExpression opposite: #parentConditionalStatement'
 	],
 	#category : #'FAST-Fortran-Entities-Traits'
 }
@@ -31,7 +31,7 @@ FASTFortranTConditionalStatement classSide >> annotation [
 
 { #category : #accessing }
 FASTFortranTConditionalStatement >> condition [
-	"Relation named: #condition type: #FASTFortranTExpression opposite: #parentConditionalStatement"
+	"Relation named: #condition type: #FASTFortranAbstractExpression opposite: #parentConditionalStatement"
 
 	<generated>
 	<FMComment: 'Condition'>
