@@ -550,7 +550,7 @@ FASTFortranGenerator >> defineHierarchy [
 	logicalType --|> type.
 	realType --|> type.
 
-	asterisk --|> numericalConstant.
+	asterisk --|> integerConstant.  "used as type size"
 	asterisk --|> tEntryArgument.
 	asterisk --|> tFormat.
 
@@ -749,7 +749,7 @@ FASTFortranGenerator >> defineRelations [
 			 'Parent expression (if possible)').
 
 	((type property: #size) comment: 'a data size in bytes')
-	<>- (numericalConstant property: #parentTypeSize).
+	<>- (integerConstant property: #parentTypeSize).
 
 	((tWithFormat property: #format) comment: 'The description of the format')
 	<>- ((tFormat property: #parentFormatedStatement) comment: 'A format description in a Format/Print/Read/Write statement').
