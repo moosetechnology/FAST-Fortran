@@ -87,7 +87,6 @@ Class {
 		'characterConstant',
 		'statementBlock',
 		'assignmentExpression',
-		'tConditionalStatement',
 		'tEntryArgument',
 		'dataGroup',
 		'labelReference',
@@ -114,7 +113,8 @@ Class {
 		'impliedDoExpression',
 		'tWithLoopControl',
 		'abstractIOStatement',
-		'numericalConstant'
+		'numericalConstant',
+		'conditionalStatement'
 	],
 	#category : #'FAST-Fortran-Generator'
 }
@@ -381,11 +381,13 @@ FASTFortranGenerator >> defineFASTClasses [
 		             newClassNamed: #BlockData
 		             comment:
 		             'The BLOCK DATA statement identifies a subprogram that initializes variables and arrays in labeled common blocks.'.
-		
+
 	statementBlock := builder
 		             newClassNamed: #StatementBlock
 		             comment:
 		             'Contains the block of Fortran statements'.
+
+	conditionalStatement := builder newClassNamed: #ConditionalStatement comment: 'I represent a fortran statement with a condition: if-block, if-logical'.
 
 ]
 
@@ -424,6 +426,7 @@ FASTFortranGenerator >> defineHierarchy [
 	callStatement --|> tWithArguments.
 	closeStatement --|> abstractIOStatement.
 	commonStatement --|> abstractStatement.
+	conditionalStatement --|> abstractStatement.
 	continueStatement --|> abstractStatement.
 	dataStatement --|> abstractStatement.
 	dataStatement --|> tWithVariableGroup.
@@ -433,7 +436,7 @@ FASTFortranGenerator >> defineHierarchy [
 	doStatement --|> abstractStatement.
 	doStatement --|> tWithLabelReferences.
 	doStatement --|> tWithLoopControl.
-	doWhileStatement --|> abstractStatement.
+	doWhileStatement --|> conditionalStatement.
 	elseStatement --|> abstractStatement.
 	encodeStatement --|> abstractIOStatement.
 	endFileStatement --|> abstractIOStatement.
@@ -455,12 +458,9 @@ FASTFortranGenerator >> defineHierarchy [
 	goToAssignedStatement --|> tWithLabelReferences.
 	goToComputed --|> abstractStatement.
 	goToComputed --|> tWithLabelReferences.
-	ifArithmeticStatement --|> abstractStatement.
-	ifArithmeticStatement --|> tConditionalStatement.
-	ifBlockStatement --|> abstractStatement.
-	ifBlockStatement --|> tConditionalStatement.
-	ifLogicalStatement --|> abstractStatement.
-	ifLogicalStatement --|> tConditionalStatement.
+	ifArithmeticStatement --|> conditionalStatement.
+	ifBlockStatement --|> conditionalStatement.
+	ifLogicalStatement --|> conditionalStatement.
 	implicitStatement --|> abstractStatement.
 	includeStatement --|> abstractStatement.
 	inquireStatement --|> abstractIOStatement.
@@ -679,7 +679,7 @@ FASTFortranGenerator >> defineRelations [
 	((goToAssignedStatement property: #selectorExpression) comment: 'The expression which value selects the label to go to')
 	<>- (abstractExpression property: #parentGotoAssignedStatement).
 
-	((tConditionalStatement property: #condition) comment: 'Condition')
+	((conditionalStatement property: #condition) comment: 'Condition')
 	<>-
 	((abstractExpression property: #parentConditionalStatement) comment: 'Parent conditional statement (if-block, if-logical, ...)').
 
@@ -986,8 +986,6 @@ FASTFortranGenerator >> defineStatements [
 FASTFortranGenerator >> defineTraits [
 
 	super defineTraits.
-
-	tConditionalStatement := builder newTraitNamed: #TConditionalStatement comment: 'I represent a fortran statement with a condition: if-block, if-logical'.
 
 	tEntryArgument := builder newTraitNamed: #TEntryStatement comment: 'I represent an argument in an entry statement: it can be a variable name, array name, formal procedure name, or an asterisk'.
 
