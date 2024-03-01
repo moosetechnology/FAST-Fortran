@@ -7,30 +7,31 @@ I represent a fortran statement with a condition: if-block, if-logical
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `condition` | `FASTFortranTConditionalStatement` | `parentConditionalStatement` | `FASTFortranAbstractExpression` | Condition|
+| `condition` | `FASTFortranConditionalStatement` | `parentConditionalStatement` | `FASTFortranAbstractExpression` | Condition|
 
 
 
 "
-Trait {
-	#name : #FASTFortranTConditionalStatement,
+Class {
+	#name : #FASTFortranConditionalStatement,
+	#superclass : #FASTFortranAbstractStatement,
 	#instVars : [
 		'#condition => FMOne type: #FASTFortranAbstractExpression opposite: #parentConditionalStatement'
 	],
-	#category : #'FAST-Fortran-Entities-Traits'
+	#category : #'FAST-Fortran-Entities-Entities'
 }
 
 { #category : #meta }
-FASTFortranTConditionalStatement classSide >> annotation [
+FASTFortranConditionalStatement class >> annotation [
 
-	<FMClass: #TConditionalStatement super: #Object>
+	<FMClass: #ConditionalStatement super: #FASTFortranAbstractStatement>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
 ]
 
 { #category : #accessing }
-FASTFortranTConditionalStatement >> condition [
+FASTFortranConditionalStatement >> condition [
 	"Relation named: #condition type: #FASTFortranAbstractExpression opposite: #parentConditionalStatement"
 
 	<generated>
@@ -39,14 +40,14 @@ FASTFortranTConditionalStatement >> condition [
 ]
 
 { #category : #accessing }
-FASTFortranTConditionalStatement >> condition: anObject [
+FASTFortranConditionalStatement >> condition: anObject [
 
 	<generated>
 	condition := anObject
 ]
 
 { #category : #navigation }
-FASTFortranTConditionalStatement >> conditionGroup [
+FASTFortranConditionalStatement >> conditionGroup [
 	<generated>
 	<navigation: 'Condition'>
 	^ MooseSpecializedGroup with: self condition

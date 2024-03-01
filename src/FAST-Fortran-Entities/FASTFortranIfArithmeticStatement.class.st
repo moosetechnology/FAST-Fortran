@@ -7,7 +7,6 @@ I represent Fortran If (Arithmetic) statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `condition` | `FASTFortranTConditionalStatement` | `parentConditionalStatement` | `FASTFortranAbstractExpression` | Condition|
 | `equalLabel` | `FASTFortranIfArithmeticStatement` | `parentIfArithmeticEqualBranch` | `FASTFortranLabelReference` | |
 | `greaterLabel` | `FASTFortranIfArithmeticStatement` | `parentIfArithmeticMoreBranch` | `FASTFortranLabelReference` | |
 | `lessLabel` | `FASTFortranIfArithmeticStatement` | `parentIfArithmeticLessBranch` | `FASTFortranLabelReference` | |
@@ -17,9 +16,7 @@ I represent Fortran If (Arithmetic) statement
 "
 Class {
 	#name : #FASTFortranIfArithmeticStatement,
-	#superclass : #FASTFortranAbstractStatement,
-	#traits : 'FASTFortranTConditionalStatement',
-	#classTraits : 'FASTFortranTConditionalStatement classTrait',
+	#superclass : #FASTFortranConditionalStatement,
 	#instVars : [
 		'#lessLabel => FMOne type: #FASTFortranLabelReference opposite: #parentIfArithmeticLessBranch',
 		'#equalLabel => FMOne type: #FASTFortranLabelReference opposite: #parentIfArithmeticEqualBranch',
@@ -31,7 +28,7 @@ Class {
 { #category : #meta }
 FASTFortranIfArithmeticStatement class >> annotation [
 
-	<FMClass: #IfArithmeticStatement super: #FASTFortranAbstractStatement>
+	<FMClass: #IfArithmeticStatement super: #FASTFortranConditionalStatement>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self

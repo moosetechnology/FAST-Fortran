@@ -7,7 +7,6 @@ I represent Fortran If (BLock) statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `condition` | `FASTFortranTConditionalStatement` | `parentConditionalStatement` | `FASTFortranAbstractExpression` | Condition|
 | `elseStatementBlock` | `FASTFortranIfBlockStatement` | `parentIfBlock` | `FASTFortranTStatementBlock` | Statement block containing statements of else branch |
 | `thenStatementBlock` | `FASTFortranIfBlockStatement` | `parentIfBlock` | `FASTFortranTStatementBlock` | Statement block containing statements of then branch |
 
@@ -16,9 +15,7 @@ I represent Fortran If (BLock) statement
 "
 Class {
 	#name : #FASTFortranIfBlockStatement,
-	#superclass : #FASTFortranAbstractStatement,
-	#traits : 'FASTFortranTConditionalStatement',
-	#classTraits : 'FASTFortranTConditionalStatement classTrait',
+	#superclass : #FASTFortranConditionalStatement,
 	#instVars : [
 		'#thenStatementBlock => FMOne type: #FASTFortranTStatementBlock opposite: #parentIfBlock',
 		'#elseStatementBlock => FMOne type: #FASTFortranTStatementBlock opposite: #parentIfBlock'
@@ -29,7 +26,7 @@ Class {
 { #category : #meta }
 FASTFortranIfBlockStatement class >> annotation [
 
-	<FMClass: #IfBlockStatement super: #FASTFortranAbstractStatement>
+	<FMClass: #IfBlockStatement super: #FASTFortranConditionalStatement>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
