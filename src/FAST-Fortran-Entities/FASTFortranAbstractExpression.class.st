@@ -14,7 +14,7 @@ I am the super class of all Fortran expressions
 | `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `lowerBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
 | `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `upperBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
 | `parentArrayExpression` | `FASTFortranAbstractExpression` | `indices` | `FASTFortranArrayVariable` | an ArrayVariable expression of which I am an indice|
-| `parentConditionalStatement` | `FASTFortranAbstractExpression` | `condition` | `FASTFortranTConditionalStatement` | Parent conditional statement (if-block, if-logical, ...)|
+| `parentConditionalStatement` | `FASTFortranAbstractExpression` | `condition` | `FASTFortranConditionalStatement` | Parent conditional statement (if-block, if-logical, ...)|
 | `parentDataStatement` | `FASTFortranAbstractExpression` | `dataConstants` | `FASTFortranDataGroup` | |
 | `parentExpression` | `FASTFortranAbstractExpression` | `expression` | `FASTFortranTUnaryExpression` | Parent expression (if possible)|
 | `parentExpressionLeft` | `FASTFortranAbstractExpression` | `left` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am left side|
@@ -49,7 +49,7 @@ Class {
 		'#assignementExpressionOwner => FMOne type: #FASTFortranFunctionStatement opposite: #expression',
 		'#parentGotoComputedStatement => FMOne type: #FASTFortranGoToComputedStatement opposite: #selectorExpression',
 		'#parentGotoAssignedStatement => FMOne type: #FASTFortranGoToAssignedStatement opposite: #selectorExpression',
-		'#parentConditionalStatement => FMOne type: #FASTFortranTConditionalStatement opposite: #condition',
+		'#parentConditionalStatement => FMOne type: #FASTFortranConditionalStatement opposite: #condition',
 		'#parentLoopControlIncrement => FMOne type: #FASTFortranLoopControlExpression opposite: #increment',
 		'#parentLoopControlLimit => FMOne type: #FASTFortranLoopControlExpression opposite: #limit',
 		'#parentExpressionLeft => FMOne type: #FASTFortranTBinaryExpression opposite: #left',
@@ -144,7 +144,7 @@ FASTFortranAbstractExpression >> parentArrayExpressionGroup [
 
 { #category : #accessing }
 FASTFortranAbstractExpression >> parentConditionalStatement [
-	"Relation named: #parentConditionalStatement type: #FASTFortranTConditionalStatement opposite: #condition"
+	"Relation named: #parentConditionalStatement type: #FASTFortranConditionalStatement opposite: #condition"
 
 	<generated>
 	<FMComment: 'Parent conditional statement (if-block, if-logical, ...)'>

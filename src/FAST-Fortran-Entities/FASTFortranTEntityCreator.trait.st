@@ -201,6 +201,13 @@ FASTFortranTEntityCreator >> newComplexType [
 ]
 
 { #category : #'entity creation' }
+FASTFortranTEntityCreator >> newConditionalStatement [
+
+	<generated>
+	^ self add: FASTFortranConditionalStatement new
+]
+
+{ #category : #'entity creation' }
 FASTFortranTEntityCreator >> newContinueStatement [
 
 	<generated>
