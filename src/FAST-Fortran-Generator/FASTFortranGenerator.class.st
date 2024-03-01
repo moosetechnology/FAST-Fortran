@@ -659,7 +659,7 @@ FASTFortranGenerator >> defineRelations [
 
 	((doStatement property: #statementBlock) comment:
 		 'Statement block containing statements of the do body ')
-	<>- ((tStatementBlock property: #parentDoStatement) comment:
+	<>- ((statementBlock property: #parentDoStatement) comment:
 			 'Parent do statement').
 
 	(entryStatement property: #entryArguments)
@@ -690,13 +690,13 @@ FASTFortranGenerator >> defineRelations [
 	((ifBlockStatement property: #thenStatementBlock) comment:
 		 'Statement block containing statements of then branch ')
 	<>-
-	((tStatementBlock property: #parentIfBlock) comment:
+	((statementBlock property: #parentIfBlock) comment:
 		 'Parent if block').
 
 	((ifBlockStatement property: #elseStatementBlock) comment:
 		 'Statement block containing statements of else branch ')
 	<>-
-	((tStatementBlock property: #parentIfBlock) comment:
+	((statementBlock property: #parentIfBlock) comment:
 		 'Parent if block').
 
 	(ifArithmeticStatement property: #lessLabel)

@@ -7,8 +7,8 @@ I represent Fortran If (BLock) statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `elseStatementBlock` | `FASTFortranIfBlockStatement` | `parentIfBlock` | `FASTFortranTStatementBlock` | Statement block containing statements of else branch |
-| `thenStatementBlock` | `FASTFortranIfBlockStatement` | `parentIfBlock` | `FASTFortranTStatementBlock` | Statement block containing statements of then branch |
+| `elseStatementBlock` | `FASTFortranIfBlockStatement` | `parentIfBlock` | `FASTFortranStatementBlock` | Statement block containing statements of else branch |
+| `thenStatementBlock` | `FASTFortranIfBlockStatement` | `parentIfBlock` | `FASTFortranStatementBlock` | Statement block containing statements of then branch |
 
 
 
@@ -17,8 +17,8 @@ Class {
 	#name : #FASTFortranIfBlockStatement,
 	#superclass : #FASTFortranConditionalStatement,
 	#instVars : [
-		'#thenStatementBlock => FMOne type: #FASTFortranTStatementBlock opposite: #parentIfBlock',
-		'#elseStatementBlock => FMOne type: #FASTFortranTStatementBlock opposite: #parentIfBlock'
+		'#thenStatementBlock => FMOne type: #FASTFortranStatementBlock opposite: #parentIfBlock',
+		'#elseStatementBlock => FMOne type: #FASTFortranStatementBlock opposite: #parentIfBlock'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
@@ -34,7 +34,7 @@ FASTFortranIfBlockStatement class >> annotation [
 
 { #category : #accessing }
 FASTFortranIfBlockStatement >> elseStatementBlock [
-	"Relation named: #elseStatementBlock type: #FASTFortranTStatementBlock opposite: #parentIfBlock"
+	"Relation named: #elseStatementBlock type: #FASTFortranStatementBlock opposite: #parentIfBlock"
 
 	<generated>
 	<FMComment: 'Statement block containing statements of else branch '>
@@ -57,7 +57,7 @@ FASTFortranIfBlockStatement >> elseStatementBlockGroup [
 
 { #category : #accessing }
 FASTFortranIfBlockStatement >> thenStatementBlock [
-	"Relation named: #thenStatementBlock type: #FASTFortranTStatementBlock opposite: #parentIfBlock"
+	"Relation named: #thenStatementBlock type: #FASTFortranStatementBlock opposite: #parentIfBlock"
 
 	<generated>
 	<FMComment: 'Statement block containing statements of then branch '>
