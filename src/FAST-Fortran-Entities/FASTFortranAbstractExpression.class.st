@@ -11,8 +11,8 @@ I am the super class of all Fortran expressions
 | `assignedIn` | `FASTFortranTExpression` | `expression` | `FASTFortranTAssignment` | Optional assignment where this expression is used|
 | `assignementExpressionOwner` | `FASTFortranAbstractExpression` | `expression` | `FASTFortranFunctionStatement` | The AssignementExpression owner (if possible)|
 | `expressionStatementOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTExpressionStatement` | The expression statement that own me (if it's the case|
-| `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `upperBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
 | `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `lowerBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
+| `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `upperBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
 | `parentArrayExpression` | `FASTFortranAbstractExpression` | `indices` | `FASTFortranArrayVariable` | an ArrayVariable expression of which I am an indice|
 | `parentConditionalStatement` | `FASTFortranAbstractExpression` | `condition` | `FASTFortranConditionalStatement` | Parent conditional statement (if-block, if-logical, ...)|
 | `parentDataStatement` | `FASTFortranAbstractExpression` | `dataConstants` | `FASTFortranDataGroup` | |
@@ -24,7 +24,7 @@ I am the super class of all Fortran expressions
 | `parentLoopControlIncrement` | `FASTFortranAbstractExpression` | `increment` | `FASTFortranLoopControlExpression` | |
 | `parentLoopControlLimit` | `FASTFortranAbstractExpression` | `limit` | `FASTFortranLoopControlExpression` | |
 | `returnOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTReturnStatement` | The return statement that own the expression (if it's the case)|
-| `variableDeclaratorOwner` | `FASTFortranAbstractExpression` | `expression` | `FASTFortranTVariableDeclarator` | |
+| `variableDeclaratorOwner` | `FASTFortranAbstractExpression` | `expression` | `FASTFortranVariableDeclarator` | |
 
 
 ## Properties
@@ -45,7 +45,7 @@ Class {
 		'#parentArrayDimensionDeclarator => FMOne type: #FASTFortranArrayRange opposite: #upperBound',
 		'#parentArrayExpression => FMOne type: #FASTFortranArrayVariable opposite: #indices',
 		'#parentDataStatement => FMOne type: #FASTFortranDataGroup opposite: #dataConstants',
-		'#variableDeclaratorOwner => FMOne type: #FASTFortranTVariableDeclarator opposite: #expression',
+		'#variableDeclaratorOwner => FMOne type: #FASTFortranVariableDeclarator opposite: #expression',
 		'#assignementExpressionOwner => FMOne type: #FASTFortranFunctionStatement opposite: #expression',
 		'#parentGotoComputedStatement => FMOne type: #FASTFortranGoToComputedStatement opposite: #selectorExpression',
 		'#parentGotoAssignedStatement => FMOne type: #FASTFortranGoToAssignedStatement opposite: #selectorExpression',
@@ -363,7 +363,7 @@ FASTFortranAbstractExpression >> parentLoopControlLimitGroup [
 
 { #category : #accessing }
 FASTFortranAbstractExpression >> variableDeclaratorOwner [
-	"Relation named: #variableDeclaratorOwner type: #FASTFortranTVariableDeclarator opposite: #expression"
+	"Relation named: #variableDeclaratorOwner type: #FASTFortranVariableDeclarator opposite: #expression"
 
 	<generated>
 	<container>

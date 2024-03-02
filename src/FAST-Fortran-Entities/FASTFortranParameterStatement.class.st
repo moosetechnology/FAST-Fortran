@@ -7,7 +7,7 @@ I represent Fortran Parameter statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `declarators` | `FASTFortranTWithDeclarators` | `parentDeclaration` | `FASTFortranTVariableDeclarator` | variables declared|
+| `declarators` | `FASTFortranTWithDeclarators` | `parentDeclaration` | `FASTFortranVariableDeclarator` | variables declared|
 
 
 
