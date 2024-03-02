@@ -7,7 +7,7 @@ I represent a declaration with several variable declarators
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `declarators` | `FASTFortranTWithDeclarators` | `parentDeclaration` | `FASTFortranTVariableDeclarator` | variables declared|
+| `declarators` | `FASTFortranTWithDeclarators` | `parentDeclaration` | `FASTFortranVariableDeclarator` | variables declared|
 
 
 
@@ -15,7 +15,7 @@ I represent a declaration with several variable declarators
 Trait {
 	#name : #FASTFortranTWithDeclarators,
 	#instVars : [
-		'#declarators => FMMany type: #FASTFortranTVariableDeclarator opposite: #parentDeclaration'
+		'#declarators => FMMany type: #FASTFortranVariableDeclarator opposite: #parentDeclaration'
 	],
 	#category : #'FAST-Fortran-Entities-Traits'
 }
@@ -37,7 +37,7 @@ FASTFortranTWithDeclarators >> addDeclarator: anObject [
 
 { #category : #accessing }
 FASTFortranTWithDeclarators >> declarators [
-	"Relation named: #declarators type: #FASTFortranTVariableDeclarator opposite: #parentDeclaration"
+	"Relation named: #declarators type: #FASTFortranVariableDeclarator opposite: #parentDeclaration"
 
 	<generated>
 	<FMComment: 'variables declared'>
