@@ -97,7 +97,6 @@ Class {
 		'arrayVariable',
 		'variableDeclarationStatement',
 		'tWithDeclarators',
-		'tVariableDeclarator',
 		'variableDeclarator',
 		'commonGroup',
 		'tWithLabelReferences',
@@ -538,7 +537,6 @@ FASTFortranGenerator >> defineHierarchy [
 	variable --|> tVariableEntity.
 	variable --|> tEntryArgument.
 	variable --|> tFormat.
-	variableDeclarator --|> tVariableDeclarator.
 
 	"types"
 	byteType --|> type.
@@ -599,7 +597,7 @@ FASTFortranGenerator >> defineProperties [
 	(tUnaryExpression property: #operator type: #String) comment:
 		'Unary expression operator'.
 
-	((tVariableDeclarator property: #variable type: #String) comment: 'The name of the variable being declared').
+	((variableDeclarator property: #variable type: #String) comment: 'The name of the variable being declared').
 
 ]
 
@@ -643,9 +641,9 @@ FASTFortranGenerator >> defineRelations [
 	tWithVariableGroup <>-* tVariableGroup.
 	
 	((tWithDeclarators property: #declarators) comment: 'variables declared')
-	<>-* (tVariableDeclarator property: #parentDeclaration).
+	<>-* (variableDeclarator property: #parentDeclaration).
 
-	((tVariableDeclarator property: #expression) comment:
+	((variableDeclarator property: #expression) comment:
 		 'Expression assigned to the variable declared')
 	<>- (abstractExpression property: #variableDeclaratorOwner) .
 
@@ -992,8 +990,6 @@ FASTFortranGenerator >> defineTraits [
 	tFormat := builder newTraitNamed: #TFormat comment: 'I represent a format description (eg. in Format or Print statement)'.
 
 	tIOParameter := builder newTraitNamed: #TIOParameter comment: 'I represent a parameter to an IO-statement (read or write)'.
-
-	tVariableDeclarator := builder newTraitNamed: #TVariableDeclarator comment: 'I represent a variable declarator: variable declared + optional initial value'.
 
 	tVariableGroup := builder newTraitNamed: #TVariableGroup comment: 'I represent an entity with several variables like in a DataStatement or an EquivalenceStatement'.
 
