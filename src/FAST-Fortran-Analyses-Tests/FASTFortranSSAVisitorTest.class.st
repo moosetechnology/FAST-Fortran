@@ -23,7 +23,71 @@ FASTFortranSSAVisitorTest >> runVisitor [
 ]
 
 { #category : #tests }
-FASTFortranSSAVisitorTest >> testSequencialAssignements [
+FASTFortranSSAVisitorTest >> testFirstAssignement [
+	"
+	SUBROUTINE something()
+	INTEGER x
+	x = 5
+	END
+	"
+
+	| varAccessBlock |
+	self subroutine: #something.
+	self addStatement: (self declarationStatement: #integer variables: #(x)).
+	self addStatement: (self assignementStatement: #x value: 5).
+
+	self runVisitor.
+
+	varAccessBlock := [ :aNode | aNode statementBlock statements second variable].
+	self
+		assert: (varAccessBlock value: ssa) name
+		equals: 'x_1'.
+	self
+		assert: (varAccessBlock value: ssa) localDeclaration variable
+		equals: (varAccessBlock value: ast) name.
+
+]
+
+{ #category : #tests }
+FASTFortranSSAVisitorTest >> testVariableAssignedTwice [
+	"
+	SUBROUTINE something()
+	INTEGER x
+	x = 5
+	x = 6
+	END
+	"
+
+	| varAccessBlock |
+	self subroutine: #something.
+	self addStatement: (self declarationStatement: #integer variables: #(x)).
+	self addStatement: (self assignementStatement: #x value: 5).
+	self addStatement: (self assignementStatement: #x value: 6).
+
+	self runVisitor.
+
+	"first assignement"
+	varAccessBlock := [ :aNode | aNode statementBlock statements second variable].
+	self
+		assert: (varAccessBlock value: ssa) name
+		equals: 'x_1'.
+	self
+		assert: (varAccessBlock value: ssa) localDeclaration variable
+		equals: (varAccessBlock value: ast) name.
+
+	"second assignement"
+	varAccessBlock := [ :aNode | aNode statementBlock statements third variable].
+	self
+		assert: (varAccessBlock value: ssa) name
+		equals: 'x_2'.
+	self
+		assert: (varAccessBlock value: ssa) localDeclaration variable
+		equals: (varAccessBlock value: ast) name.
+
+]
+
+{ #category : #tests }
+FASTFortranSSAVisitorTest >> testVariableReassigned [
 	"
 	SUBROUTINE something()
 	INTEGER x, y
@@ -32,7 +96,7 @@ FASTFortranSSAVisitorTest >> testSequencialAssignements [
 	END
 	"
 
-	| varAccess |
+	| varAccessBlock |
 	self subroutine: #something.
 	self addStatement: (self declarationStatement: #integer variables: #(x y)).
 	self addStatement: (self assignementStatement: #x value: 5).
@@ -40,19 +104,13 @@ FASTFortranSSAVisitorTest >> testSequencialAssignements [
 
 	self runVisitor.
 
-	"x assignement"
-	varAccess := [ :aNode | aNode statementBlock statements second variable].
-	self assert: (varAccess value: ssa) name equals: 'x_1'.
-	self assert: (varAccess value: ssa) localDeclaration variable equals: (varAccess value: ast) name.
-
-	"y assignement"
-	varAccess := [ :aNode | aNode statementBlock statements third variable].
-	self assert: (varAccess value: ssa) name equals: 'y_1'.
-	self assert: (varAccess value: ssa) localDeclaration variable equals: (varAccess value: ast) name.
-
 	"x assigned (to y)"
-	varAccess := [ :aNode | aNode statementBlock statements third expression].
-	self assert: (varAccess value: ssa) name equals: 'x_1'.
-	self assert: (varAccess value: ssa) localDeclaration variable equals: (varAccess value: ast) name.
+	varAccessBlock := [ :aNode | aNode statementBlock statements third expression].
+	self
+		assert: (varAccessBlock value: ssa) name
+		equals: 'x_1'.
+	self
+		assert: (varAccessBlock value: ssa) localDeclaration variable
+		equals: (varAccessBlock value: ast) name.
 
 ]
