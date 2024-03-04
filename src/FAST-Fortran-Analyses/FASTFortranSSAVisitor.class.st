@@ -1,6 +1,9 @@
 Class {
 	#name : #FASTFortranSSAVisitor,
 	#superclass : #FASTFortranVisitor,
+	#instVars : [
+		'variableVersions'
+	],
 	#category : #'FAST-Fortran-Analyses-SSA'
 }
 
@@ -11,13 +14,51 @@ FASTFortranSSAVisitor class >> visit: anAST [
 		visit: anAST 
 ]
 
+{ #category : #'private - ssa' }
+FASTFortranSSAVisitor >> createPhiVersions: anteriorVersions [
+	| phi |
+
+	variableVersions do: [ :newVersion |
+		phi := FASTFortranSSAVariablePhiVersion for:
+			(anteriorVersions
+				detect: [ :previousVersion | previousVersion sameVariableAs: newVersion ]
+				ifOne: [ :previousVersion | {previousVersion . newVersion activeVersion} ]
+				ifNone: [ {newVersion activeVersion} ]).
+
+		newVersion localDeclaration activeVersion: phi
+	]
+]
+
+{ #category : #'private - ssa' }
+FASTFortranSSAVisitor >> createVariableVersion: aFASTFortranVariable [
+
+	| ssaVersion |
+	ssaVersion := FASTFortranSSAVariableVersion for: aFASTFortranVariable.
+	aFASTFortranVariable localDeclaration activeVersion: ssaVersion.
+	
+	variableVersions add: aFASTFortranVariable localDeclaration.
+
+	^ssaVersion 
+]
+
+{ #category : #'private - ssa' }
+FASTFortranSSAVisitor >> useVariableVersion: aFASTFortranVariable [
+
+	^aFASTFortranVariable localDeclaration activeVersion
+
+]
+
 { #category : #api }
 FASTFortranSSAVisitor >> visit: anAST [
 
 	| copy |
 	copy := FASTFortranCopyVisitor visit: anAST.
 	copy accept: FASTFortranLocalResolverVisitor new.
+
+	variableVersions := Set new.
+	
 	copy accept: self.
+
 	^copy
 ]
 
@@ -29,8 +70,11 @@ FASTFortranSSAVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariabl
 
 { #category : #'visiting - statements' }
 FASTFortranSSAVisitor >> visitFASTFortranAssignmentStatement: aFASTFortranAssignmentStatement [
+	| fastVariable |
 
-	aFASTFortranAssignmentStatement variable newVersion.
+	fastVariable := aFASTFortranAssignmentStatement variable.
+	fastVariable ssaVersion: (self createVariableVersion: fastVariable).
+
 	aFASTFortranAssignmentStatement expression accept: self.
 ]
 
@@ -42,9 +86,9 @@ FASTFortranSSAVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
 ]
 
 { #category : #'visiting - statements' }
-FASTFortranSSAVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortranIfArithmeticStatement [
+FASTFortranSSAVisitor >> visitFASTFortranDoWhileStatement: aFASTFortranDoWhileStatement [
 
-	^super visitFASTFortranIfArithmeticStatement: aFASTFortranIfArithmeticStatement
+	^super visitFASTFortranDoWhileStatement: aFASTFortranDoWhileStatement
 
 ]
 
@@ -57,8 +101,21 @@ FASTFortranSSAVisitor >> visitFASTFortranIfBlockStatement: aFASTFortranIfBlockSt
 
 { #category : #'visiting - statements' }
 FASTFortranSSAVisitor >> visitFASTFortranIfLogicalStatement: aFASTFortranIfLogicalStatement [
+	"For IF statements, we record in variableVersions the SSAVariable created in the branches
+	 These variable will produce a phiVersion after the statement"
 
-	^super visitFASTFortranIfLogicalStatement: aFASTFortranIfLogicalStatement
+	| anteriorVersions |
+
+	anteriorVersions := variableVersions collect: #activeVersion.
+	variableVersions := Set new.
+	
+	aFASTFortranIfLogicalStatement condition accept: self.
+	aFASTFortranIfLogicalStatement statement accept: self.
+
+	self createPhiVersions: anteriorVersions.
+
+	anteriorVersions do: [ :ssaVersion |
+		variableVersions add: ssaVersion localDeclaration ].
 
 ]
 
@@ -78,5 +135,5 @@ FASTFortranSSAVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBl
 { #category : #'visiting - expressions' }
 FASTFortranSSAVisitor >> visitFASTFortranVariable: aFASTFortranVariable [
 
-	aFASTFortranVariable activeVersion
+	aFASTFortranVariable ssaVersion: (self useVariableVersion: aFASTFortranVariable)
 ]

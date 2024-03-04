@@ -7,32 +7,16 @@ FASTFortranVariableDeclarator >> activeVersion [
 ]
 
 { #category : #'*FAST-Fortran-Analyses' }
-FASTFortranVariableDeclarator >> activeVersion: aVersion [
+FASTFortranVariableDeclarator >> activeVersion: aSSAVersion [
 
-	^self attributeAt: #activeVersion put: aVersion
-]
-
-{ #category : #'*FAST-Fortran-Analyses' }
-FASTFortranVariableDeclarator >> lastVersionNumber [
-
-	^self attributeAt: #version ifAbsent: [ 0 ].
-
-]
-
-{ #category : #'*FAST-Fortran-Analyses' }
-FASTFortranVariableDeclarator >> lastVersionNumber: aNumber [
-
-	^self attributeAt: #version put: aNumber
-
+	^self attributeAt: #activeVersion put: aSSAVersion
 ]
 
 { #category : #'*FAST-Fortran-Analyses' }
 FASTFortranVariableDeclarator >> newVersionNumber [
 
-	| n |
-	n := self lastVersionNumber + 1.
-	self lastVersionNumber: n.
+	^self activeVersion
+		ifNil: [ 1 ]
+		ifNotNil: [ :active | active version + 1 ]
 
-	^n
-	
 ]

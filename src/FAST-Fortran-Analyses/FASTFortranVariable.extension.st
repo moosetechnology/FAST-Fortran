@@ -1,20 +1,28 @@
 Extension { #name : #FASTFortranVariable }
 
 { #category : #'*FAST-Fortran-Analyses' }
-FASTFortranVariable >> activeVersion [
+FASTFortranVariable >> sameVariableAs: otherFASTFortranVariable [
 
-	self name: self localDeclaration activeVersion
+	^self localDeclaration = otherFASTFortranVariable localDeclaration 
 ]
 
 { #category : #'*FAST-Fortran-Analyses' }
-FASTFortranVariable >> activeVersion: aVersion [
+FASTFortranVariable >> ssaName [
 
-	^self localDeclaration activeVersion: aVersion
+	^self ssaVersion name
+
 ]
 
 { #category : #'*FAST-Fortran-Analyses' }
-FASTFortranVariable >> newVersion [
+FASTFortranVariable >> ssaVersion [
 
-	self name: (self name , '_' , (self localDeclaration newVersionNumber asString)).
-	self localDeclaration activeVersion: self name
+	^self attributeAt: #ssaVersion ifAbsent: [ nil ]
+
+]
+
+{ #category : #'*FAST-Fortran-Analyses' }
+FASTFortranVariable >> ssaVersion: aSSAVersion [
+
+	self attributeAt: #ssaVersion put: aSSAVersion
+
 ]
