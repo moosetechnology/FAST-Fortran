@@ -352,7 +352,7 @@ FASTFortranAbstractVisitorTest >> ifArithmetic: condition negative: negativeLabe
 { #category : #'entity creation' }
 FASTFortranAbstractVisitorTest >> ifBlock: condition then: thenBlock else: elseBlock [
 	^FASTFortranIfBlockStatement new
-		condition: condition ;
+		condition: (self makeSimpleExpression: condition) ;
 		thenStatementBlock: (self statementBlock: thenBlock) ;
 		elseStatementBlock: (elseBlock ifNil: [ nil ] ifNotNil: [self statementBlock: elseBlock]) ;
 		yourself
@@ -563,6 +563,7 @@ FASTFortranAbstractVisitorTest >> setUp [
 
 { #category : #'entity creation' }
 FASTFortranAbstractVisitorTest >> statementBlock: aCollection [
+	aCollection withIndexDo: [ :stmt :i | stmt startPos: i ].
 	^FASTFortranStatementBlock new
 		statements: aCollection ;
 		startPos: 1 ;
