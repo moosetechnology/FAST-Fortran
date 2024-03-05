@@ -7,20 +7,35 @@ Class {
 	#category : #'FAST-Fortran-Analyses-SSA'
 }
 
+{ #category : #adding }
+FASTFortranSSAVariablePhiVersion >> addChoiceToPhi: aPhiVersion [
+
+	choices do: [ :v | v addChoiceToPhi: aPhiVersion ]
+]
+
+{ #category : #accessing }
+FASTFortranSSAVariablePhiVersion >> choices [
+
+	^choices
+]
+
+{ #category : #'instance creation' }
+FASTFortranSSAVariablePhiVersion >> for: aCollection [
+
+	localDeclaration := aCollection anyOne localDeclaration.
+	version := nil.
+
+	choices := OrderedCollection new.
+	aCollection do: [ :v | v addChoiceToPhi: self ]
+
+]
+
 { #category : #accessing }
 FASTFortranSSAVariablePhiVersion >> name [
 
 	^'phi(' ,
 	($, join: (choices collect: #name)) ,
 	')'
-]
-
-{ #category : #'instance creation' }
-FASTFortranSSAVariablePhiVersion >> on: aCollection [
-
-	localDeclaration := aCollection anyOne localDeclaration.
-	choices := aCollection.
-	version := nil.
 ]
 
 { #category : #accessing }
