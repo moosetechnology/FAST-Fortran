@@ -342,7 +342,8 @@ FASTFortranVisitor >> visitFASTFortranIfBlockStatement: aFASTFortranIfBlockState
 	self visitFASTFortranTStatement: aFASTFortranIfBlockStatement.
 	aFASTFortranIfBlockStatement condition accept: self.
 	aFASTFortranIfBlockStatement thenStatementBlock accept: self.
-	aFASTFortranIfBlockStatement elseStatementBlock accept: self.
+	aFASTFortranIfBlockStatement elseStatementBlock
+		ifNotNil: [ :elseBlock | elseBlock accept: self].
 ]
 
 { #category : #'visiting - statements' }
