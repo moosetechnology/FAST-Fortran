@@ -220,6 +220,62 @@ FASTFortranSSAVisitorTest >> testIfBlockAssignedInThenOnly [
 ]
 
 { #category : #tests }
+FASTFortranSSAVisitorTest >> testIfBlockFourBranches [
+	"
+	SUBROUTINE something()
+	INTEGER x, y, z
+	IF (x) THEN
+	  IF (y) THEN
+	    x = 5
+	  ELSE
+	    x = 6
+	  END IF
+	ELSE
+	  IF (z) THEN
+	    x = 7
+	  ELSE
+	    x = 8
+	  END IF
+	END IF
+	END
+	"
+
+	| ifStmt ifStmt2 varAccess |
+
+	ifStmt := self
+		ifBlock: #y
+		then: {self assignementStatement: #x value: 5}
+		else: {self assignementStatement: #x value: 6}.
+
+	ifStmt2 := self
+		ifBlock: #z
+		then: {self assignementStatement: #x value: 7}
+		else: {self assignementStatement: #x value: 8}.
+
+	self subroutine: #something.
+	self addStatement: (self declarationStatement: #integer variables: #(x y z)).
+	self addStatement: (self ifBlock: #x then: { ifStmt } else: { ifStmt2 }).
+
+	self runVisitor.
+
+	ifStmt := ssa statementBlock statements second thenStatementBlock statements first.
+	varAccess := ifStmt thenStatementBlock statements first variable.
+	self assert: varAccess ssaName equals: 'x_1'.
+	varAccess := ifStmt elseStatementBlock statements first variable.
+	self assert: varAccess ssaName equals: 'x_2'.
+
+	ifStmt := ssa statementBlock statements second elseStatementBlock statements first.
+	varAccess := ifStmt thenStatementBlock statements first variable.
+	self assert: varAccess ssaName equals: 'x_3'.
+	varAccess := ifStmt elseStatementBlock statements first variable.
+	self assert: varAccess ssaName equals: 'x_4'.
+
+	self assert: varAccess localDeclaration activeVersion name equals: 'phi(x_1,x_2,x_3,x_4)'.
+	self assert: varAccess localDeclaration newVersionNumber equals: 5
+
+]
+
+{ #category : #tests }
 FASTFortranSSAVisitorTest >> testIfLogicalAssignedBeforeAndAfter [
 	"
 	SUBROUTINE something()
