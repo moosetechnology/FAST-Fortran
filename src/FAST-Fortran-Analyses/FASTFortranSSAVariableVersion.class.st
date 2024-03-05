@@ -12,8 +12,21 @@ Class {
 FASTFortranSSAVariableVersion class >> for: aFASTFortranVariable [
 
 	^self new
-		on: aFASTFortranVariable ;
+		for: aFASTFortranVariable ;
 		yourself
+]
+
+{ #category : #adding }
+FASTFortranSSAVariableVersion >> addChoiceToPhi: aPhiVersion [
+
+	aPhiVersion choices add: self
+]
+
+{ #category : #'instance creation' }
+FASTFortranSSAVariableVersion >> for: aFASTFortranVariable [
+
+	localDeclaration := aFASTFortranVariable localDeclaration.
+	version := localDeclaration newVersionNumber
 ]
 
 { #category : #accessing }
@@ -32,13 +45,6 @@ FASTFortranSSAVariableVersion >> localDeclaration: anObject [
 FASTFortranSSAVariableVersion >> name [
 
 	^localDeclaration variable , '_' , version asString
-]
-
-{ #category : #'instance creation' }
-FASTFortranSSAVariableVersion >> on: aFASTFortranVariable [
-
-	localDeclaration := aFASTFortranVariable localDeclaration.
-	version := localDeclaration newVersionNumber
 ]
 
 { #category : #testing }
