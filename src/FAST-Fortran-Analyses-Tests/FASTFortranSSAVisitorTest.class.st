@@ -23,6 +23,35 @@ FASTFortranSSAVisitorTest >> runVisitor [
 ]
 
 { #category : #tests }
+FASTFortranSSAVisitorTest >> testDoLoopCreatesConditionalBlock [
+
+	| loopStmt varAccess |
+	"
+	SUBROUTINE something()
+	INTEGER x
+	DO i=1, x, 1
+	END DO	
+	END
+	"
+	self subroutine: #something.
+	self addStatement: (self declarationStatement: #integer variables: #(x)).
+	self addStatement: (self doStatement: #(i 1 x 1)  statements: #()).
+
+	self runVisitor.
+
+	loopStmt := ssa statementBlock statements second.
+	varAccess := loopStmt loopControl init variable.
+	self assert: varAccess ssaName equals: 'i_1'.
+
+	varAccess := loopStmt loopControl limit.
+	self assert: varAccess ssaName equals: 'x_1'.
+
+	self assert: varAccess localDeclaration activeVersion name equals: 'phi(x_1)'.
+	self assert: varAccess localDeclaration newVersionNumber equals: 2
+
+]
+
+{ #category : #tests }
 FASTFortranSSAVisitorTest >> testIfBlockAssignedAndUsedInThenOnly [
 	"
 	SUBROUTINE something()
