@@ -114,13 +114,6 @@ FASTFortranSSAVisitor >> visitFASTFortranAssignmentStatement: aFASTFortranAssign
 ]
 
 { #category : #'visiting - statements' }
-FASTFortranSSAVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
-
-	^super visitFASTFortranDoStatement: aFASTFortranDoStatement
-
-]
-
-{ #category : #'visiting - statements' }
 FASTFortranSSAVisitor >> visitFASTFortranDoWhileStatement: aFASTFortranDoWhileStatement [
 
 	^super visitFASTFortranDoWhileStatement: aFASTFortranDoWhileStatement
@@ -164,6 +157,14 @@ FASTFortranSSAVisitor >> visitFASTFortranIfLogicalStatement: aFASTFortranIfLogic
 	aFASTFortranIfLogicalStatement statement accept: self.
 
 	self twoWaysPhiVersions: preVersions branch: (variableVersions collect: #activeVersion)
+]
+
+{ #category : #'visiting - expressions' }
+FASTFortranSSAVisitor >> visitFASTFortranLoopControlExpression: aFASTFortranLoopControlExpression [
+
+	aFASTFortranLoopControlExpression init accept: self.
+	aFASTFortranLoopControlExpression increment ifNotNil: [ :increment | increment accept: self ].
+	aFASTFortranLoopControlExpression limit accept: self.
 ]
 
 { #category : #'visiting - expressions' }
