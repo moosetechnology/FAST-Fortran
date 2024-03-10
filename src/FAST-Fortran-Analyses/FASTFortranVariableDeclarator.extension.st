@@ -11,12 +11,3 @@ FASTFortranVariableDeclarator >> activeVersion: aSSAVersion [
 
 	^self attributeAt: #activeVersion put: aSSAVersion
 ]
-
-{ #category : #'*FAST-Fortran-Analyses' }
-FASTFortranVariableDeclarator >> newVersionNumber [
-
-	^self activeVersion
-		ifNil: [ 1 ]
-		ifNotNil: [ :active | active version + 1 ]
-
-]
