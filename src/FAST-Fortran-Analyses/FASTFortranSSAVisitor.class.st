@@ -87,7 +87,7 @@ FASTFortranSSAVisitor >> visit: anAST [
 
 	| copy |
 	copy := FASTFortranCopyVisitor visit: anAST.
-	copy accept: FASTFortranLocalResolverVisitor new.
+	FASTFortranLocalResolverVisitor new on: copy.
 
 	variableVersions := Set new.
 	
@@ -100,17 +100,6 @@ FASTFortranSSAVisitor >> visit: anAST [
 FASTFortranSSAVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariable [
 
 	^self visitFASTFortranVariable: aFASTFortranArrayVariable
-]
-
-{ #category : #'visiting - statements' }
-FASTFortranSSAVisitor >> visitFASTFortranAssignmentStatement: aFASTFortranAssignmentStatement [
-
-	| fastVariable |
-	fastVariable := aFASTFortranAssignmentStatement variable.
-	fastVariable ssaVersion:
-		(self createVariableVersion: fastVariable).
-
-	aFASTFortranAssignmentStatement expression accept: self
 ]
 
 { #category : #'visiting - statements' }
@@ -178,6 +167,17 @@ FASTFortranSSAVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBl
 
 	self visitFASTFortranTStatementBlock: aFASTFortranStatementBlock.
 
+]
+
+{ #category : #'visiting - statements' }
+FASTFortranSSAVisitor >> visitFASTFortranTAssignment: aFASTFortranTAssignment [
+
+	| fastVariable |
+	fastVariable := aFASTFortranTAssignment variable.
+	fastVariable ssaVersion:
+		(self createVariableVersion: fastVariable).
+
+	aFASTFortranTAssignment expression accept: self
 ]
 
 { #category : #'visiting - expressions' }
