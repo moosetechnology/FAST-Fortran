@@ -69,6 +69,7 @@ FASTFortranSSAVisitor >> twoWaysPhiVersions: preVersions branch: branch [
 FASTFortranSSAVisitor >> useVariableVersion: aFASTFortranVariable [
 
 	^aFASTFortranVariable localDeclaration activeVersion
+		ifNil: [ self createVariableVersion: aFASTFortranVariable ]
 
 ]
 
