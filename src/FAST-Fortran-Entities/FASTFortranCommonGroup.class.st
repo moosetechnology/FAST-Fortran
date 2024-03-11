@@ -22,7 +22,9 @@ I represent Common group inside a Common statement
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
+| `endPos` | `Number` | nil | |
 | `name` | `String` | nil | |
+| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "

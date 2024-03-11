@@ -24,7 +24,9 @@ A trait representing an unary expression of a node of a source code.
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
+| `endPos` | `Number` | nil | |
 | `operator` | `String` | nil | Unary expression operator|
+| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "

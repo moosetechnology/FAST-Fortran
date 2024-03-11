@@ -26,6 +26,8 @@ Contains the block of Fortran statements
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
+| `endPos` | `Number` | nil | |
+| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "

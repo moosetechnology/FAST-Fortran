@@ -21,6 +21,8 @@ A node of a statement which is representing a single expression.
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
+| `endPos` | `Number` | nil | |
+| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "

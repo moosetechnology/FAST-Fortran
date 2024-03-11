@@ -25,7 +25,9 @@ a Fortran Binary Expression (arithmetic, logical)
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
+| `endPos` | `Number` | nil | |
 | `operator` | `String` | nil | Binary expression operator|
+| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
