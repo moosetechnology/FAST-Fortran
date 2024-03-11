@@ -539,6 +539,7 @@ FASTFortranGenerator >> defineHierarchy [
 	variable --|> tVariableEntity.
 	variable --|> tEntryArgument.
 	variable --|> tFormat.
+	variableDeclarator --|> tNamedEntity.
 
 	"types"
 	byteType --|> type.
@@ -598,8 +599,6 @@ FASTFortranGenerator >> defineProperties [
 
 	(tUnaryExpression property: #operator type: #String) comment:
 		'Unary expression operator'.
-
-	((variableDeclarator property: #variable type: #String) comment: 'The name of the variable being declared').
 
 ]
 
