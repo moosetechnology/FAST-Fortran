@@ -56,7 +56,7 @@ FASTFortranSSAVisitorTest >> testIfBlockAssignedAndUsedInThenOnly [
 	"
 	SUBROUTINE something()
 	INTEGER x, y
-	IF (x) THEN
+	IF (bool) THEN
 	  x = 5
 	  y = x
 	END IF
@@ -67,7 +67,7 @@ FASTFortranSSAVisitorTest >> testIfBlockAssignedAndUsedInThenOnly [
 	self subroutine: #something.
 	self addStatement: (self declarationStatement: #integer variables: #(x y)).
 	self addStatement: (self
-		ifBlock: #x
+		ifBlock: #bool
 		then: {
 			self assignementStatement: #x value: 5 .
 			self assignementStatement: #y value: #x
@@ -198,7 +198,7 @@ FASTFortranSSAVisitorTest >> testIfBlockAssignedInElseOnly [
 	"
 	SUBROUTINE something()
 	INTEGER x
-	IF (x) THEN
+	IF (bool) THEN
 	ELSE
 	  x = 5
 	END IF
@@ -208,7 +208,7 @@ FASTFortranSSAVisitorTest >> testIfBlockAssignedInElseOnly [
 	| ifStmt varAccess |
 	self subroutine: #something.
 	self addStatement: (self declarationStatement: #integer variables: #(x)).
-	self addStatement: (self ifBlock: #x then: #() else: {self assignementStatement: #x value: 5}).
+	self addStatement: (self ifBlock: #bool then: #() else: {self assignementStatement: #x value: 5}).
 
 	self runVisitor.
 
@@ -226,7 +226,7 @@ FASTFortranSSAVisitorTest >> testIfBlockAssignedInThenOnly [
 	"
 	SUBROUTINE something()
 	INTEGER x
-	IF (x) THEN
+	IF (bool) THEN
 	  x = 5
 	END IF
 	END
@@ -235,7 +235,7 @@ FASTFortranSSAVisitorTest >> testIfBlockAssignedInThenOnly [
 	| ifStmt varAccess |
 	self subroutine: #something.
 	self addStatement: (self declarationStatement: #integer variables: #(x)).
-	self addStatement: (self ifBlock: #x then: {self assignementStatement: #x value: 5} else: nil).
+	self addStatement: (self ifBlock: #bool then: {self assignementStatement: #x value: 5} else: nil).
 
 	self runVisitor.
 
@@ -253,14 +253,14 @@ FASTFortranSSAVisitorTest >> testIfBlockFourBranches [
 	"
 	SUBROUTINE something()
 	INTEGER x, y, z
-	IF (x) THEN
+	IF (z) THEN
 	  IF (y) THEN
 	    x = 5
 	  ELSE
 	    x = 6
 	  END IF
 	ELSE
-	  IF (z) THEN
+	  IF (y) THEN
 	    x = 7
 	  ELSE
 	    x = 8
@@ -277,13 +277,13 @@ FASTFortranSSAVisitorTest >> testIfBlockFourBranches [
 		else: {self assignementStatement: #x value: 6}.
 
 	ifStmt2 := self
-		ifBlock: #z
+		ifBlock: #y
 		then: {self assignementStatement: #x value: 7}
 		else: {self assignementStatement: #x value: 8}.
 
 	self subroutine: #something.
 	self addStatement: (self declarationStatement: #integer variables: #(x y z)).
-	self addStatement: (self ifBlock: #x then: { ifStmt } else: { ifStmt2 }).
+	self addStatement: (self ifBlock: #z then: { ifStmt } else: { ifStmt2 }).
 
 	self runVisitor.
 
@@ -403,14 +403,14 @@ FASTFortranSSAVisitorTest >> testIfLogicalAssignedInsideOnly [
 	"
 	SUBROUTINE something()
 	INTEGER x
-	IF (x) x = 5
+	IF (bool) x = 5
 	END
 	"
 
 	| varAccess |
 	self subroutine: #something.
 	self addStatement: (self declarationStatement: #integer variables: #(x)).
-	self addStatement: (self logicalIf: #x statement: (self assignementStatement: #x value: 5)).
+	self addStatement: (self logicalIf: #bool statement: (self assignementStatement: #x value: 5)).
 
 	self runVisitor.
 
