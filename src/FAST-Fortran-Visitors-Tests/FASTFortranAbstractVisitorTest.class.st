@@ -2,8 +2,8 @@ Class {
 	#name : #FASTFortranAbstractVisitorTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'visitor',
-		'ast'
+		'ast',
+		'visitor'
 	],
 	#category : #'FAST-Fortran-Visitors-Tests-Visitor'
 }
