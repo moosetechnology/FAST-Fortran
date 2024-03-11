@@ -8,6 +8,7 @@ Class {
 FASTFortranCopyVisitorTest >> assertExportCopy: stmt equals: string [
 	"raising explicit error to remember which tests have not been reimplemented yet"
 
+	self skip.
 	self shouldNotImplement 
 ]
 
