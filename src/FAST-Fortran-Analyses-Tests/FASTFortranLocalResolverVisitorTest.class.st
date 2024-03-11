@@ -32,7 +32,7 @@ FASTFortranLocalResolverVisitorTest >> testLinkToDeclaration [
 	body := ast statementBlock statements.
 	varAccess := body second variable.
 	self deny: varAccess localDeclaration isImplicitDeclaration.
-	self assert: varAccess localDeclaration variable equals: 'x'.
+	self assert: varAccess localDeclaration name equals: 'x'.
 	self assert: varAccess localDeclaration equals: body first declarators first
 ]
 
