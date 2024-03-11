@@ -952,7 +952,7 @@ FASTFortranExporterVisitor >> visitFASTFortranVariableDeclarator: aFASTFortranVa
 	"call to #outputExpression:inParentheses: is oportunistic.
 	 It is not an operator precedence case"
 
-	self << aFASTFortranVariableDeclarator variable.
+	self << aFASTFortranVariableDeclarator name.
 
 	aFASTFortranVariableDeclarator dimensions
 		ifNotEmpty: [ :dimensions |

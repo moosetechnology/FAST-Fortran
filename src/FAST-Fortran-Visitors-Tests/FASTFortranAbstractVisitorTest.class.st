@@ -603,7 +603,7 @@ FASTFortranAbstractVisitorTest >> unary: op operand: operand [
 { #category : #'entity creation' }
 FASTFortranAbstractVisitorTest >> variableDeclarator: aName [
 	^FASTFortranVariableDeclarator new
-		variable: aName ;
+		name: aName ;
 		yourself
 ]
 
