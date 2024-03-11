@@ -24,7 +24,9 @@ a Fortran Unary Expression (arithmetic, logical, character)
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
+| `endPos` | `Number` | nil | |
 | `operator` | `String` | nil | Unary expression operator|
+| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "

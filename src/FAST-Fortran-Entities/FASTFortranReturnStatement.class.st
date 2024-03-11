@@ -22,6 +22,8 @@ a Fortran Return Statement
 |---|
 | `alternateReturnLabel` | `String` | nil | Optional. Expression of type INTEGER or REAL|
 | `endPos` | `Number` | nil | |
+| `endPos` | `Number` | nil | |
+| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
