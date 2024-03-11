@@ -500,7 +500,7 @@ FASTFortranAbstractVisitorTest >> printStatement: aCollection [
 
 	^FASTFortranPrintStatement new
 		format: FASTFortranAsterisk new ;
-		arguments: aCollection ;
+		arguments: (aCollection collect: [ :each | self makeSimpleExpression: each]) ;
 		startPos: 1 ;
 		endPos: 30 ;
 		yourself

@@ -478,6 +478,32 @@ FASTFortranSSAVisitorTest >> testSingleAssignement [
 ]
 
 { #category : #tests }
+FASTFortranSSAVisitorTest >> testUnAssigned [
+	"
+	SUBROUTINE something()
+	INTEGER x
+	if (x) print 5
+	END
+	"
+
+	| varAccess |
+	self subroutine: #something.
+	self addStatement: (self declarationStatement: #integer variables: #(x)).
+	self addStatement: (self logicalIf: #x statement: (self printStatement: #(5) )).
+
+	self runVisitor.
+
+	varAccess := ssa statementBlock statements second condition.
+
+	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
+	self assert: varAccess ssaVersion version equals: 1.
+	self assert: varAccess ssaName equals: 'x_1'.
+
+	self assert: varAccess localDeclaration newVersionNumber equals: 2
+
+]
+
+{ #category : #tests }
 FASTFortranSSAVisitorTest >> testVariableAssignedTwice [
 	"
 	SUBROUTINE something()
@@ -530,6 +556,9 @@ FASTFortranSSAVisitorTest >> testVariableReassigned [
 
 	varAccess := ssa statementBlock statements third variable.
 	self assert: varAccess ssaName equals: 'y_1'.
+
+	varAccess := ssa statementBlock statements third expression.
+	self assert: varAccess ssaName equals: 'x_1'.
 
 	self
 		deny:   ssa statementBlock statements second variable ssaVersion localDeclaration
