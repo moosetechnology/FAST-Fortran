@@ -395,6 +395,8 @@ FASTFortranGenerator >> defineHierarchy [
 
 	super defineHierarchy.
 
+	tEntity --|> #TEntity.  "FASTFortranTEntity --|> FASTTEntity"
+
 	programUnit --|> tEntity.
 	programUnit --|> tBehaviouralEntity.
 	programUnit --|> tNamedEntity.
