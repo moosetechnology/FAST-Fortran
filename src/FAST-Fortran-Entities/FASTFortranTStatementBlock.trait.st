@@ -22,6 +22,8 @@ A block of statements as ones in C-like langs with {}
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
+| `endPos` | `Number` | nil | |
+| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "

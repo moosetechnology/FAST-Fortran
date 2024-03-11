@@ -25,7 +25,9 @@ A trait representing a binary expression of a node of a source code.
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
+| `endPos` | `Number` | nil | |
 | `operator` | `String` | nil | Binary expression operator|
+| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "

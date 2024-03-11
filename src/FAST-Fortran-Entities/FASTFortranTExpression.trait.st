@@ -19,6 +19,8 @@ An abstract superclass representing an expression node of a source code.
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
+| `endPos` | `Number` | nil | |
+| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "

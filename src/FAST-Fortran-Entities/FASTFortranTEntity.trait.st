@@ -7,17 +7,19 @@ any entity
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
+| `endPos` | `Number` | nil | |
+| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
 Trait {
 	#name : #FASTFortranTEntity,
 	#instVars : [
-		'#startPos => FMProperty',
-		'#endPos => FMProperty'
+		'#endPos => FMProperty',
+		'#startPos => FMProperty'
 	],
-	#traits : 'TEntityMetaLevelDependency',
-	#classTraits : 'TEntityMetaLevelDependency classTrait',
+	#traits : 'FASTTEntity + TEntityMetaLevelDependency',
+	#classTraits : 'FASTTEntity classTrait + TEntityMetaLevelDependency classTrait',
 	#category : #'FAST-Fortran-Entities-Traits'
 }
 
