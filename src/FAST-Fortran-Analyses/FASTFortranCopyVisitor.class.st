@@ -1223,7 +1223,7 @@ FASTFortranCopyVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFor
 FASTFortranCopyVisitor >> visitFASTFortranVariableDeclarator: aFASTFortranVariableDeclarator [
 	<generated>
 	^FASTFortranVariableDeclarator new
-		variable: (self copy: aFASTFortranVariableDeclarator variable) ;
+		name: (self copy: aFASTFortranVariableDeclarator name) ;
 		dimensions: (self copy: aFASTFortranVariableDeclarator dimensions) ;
 		expression: (self copy: aFASTFortranVariableDeclarator expression) ;
 		startPos: (self copy: aFASTFortranVariableDeclarator startPos) ;

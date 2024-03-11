@@ -1046,7 +1046,7 @@ FASTFortranCopyVisitorTest >> testOneDeclarationCharacterType [
 
 	self deny: copy declarators anyOne equals: node declarators anyOne.
 	self assert: copy declarators anyOne class equals: node declarators anyOne class.
-	self assert: copy declarators anyOne variable equals: node declarators anyOne variable.
+	self assert: copy declarators anyOne name equals: node declarators anyOne name.
 
 ]
 
@@ -1106,7 +1106,7 @@ FASTFortranCopyVisitorTest >> testOneDeclarationDoublePrecisionType [
 
 	self deny: copy declarators anyOne equals: node declarators anyOne.
 	self assert: copy declarators anyOne class equals: node declarators anyOne class.
-	self assert: copy declarators anyOne variable equals: node declarators anyOne variable.
+	self assert: copy declarators anyOne name equals: node declarators anyOne name.
 
 ]
 
@@ -1149,7 +1149,7 @@ FASTFortranCopyVisitorTest >> testOneDeclarationLogicalType [
 
 	self deny: copy declarators anyOne equals: node declarators anyOne.
 	self assert: copy declarators anyOne class equals: node declarators anyOne class.
-	self assert: copy declarators anyOne variable equals: node declarators anyOne variable.
+	self assert: copy declarators anyOne name equals: node declarators anyOne name.
 
 ]
 
@@ -1170,7 +1170,7 @@ FASTFortranCopyVisitorTest >> testOneDeclarationRealType [
 
 	self deny: copy declarators anyOne equals: node declarators anyOne.
 	self assert: copy declarators anyOne class equals: node declarators anyOne class.
-	self assert: copy declarators anyOne variable equals: node declarators anyOne variable.
+	self assert: copy declarators anyOne name equals: node declarators anyOne name.
 
 ]
 
@@ -1195,7 +1195,7 @@ FASTFortranCopyVisitorTest >> testOneDeclarationTwoVariables [
 	copy declarators with: node declarators do: [ :copyDecl :nodeDecl |
 		self deny: copyDecl equals: nodeDecl.
 		self assert: copyDecl class equals: nodeDecl class.
-		self assert: copyDecl variable equals: nodeDecl variable.
+		self assert: copyDecl name equals: nodeDecl name.
 	]
 
 ]
