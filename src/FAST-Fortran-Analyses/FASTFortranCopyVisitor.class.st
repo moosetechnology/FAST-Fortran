@@ -7,8 +7,7 @@ Class {
 { #category : #visiting }
 FASTFortranCopyVisitor class >> visit: anAST [
 
-	^self new
-		visit: anAST
+	^anAST accept: self new
 ]
 
 { #category : #copying }
