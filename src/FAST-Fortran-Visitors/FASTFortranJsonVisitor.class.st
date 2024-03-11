@@ -418,7 +418,7 @@ FASTFortranJsonVisitor >> visitDeclaratorVariable: aDeclaratorVariableNode [
 	data := super visitDeclaratorVariable: aDeclaratorVariableNode.
 
 	^(self newEntity: FASTFortranVariableDeclarator atPosition: data first)
-		variable: data second ;
+		name: data second ;
 		yourself
 ]
 
