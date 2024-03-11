@@ -15,7 +15,7 @@ FASTFortranSSAVisitorHelpersTest >> makeVariable: aName [
 
 	^FASTFortranVariable new
 		name: aName ;
-		localDeclaration: (FASTFortranVariableDeclarator new variable: aName) ;
+		localDeclaration: (FASTFortranVariableDeclarator new name: aName) ;
 		yourself
 ]
 

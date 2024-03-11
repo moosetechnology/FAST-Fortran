@@ -44,7 +44,7 @@ FASTFortranSSAVariableVersion >> localDeclaration: anObject [
 { #category : #accessing }
 FASTFortranSSAVariableVersion >> name [
 
-	^localDeclaration variable , '_' , version asString
+	^localDeclaration name , '_' , version asString
 ]
 
 { #category : #testing }

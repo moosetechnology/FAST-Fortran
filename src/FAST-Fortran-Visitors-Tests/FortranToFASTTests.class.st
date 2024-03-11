@@ -50,7 +50,7 @@ FortranToFASTTests >> testArrayDeclaration [
 	self assert: stmt declarators size equals: 1.
 
 	declarator := stmt declarators first.
-	self assert: declarator variable equals: 'arr'.
+	self assert: declarator name equals: 'arr'.
 	self assert: declarator dimensions size equals: 1.
 	self assert: declarator dimensions first class equals: FASTFortranArrayRange. 
 	self assert: declarator dimensions first lowerBound equals: nil. 
@@ -104,7 +104,7 @@ FortranToFASTTests >> testArrayDeclarationImplicitLower [
 	self assert: stmt declarators size equals: 1.
 
 	declarator := stmt declarators first.
-	self assert: declarator variable equals: 'arr'.
+	self assert: declarator name equals: 'arr'.
 	self assert: declarator dimensions size equals: 1.
 	self assert: declarator dimensions first lowerBound class equals: FASTFortranIntegerLiteral.
 	self assert: declarator dimensions first lowerBound primitiveValue equals: '-5'.
@@ -128,7 +128,7 @@ FortranToFASTTests >> testArrayDeclarationMultipleDimensions [
 	self assert: stmt declarators size equals: 1.
 
 	declarator := stmt declarators first.
-	self assert: declarator variable equals: 'arr'.
+	self assert: declarator name equals: 'arr'.
 	self assert: declarator dimensions size equals: 2.
 
 	self assert: declarator dimensions first lowerBound primitiveValue equals: '1'.
@@ -154,7 +154,7 @@ FortranToFASTTests >> testArrayDeclarationVariableBound [
 	self assert: stmt declarators size equals: 1.
 
 	declarator := stmt declarators first.
-	self assert: declarator variable equals: 'arr'.
+	self assert: declarator name equals: 'arr'.
 	self assert: declarator dimensions size equals: 1.
 	self assert: declarator dimensions first class equals: FASTFortranArrayRange. 
 	self assert: declarator dimensions first lowerBound equals: nil. 
@@ -901,11 +901,11 @@ FortranToFASTTests >> testCommonStatementNoName [
 	self assert: commonGroup declarators size equals: 2.
 
 	self assert: commonGroup declarators first class equals: FASTFortranVariableDeclarator.
-	self assert: commonGroup declarators first variable equals: 'var1'.
+	self assert: commonGroup declarators first name equals: 'var1'.
 	self assert: commonGroup declarators first startPos equals: 39.
 
 	self assert: commonGroup declarators second class equals: FASTFortranVariableDeclarator.
-	self assert: commonGroup declarators second variable equals: 'var2'.
+	self assert: commonGroup declarators second name equals: 'var2'.
 	self assert: commonGroup declarators second startPos equals: 45.
 
 ]
@@ -995,7 +995,7 @@ FortranToFASTTests >> testDeclarationIntegerWithInitializer [
 	self assert: stmt declarators size equals: 1.
 	declarator := stmt declarators anyOne.
 	self assert: declarator class equals: FASTFortranVariableDeclarator.
-	self assert: declarator variable equals: 'i'.
+	self assert: declarator name equals: 'i'.
 	self assert: declarator startPos equals: 34.
 
 	self assert: stmt type class equals: FASTFortranIntegerType.
@@ -1023,13 +1023,13 @@ FortranToFASTTests >> testDimensionStatementAsterisk [
 	self assert: stmt declarators size equals: 2.
 
 	decl := stmt declarators first.
-	self assert: decl variable equals: 'a'.
+	self assert: decl name equals: 'a'.
 	self assert: decl dimensions size equals: 1.
 	self assert: decl dimensions anyOne lowerBound equals: nil. 
 	self assert: decl dimensions anyOne upperBound class equals: FASTFortranAsterisk.
 
 	decl := stmt declarators second.
-	self assert: decl variable equals: 'b'.
+	self assert: decl name equals: 'b'.
 	self assert: decl dimensions size equals: 2.
 	self assert: decl dimensions first lowerBound equals: nil. 
 	self assert: decl dimensions first upperBound class equals: FASTFortranScalarVariable.
@@ -1058,7 +1058,7 @@ FortranToFASTTests >> testDimensionStatementExpression [
 	self assert: stmt declarators size equals: 1.
 	decl := stmt declarators anyOne.
 
-	self assert: decl variable equals: 'm'.
+	self assert: decl name equals: 'm'.
 	self assert: decl dimensions size equals: 2.
 	self assert: decl dimensions first lowerBound equals: nil. 
 	self assert: decl dimensions first upperBound class equals: FASTFortranScalarVariable.
@@ -1087,7 +1087,7 @@ FortranToFASTTests >> testDimensionStatementMultipleDim [
 	self assert: stmt declarators size equals: 1.
 	decl := stmt declarators anyOne.
 
-	self assert: decl variable equals: 'v'.
+	self assert: decl name equals: 'v'.
 	self assert: decl dimensions size equals: 2.
 	self assert: decl dimensions first lowerBound equals: nil. 
 	self assert: decl dimensions first upperBound class equals: FASTFortranIntegerLiteral.
@@ -1116,11 +1116,11 @@ FortranToFASTTests >> testDimensionStatementMultipleVariables [
 	self assert: stmt declarators size equals: 2.
 
 	decl := stmt declarators first.
-	self assert: decl variable equals: 'm'.
+	self assert: decl name equals: 'm'.
 	self assert: decl dimensions size equals: 2.
 
 	decl := stmt declarators second.
-	self assert: decl variable equals: 'v'.
+	self assert: decl name equals: 'v'.
 	self assert: decl dimensions size equals: 1.
 ]
 
@@ -1145,7 +1145,7 @@ FortranToFASTTests >> testDimensionStatementRange [
 	self assert: stmt declarators size equals: 1.
 	decl := stmt declarators anyOne.
 
-	self assert: decl variable equals: 'm'.
+	self assert: decl name equals: 'm'.
 	self assert: decl dimensions size equals: 3.
 
 	self assert: decl dimensions first lowerBound class equals: FASTFortranIntegerLiteral. 
@@ -1179,7 +1179,7 @@ FortranToFASTTests >> testDimensionStatementSimple [
 	self assert: stmt declarators size equals: 1.
 	decl := stmt declarators anyOne.
 
-	self assert: decl variable equals: 'v'.
+	self assert: decl name equals: 'v'.
 	self assert: decl dimensions size equals: 1.
 	self assert: decl dimensions anyOne lowerBound equals: nil. 
 	self assert: decl dimensions anyOne upperBound class equals: FASTFortranIntegerLiteral.
@@ -1207,7 +1207,7 @@ FortranToFASTTests >> testDimensionStatementVarDims [
 	self assert: stmt declarators size equals: 1.
 	decl := stmt declarators anyOne.
 
-	self assert: decl variable equals: 'm'.
+	self assert: decl name equals: 'm'.
 	self assert: decl dimensions size equals: 2.
 	self assert: decl dimensions first upperBound class equals: FASTFortranScalarVariable.
 	self assert: decl dimensions first upperBound name equals: 'n'.
@@ -2492,21 +2492,21 @@ FortranToFASTTests >> testParameterStatement [
 
 	var := stmt declarators first.
 	self assert: var class equals: FASTFortranVariableDeclarator.
-	self assert: var variable equals: 'pi'.
+	self assert: var name equals: 'pi'.
 	self assert: var expression class equals: FASTFortranRealLiteral.
 	self assert: var expression primitiveValue equals: '3.141593'.
 	self assert: var startPos equals: 37.
 
 	var := stmt declarators second.
 	self assert: var class equals: FASTFortranVariableDeclarator.
-	self assert: var variable equals: 'text'.
+	self assert: var name equals: 'text'.
 	self assert: var expression class equals: FASTFortranCharacterLiteral.
 	self assert: var expression primitiveValue equals: 'Header'.
 	self assert: var startPos equals: 50.
 
 	var := stmt declarators third.
 	self assert: var class equals: FASTFortranVariableDeclarator.
-	self assert: var variable equals: 't'.
+	self assert: var name equals: 't'.
 	self assert: var expression class equals: FASTFortranBooleanLiteral.
 	self assert: var expression primitiveValue equals: '.true.'.
 	self assert: var startPos equals: 65.
@@ -2914,7 +2914,7 @@ FortranToFASTTests >> testVariableDeclarationCharacter [
 
 	self assert: stmt declarators size equals: 1.
 	var := stmt declarators first.
-	self assert: var variable equals: 'astring'.
+	self assert: var name equals: 'astring'.
 ]
 
 { #category : #'tests-statement' }
@@ -2939,7 +2939,7 @@ FortranToFASTTests >> testVariableDeclarationInteger [
 	self assert: stmt declarators size equals: 1.
 	
 	var := stmt declarators first.
-	self assert: var variable equals: 'i'.
+	self assert: var name equals: 'i'.
 ]
 
 { #category : #'tests-statement' }
@@ -2986,7 +2986,7 @@ FortranToFASTTests >> testVariableDeclarationLogical [
 	self assert: stmt declarators size equals: 1.
 	
 	var := stmt declarators first.
-	self assert: var variable equals: 'b'.
+	self assert: var name equals: 'b'.
 ]
 
 { #category : #'tests-statement' }
@@ -3011,7 +3011,7 @@ FortranToFASTTests >> testVariableDeclarationReal [
 	self assert: stmt declarators size equals: 1.
 	
 	var := stmt declarators first.
-	self assert: var variable equals: 'c'.
+	self assert: var name equals: 'c'.
 ]
 
 { #category : #'tests-statement' }
@@ -3037,7 +3037,7 @@ FortranToFASTTests >> testVariableDeclarationWithLength [
 
 	self assert: stmt declarators size equals: 1.
 	var := stmt declarators first.
-	self assert: var variable equals: 'astring'.
+	self assert: var name equals: 'astring'.
 ]
 
 { #category : #'tests-statement' }

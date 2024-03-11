@@ -7,6 +7,7 @@ Part of a variable declaration: name of the variable + optional initial value
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
+| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
 | `parentDeclaration` | `FASTFortranVariableDeclarator` | `declarators` | `FASTFortranTWithDeclarators` | |
 
 ### Children
@@ -21,17 +22,22 @@ Part of a variable declaration: name of the variable + optional initial value
 
 | Name | Type | Default value | Comment |
 |---|
-| `variable` | `String` | nil | The name of the variable being declared|
+| `endPos` | `Number` | nil | |
+| `endPos` | `Number` | nil | |
+| `name` | `String` | nil | |
+| `startPos` | `Number` | nil | |
+| `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : #FASTFortranVariableDeclarator,
 	#superclass : #FASTFortranEntity,
+	#traits : 'FASTFortranTNamedEntity',
+	#classTraits : 'FASTFortranTNamedEntity classTrait',
 	#instVars : [
-		'#variable => FMProperty',
 		'#dimensions => FMMany type: #FASTFortranArrayRange opposite: #parentVariableDeclarator',
-		'#parentDeclaration => FMOne type: #FASTFortranTWithDeclarators opposite: #declarators',
-		'#expression => FMOne type: #FASTFortranAbstractExpression opposite: #variableDeclaratorOwner'
+		'#expression => FMOne type: #FASTFortranAbstractExpression opposite: #variableDeclaratorOwner',
+		'#parentDeclaration => FMOne type: #FASTFortranTWithDeclarators opposite: #declarators'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
@@ -119,19 +125,4 @@ FASTFortranVariableDeclarator >> parentDeclarationGroup [
 	<generated>
 	<navigation: 'ParentDeclaration'>
 	^ MooseSpecializedGroup with: self parentDeclaration
-]
-
-{ #category : #accessing }
-FASTFortranVariableDeclarator >> variable [
-
-	<FMProperty: #variable type: #String>
-	<generated>
-	<FMComment: 'The name of the variable being declared'>
-	^ variable
-]
-
-{ #category : #accessing }
-FASTFortranVariableDeclarator >> variable: anObject [
-	<generated>
-	variable := anObject
 ]

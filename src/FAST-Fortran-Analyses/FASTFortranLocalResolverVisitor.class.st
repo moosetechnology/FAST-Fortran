@@ -80,7 +80,7 @@ FASTFortranLocalResolverVisitor >> visitFASTFortranVariableDeclarator: aFASTVari
 	"register a variable (structuralEntity) declaration into the current scope"
 
 	scoper
-		scopeAdd: aFASTVariableDeclaration variable
+		scopeAdd: aFASTVariableDeclaration name
 		declaration: aFASTVariableDeclaration.
 
 	aFASTVariableDeclaration localDeclaration: aFASTVariableDeclaration.
