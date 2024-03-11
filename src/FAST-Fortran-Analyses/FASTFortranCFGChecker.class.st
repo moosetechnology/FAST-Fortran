@@ -7,7 +7,7 @@ Checks some well-formedness rules on a CFG
 Class {
 	#name : #FASTFortranCFGChecker,
 	#superclass : #Object,
-	#category : #'FAST-Fortran-Visitors-CFG'
+	#category : #'FAST-Fortran-Analyses-CFG'
 }
 
 { #category : #'instance creation' }

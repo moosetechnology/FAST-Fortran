@@ -5,9 +5,3 @@ FASTFortranIfLogicalStatement >> accept: aVisitor [
 	<generated>
 	^aVisitor visitFASTFortranIfLogicalStatement: self.
 ]
-
-{ #category : #'*FAST-Fortran-Visitors' }
-FASTFortranIfLogicalStatement >> exportForBasicBlock [
-
-	^'if (' , (FASTFortranExporterVisitor export: self condition) , ')'
-]

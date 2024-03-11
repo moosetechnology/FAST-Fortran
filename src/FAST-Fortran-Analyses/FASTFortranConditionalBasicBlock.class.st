@@ -12,7 +12,7 @@ Class {
 	#instVars : [
 		'nextBlocks'
 	],
-	#category : #'FAST-Fortran-Visitors-CFG'
+	#category : #'FAST-Fortran-Analyses-CFG'
 }
 
 { #category : #accessing }
@@ -79,7 +79,7 @@ FASTFortranConditionalBasicBlock >> nextBlocks [
 { #category : #printing }
 FASTFortranConditionalBasicBlock >> sourceCode [
 
-	^self firstStatement exportForBasicBlock
+	^self firstStatement exportForCFG
 ]
 
 { #category : #accessing }
