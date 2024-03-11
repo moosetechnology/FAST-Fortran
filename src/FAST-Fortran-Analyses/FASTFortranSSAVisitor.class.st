@@ -104,6 +104,13 @@ FASTFortranSSAVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariabl
 ]
 
 { #category : #'visiting - statements' }
+FASTFortranSSAVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
+
+	aFASTFortranDoStatement loopControl accept: self.
+	aFASTFortranDoStatement statementBlock accept: self
+]
+
+{ #category : #'visiting - statements' }
 FASTFortranSSAVisitor >> visitFASTFortranDoWhileStatement: aFASTFortranDoWhileStatement [
 
 	self flag: 'DoWhile not correctly modelled yet'.
