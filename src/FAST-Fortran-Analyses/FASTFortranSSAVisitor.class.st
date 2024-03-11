@@ -105,7 +105,8 @@ FASTFortranSSAVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariabl
 { #category : #'visiting - statements' }
 FASTFortranSSAVisitor >> visitFASTFortranDoWhileStatement: aFASTFortranDoWhileStatement [
 
-	^super visitFASTFortranDoWhileStatement: aFASTFortranDoWhileStatement
+	self flag: 'DoWhile not correctly modelled yet'.
+	^self shouldBeImplemented
 
 ]
 
