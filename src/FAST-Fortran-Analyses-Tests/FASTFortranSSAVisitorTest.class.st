@@ -46,7 +46,7 @@ FASTFortranSSAVisitorTest >> testDoLoopCreatesConditionalBlock [
 	varAccess := loopStmt loopControl limit.
 	self assert: varAccess ssaName equals: 'x_1'.
 
-	self assert: varAccess localDeclaration activeVersion name equals: 'phi(x_1)'.
+	self assert: varAccess localDeclaration activeVersion name equals: 'x_1'.
 	self assert: varAccess localDeclaration newVersionNumber equals: 2
 
 ]
