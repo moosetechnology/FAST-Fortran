@@ -10,6 +10,9 @@ An abstract superclass representing an expression node of a source code.
 | `argumentOwner` | `FASTFortranTExpression` | `arguments` | `FASTFortranTWithArguments` | my owner|
 | `assignedIn` | `FASTFortranTExpression` | `expression` | `FASTFortranTAssignment` | Optional assignment where this expression is used|
 | `expressionStatementOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTExpressionStatement` | The expression statement that own me (if it's the case|
+| `parentExpression` | `FASTFortranTExpression` | `expression` | `FASTFortranTUnaryExpression` | Parent (unary) expression|
+| `parentExpressionLeft` | `FASTFortranTExpression` | `left` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am left side|
+| `parentExpressionRight` | `FASTFortranTExpression` | `right` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am right side|
 | `returnOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTReturnStatement` | The return statement that own the expression (if it's the case)|
 
 
@@ -27,10 +30,13 @@ An abstract superclass representing an expression node of a source code.
 Trait {
 	#name : #FASTFortranTExpression,
 	#instVars : [
-		'#expressionStatementOwner => FMOne type: #FASTFortranTExpressionStatement opposite: #expression',
-		'#returnOwner => FMOne type: #FASTFortranTReturnStatement opposite: #expression',
 		'#argumentOwner => FMOne type: #FASTFortranTWithArguments opposite: #arguments',
-		'#assignedIn => FMOne type: #FASTFortranTAssignment opposite: #expression'
+		'#assignedIn => FMOne type: #FASTFortranTAssignment opposite: #expression',
+		'#expressionStatementOwner => FMOne type: #FASTFortranTExpressionStatement opposite: #expression',
+		'#parentExpression => FMOne type: #FASTFortranTUnaryExpression opposite: #expression',
+		'#parentExpressionLeft => FMOne type: #FASTFortranTBinaryExpression opposite: #left',
+		'#parentExpressionRight => FMOne type: #FASTFortranTBinaryExpression opposite: #right',
+		'#returnOwner => FMOne type: #FASTFortranTReturnStatement opposite: #expression'
 	],
 	#traits : 'FASTFortranTEntity',
 	#classTraits : 'FASTFortranTEntity classTrait',
@@ -118,6 +124,81 @@ FASTFortranTExpression >> expressionStatementOwnerGroup [
 	<generated>
 	<navigation: 'ExpressionStatementOwner'>
 	^ MooseSpecializedGroup with: self expressionStatementOwner
+]
+
+{ #category : #accessing }
+FASTFortranTExpression >> parentExpression [
+	"Relation named: #parentExpression type: #FASTFortranTUnaryExpression opposite: #expression"
+
+	<generated>
+	<FMComment: 'Parent (unary) expression'>
+	<container>
+	<derived>
+	^ parentExpression
+]
+
+{ #category : #accessing }
+FASTFortranTExpression >> parentExpression: anObject [
+
+	<generated>
+	parentExpression := anObject
+]
+
+{ #category : #navigation }
+FASTFortranTExpression >> parentExpressionGroup [
+	<generated>
+	<navigation: 'ParentExpression'>
+	^ MooseSpecializedGroup with: self parentExpression
+]
+
+{ #category : #accessing }
+FASTFortranTExpression >> parentExpressionLeft [
+	"Relation named: #parentExpressionLeft type: #FASTFortranTBinaryExpression opposite: #left"
+
+	<generated>
+	<FMComment: 'Parent (binary) expression of which I am left side'>
+	<container>
+	<derived>
+	^ parentExpressionLeft
+]
+
+{ #category : #accessing }
+FASTFortranTExpression >> parentExpressionLeft: anObject [
+
+	<generated>
+	parentExpressionLeft := anObject
+]
+
+{ #category : #navigation }
+FASTFortranTExpression >> parentExpressionLeftGroup [
+	<generated>
+	<navigation: 'ParentExpressionLeft'>
+	^ MooseSpecializedGroup with: self parentExpressionLeft
+]
+
+{ #category : #accessing }
+FASTFortranTExpression >> parentExpressionRight [
+	"Relation named: #parentExpressionRight type: #FASTFortranTBinaryExpression opposite: #right"
+
+	<generated>
+	<FMComment: 'Parent (binary) expression of which I am right side'>
+	<container>
+	<derived>
+	^ parentExpressionRight
+]
+
+{ #category : #accessing }
+FASTFortranTExpression >> parentExpressionRight: anObject [
+
+	<generated>
+	parentExpressionRight := anObject
+]
+
+{ #category : #navigation }
+FASTFortranTExpression >> parentExpressionRightGroup [
+	<generated>
+	<navigation: 'ParentExpressionRight'>
+	^ MooseSpecializedGroup with: self parentExpressionRight
 ]
 
 { #category : #accessing }
