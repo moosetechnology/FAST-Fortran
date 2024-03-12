@@ -10,12 +10,15 @@ A trait representing an unary expression of a node of a source code.
 | `argumentOwner` | `FASTFortranTExpression` | `arguments` | `FASTFortranTWithArguments` | my owner|
 | `assignedIn` | `FASTFortranTExpression` | `expression` | `FASTFortranTAssignment` | Optional assignment where this expression is used|
 | `expressionStatementOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTExpressionStatement` | The expression statement that own me (if it's the case|
+| `parentExpression` | `FASTFortranTExpression` | `expression` | `FASTFortranTUnaryExpression` | Parent (unary) expression|
+| `parentExpressionLeft` | `FASTFortranTExpression` | `left` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am left side|
+| `parentExpressionRight` | `FASTFortranTExpression` | `right` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am right side|
 | `returnOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTReturnStatement` | The return statement that own the expression (if it's the case)|
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `expression` | `FASTFortranTUnaryExpression` | `parentExpression` | `FASTFortranAbstractExpression` | expression|
+| `expression` | `FASTFortranTUnaryExpression` | `parentExpression` | `FASTFortranTExpression` | (sub-)expression in the unary expression|
 
 
 ## Properties
@@ -33,8 +36,8 @@ A trait representing an unary expression of a node of a source code.
 Trait {
 	#name : #FASTFortranTUnaryExpression,
 	#instVars : [
-		'#operator => FMProperty',
-		'#expression => FMOne type: #FASTFortranAbstractExpression opposite: #parentExpression'
+		'#expression => FMOne type: #FASTFortranTExpression opposite: #parentExpression',
+		'#operator => FMProperty'
 	],
 	#traits : 'FASTFortranTExpression',
 	#classTraits : 'FASTFortranTExpression classTrait',
@@ -52,10 +55,10 @@ FASTFortranTUnaryExpression classSide >> annotation [
 
 { #category : #accessing }
 FASTFortranTUnaryExpression >> expression [
-	"Relation named: #expression type: #FASTFortranAbstractExpression opposite: #parentExpression"
+	"Relation named: #expression type: #FASTFortranTExpression opposite: #parentExpression"
 
 	<generated>
-	<FMComment: 'expression'>
+	<FMComment: '(sub-)expression in the unary expression'>
 	^ expression
 ]
 
