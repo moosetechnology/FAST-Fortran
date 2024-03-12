@@ -10,13 +10,16 @@ A trait representing a binary expression of a node of a source code.
 | `argumentOwner` | `FASTFortranTExpression` | `arguments` | `FASTFortranTWithArguments` | my owner|
 | `assignedIn` | `FASTFortranTExpression` | `expression` | `FASTFortranTAssignment` | Optional assignment where this expression is used|
 | `expressionStatementOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTExpressionStatement` | The expression statement that own me (if it's the case|
+| `parentExpression` | `FASTFortranTExpression` | `expression` | `FASTFortranTUnaryExpression` | Parent (unary) expression|
+| `parentExpressionLeft` | `FASTFortranTExpression` | `left` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am left side|
+| `parentExpressionRight` | `FASTFortranTExpression` | `right` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am right side|
 | `returnOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTReturnStatement` | The return statement that own the expression (if it's the case)|
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `left` | `FASTFortranTBinaryExpression` | `parentExpressionLeft` | `FASTFortranAbstractExpression` | left part of a binary expression|
-| `right` | `FASTFortranTBinaryExpression` | `parentExpressionRight` | `FASTFortranAbstractExpression` | left part of the expression|
+| `left` | `FASTFortranTBinaryExpression` | `parentExpressionLeft` | `FASTFortranTExpression` | left part of a binary expression|
+| `right` | `FASTFortranTBinaryExpression` | `parentExpressionRight` | `FASTFortranTExpression` | left part of the expression|
 
 
 ## Properties
@@ -27,6 +30,7 @@ A trait representing a binary expression of a node of a source code.
 | `endPos` | `Number` | nil | |
 | `endPos` | `Number` | nil | |
 | `operator` | `String` | nil | Binary expression operator|
+| `operator` | `String` | nil | Binary expression operator|
 | `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
@@ -34,9 +38,9 @@ A trait representing a binary expression of a node of a source code.
 Trait {
 	#name : #FASTFortranTBinaryExpression,
 	#instVars : [
+		'#left => FMOne type: #FASTFortranTExpression opposite: #parentExpressionLeft',
 		'#operator => FMProperty',
-		'#left => FMOne type: #FASTFortranAbstractExpression opposite: #parentExpressionLeft',
-		'#right => FMOne type: #FASTFortranAbstractExpression opposite: #parentExpressionRight'
+		'#right => FMOne type: #FASTFortranTExpression opposite: #parentExpressionRight'
 	],
 	#traits : 'FASTFortranTExpression',
 	#classTraits : 'FASTFortranTExpression classTrait',
@@ -54,7 +58,7 @@ FASTFortranTBinaryExpression classSide >> annotation [
 
 { #category : #accessing }
 FASTFortranTBinaryExpression >> left [
-	"Relation named: #left type: #FASTFortranAbstractExpression opposite: #parentExpressionLeft"
+	"Relation named: #left type: #FASTFortranTExpression opposite: #parentExpressionLeft"
 
 	<generated>
 	<FMComment: 'left part of a binary expression'>
@@ -92,7 +96,7 @@ FASTFortranTBinaryExpression >> operator: anObject [
 
 { #category : #accessing }
 FASTFortranTBinaryExpression >> right [
-	"Relation named: #right type: #FASTFortranAbstractExpression opposite: #parentExpressionRight"
+	"Relation named: #right type: #FASTFortranTExpression opposite: #parentExpressionRight"
 
 	<generated>
 	<FMComment: 'left part of the expression'>
