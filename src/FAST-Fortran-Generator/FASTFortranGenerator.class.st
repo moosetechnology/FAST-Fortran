@@ -597,9 +597,6 @@ FASTFortranGenerator >> defineProperties [
 	(abstractStatement property: #label type: #String) comment:
 		'Determines the statement label which consists of 1 to 5 digits, with at least one nonzero'.
 
-	(tUnaryExpression property: #operator type: #String) comment:
-		'Unary expression operator'.
-
 ]
 
 { #category : #definition }
@@ -732,20 +729,6 @@ FASTFortranGenerator >> defineRelations [
 		 'Program Units in a program file')
 	<>-* ((programUnit property: #parentProgramFile) comment:
 			 'Parent program file').
-
-	((tBinaryExpression property: #left) comment:
-		 'left part of a binary expression')
-	<>- ((abstractExpression property: #parentExpressionLeft) comment:
-			 'Parent (binary) expression of which I am left side').
-
-	((tBinaryExpression property: #right) comment:
-		 'left part of the expression')
-	<>- ((abstractExpression property: #parentExpressionRight) comment:
-			 'Parent (binary) expression of which I am right side').
-
-	((tUnaryExpression property: #expression) comment: 'expression')
-	<>- ((abstractExpression property: #parentExpression) comment:
-			 'Parent expression (if possible)').
 
 	((type property: #size) comment: 'a data size in bytes')
 	<>- (integerConstant property: #parentTypeSize).
