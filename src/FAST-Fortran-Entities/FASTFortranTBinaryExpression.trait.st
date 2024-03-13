@@ -11,15 +11,15 @@ A trait representing a binary expression of a node of a source code.
 | `assignedIn` | `FASTFortranTExpression` | `expression` | `FASTFortranTAssignment` | Optional assignment where this expression is used|
 | `expressionStatementOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTExpressionStatement` | The expression statement that own me (if it's the case|
 | `parentExpression` | `FASTFortranTExpression` | `expression` | `FASTFortranTUnaryExpression` | Parent (unary) expression|
-| `parentExpressionLeft` | `FASTFortranTExpression` | `left` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am left side|
-| `parentExpressionRight` | `FASTFortranTExpression` | `right` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am right side|
+| `parentExpressionLeft` | `FASTFortranTExpression` | `leftOperand` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am left side|
+| `parentExpressionRight` | `FASTFortranTExpression` | `rightOperand` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am right side|
 | `returnOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTReturnStatement` | The return statement that own the expression (if it's the case)|
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `left` | `FASTFortranTBinaryExpression` | `parentExpressionLeft` | `FASTFortranTExpression` | left part of a binary expression|
-| `right` | `FASTFortranTBinaryExpression` | `parentExpressionRight` | `FASTFortranTExpression` | left part of the expression|
+| `leftOperand` | `FASTFortranTBinaryExpression` | `parentExpressionLeft` | `FASTFortranTExpression` | left part of a binary expression|
+| `rightOperand` | `FASTFortranTBinaryExpression` | `parentExpressionRight` | `FASTFortranTExpression` | left part of the expression|
 
 
 ## Properties
@@ -38,9 +38,9 @@ A trait representing a binary expression of a node of a source code.
 Trait {
 	#name : #FASTFortranTBinaryExpression,
 	#instVars : [
-		'#left => FMOne type: #FASTFortranTExpression opposite: #parentExpressionLeft',
+		'#leftOperand => FMOne type: #FASTFortranTExpression opposite: #parentExpressionLeft',
 		'#operator => FMProperty',
-		'#right => FMOne type: #FASTFortranTExpression opposite: #parentExpressionRight'
+		'#rightOperand => FMOne type: #FASTFortranTExpression opposite: #parentExpressionRight'
 	],
 	#traits : 'FASTFortranTExpression',
 	#classTraits : 'FASTFortranTExpression classTrait',
@@ -57,26 +57,26 @@ FASTFortranTBinaryExpression classSide >> annotation [
 ]
 
 { #category : #accessing }
-FASTFortranTBinaryExpression >> left [
-	"Relation named: #left type: #FASTFortranTExpression opposite: #parentExpressionLeft"
+FASTFortranTBinaryExpression >> leftOperand [
+	"Relation named: #leftOperand type: #FASTFortranTExpression opposite: #parentExpressionLeft"
 
 	<generated>
 	<FMComment: 'left part of a binary expression'>
-	^ left
+	^ leftOperand
 ]
 
 { #category : #accessing }
-FASTFortranTBinaryExpression >> left: anObject [
+FASTFortranTBinaryExpression >> leftOperand: anObject [
 
 	<generated>
-	left := anObject
+	leftOperand := anObject
 ]
 
 { #category : #navigation }
-FASTFortranTBinaryExpression >> leftGroup [
+FASTFortranTBinaryExpression >> leftOperandGroup [
 	<generated>
-	<navigation: 'Left'>
-	^ MooseSpecializedGroup with: self left
+	<navigation: 'LeftOperand'>
+	^ MooseSpecializedGroup with: self leftOperand
 ]
 
 { #category : #accessing }
@@ -95,24 +95,24 @@ FASTFortranTBinaryExpression >> operator: anObject [
 ]
 
 { #category : #accessing }
-FASTFortranTBinaryExpression >> right [
-	"Relation named: #right type: #FASTFortranTExpression opposite: #parentExpressionRight"
+FASTFortranTBinaryExpression >> rightOperand [
+	"Relation named: #rightOperand type: #FASTFortranTExpression opposite: #parentExpressionRight"
 
 	<generated>
 	<FMComment: 'left part of the expression'>
-	^ right
+	^ rightOperand
 ]
 
 { #category : #accessing }
-FASTFortranTBinaryExpression >> right: anObject [
+FASTFortranTBinaryExpression >> rightOperand: anObject [
 
 	<generated>
-	right := anObject
+	rightOperand := anObject
 ]
 
 { #category : #navigation }
-FASTFortranTBinaryExpression >> rightGroup [
+FASTFortranTBinaryExpression >> rightOperandGroup [
 	<generated>
-	<navigation: 'Right'>
-	^ MooseSpecializedGroup with: self right
+	<navigation: 'RightOperand'>
+	^ MooseSpecializedGroup with: self rightOperand
 ]
