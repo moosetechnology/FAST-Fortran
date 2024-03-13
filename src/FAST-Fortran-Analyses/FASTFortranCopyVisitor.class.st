@@ -20,7 +20,7 @@ FASTFortranCopyVisitor >> copy: aNode [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAbstractExpression: aFASTFortranAbstractExpression [
 	<generated>
 	^FASTFortranAbstractExpression new
@@ -30,7 +30,7 @@ FASTFortranCopyVisitor >> visitFASTFortranAbstractExpression: aFASTFortranAbstra
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAbstractIOStatement: aFASTFortranAbstractIOStatement [
 	<generated>
 	^FASTFortranAbstractIOStatement new
@@ -42,7 +42,7 @@ FASTFortranCopyVisitor >> visitFASTFortranAbstractIOStatement: aFASTFortranAbstr
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAbstractLiteral: aFASTFortranAbstractLiteral [
 	<generated>
 	^FASTFortranAbstractLiteral new
@@ -52,7 +52,7 @@ FASTFortranCopyVisitor >> visitFASTFortranAbstractLiteral: aFASTFortranAbstractL
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAbstractStatement: aFASTFortranAbstractStatement [
 	<generated>
 	^FASTFortranAbstractStatement new
@@ -63,7 +63,7 @@ FASTFortranCopyVisitor >> visitFASTFortranAbstractStatement: aFASTFortranAbstrac
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAcceptStatement: aFASTFortranAcceptStatement [
 	<generated>
 	^FASTFortranAcceptStatement new
@@ -74,7 +74,7 @@ FASTFortranCopyVisitor >> visitFASTFortranAcceptStatement: aFASTFortranAcceptSta
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAmpersand: aFASTFortranAmpersand [
 	<generated>
 	^FASTFortranAmpersand new
@@ -85,7 +85,7 @@ FASTFortranCopyVisitor >> visitFASTFortranAmpersand: aFASTFortranAmpersand [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranArrayRange: aFASTFortranArrayRange [
 	<generated>
 	^FASTFortranArrayRange new
@@ -97,7 +97,7 @@ FASTFortranCopyVisitor >> visitFASTFortranArrayRange: aFASTFortranArrayRange [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariable [
 	<generated>
 	^FASTFortranArrayVariable new
@@ -109,7 +109,7 @@ FASTFortranCopyVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariab
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAssignmentExpression: aFASTFortranAssignmentExpression [
 	<generated>
 	^FASTFortranAssignmentExpression new
@@ -121,7 +121,7 @@ FASTFortranCopyVisitor >> visitFASTFortranAssignmentExpression: aFASTFortranAssi
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAssignmentStatement: aFASTFortranAssignmentStatement [
 	<generated>
 	^FASTFortranAssignmentStatement new
@@ -134,7 +134,7 @@ FASTFortranCopyVisitor >> visitFASTFortranAssignmentStatement: aFASTFortranAssig
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAsterisk: aFASTFortranAsterisk [
 	<generated>
 	^FASTFortranAsterisk new
@@ -145,7 +145,7 @@ FASTFortranCopyVisitor >> visitFASTFortranAsterisk: aFASTFortranAsterisk [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAutomaticStatement: aFASTFortranAutomaticStatement [
 	<generated>
 	^FASTFortranAutomaticStatement new
@@ -156,7 +156,7 @@ FASTFortranCopyVisitor >> visitFASTFortranAutomaticStatement: aFASTFortranAutoma
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranBackspaceStatement: aFASTFortranBackspaceStatement [
 	<generated>
 	^FASTFortranBackspaceStatement new
@@ -168,12 +168,12 @@ FASTFortranCopyVisitor >> visitFASTFortranBackspaceStatement: aFASTFortranBacksp
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranBinaryExpression: aFASTFortranBinaryExpression [
 	<generated>
 	^FASTFortranBinaryExpression new
-		right: (self copy: aFASTFortranBinaryExpression right) ;
-		left: (self copy: aFASTFortranBinaryExpression left) ;
+		leftOperand: (self copy: aFASTFortranBinaryExpression leftOperand) ;
+		rightOperand: (self copy: aFASTFortranBinaryExpression rightOperand) ;
 		startPos: (self copy: aFASTFortranBinaryExpression startPos) ;
 		endPos: (self copy: aFASTFortranBinaryExpression endPos) ;
 		operator: (self copy: aFASTFortranBinaryExpression operator) ;
@@ -181,7 +181,7 @@ FASTFortranCopyVisitor >> visitFASTFortranBinaryExpression: aFASTFortranBinaryEx
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranBlockData: aFASTFortranBlockData [
 	<generated>
 	^FASTFortranBlockData new
@@ -195,7 +195,7 @@ FASTFortranCopyVisitor >> visitFASTFortranBlockData: aFASTFortranBlockData [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranBooleanLiteral: aFASTFortranBooleanLiteral [
 	<generated>
 	^FASTFortranBooleanLiteral new
@@ -206,7 +206,7 @@ FASTFortranCopyVisitor >> visitFASTFortranBooleanLiteral: aFASTFortranBooleanLit
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranByteType: aFASTFortranByteType [
 	<generated>
 	^FASTFortranByteType new
@@ -217,7 +217,7 @@ FASTFortranCopyVisitor >> visitFASTFortranByteType: aFASTFortranByteType [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranCallStatement: aFASTFortranCallStatement [
 	<generated>
 	^FASTFortranCallStatement new
@@ -230,7 +230,7 @@ FASTFortranCopyVisitor >> visitFASTFortranCallStatement: aFASTFortranCallStateme
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranCharacterLiteral: aFASTFortranCharacterLiteral [
 	<generated>
 	^FASTFortranCharacterLiteral new
@@ -241,7 +241,7 @@ FASTFortranCopyVisitor >> visitFASTFortranCharacterLiteral: aFASTFortranCharacte
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranCharacterType: aFASTFortranCharacterType [
 	<generated>
 	^FASTFortranCharacterType new
@@ -252,7 +252,7 @@ FASTFortranCopyVisitor >> visitFASTFortranCharacterType: aFASTFortranCharacterTy
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranCloseStatement: aFASTFortranCloseStatement [
 	<generated>
 	^FASTFortranCloseStatement new
@@ -264,7 +264,7 @@ FASTFortranCopyVisitor >> visitFASTFortranCloseStatement: aFASTFortranCloseState
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranComment: aFASTFortranComment [
 	<generated>
 	^FASTFortranComment new
@@ -275,7 +275,7 @@ FASTFortranCopyVisitor >> visitFASTFortranComment: aFASTFortranComment [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranCommonGroup: aFASTFortranCommonGroup [
 	<generated>
 	^FASTFortranCommonGroup new
@@ -287,7 +287,7 @@ FASTFortranCopyVisitor >> visitFASTFortranCommonGroup: aFASTFortranCommonGroup [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranCommonStatement: aFASTFortranCommonStatement [
 	<generated>
 	^FASTFortranCommonStatement new
@@ -299,7 +299,7 @@ FASTFortranCopyVisitor >> visitFASTFortranCommonStatement: aFASTFortranCommonSta
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranComplexLiteral: aFASTFortranComplexLiteral [
 	<generated>
 	^FASTFortranComplexLiteral new
@@ -310,7 +310,7 @@ FASTFortranCopyVisitor >> visitFASTFortranComplexLiteral: aFASTFortranComplexLit
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranComplexType: aFASTFortranComplexType [
 	<generated>
 	^FASTFortranComplexType new
@@ -321,7 +321,7 @@ FASTFortranCopyVisitor >> visitFASTFortranComplexType: aFASTFortranComplexType [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranConditionalStatement: aFASTFortranConditionalStatement [
 	<generated>
 	^FASTFortranConditionalStatement new
@@ -333,7 +333,7 @@ FASTFortranCopyVisitor >> visitFASTFortranConditionalStatement: aFASTFortranCond
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranContinueStatement: aFASTFortranContinueStatement [
 	<generated>
 	^FASTFortranContinueStatement new
@@ -344,7 +344,7 @@ FASTFortranCopyVisitor >> visitFASTFortranContinueStatement: aFASTFortranContinu
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDataGroup: aFASTFortranDataGroup [
 	<generated>
 	^FASTFortranDataGroup new
@@ -356,7 +356,7 @@ FASTFortranCopyVisitor >> visitFASTFortranDataGroup: aFASTFortranDataGroup [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDataStatement: aFASTFortranDataStatement [
 	<generated>
 	^FASTFortranDataStatement new
@@ -368,7 +368,7 @@ FASTFortranCopyVisitor >> visitFASTFortranDataStatement: aFASTFortranDataStateme
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDecodeStatement: aFASTFortranDecodeStatement [
 	<generated>
 	^FASTFortranDecodeStatement new
@@ -380,7 +380,7 @@ FASTFortranCopyVisitor >> visitFASTFortranDecodeStatement: aFASTFortranDecodeSta
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDimensionStatement: aFASTFortranDimensionStatement [
 	<generated>
 	^FASTFortranDimensionStatement new
@@ -392,7 +392,7 @@ FASTFortranCopyVisitor >> visitFASTFortranDimensionStatement: aFASTFortranDimens
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
 	<generated>
 	^FASTFortranDoStatement new
@@ -406,7 +406,7 @@ FASTFortranCopyVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDoWhileStatement: aFASTFortranDoWhileStatement [
 	<generated>
 	^FASTFortranDoWhileStatement new
@@ -418,7 +418,7 @@ FASTFortranCopyVisitor >> visitFASTFortranDoWhileStatement: aFASTFortranDoWhileS
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDoubleComplexLiteral: aFASTFortranDoubleComplexLiteral [
 	<generated>
 	^FASTFortranDoubleComplexLiteral new
@@ -429,7 +429,7 @@ FASTFortranCopyVisitor >> visitFASTFortranDoubleComplexLiteral: aFASTFortranDoub
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDoubleComplexType: aFASTFortranDoubleComplexType [
 	<generated>
 	^FASTFortranDoubleComplexType new
@@ -440,7 +440,7 @@ FASTFortranCopyVisitor >> visitFASTFortranDoubleComplexType: aFASTFortranDoubleC
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDoublePrecisionLiteral: aFASTFortranDoublePrecisionLiteral [
 	<generated>
 	^FASTFortranDoublePrecisionLiteral new
@@ -451,7 +451,7 @@ FASTFortranCopyVisitor >> visitFASTFortranDoublePrecisionLiteral: aFASTFortranDo
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDoublePrecisionType: aFASTFortranDoublePrecisionType [
 	<generated>
 	^FASTFortranDoublePrecisionType new
@@ -462,7 +462,7 @@ FASTFortranCopyVisitor >> visitFASTFortranDoublePrecisionType: aFASTFortranDoubl
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranElseStatement: aFASTFortranElseStatement [
 	<generated>
 	^FASTFortranElseStatement new
@@ -473,7 +473,7 @@ FASTFortranCopyVisitor >> visitFASTFortranElseStatement: aFASTFortranElseStateme
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranEncodeStatement: aFASTFortranEncodeStatement [
 	<generated>
 	^FASTFortranEncodeStatement new
@@ -485,7 +485,7 @@ FASTFortranCopyVisitor >> visitFASTFortranEncodeStatement: aFASTFortranEncodeSta
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranEndFileStatement: aFASTFortranEndFileStatement [
 	<generated>
 	^FASTFortranEndFileStatement new
@@ -497,7 +497,7 @@ FASTFortranCopyVisitor >> visitFASTFortranEndFileStatement: aFASTFortranEndFileS
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranEntity: aFASTFortranEntity [
 	<generated>
 	^FASTFortranEntity new
@@ -507,7 +507,7 @@ FASTFortranCopyVisitor >> visitFASTFortranEntity: aFASTFortranEntity [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranEntryStatement: aFASTFortranEntryStatement [
 	<generated>
 	^FASTFortranEntryStatement new
@@ -520,7 +520,7 @@ FASTFortranCopyVisitor >> visitFASTFortranEntryStatement: aFASTFortranEntryState
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranEquivalenceGroup: aFASTFortranEquivalenceGroup [
 	<generated>
 	^FASTFortranEquivalenceGroup new
@@ -531,7 +531,7 @@ FASTFortranCopyVisitor >> visitFASTFortranEquivalenceGroup: aFASTFortranEquivale
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranEquivalenceStatement: aFASTFortranEquivalenceStatement [
 	<generated>
 	^FASTFortranEquivalenceStatement new
@@ -543,7 +543,7 @@ FASTFortranCopyVisitor >> visitFASTFortranEquivalenceStatement: aFASTFortranEqui
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranExitStatement: aFASTFortranExitStatement [
 	<generated>
 	^FASTFortranExitStatement new
@@ -554,7 +554,7 @@ FASTFortranCopyVisitor >> visitFASTFortranExitStatement: aFASTFortranExitStateme
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranExternalStatement: aFASTFortranExternalStatement [
 	<generated>
 	^FASTFortranExternalStatement new
@@ -566,7 +566,7 @@ FASTFortranCopyVisitor >> visitFASTFortranExternalStatement: aFASTFortranExterna
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranFormatStatement: aFASTFortranFormatStatement [
 	<generated>
 	^FASTFortranFormatStatement new
@@ -579,7 +579,7 @@ FASTFortranCopyVisitor >> visitFASTFortranFormatStatement: aFASTFortranFormatSta
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranFunction: aFASTFortranFunction [
 	<generated>
 	^FASTFortranFunction new
@@ -594,7 +594,7 @@ FASTFortranCopyVisitor >> visitFASTFortranFunction: aFASTFortranFunction [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranFunctionCall: aFASTFortranFunctionCall [
 	<generated>
 	^FASTFortranFunctionCall new
@@ -606,7 +606,7 @@ FASTFortranCopyVisitor >> visitFASTFortranFunctionCall: aFASTFortranFunctionCall
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranFunctionStatement: aFASTFortranFunctionStatement [
 	<generated>
 	^FASTFortranFunctionStatement new
@@ -620,7 +620,7 @@ FASTFortranCopyVisitor >> visitFASTFortranFunctionStatement: aFASTFortranFunctio
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranGoToAssignedStatement: aFASTFortranGoToAssignedStatement [
 	<generated>
 	^FASTFortranGoToAssignedStatement new
@@ -633,7 +633,7 @@ FASTFortranCopyVisitor >> visitFASTFortranGoToAssignedStatement: aFASTFortranGoT
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranGoToComputedStatement: aFASTFortranGoToComputedStatement [
 	<generated>
 	^FASTFortranGoToComputedStatement new
@@ -646,7 +646,7 @@ FASTFortranCopyVisitor >> visitFASTFortranGoToComputedStatement: aFASTFortranGoT
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranGoToStatement: aFASTFortranGoToStatement [
 	<generated>
 	^FASTFortranGoToStatement new
@@ -658,7 +658,7 @@ FASTFortranCopyVisitor >> visitFASTFortranGoToStatement: aFASTFortranGoToStateme
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortranIfArithmeticStatement [
 	<generated>
 	^FASTFortranIfArithmeticStatement new
@@ -673,7 +673,7 @@ FASTFortranCopyVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortranIfA
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranIfBlockStatement: aFASTFortranIfBlockStatement [
 	<generated>
 	^FASTFortranIfBlockStatement new
@@ -687,7 +687,7 @@ FASTFortranCopyVisitor >> visitFASTFortranIfBlockStatement: aFASTFortranIfBlockS
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranIfLogicalStatement: aFASTFortranIfLogicalStatement [
 	<generated>
 	^FASTFortranIfLogicalStatement new
@@ -700,7 +700,7 @@ FASTFortranCopyVisitor >> visitFASTFortranIfLogicalStatement: aFASTFortranIfLogi
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranImplicitLocalDeclaration: aFASTFortranImplicitLocalDeclaration [
 	<generated>
 	^FASTFortranImplicitLocalDeclaration new
@@ -708,7 +708,7 @@ FASTFortranCopyVisitor >> visitFASTFortranImplicitLocalDeclaration: aFASTFortran
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranImplicitRange: aFASTFortranImplicitRange [
 	<generated>
 	^FASTFortranImplicitRange new
@@ -720,7 +720,7 @@ FASTFortranCopyVisitor >> visitFASTFortranImplicitRange: aFASTFortranImplicitRan
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranImplicitStatement: aFASTFortranImplicitStatement [
 	<generated>
 	^FASTFortranImplicitStatement new
@@ -732,7 +732,7 @@ FASTFortranCopyVisitor >> visitFASTFortranImplicitStatement: aFASTFortranImplici
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranImplicitTypingRule: aFASTFortranImplicitTypingRule [
 	<generated>
 	^FASTFortranImplicitTypingRule new
@@ -744,7 +744,7 @@ FASTFortranCopyVisitor >> visitFASTFortranImplicitTypingRule: aFASTFortranImplic
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranImpliedDoExpression: aFASTFortranImpliedDoExpression [
 	<generated>
 	^FASTFortranImpliedDoExpression new
@@ -756,7 +756,7 @@ FASTFortranCopyVisitor >> visitFASTFortranImpliedDoExpression: aFASTFortranImpli
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranIncludeStatement: aFASTFortranIncludeStatement [
 	<generated>
 	^FASTFortranIncludeStatement new
@@ -767,7 +767,7 @@ FASTFortranCopyVisitor >> visitFASTFortranIncludeStatement: aFASTFortranIncludeS
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranInquireStatement: aFASTFortranInquireStatement [
 	<generated>
 	^FASTFortranInquireStatement new
@@ -779,7 +779,7 @@ FASTFortranCopyVisitor >> visitFASTFortranInquireStatement: aFASTFortranInquireS
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranIntegerLiteral: aFASTFortranIntegerLiteral [
 	<generated>
 	^FASTFortranIntegerLiteral new
@@ -790,7 +790,7 @@ FASTFortranCopyVisitor >> visitFASTFortranIntegerLiteral: aFASTFortranIntegerLit
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranIntegerType: aFASTFortranIntegerType [
 	<generated>
 	^FASTFortranIntegerType new
@@ -801,7 +801,7 @@ FASTFortranCopyVisitor >> visitFASTFortranIntegerType: aFASTFortranIntegerType [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranIntrinsicStatement: aFASTFortranIntrinsicStatement [
 	<generated>
 	^FASTFortranIntrinsicStatement new
@@ -813,7 +813,7 @@ FASTFortranCopyVisitor >> visitFASTFortranIntrinsicStatement: aFASTFortranIntrin
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranLabelReference: aFASTFortranLabelReference [
 	<generated>
 	^FASTFortranLabelReference new
@@ -824,7 +824,7 @@ FASTFortranCopyVisitor >> visitFASTFortranLabelReference: aFASTFortranLabelRefer
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranLogicalType: aFASTFortranLogicalType [
 	<generated>
 	^FASTFortranLogicalType new
@@ -835,7 +835,7 @@ FASTFortranCopyVisitor >> visitFASTFortranLogicalType: aFASTFortranLogicalType [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranLoopControlExpression: aFASTFortranLoopControlExpression [
 	<generated>
 	^FASTFortranLoopControlExpression new
@@ -848,7 +848,7 @@ FASTFortranCopyVisitor >> visitFASTFortranLoopControlExpression: aFASTFortranLoo
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranMapStatement: aFASTFortranMapStatement [
 	<generated>
 	^FASTFortranMapStatement new
@@ -859,7 +859,7 @@ FASTFortranCopyVisitor >> visitFASTFortranMapStatement: aFASTFortranMapStatement
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranNameListStatement: aFASTFortranNameListStatement [
 	<generated>
 	^FASTFortranNameListStatement new
@@ -870,7 +870,7 @@ FASTFortranCopyVisitor >> visitFASTFortranNameListStatement: aFASTFortranNameLis
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranNumericalConstant: aFASTFortranNumericalConstant [
 	<generated>
 	^FASTFortranNumericalConstant new
@@ -881,7 +881,7 @@ FASTFortranCopyVisitor >> visitFASTFortranNumericalConstant: aFASTFortranNumeric
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranOpenStatement: aFASTFortranOpenStatement [
 	<generated>
 	^FASTFortranOpenStatement new
@@ -893,7 +893,7 @@ FASTFortranCopyVisitor >> visitFASTFortranOpenStatement: aFASTFortranOpenStateme
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranOptionsStatement: aFASTFortranOptionsStatement [
 	<generated>
 	^FASTFortranOptionsStatement new
@@ -904,7 +904,7 @@ FASTFortranCopyVisitor >> visitFASTFortranOptionsStatement: aFASTFortranOptionsS
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranParameterStatement: aFASTFortranParameterStatement [
 	<generated>
 	^FASTFortranParameterStatement new
@@ -916,7 +916,7 @@ FASTFortranCopyVisitor >> visitFASTFortranParameterStatement: aFASTFortranParame
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranPauseStatement: aFASTFortranPauseStatement [
 	<generated>
 	^FASTFortranPauseStatement new
@@ -928,7 +928,7 @@ FASTFortranCopyVisitor >> visitFASTFortranPauseStatement: aFASTFortranPauseState
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranPragmaStatement: aFASTFortranPragmaStatement [
 	<generated>
 	^FASTFortranPragmaStatement new
@@ -939,7 +939,7 @@ FASTFortranCopyVisitor >> visitFASTFortranPragmaStatement: aFASTFortranPragmaSta
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranPrintStatement: aFASTFortranPrintStatement [
 	<generated>
 	^FASTFortranPrintStatement new
@@ -952,7 +952,7 @@ FASTFortranCopyVisitor >> visitFASTFortranPrintStatement: aFASTFortranPrintState
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranProcedure: aFASTFortranProcedure [
 	<generated>
 	^FASTFortranProcedure new
@@ -966,7 +966,7 @@ FASTFortranCopyVisitor >> visitFASTFortranProcedure: aFASTFortranProcedure [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranProgramFile: aFASTFortranProgramFile [
 	<generated>
 	^FASTFortranProgramFile new
@@ -978,7 +978,7 @@ FASTFortranCopyVisitor >> visitFASTFortranProgramFile: aFASTFortranProgramFile [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranProgramMain: aFASTFortranProgramMain [
 	<generated>
 	^FASTFortranProgramMain new
@@ -992,7 +992,7 @@ FASTFortranCopyVisitor >> visitFASTFortranProgramMain: aFASTFortranProgramMain [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranProgramUnit: aFASTFortranProgramUnit [
 	<generated>
 	^FASTFortranProgramUnit new
@@ -1006,7 +1006,7 @@ FASTFortranCopyVisitor >> visitFASTFortranProgramUnit: aFASTFortranProgramUnit [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranReadStatement: aFASTFortranReadStatement [
 	<generated>
 	^FASTFortranReadStatement new
@@ -1019,7 +1019,7 @@ FASTFortranCopyVisitor >> visitFASTFortranReadStatement: aFASTFortranReadStateme
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranRealLiteral: aFASTFortranRealLiteral [
 	<generated>
 	^FASTFortranRealLiteral new
@@ -1030,7 +1030,7 @@ FASTFortranCopyVisitor >> visitFASTFortranRealLiteral: aFASTFortranRealLiteral [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranRealType: aFASTFortranRealType [
 	<generated>
 	^FASTFortranRealType new
@@ -1041,7 +1041,7 @@ FASTFortranCopyVisitor >> visitFASTFortranRealType: aFASTFortranRealType [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranReturnStatement: aFASTFortranReturnStatement [
 	<generated>
 	^FASTFortranReturnStatement new
@@ -1054,7 +1054,7 @@ FASTFortranCopyVisitor >> visitFASTFortranReturnStatement: aFASTFortranReturnSta
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranRewindStatement: aFASTFortranRewindStatement [
 	<generated>
 	^FASTFortranRewindStatement new
@@ -1066,7 +1066,7 @@ FASTFortranCopyVisitor >> visitFASTFortranRewindStatement: aFASTFortranRewindSta
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranSaveStatement: aFASTFortranSaveStatement [
 	<generated>
 	^FASTFortranSaveStatement new
@@ -1077,7 +1077,7 @@ FASTFortranCopyVisitor >> visitFASTFortranSaveStatement: aFASTFortranSaveStateme
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranScalarVariable: aFASTFortranScalarVariable [
 	<generated>
 	^FASTFortranScalarVariable new
@@ -1088,7 +1088,7 @@ FASTFortranCopyVisitor >> visitFASTFortranScalarVariable: aFASTFortranScalarVari
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBlock [
 	<generated>
 	^FASTFortranStatementBlock new
@@ -1100,7 +1100,7 @@ FASTFortranCopyVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementB
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranStaticStatement: aFASTFortranStaticStatement [
 	<generated>
 	^FASTFortranStaticStatement new
@@ -1111,7 +1111,7 @@ FASTFortranCopyVisitor >> visitFASTFortranStaticStatement: aFASTFortranStaticSta
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranStopStatement: aFASTFortranStopStatement [
 	<generated>
 	^FASTFortranStopStatement new
@@ -1123,7 +1123,7 @@ FASTFortranCopyVisitor >> visitFASTFortranStopStatement: aFASTFortranStopStateme
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranSubprogram: aFASTFortranSubprogram [
 	<generated>
 	^FASTFortranSubprogram new
@@ -1137,7 +1137,7 @@ FASTFortranCopyVisitor >> visitFASTFortranSubprogram: aFASTFortranSubprogram [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranSubroutine: aFASTFortranSubroutine [
 	<generated>
 	^FASTFortranSubroutine new
@@ -1151,7 +1151,7 @@ FASTFortranCopyVisitor >> visitFASTFortranSubroutine: aFASTFortranSubroutine [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranSubstring: aFASTFortranSubstring [
 	<generated>
 	^FASTFortranSubstring new
@@ -1161,7 +1161,7 @@ FASTFortranCopyVisitor >> visitFASTFortranSubstring: aFASTFortranSubstring [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranType: aFASTFortranType [
 	<generated>
 	^FASTFortranType new
@@ -1172,7 +1172,7 @@ FASTFortranCopyVisitor >> visitFASTFortranType: aFASTFortranType [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranUnaryExpression: aFASTFortranUnaryExpression [
 	<generated>
 	^FASTFortranUnaryExpression new
@@ -1184,7 +1184,7 @@ FASTFortranCopyVisitor >> visitFASTFortranUnaryExpression: aFASTFortranUnaryExpr
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranUnionStatement: aFASTFortranUnionStatement [
 	<generated>
 	^FASTFortranUnionStatement new
@@ -1195,7 +1195,7 @@ FASTFortranCopyVisitor >> visitFASTFortranUnionStatement: aFASTFortranUnionState
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranVariable: aFASTFortranVariable [
 	<generated>
 	^FASTFortranVariable new
@@ -1206,7 +1206,7 @@ FASTFortranCopyVisitor >> visitFASTFortranVariable: aFASTFortranVariable [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFortranVariableDeclarationStatement [
 	<generated>
 	^FASTFortranVariableDeclarationStatement new
@@ -1219,12 +1219,12 @@ FASTFortranCopyVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFor
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranVariableDeclarator: aFASTFortranVariableDeclarator [
 	<generated>
 	^FASTFortranVariableDeclarator new
-		name: (self copy: aFASTFortranVariableDeclarator name) ;
 		dimensions: (self copy: aFASTFortranVariableDeclarator dimensions) ;
+		name: (self copy: aFASTFortranVariableDeclarator name) ;
 		expression: (self copy: aFASTFortranVariableDeclarator expression) ;
 		startPos: (self copy: aFASTFortranVariableDeclarator startPos) ;
 		endPos: (self copy: aFASTFortranVariableDeclarator endPos) ;
@@ -1232,7 +1232,7 @@ FASTFortranCopyVisitor >> visitFASTFortranVariableDeclarator: aFASTFortranVariab
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranVirtualStatement: aFASTFortranVirtualStatement [
 	<generated>
 	^FASTFortranVirtualStatement new
@@ -1243,7 +1243,7 @@ FASTFortranCopyVisitor >> visitFASTFortranVirtualStatement: aFASTFortranVirtualS
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranVolatileStatement: aFASTFortranVolatileStatement [
 	<generated>
 	^FASTFortranVolatileStatement new
@@ -1254,7 +1254,7 @@ FASTFortranCopyVisitor >> visitFASTFortranVolatileStatement: aFASTFortranVolatil
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranWriteStatement: aFASTFortranWriteStatement [
 	<generated>
 	^FASTFortranWriteStatement new
