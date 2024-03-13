@@ -148,9 +148,9 @@ FASTFortranExporterVisitorTest >> testAssignementStatementVariable [
 FASTFortranExporterVisitorTest >> testBinaryExpression [
 	| expr |
 	expr := FASTFortranBinaryExpression new
-		left: (self scalarVariable: 'a') ;
+		leftOperand: (self scalarVariable: 'a') ;
 		operator: '+' ;
-		right: (self integerLiteral: '5').
+		rightOperand: (self integerLiteral: '5').
 
 	self
 		assertExport: expr
@@ -161,9 +161,9 @@ FASTFortranExporterVisitorTest >> testBinaryExpression [
 FASTFortranExporterVisitorTest >> testBinaryExpressionNe [
 	| expr |
 	expr := FASTFortranBinaryExpression new
-		left: (self scalarVariable: 'a') ;
+		leftOperand: (self scalarVariable: 'a') ;
 		operator: '.ne.' ;
-		right: (self integerLiteral: '5').
+		rightOperand: (self integerLiteral: '5').
 
 	self
 		assertExport: expr
@@ -1005,7 +1005,7 @@ FASTFortranExporterVisitorTest >> testOperatorsPrecedenceSubHasHigherPrecedence 
 	
 	| expr |
 	expr := self binary: '+' left: #i right: 5.
-	expr right: (self binary: '*' left: #j right: 5).
+	expr rightOperand: (self binary: '*' left: #j right: 5).
 
 	self assertExport: expr
 		equals: 'i + j * 5'
@@ -1016,7 +1016,7 @@ FASTFortranExporterVisitorTest >> testOperatorsPrecedenceSubHasLowerPrecedence [
 	
 	| expr |
 	expr := self binary: '*' left: #i right: 5.
-	expr right: (self binary: '+' left: #j right: 5).
+	expr rightOperand: (self binary: '+' left: #j right: 5).
 
 	self assertExport: expr
 		equals: 'i * (j + 5)'
