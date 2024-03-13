@@ -172,9 +172,9 @@ FASTFortranCopyVisitorTest >> testBinaryExpression [
 
 	| node copy |
 	node := FASTFortranBinaryExpression new
-		left: (self scalarVariable: 'a') ;
+		leftOperand: (self scalarVariable: 'a') ;
 		operator: '+' ;
-		right: (self integerLiteral: '5').
+		rightOperand: (self integerLiteral: '5').
 
 	copy := visitor copy: node.
 
@@ -183,13 +183,13 @@ FASTFortranCopyVisitorTest >> testBinaryExpression [
 
 	self assert: copy operator equals: node operator.
 
-	self deny: copy left equals: node left.
-	self assert: copy left class equals: node left class.
-	self assert: copy left name equals: node left name.
+	self deny: copy leftOperand equals: node leftOperand.
+	self assert: copy leftOperand class equals: node leftOperand class.
+	self assert: copy leftOperand name equals: node leftOperand name.
 
-	self deny: copy right equals: node right.
-	self assert: copy right class equals: node right class.
-	self assert: copy right primitiveValue equals: node right primitiveValue
+	self deny: copy rightOperand equals: node rightOperand.
+	self assert: copy rightOperand class equals: node rightOperand class.
+	self assert: copy rightOperand primitiveValue equals: node rightOperand primitiveValue
 
 ]
 
@@ -199,9 +199,9 @@ FASTFortranCopyVisitorTest >> testBinaryExpressionNe [
 
 	| node copy |
 	node := FASTFortranBinaryExpression new
-		left: (self scalarVariable: 'a') ;
+		leftOperand: (self scalarVariable: 'a') ;
 		operator: '.ne.' ;
-		right: (self integerLiteral: '5').
+		rightOperand: (self integerLiteral: '5').
 
 	copy := visitor copy: node.
 
@@ -210,13 +210,13 @@ FASTFortranCopyVisitorTest >> testBinaryExpressionNe [
 
 	self assert: copy operator equals: node operator.
 
-	self deny: copy left equals: node left.
-	self assert: copy left class equals: node left class.
-	self assert: copy left name equals: node left name.
+	self deny: copy leftOperand equals: node leftOperand.
+	self assert: copy leftOperand class equals: node leftOperand class.
+	self assert: copy leftOperand name equals: node leftOperand name.
 
-	self deny: copy right equals: node right.
-	self assert: copy right class equals: node right class.
-	self assert: copy right primitiveValue equals: node right primitiveValue
+	self deny: copy rightOperand equals: node rightOperand.
+	self assert: copy rightOperand class equals: node rightOperand class.
+	self assert: copy rightOperand primitiveValue equals: node rightOperand primitiveValue
 
 ]
 

@@ -165,8 +165,8 @@ FASTFortranAbstractVisitorTest >> binary: op left: lhs right: rhs [
 
 	^FASTFortranBinaryExpression new
 		operator: op ;
-		left: (self makeSimpleExpression: lhs) ;
-		right: (self makeSimpleExpression: rhs) ;
+		leftOperand: (self makeSimpleExpression: lhs) ;
+		rightOperand: (self makeSimpleExpression: rhs) ;
 		yourself
 ]
 
