@@ -78,8 +78,8 @@ FASTFortranVisitor >> visitFASTFortranBinaryExpression: aFASTFortranBinaryExpres
 
 	self visitFASTFortranTExpression: aFASTFortranBinaryExpression.
 	self visitFASTFortranTFortranBinaryExpression: aFASTFortranBinaryExpression.
-	aFASTFortranBinaryExpression left accept: self.
-	aFASTFortranBinaryExpression right accept: self.
+	aFASTFortranBinaryExpression leftOperand accept: self.
+	aFASTFortranBinaryExpression rightOperand accept: self.
 	
 ]
 

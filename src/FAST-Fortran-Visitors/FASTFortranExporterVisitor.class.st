@@ -238,12 +238,12 @@ FASTFortranExporterVisitor >> visitFASTFortranAsterisk: aFASTFortranAsterisk [
 FASTFortranExporterVisitor >> visitFASTFortranBinaryExpression: aFASTFortranBinaryExpression [
 
 	self outputExpression: [
-		aFASTFortranBinaryExpression left accept: self.
+		aFASTFortranBinaryExpression leftOperand accept: self.
 		self
 			<< ' ' ;
 			<< aFASTFortranBinaryExpression operator ;
 			<< ' ' .
-		aFASTFortranBinaryExpression right accept: self
+		aFASTFortranBinaryExpression rightOperand accept: self
 		]
 		withOperator: aFASTFortranBinaryExpression operator.
 	
