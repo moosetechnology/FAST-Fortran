@@ -212,8 +212,8 @@ FASTFortranJsonVisitor >> visitBinary: aBinaryExpressionNode [
 	expr := data third.
 	self set: expr startEnd: data first.
 	expr
-		left: data second;
-		right: data fourth.
+		leftOperand: data second;
+		rightOperand: data fourth.
 	^ expr
 ]
 
