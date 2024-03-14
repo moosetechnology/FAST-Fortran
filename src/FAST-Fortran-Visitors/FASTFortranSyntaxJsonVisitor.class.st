@@ -11,6 +11,7 @@ Class {
 
 { #category : #helpers }
 <<<<<<< HEAD
+<<<<<<< HEAD
 FASTFortranSyntaxJsonVisitor >> checkAndwrapToScalarVariable: aNode [
 
 	aNode class = FASTFortranCharacterLiteral
@@ -24,11 +25,14 @@ FASTFortranSyntaxJsonVisitor >> checkAndwrapToScalarVariable: aNode [
 { #category : #helpers }
 =======
 >>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
 FASTFortranSyntaxJsonVisitor >> createPosition: start end: end [ 
 
 	^ { start . end }
 ]
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 { #category : #'as yet unclassified' }
 FASTFortranSyntaxJsonVisitor >> generateKeys: aNode [
@@ -45,6 +49,11 @@ FASTFortranSyntaxJsonVisitor >> initLineSizes: fortranSource [
 FASTFortranSyntaxJsonVisitor >> initLineSizes: fortranSource [
 
 >>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+{ #category : #initialization }
+FASTFortranSyntaxJsonVisitor >> initLineSizes: fortranSource [
+
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
 	lineSizes := fortranSource lines collect: #size
 ]
 
@@ -106,6 +115,7 @@ FASTFortranSyntaxJsonVisitor >> setBodyPosition: aProgramUnit fromProgramUnitPos
 
 ]
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 { #category : #'as yet unclassified' }
 FASTFortranSyntaxJsonVisitor >> visitArgument: aNode [
@@ -351,12 +361,15 @@ FASTFortranSyntaxJsonVisitor >> visitContinueStatement: aNode [
 
 =======
 >>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
 { #category : #'visit statement' }
 FASTFortranSyntaxJsonVisitor >> visitContinue_statement: aContinueStatement [
 
 	^ self newEntity: FASTFortranContinueStatement
 ]
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 { #category : #'as yet unclassified' }
 FASTFortranSyntaxJsonVisitor >> visitControlInfoList: aNode [
@@ -828,6 +841,8 @@ FASTFortranSyntaxJsonVisitor >> visitMain: aNode [
 		        statementBlock: (FASTFortranStatementBlock new
 				         statements: (data at: 'statement_list');
 =======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
 { #category : #'visit statement' }
 FASTFortranSyntaxJsonVisitor >> visitMain: aMain [
 	"#(start_pos parameters end_pos statement_list name)"
@@ -840,7 +855,10 @@ FASTFortranSyntaxJsonVisitor >> visitMain: aMain [
 		        name: data fifth;
 		        statementBlock: (FASTFortranStatementBlock new
 				         statements: data fourth;
+<<<<<<< HEAD
 >>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
 				         yourself);
 		        yourself.
 
@@ -849,6 +867,7 @@ FASTFortranSyntaxJsonVisitor >> visitMain: aMain [
 	^ main
 ]
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 { #category : #'as yet unclassified' }
 FASTFortranSyntaxJsonVisitor >> visitNlist: aNode [
@@ -954,13 +973,18 @@ FASTFortranSyntaxJsonVisitor >> visitProcList: aNode [
 
 	^ super visitProcList: aNode
 =======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
 { #category : #'visit statement' }
 FASTFortranSyntaxJsonVisitor >> visitParameter: aParameter [
 
 	^ (self newEntity: FASTFortranScalarVariable)
 		name: (aParameter at: 'name'); 
 		yourself
+<<<<<<< HEAD
 >>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
 ]
 
 { #category : #'visit statement' }
@@ -969,6 +993,7 @@ FASTFortranSyntaxJsonVisitor >> visitProgramFile: aProgramFile [
 	model := FASTFortranModel new.
 	^ (super visitProgramFile: aProgramFile) first.
 	
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 ]
@@ -1123,6 +1148,8 @@ FASTFortranSyntaxJsonVisitor >> visitStopStatement: aNode [
 		  yourself
 =======
 >>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
 ]
 
 { #category : #'visit statement' }
@@ -1146,6 +1173,7 @@ FASTFortranSyntaxJsonVisitor >> visitSubroutine: aSubroutine [
 
 	^ subroutine
 ]
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 { #category : #'as yet unclassified' }
@@ -1335,3 +1363,5 @@ FASTFortranSyntaxJsonVisitor >> visitWriteStatement: aNode [
 ]
 =======
 >>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
