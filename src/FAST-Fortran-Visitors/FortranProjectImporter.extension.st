@@ -36,8 +36,6 @@ FortranProjectImporter >> jsonASTToFAST [
 
 	^FASTFortranJsonVisitor new visitProgramFile:
 		  (jsonAST readStreamEncoded: self defaultFileEncoding do: [ :str | 
-<<<<<<< HEAD
-=======
 			   NeoJSONReader fromString: str contents ])
 ]
 
@@ -50,6 +48,5 @@ FortranProjectImporter >> syntaxJsonToFAST [
 
 	^FASTFortranJsonVisitor new visitProgramFile:
 		  (jsonFile readStreamDo: [ :str | 
->>>>>>> syntax-importer
 			   NeoJSONReader fromString: str contents ])
 ]
