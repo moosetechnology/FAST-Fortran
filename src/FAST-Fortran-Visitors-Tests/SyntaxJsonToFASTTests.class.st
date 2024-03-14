@@ -1,0 +1,12960 @@
+Class {
+	#name : #SyntaxJsonToFASTTests,
+	#superclass : #AbstractJsonToFASTTests,
+	#category : #'FAST-Fortran-Visitors-Tests-Visitor'
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+{ #category : #'as yet unclassified' }
+SyntaxJsonToFASTTests class >> generateFortranSourcesFromTests [
+
+	| fileName filePath |
+	filePath := (FileLocator workingDirectory / 'tests')
+		            ensureCreateDirectory pathString.
+	self methods do: [ :method | "if the methos is a test"
+		(method selector includesSubstring: 'test') ifTrue: [
+			fileName := (filePath , '/' , method selector , '.FOR')
+				            asFileReference.
+			fileName writeStreamDo: [ :stream |
+				stream nextPutAll: (method ast body statements detect: [ :stmt |
+						 stmt class = RBAssignmentNode and: [
+							 stmt variable name = 'fortranCode' ] ]) value value ] ] ]
+]
+
+{ #category : #'as yet unclassified' }
+SyntaxJsonToFASTTests class >> generateTestsFortranSources [
+
+	| directory method stream |
+	directory := FileLocator workingDirectory / 'pharo'.
+
+	directory files do: [ :file |
+		| selector |
+		selector := file basenameWithoutExtension asSymbol.
+
+		(SyntaxJsonToFASTTests includesSelector: selector) ifTrue: [
+			| fortranCode jsonCode |
+			
+			fortranCode := (((SyntaxJsonToFASTTests compiledMethodAt: selector)
+				                method ast body statements detect: [ :stmt |
+				                stmt class = RBAssignmentNode and: [
+					                stmt variable name = 'fortranCode' ] ]) value
+				               value) copyReplaceAll: '''' with: ''''''.
+
+			jsonCode := file contents copyReplaceAll: '''' with: ''''''.
+
+			stream := WriteStream on: String new.
+			stream
+				nextPutAll: selector;
+				nextPutAll: '
+		| result |
+	
+	fortranCode := ''';
+				nextPutAll: fortranCode;
+				nextPutAll: ' ''.
+	jsonCode := ''';
+				nextPutAll: jsonCode;
+				nextPutAll: '''.
+	result := self visitJsonCode.	
+		'.
+
+			method := stream contents.
+			self compile: method ] ]
+]
+
+=======
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+{ #category : #running }
+SyntaxJsonToFASTTests >> jsonVisitor [
+
+	^ FASTFortranSyntaxJsonVisitor 
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testArrayAccess [
+	
+	| result stmt arrayAccess |
+	fortranCode := '      PROGRAM MYPROG
+      integer arr(10)
+		v = arr(1,i)
+      END
+'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/unit-tests/array-access.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+<<<<<<< HEAD
+<<<<<<< HEAD
+                    "tag": "variable_declaration_statement",
+=======
+                    "tag": "type_statement",
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+                    "tag": "type_statement",
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "INTEGER"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "name": "ARR"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "tag": "literal_expression",
+                                    "literal": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "19"
+                                        },
+                                        "value": "10"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "3",
+                        "column": "7"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "3",
+                                "column": "7"
+                            },
+                            "name": "V"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "array_element_name",
+                            "name": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "3",
+                                    "column": "11"
+                                },
+                                "name": "ARR"
+                            },
+                            "qualifiers_list": [
+                                {
+                                    "tag": "arithmetic_expression",
+                                    "expression": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "3",
+                                            "column": "15"
+                                        },
+                                        "value": "1"
+                                    }
+                                },
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "3",
+                                        "column": "17"
+                                    },
+                                    "name": "I"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+'.
+	result := self visitJsonCode.
+	
+	stmt := result first statementBlock statements second.
+	self assert: stmt class equals: FASTFortranAssignmentStatement.
+
+	arrayAccess := stmt expression.
+	self assert: arrayAccess class equals: FASTFortranArrayVariable.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: arrayAccess name class equals: FASTFortranCharacterLiteral. 
+	self assert: arrayAccess name primitiveValue equals: 'ARR'.
+=======
+	self assert: arrayAccess name equals: 'arr'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: arrayAccess name equals: 'arr'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: arrayAccess indices size equals: 2.
+
+	self assert: arrayAccess indices first class equals: FASTFortranIntegerLiteral.
+	self assert: arrayAccess indices second class equals: FASTFortranScalarVariable.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testArrayDeclaration [
+	
+	| result stmt declarator |
+	fortranCode := '      PROGRAM MYPROG
+      integer arr(10)
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '
+	{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/unit-tests/array-access.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "variable_declaration_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "INTEGER"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "name": "ARR"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "tag": "literal_expression",
+                                    "literal": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "19"
+                                        },
+                                        "value": "10"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "3",
+                        "column": "7"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "3",
+                                "column": "7"
+                            },
+                            "name": "V"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "array_element_name",
+                            "name": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "3",
+                                    "column": "11"
+                                },
+                                "name": "ARR"
+                            },
+                            "qualifiers_list": [
+                                {
+                                    "tag": "arithmetic_expression",
+                                    "expression": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "3",
+                                            "column": "15"
+                                        },
+                                        "value": "1"
+                                    }
+                                },
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "3",
+                                        "column": "17"
+                                    },
+                                    "name": "I"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:21)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:20)","upper":{"anno":[],"span":"(2:19)-(2:20)","tag":"value","value":{"contents":["10",null],"tag":"integer"}}}],"span":"(2:19)-(2:20)"},"initial":null,"length":null,"span":"(2:15)-(2:21)","type":"array","variable":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"arr","tag":"variable"}}}],"span":"(2:15)-(2:21)"},"span":"(2:7)-(2:21)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:21)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:20)","upper":{"anno":[],"span":"(2:19)-(2:20)","tag":"value","value":{"contents":["10",null],"tag":"integer"}}}],"span":"(2:19)-(2:20)"},"initial":null,"length":null,"span":"(2:15)-(2:21)","type":"array","variable":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"arr","tag":"variable"}}}],"span":"(2:15)-(2:21)"},"span":"(2:7)-(2:21)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+	
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
+	self assert: stmt declarators size equals: 1.
+
+	declarator := stmt declarators first.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: declarator variable class equals: FASTFortranVariable.
+	self assert: declarator variable name equals: 'ARR'.
+=======
+	self assert: declarator variable equals: 'arr'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: declarator variable equals: 'arr'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: declarator dimensions size equals: 1.
+	self assert: declarator dimensions first class equals: FASTFortranArrayRange. 
+	self assert: declarator dimensions first lowerBound equals: nil. 
+	self assert: declarator dimensions first upperBound class equals: FASTFortranIntegerLiteral.
+	self assert: declarator dimensions first upperBound primitiveValue equals: '10'.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testArrayDeclarationDimensionsWithOperation [
+	
+	| result stmt declarator |
+	fortranCode := '      PROGRAM MYPROG
+      integer arr(0:max-1)
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testArrayDeclarationDimensionsWithOperation.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "variable_declaration_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "INTEGER"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "name": "ARR"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "19"
+                                            },
+                                            "value": "0"
+                                        }
+                                    },
+                                    "upper_bound": {
+                                        "tag": "binary_expression",
+                                        "lhs": {
+                                            "tag": "variable_expression",
+                                            "variable": {
+                                                "tag": "symbolic_name",
+                                                "start_pos": {
+                                                    "line": "2",
+                                                    "column": "21"
+                                                },
+                                                "name": "MAX"
+                                            }
+                                        },
+                                        "operator": "-",
+                                        "rhs": {
+                                            "tag": "literal_expression",
+                                            "literal": {
+                                                "tag": "unsigned_int_constant",
+                                                "start_pos": {
+                                                    "line": "2",
+                                                    "column": "25"
+                                                },
+                                                "value": "1"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:26)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"contents":["0",null],"tag":"integer"}},"span":"(2:19)-(2:25)","upper":{"anno":[],"left":{"anno":[],"span":"(2:21)-(2:23)","tag":"value","value":{"contents":"max","tag":"variable"}},"op":{"tag":"subtraction"},"right":{"anno":[],"span":"(2:25)-(2:25)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:21)-(2:25)","tag":"binary"}}],"span":"(2:19)-(2:25)"},"initial":null,"length":null,"span":"(2:15)-(2:26)","type":"array","variable":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"arr","tag":"variable"}}}],"span":"(2:15)-(2:26)"},"span":"(2:7)-(2:26)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:26)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"contents":["0",null],"tag":"integer"}},"span":"(2:19)-(2:25)","upper":{"anno":[],"left":{"anno":[],"span":"(2:21)-(2:23)","tag":"value","value":{"contents":"max","tag":"variable"}},"op":{"tag":"subtraction"},"right":{"anno":[],"span":"(2:25)-(2:25)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:21)-(2:25)","tag":"binary"}}],"span":"(2:19)-(2:25)"},"initial":null,"length":null,"span":"(2:15)-(2:26)","type":"array","variable":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"arr","tag":"variable"}}}],"span":"(2:15)-(2:26)"},"span":"(2:7)-(2:26)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+	
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
+	self assert: stmt declarators size equals: 1.
+
+	declarator := stmt declarators first.
+
+	self assert: declarator dimensions first lowerBound class equals: FASTFortranIntegerLiteral.
+	self assert: declarator dimensions first lowerBound primitiveValue equals: '0'.
+
+	self assert: declarator dimensions first upperBound class equals: FASTFortranBinaryExpression.
+	self assert: declarator dimensions first upperBound left class equals: FASTFortranScalarVariable.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: declarator dimensions first upperBound left name equals: 'MAX'.
+=======
+	self assert: declarator dimensions first upperBound left name equals: 'max'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: declarator dimensions first upperBound left name equals: 'max'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	self assert: declarator dimensions first upperBound operator equals: '-'.
+
+	self assert: declarator dimensions first upperBound right class equals: FASTFortranIntegerLiteral.
+	self assert: declarator dimensions first upperBound right primitiveValue equals: '1'.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testArrayDeclarationImplicitLower [
+	
+	| result stmt declarator |
+	fortranCode := '      PROGRAM MYPROG
+      integer arr(-5:5)
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testArrayDeclarationImplicitLower.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "INTEGER"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "name": "ARR"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "lower_bound": {
+                                        "tag": "unary_expression",
+                                        "operator": "-",
+                                        "expression": {
+                                            "tag": "literal_expression",
+                                            "literal": {
+                                                "tag": "unsigned_int_constant",
+                                                "start_pos": {
+                                                    "line": "2",
+                                                    "column": "20"
+                                                },
+                                                "value": "5"
+                                            }
+                                        }
+                                    },
+                                    "upper_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "22"
+                                            },
+                                            "value": "5"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:23)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":{"anno":[],"expression":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"minus"},"span":"(2:19)-(2:20)","tag":"unary"},"span":"(2:19)-(2:22)","upper":{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":["5",null],"tag":"integer"}}}],"span":"(2:19)-(2:22)"},"initial":null,"length":null,"span":"(2:15)-(2:23)","type":"array","variable":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"arr","tag":"variable"}}}],"span":"(2:15)-(2:23)"},"span":"(2:7)-(2:23)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:23)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":{"anno":[],"expression":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"minus"},"span":"(2:19)-(2:20)","tag":"unary"},"span":"(2:19)-(2:22)","upper":{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":["5",null],"tag":"integer"}}}],"span":"(2:19)-(2:22)"},"initial":null,"length":null,"span":"(2:15)-(2:23)","type":"array","variable":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"arr","tag":"variable"}}}],"span":"(2:15)-(2:23)"},"span":"(2:7)-(2:23)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+	
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
+	self assert: stmt declarators size equals: 1.
+
+	declarator := stmt declarators first.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: declarator variable name equals: 'ARR'.
+=======
+	self assert: declarator variable equals: 'arr'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: declarator variable equals: 'arr'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: declarator dimensions size equals: 1.
+	self assert: declarator dimensions first lowerBound class equals: FASTFortranIntegerLiteral.
+	self assert: declarator dimensions first lowerBound primitiveValue equals: '-5'.
+	self assert: declarator dimensions first upperBound class equals: FASTFortranIntegerLiteral.
+	self assert: declarator dimensions first upperBound primitiveValue equals: '5'.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testArrayDeclarationMultipleDimensions [
+	
+	| result stmt declarator |
+	fortranCode := '      PROGRAM MYPROG
+      integer arr(1:10 , 0:5)
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testArrayDeclarationMultipleDimensions.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "INTEGER"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "name": "ARR"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "19"
+                                            },
+                                            "value": "1"
+                                        }
+                                    },
+                                    "upper_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "21"
+                                            },
+                                            "value": "10"
+                                        }
+                                    }
+                                },
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "26"
+                                            },
+                                            "value": "0"
+                                        }
+                                    },
+                                    "upper_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "28"
+                                            },
+                                            "value": "5"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:29)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:19)-(2:22)","upper":{"anno":[],"span":"(2:21)-(2:22)","tag":"value","value":{"contents":["10",null],"tag":"integer"}}},{"anno":[],"lower":{"anno":[],"span":"(2:26)-(2:26)","tag":"value","value":{"contents":["0",null],"tag":"integer"}},"span":"(2:26)-(2:28)","upper":{"anno":[],"span":"(2:28)-(2:28)","tag":"value","value":{"contents":["5",null],"tag":"integer"}}}],"span":"(2:19)-(2:28)"},"initial":null,"length":null,"span":"(2:15)-(2:29)","type":"array","variable":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"arr","tag":"variable"}}}],"span":"(2:15)-(2:29)"},"span":"(2:7)-(2:29)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:29)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:19)-(2:22)","upper":{"anno":[],"span":"(2:21)-(2:22)","tag":"value","value":{"contents":["10",null],"tag":"integer"}}},{"anno":[],"lower":{"anno":[],"span":"(2:26)-(2:26)","tag":"value","value":{"contents":["0",null],"tag":"integer"}},"span":"(2:26)-(2:28)","upper":{"anno":[],"span":"(2:28)-(2:28)","tag":"value","value":{"contents":["5",null],"tag":"integer"}}}],"span":"(2:19)-(2:28)"},"initial":null,"length":null,"span":"(2:15)-(2:29)","type":"array","variable":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"arr","tag":"variable"}}}],"span":"(2:15)-(2:29)"},"span":"(2:7)-(2:29)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+	
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
+	self assert: stmt declarators size equals: 1.
+
+	declarator := stmt declarators first.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: declarator variable name equals: 'ARR'.
+=======
+	self assert: declarator variable equals: 'arr'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: declarator variable equals: 'arr'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: declarator dimensions size equals: 2.
+
+	self assert: declarator dimensions first lowerBound primitiveValue equals: '1'.
+	self assert: declarator dimensions first upperBound primitiveValue equals: '10'.
+
+	self assert: declarator dimensions second lowerBound primitiveValue equals: '0'.
+	self assert: declarator dimensions second upperBound primitiveValue equals: '5'.
+]
+
+{ #category : #'tests-statement' }
+<<<<<<< HEAD
+<<<<<<< HEAD
+SyntaxJsonToFASTTests >> testArrayDeclarationThreeDimensions [
+	
+	| result stmt arrA arrB arrayAccess |
+	fortranCode := '
+      REAL A(3:5, 7, 3:5), B(0:2)
+      END
+'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/unit-tests/array-multidimenstion.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": "null",
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+				"parameters": [],
+            "end_pos": {
+                "line": "2",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "variable_declaration_statement",
+                    "start_pos": {
+                        "line": "1",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "REAL"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "1",
+                                    "column": "12"
+                                },
+                                "name": "A"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "1",
+                                                "column": "14"
+                                            },
+                                            "value": "3"
+                                        }
+                                    },
+                                    "upper_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "1",
+                                                "column": "16"
+                                            },
+                                            "value": "5"
+                                        }
+                                    }
+                                },
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "1",
+                                                "column": "19"
+                                            },
+                                            "value": "7"
+                                        }
+                                    }
+                                },
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "1",
+                                                "column": "22"
+                                            },
+                                            "value": "3"
+                                        }
+                                    },
+                                    "upper_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "1",
+                                                "column": "24"
+                                            },
+                                            "value": "5"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "1",
+                                    "column": "28"
+                                },
+                                "name": "B"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "1",
+                                                "column": "30"
+                                            },
+                                            "value": "0"
+                                        }
+                                    },
+                                    "upper_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "1",
+                                                "column": "32"
+                                            },
+                                            "value": "2"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+	result := self visitJsonCode.
+	
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
+	self assert: (stmt declarators size) equals: 2.
+	
+	arrA := stmt declarators first.
+	self assert: arrayAccess class equals: FASTFortranArrayVariable.
+	self assert: arrayAccess name equals: 'arr'.
+	self assert: arrayAccess indices size equals: 2.
+
+	self assert: arrayAccess indices first class equals: FASTFortranIntegerLiteral.
+	self assert: arrayAccess indices second class equals: FASTFortranScalarVariable.
+]
+
+{ #category : #'tests-statement' }
+=======
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+SyntaxJsonToFASTTests >> testArrayDeclarationVariableBound [
+	
+	| result stmt declarator |
+	fortranCode := '      PROGRAM MYPROG
+      integer arr(max)
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testArrayDeclarationVariableBound.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "INTEGER"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "name": "ARR"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "tag": "variable_expression",
+                                    "variable": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "19"
+                                        },
+                                        "name": "MAX"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:22)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:21)","upper":{"anno":[],"span":"(2:19)-(2:21)","tag":"value","value":{"contents":"max","tag":"variable"}}}],"span":"(2:19)-(2:21)"},"initial":null,"length":null,"span":"(2:15)-(2:22)","type":"array","variable":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"arr","tag":"variable"}}}],"span":"(2:15)-(2:22)"},"span":"(2:7)-(2:22)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:22)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:21)","upper":{"anno":[],"span":"(2:19)-(2:21)","tag":"value","value":{"contents":"max","tag":"variable"}}}],"span":"(2:19)-(2:21)"},"initial":null,"length":null,"span":"(2:15)-(2:22)","type":"array","variable":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"arr","tag":"variable"}}}],"span":"(2:15)-(2:22)"},"span":"(2:7)-(2:22)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+	
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
+	self assert: stmt declarators size equals: 1.
+
+	declarator := stmt declarators first.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: declarator variable name equals: 'ARR'.
+=======
+	self assert: declarator variable equals: 'arr'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: declarator variable equals: 'arr'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: declarator dimensions size equals: 1.
+	self assert: declarator dimensions first class equals: FASTFortranArrayRange. 
+	self assert: declarator dimensions first lowerBound equals: nil. 
+	self assert: declarator dimensions first upperBound class equals: FASTFortranScalarVariable.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: declarator dimensions first upperBound name equals: 'MAX'.
+=======
+	self assert: declarator dimensions first upperBound name equals: 'max'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: declarator dimensions first upperBound name equals: 'max'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testAssignement [
+
+	| result stmt |
+	fortranCode := '      PROGRAM MYPROG
+          c = 1
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/unit-tests/assignment.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "8"
+                            },
+                            "name": "C"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "unsigned_int_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "12"
+                                },
+                                "value": "1"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:11)-(2:15)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:11)-(2:15)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranAssignmentStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: stmt startPos equals: 32."
+	"self assert: stmt endPos equals: 36".
+
+	self assert: stmt variable class equals: FASTFortranScalarVariable.
+	self assert: stmt variable name class equals: FASTFortranCharacterLiteral. 
+	self assert: stmt variable name primitiveValue equals: 'C'.
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 36.
+
+	self assert: stmt variable class equals: FASTFortranScalarVariable.
+	self assert: stmt variable name equals: 'c'.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testAssignementBooleanLiteral [
+
+	| stmt main result |
+	fortranCode := '      PROGRAM MYPROG
+          c = .true.
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testAssignementBooleanLiteral.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "11"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "11"
+                            },
+                            "name": "C"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "logical_expression",
+                            "expression": {
+                                "tag": "logical_factor",
+                                "negated": "false",
+                                "expression": {
+                                    "tag": "logical_primary",
+                                    "expression": {
+                                        "tag": "logical_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "15"
+                                        },
+                                        "value": ".TRUE."
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:20)","statement":{"anno":[],"expression":{"anno":[],"span":"(2:15)-(2:20)","tag":"value","value":{"contents":[true,null],"tag":"logical"}},"span":"(2:11)-(2:20)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:20)","statement":{"anno":[],"expression":{"anno":[],"span":"(2:15)-(2:20)","tag":"value","value":{"contents":[true,null],"tag":"logical"}},"span":"(2:11)-(2:20)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+	
+	main := result first.
+	self assert: main class equals: FASTFortranProgramMain.
+	self assert: main statementBlock class equals: FASTFortranStatementBlock.
+	
+	stmt := main statementBlock statements first.
+	self assert: stmt class equals: FASTFortranAssignmentStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: stmt startPos equals: 32."
+
+	self assert: stmt expression class equals: FASTFortranBooleanLiteral.
+	self assert: stmt expression primitiveValue equals: true.
+	"self assert: stmt expression startPos equals: 36."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: stmt startPos equals: 32.
+
+	self assert: stmt expression class equals: FASTFortranBooleanLiteral.
+	self assert: stmt expression primitiveValue equals: '.true.'.
+	self assert: stmt expression startPos equals: 36.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testAssignementFunctionCall [
+
+	| stmt main result |
+	fortranCode := '      PROGRAM MYPROG
+          c = fct()
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testAssignementFunctionCall.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "11"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "11"
+                            },
+                            "name": "C"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "function_reference",
+                            "name": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "name": "FCT"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:19)","statement":{"anno":[],"expression":{"anno":[],"arguments":{"anno":[],"list":[],"span":"(2:18)-(2:19)"},"function":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"fct","tag":"variable"}},"span":"(2:15)-(2:19)","tag":"function_call"},"span":"(2:11)-(2:19)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:19)","statement":{"anno":[],"expression":{"anno":[],"arguments":{"anno":[],"list":[],"span":"(2:18)-(2:19)"},"function":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"fct","tag":"variable"}},"span":"(2:15)-(2:19)","tag":"function_call"},"span":"(2:11)-(2:19)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+	
+	main := result first.
+	self assert: main class equals: FASTFortranProgramMain.
+	self assert: main statementBlock class equals: FASTFortranStatementBlock.
+	
+	stmt := main statementBlock statements first.
+	self assert: stmt class equals: FASTFortranAssignmentStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: stmt startPos equals: 32."
+
+	self assert: stmt expression class equals: FASTFortranFunctionCall.
+	self assert: stmt expression name primitiveValue equals: 'FCT'.
+	"self assert: stmt expression startPos equals: 36."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: stmt startPos equals: 32.
+
+	self assert: stmt expression class equals: FASTFortranFunctionCall.
+	self assert: stmt expression name equals: 'fct'.
+	self assert: stmt expression startPos equals: 36.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testAssignementIntegerLiteral [
+
+	| stmt main result |
+	fortranCode := '      PROGRAM MYPROG
+          c = 1
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testAssignementIntegerLiteral.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "11"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "11"
+                            },
+                            "name": "C"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "unsigned_int_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "value": "1"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:11)-(2:15)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:11)-(2:15)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+	
+	main := result first.
+	self assert: main class equals: FASTFortranProgramMain.
+	self assert: main statementBlock class equals: FASTFortranStatementBlock.
+	
+	stmt := main statementBlock statements first.
+	self assert: stmt class equals: FASTFortranAssignmentStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: stmt startPos equals: 32."
+
+	self assert: stmt expression class equals: FASTFortranIntegerLiteral.
+	self assert: stmt expression primitiveValue equals: '1'.
+	"self assert: stmt expression startPos equals: 36."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: stmt startPos equals: 32.
+
+	self assert: stmt expression class equals: FASTFortranIntegerLiteral.
+	self assert: stmt expression primitiveValue equals: '1'.
+	self assert: stmt expression startPos equals: 36.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testAssignementNegativeIntegerLiteral [
+
+	| stmt result |
+	fortranCode := '      PROGRAM MYPROG
+          c = -1
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testAssignementNegativeIntegerLiteral.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "11"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "11"
+                            },
+                            "name": "C"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "constant_signed",
+                                "sign": "-",
+                                "constant": {
+                                    "tag": "unsigned_int_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "16"
+                                    },
+                                    "value": "1"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:16)","statement":{"anno":[],"expression":{"anno":[],"expression":{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"op":{"tag":"minus"},"span":"(2:15)-(2:16)","tag":"unary"},"span":"(2:11)-(2:16)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:16)","statement":{"anno":[],"expression":{"anno":[],"expression":{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"op":{"tag":"minus"},"span":"(2:15)-(2:16)","tag":"unary"},"span":"(2:11)-(2:16)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+	
+	stmt := result first statementBlock statements first.
+
+	self assert: stmt expression class equals: FASTFortranIntegerLiteral.
+	self assert: stmt expression primitiveValue equals: '-1'.
+
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testAssignementNegativeRealLiteral [
+
+	| result stmt |
+	fortranCode := '      PROGRAM MYPROG
+          c = -2.12
+      END
+'.
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testAssignementNegativeRealLiteral.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "11"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "11"
+                            },
+                            "name": "C"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "constant_signed",
+                                "sign": "-",
+                                "constant": {
+                                    "tag": "unsigned_real_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "16"
+                                    },
+                                    "value": "2.12"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:19)","statement":{"anno":[],"expression":{"anno":[],"expression":{"anno":[],"span":"(2:16)-(2:19)","tag":"value","value":{"contents":[{"exponent":{"letter":"e","num":"0"},"significand":"2.12"},null],"tag":"real"}},"op":{"tag":"minus"},"span":"(2:15)-(2:19)","tag":"unary"},"span":"(2:11)-(2:19)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:19)","statement":{"anno":[],"expression":{"anno":[],"expression":{"anno":[],"span":"(2:16)-(2:19)","tag":"value","value":{"contents":[{"exponent":{"letter":"e","num":"0"},"significand":"2.12"},null],"tag":"real"}},"op":{"tag":"minus"},"span":"(2:15)-(2:19)","tag":"unary"},"span":"(2:11)-(2:19)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+
+	self assert: stmt expression class equals: FASTFortranRealLiteral.
+	self assert: stmt expression primitiveValue equals: '-2.12'
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testAssignementRealLiteral [
+
+	| result stmt |
+	fortranCode := '      PROGRAM MYPROG
+          c = 2.12
+      END
+'.
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testAssignementRealLiteral.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "11"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "11"
+                            },
+                            "name": "C"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "unsigned_real_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "value": "2.12"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:18)","statement":{"anno":[],"expression":{"anno":[],"span":"(2:15)-(2:18)","tag":"value","value":{"contents":[{"exponent":{"letter":"e","num":"0"},"significand":"2.12"},null],"tag":"real"}},"span":"(2:11)-(2:18)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:18)","statement":{"anno":[],"expression":{"anno":[],"span":"(2:15)-(2:18)","tag":"value","value":{"contents":[{"exponent":{"letter":"e","num":"0"},"significand":"2.12"},null],"tag":"real"}},"span":"(2:11)-(2:18)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranAssignmentStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: stmt startPos equals: 32."
+
+	self assert: stmt expression class equals: FASTFortranRealLiteral.
+	self assert: stmt expression primitiveValue equals: '2.12'.
+	"self assert: stmt expression startPos equals: 36."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: stmt startPos equals: 32.
+
+	self assert: stmt expression class equals: FASTFortranRealLiteral.
+	self assert: stmt expression primitiveValue equals: '2.12'.
+	self assert: stmt expression startPos equals: 36.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testAssignementScientificNotation [
+
+	| result stmt |
+	fortranCode := '      PROGRAM MYPROG
+          c = 1.0E-30
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testAssignementScientificNotation.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "11"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "11"
+                            },
+                            "name": "C"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "unsigned_real_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "value": "1.0E-30"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:21)","statement":{"anno":[],"expression":{"anno":[],"span":"(2:15)-(2:21)","tag":"value","value":{"contents":[{"exponent":{"letter":"e","num":"-30"},"significand":"1.0"},null],"tag":"real"}},"span":"(2:11)-(2:21)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:21)","statement":{"anno":[],"expression":{"anno":[],"span":"(2:15)-(2:21)","tag":"value","value":{"contents":[{"exponent":{"letter":"e","num":"-30"},"significand":"1.0"},null],"tag":"real"}},"span":"(2:11)-(2:21)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranAssignmentStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: stmt startPos equals: 32."
+
+
+	self assert: stmt expression class equals: FASTFortranRealLiteral.
+	self assert: stmt expression primitiveValue equals: '1.0E-30'.
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: stmt startPos equals: 32.
+
+
+	self assert: stmt expression class equals: FASTFortranRealLiteral.
+	self assert: stmt expression primitiveValue equals: '1.0e-30'.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testAssignementStringLiteral [
+
+	| result stmt |
+	fortranCode := '      PROGRAM MYPROG
+          c = ''once upon a time there were ''''quotes''''! ''
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testAssignementStringLiteral.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "11"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "11"
+                            },
+                            "name": "C"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "character_expression",
+                            "expression": {
+                                "tag": "character_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "value": "once upon a time there were ''''quotes''''! "
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:56)","statement":{"anno":[],"expression":{"anno":[],"span":"(2:15)-(2:56)","tag":"value","value":{"contents":"once upon a time there were ''quotes''! ","tag":"string"}},"span":"(2:11)-(2:56)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:56)","statement":{"anno":[],"expression":{"anno":[],"span":"(2:15)-(2:56)","tag":"value","value":{"contents":"once upon a time there were ''quotes''! ","tag":"string"}},"span":"(2:11)-(2:56)","tag":"assign_expression","target":{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranAssignmentStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: stmt startPos equals: 32."
+
+	self assert: stmt expression class equals: FASTFortranCharacterLiteral.
+	self assert: stmt expression primitiveValue equals: 'once upon a time there were ''''quotes''''! '.
+	"self assert: stmt expression startPos equals: 36."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: stmt startPos equals: 32.
+
+	self assert: stmt expression class equals: FASTFortranCharacterLiteral.
+	self assert: stmt expression primitiveValue equals: 'once upon a time there were ''''quotes''''! '.
+	self assert: stmt expression startPos equals: 36.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testAssignementToArrayRange [
+
+	| result stmt var |
+	fortranCode := '      PROGRAM MYPROG
+      NOMARC(1:1) = ''c''
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testAssignementToArrayRange.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "left": [
+                        {
+                            "tag": "substring",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "7"
+                                },
+                                "name": "NOMARC"
+                            },
+                            "lower_bound": {
+                                "tag": "arithmetic_expression",
+                                "expression": {
+                                    "tag": "unsigned_int_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "14"
+                                    },
+                                    "value": "1"
+                                }
+                            },
+                            "upper_bound": {
+                                "tag": "unsigned_int_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "16"
+                                },
+                                "value": "1"
+                            }
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "character_expression",
+                            "expression": {
+                                "tag": "character_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "21"
+                                },
+                                "value": "''c''"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:23)","statement":{"anno":[],"expression":{"anno":[],"span":"(2:21)-(2:23)","tag":"value","value":{"contents":"c","tag":"string"}},"span":"(2:7)-(2:23)","tag":"assign_expression","target":{"anno":[],"expression":{"anno":[],"span":"(2:7)-(2:12)","tag":"value","value":{"contents":"nomarc","tag":"variable"}},"indices":{"anno":[],"list":[{"anno":[],"lower":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:14)-(2:16)","stride":null,"tag":"range","upper":{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":["1",null],"tag":"integer"}}}],"span":"(2:14)-(2:16)"},"span":"(2:7)-(2:17)","tag":"subscript"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:23)","statement":{"anno":[],"expression":{"anno":[],"span":"(2:21)-(2:23)","tag":"value","value":{"contents":"c","tag":"string"}},"span":"(2:7)-(2:23)","tag":"assign_expression","target":{"anno":[],"expression":{"anno":[],"span":"(2:7)-(2:12)","tag":"value","value":{"contents":"nomarc","tag":"variable"}},"indices":{"anno":[],"list":[{"anno":[],"lower":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:14)-(2:16)","stride":null,"tag":"range","upper":{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":["1",null],"tag":"integer"}}}],"span":"(2:14)-(2:16)"},"span":"(2:7)-(2:17)","tag":"subscript"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranAssignmentStatement.
+
+	var := stmt variable.
+	self assert: var class equals: FASTFortranArrayVariable.
+	self assert: var indices size equals: 1.
+	self assert: var indices first class equals: FASTFortranArrayRange.
+
+
+	self assert: var indices first lowerBound class equals: FASTFortranIntegerLiteral.
+	self assert: var indices first lowerBound primitiveValue equals: '1'.
+	self assert: var indices first upperBound class equals: FASTFortranIntegerLiteral.
+	self assert: var indices first upperBound primitiveValue equals: '1'.
+	self assert: var indices first startPos equals: 35.
+	self assert: var indices first endPos equals: 37.
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testBinaryExpressionDivision [
+	
+	| result asnmt expr |
+	fortranCode := '      PROGRAM MYPROG
+       i = 5 / 6
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testBinaryExpressionDivision.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "8"
+                            },
+                            "name": "I"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "binary_expression",
+                                "lhs": {
+                                    "tag": "unsigned_int_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "12"
+                                    },
+                                    "value": "5"
+                                },
+                                "operator": "/",
+                                "rhs": {
+                                    "tag": "unsigned_int_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "16"
+                                    },
+                                    "value": "6"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:16)","statement":{"anno":[],"expression":{"anno":[],"left":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"division"},"right":{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:12)-(2:16)","tag":"binary"},"span":"(2:8)-(2:16)","tag":"assign_expression","target":{"anno":[],"span":"(2:8)-(2:8)","tag":"value","value":{"contents":"i","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:16)","statement":{"anno":[],"expression":{"anno":[],"left":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"division"},"right":{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:12)-(2:16)","tag":"binary"},"span":"(2:8)-(2:16)","tag":"assign_expression","target":{"anno":[],"span":"(2:8)-(2:8)","tag":"value","value":{"contents":"i","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	asnmt := result first statementBlock statements first.
+	self assert: asnmt class equals: FASTFortranAssignmentStatement.
+
+	expr := asnmt expression.
+	self assert: expr class equals: FASTFortranBinaryExpression.
+	self assert: expr operator equals: '/'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: expr startPos equals: 33."
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	"self assert: expr left startPos equals: 33."
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	"self assert: expr right startPos equals: 37."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: expr startPos equals: 33.
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left startPos equals: 33.
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right startPos equals: 37.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testBinaryExpressionEqKeyword [
+	
+	| result asnmt expr |
+	fortranCode := '      PROGRAM MYPROG
+       IF ( 5 .eq. 6 ) THEN
+       END IF
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testBinaryExpressionEqKeyword.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "block_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "expression": {
+                        "tag": "logical_expression",
+                        "expression": {
+                            "tag": "logical_factor",
+                            "negated": "false",
+                            "expression": {
+                                "tag": "logical_primary",
+                                "expression": {
+                                    "tag": "binary_expression",
+                                    "lhs": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "13"
+                                        },
+                                        "value": "5"
+                                    },
+                                    "operator": ".EQ.",
+                                    "rhs": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "20"
+                                        },
+                                        "value": "6"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "then_statements": [],
+                    "else_block": {
+                        "else_statements": [],
+                        "end_if": {
+                            "label": ""
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"eq"},"right":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:13)-(2:20)","tag":"binary"},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"eq"},"right":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:13)-(2:20)","tag":"binary"},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	asnmt := result first statementBlock statements first.
+	self assert: asnmt class equals: FASTFortranIfBlockStatement.
+
+	expr := asnmt condition.
+	self assert: expr class equals: FASTFortranBinaryExpression.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: expr operator equals: '.EQ.'.
+	"self assert: expr startPos equals: 34."
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left primitiveValue equals: '5'.
+	"self assert: expr left startPos equals: 34."
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '6'.
+	"self assert: expr right startPos equals: 41."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: expr operator equals: '.eq.'.
+	self assert: expr startPos equals: 34.
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left primitiveValue equals: '5'.
+	self assert: expr left startPos equals: 34.
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '6'.
+	self assert: expr right startPos equals: 41.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testBinaryExpressionExponentiation [
+	
+	| result asnmt expr |
+	fortranCode := '      PROGRAM MYPROG
+       i = 5 ** 6
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testBinaryExpressionExponentiation.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "8"
+                            },
+                            "name": "I"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "binary_expression",
+                                "lhs": {
+                                    "tag": "unsigned_int_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "12"
+                                    },
+                                    "value": "5"
+                                },
+                                "operator": "**",
+                                "rhs": {
+                                    "tag": "unsigned_int_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "17"
+                                    },
+                                    "value": "6"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:17)","statement":{"anno":[],"expression":{"anno":[],"left":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"exponentiation"},"right":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:12)-(2:17)","tag":"binary"},"span":"(2:8)-(2:17)","tag":"assign_expression","target":{"anno":[],"span":"(2:8)-(2:8)","tag":"value","value":{"contents":"i","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:17)","statement":{"anno":[],"expression":{"anno":[],"left":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"exponentiation"},"right":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:12)-(2:17)","tag":"binary"},"span":"(2:8)-(2:17)","tag":"assign_expression","target":{"anno":[],"span":"(2:8)-(2:8)","tag":"value","value":{"contents":"i","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+	
+	asnmt := result first statementBlock statements first.
+	self assert: asnmt class equals: FASTFortranAssignmentStatement.
+
+	expr := asnmt expression.
+	self assert: expr class equals: FASTFortranBinaryExpression.
+	self assert: expr operator equals: '**'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: expr startPos equals: 33."
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	"self assert: expr left startPos equals: 33."
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	"self assert: expr right startPos equals: 38."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: expr startPos equals: 33.
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left startPos equals: 33.
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right startPos equals: 38.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testBinaryExpressionGtKeyword [
+	
+	| result asnmt expr |
+	fortranCode := '      PROGRAM MYPROG
+       IF ( 5 .gt. 6 ) THEN
+       END IF
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testBinaryExpressionGtKeyword.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "block_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "expression": {
+                        "tag": "logical_expression",
+                        "expression": {
+                            "tag": "logical_factor",
+                            "negated": "false",
+                            "expression": {
+                                "tag": "logical_primary",
+                                "expression": {
+                                    "tag": "binary_expression",
+                                    "lhs": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "13"
+                                        },
+                                        "value": "5"
+                                    },
+                                    "operator": ".GT.",
+                                    "rhs": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "20"
+                                        },
+                                        "value": "6"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "then_statements": [],
+                    "else_block": {
+                        "else_statements": [],
+                        "end_if": {
+                            "label": ""
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"gt"},"right":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:13)-(2:20)","tag":"binary"},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"gt"},"right":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:13)-(2:20)","tag":"binary"},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	asnmt := result first statementBlock statements first.
+	self assert: asnmt class equals: FASTFortranIfBlockStatement.
+
+	expr := asnmt condition.
+	self assert: expr class equals: FASTFortranBinaryExpression.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: expr operator equals: '.GT.'.
+	"self assert: expr startPos equals: 34."
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left primitiveValue equals: '5'.
+"	self assert: expr left startPos equals: 34."
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '6'.
+	"self assert: expr right startPos equals: 41."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: expr operator equals: '.gt.'.
+	self assert: expr startPos equals: 34.
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left primitiveValue equals: '5'.
+	self assert: expr left startPos equals: 34.
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '6'.
+	self assert: expr right startPos equals: 41.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testBinaryExpressionGtSymbol [
+	"Note: not valid in Fortran 77"
+
+	| result asnmt expr |
+	fortranCode := '      PROGRAM MYPROG
+       IF ( 5 > 6 ) THEN
+       END IF
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testBinaryExpressionGtSymbol.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "block_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "expression": {
+                        "tag": "arithmetic_expression",
+                        "expression": {
+                            "tag": "unsigned_int_constant",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "13"
+                            },
+                            "value": "56"
+                        }
+                    },
+                    "then_statements": [],
+                    "else_block": {
+                        "else_statements": [],
+                        "end_if": {
+                            "label": ""
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"gt"},"right":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:13)-(2:17)","tag":"binary"},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"gt"},"right":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:13)-(2:17)","tag":"binary"},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	asnmt := result first statementBlock statements first.
+	self assert: asnmt class equals: FASTFortranIfBlockStatement.
+
+	expr := asnmt condition.
+	self assert: expr class equals: FASTFortranBinaryExpression.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: expr operator equals: '.GT.'.
+	"self assert: expr startPos equals: 34."
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left primitiveValue equals: '5'.
+	"self assert: expr left startPos equals: 34."
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '6'.
+	"self assert: expr right startPos equals: 38."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: expr operator equals: '.gt.'.
+	self assert: expr startPos equals: 34.
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left primitiveValue equals: '5'.
+	self assert: expr left startPos equals: 34.
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '6'.
+	self assert: expr right startPos equals: 38.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testBinaryExpressionGteKeyword [
+	
+	| result asnmt expr |
+	fortranCode := '      PROGRAM MYPROG
+       IF ( 5 .ge. 6 ) THEN
+       END IF
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testBinaryExpressionGteKeyword.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "block_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "expression": {
+                        "tag": "logical_expression",
+                        "expression": {
+                            "tag": "logical_factor",
+                            "negated": "false",
+                            "expression": {
+                                "tag": "logical_primary",
+                                "expression": {
+                                    "tag": "binary_expression",
+                                    "lhs": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "13"
+                                        },
+                                        "value": "5"
+                                    },
+                                    "operator": ".GE.",
+                                    "rhs": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "20"
+                                        },
+                                        "value": "6"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "then_statements": [],
+                    "else_block": {
+                        "else_statements": [],
+                        "end_if": {
+                            "label": ""
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"FastTmp/tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"gte"},"right":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:13)-(2:20)","tag":"binary"},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"FastTmp/tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"gte"},"right":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:13)-(2:20)","tag":"binary"},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	asnmt := result first statementBlock statements first.
+	self assert: asnmt class equals: FASTFortranIfBlockStatement.
+
+	expr := asnmt condition.
+	self assert: expr class equals: FASTFortranBinaryExpression.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: expr operator equals: '.GE.'.
+	"self assert: expr startPos equals: 34."
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left primitiveValue equals: '5'.
+	"self assert: expr left startPos equals: 34."
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '6'.
+	"self assert: expr right startPos equals: 41."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: expr operator equals: '.ge.'.
+	self assert: expr startPos equals: 34.
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left primitiveValue equals: '5'.
+	self assert: expr left startPos equals: 34.
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '6'.
+	self assert: expr right startPos equals: 41.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testBinaryExpressionLtKeyword [
+	
+	| result asnmt expr |
+	fortranCode := '      PROGRAM MYPROG
+       IF ( 5 .Lt. 6 ) THEN
+       END IF
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testBinaryExpressionLtKeyword.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "block_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "expression": {
+                        "tag": "logical_expression",
+                        "expression": {
+                            "tag": "logical_factor",
+                            "negated": "false",
+                            "expression": {
+                                "tag": "logical_primary",
+                                "expression": {
+                                    "tag": "binary_expression",
+                                    "lhs": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "13"
+                                        },
+                                        "value": "5"
+                                    },
+                                    "operator": ".LT.",
+                                    "rhs": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "20"
+                                        },
+                                        "value": "6"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "then_statements": [],
+                    "else_block": {
+                        "else_statements": [],
+                        "end_if": {
+                            "label": ""
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"lt"},"right":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:13)-(2:20)","tag":"binary"},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"lt"},"right":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:13)-(2:20)","tag":"binary"},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	asnmt := result first statementBlock statements first.
+	self assert: asnmt class equals: FASTFortranIfBlockStatement.
+
+	expr := asnmt condition.
+	self assert: expr class equals: FASTFortranBinaryExpression.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: expr operator equals: '.LT.'.
+	"self assert: expr startPos equals: 34."
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left primitiveValue equals: '5'.
+	"self assert: expr left startPos equals: 34."
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '6'.
+	"self assert: expr right startPos equals: 41."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: expr operator equals: '.lt.'.
+	self assert: expr startPos equals: 34.
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left primitiveValue equals: '5'.
+	self assert: expr left startPos equals: 34.
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '6'.
+	self assert: expr right startPos equals: 41.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testBinaryExpressionLtSymbol [
+	"Note: not valid in Fortran 77"
+
+	| result asnmt expr |
+	fortranCode := '      PROGRAM MYPROG
+       IF ( 5 < 6 ) THEN
+       END IF
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testBinaryExpressionLtSymbol.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "block_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "expression": {
+                        "tag": "arithmetic_expression",
+                        "expression": {
+                            "tag": "unsigned_int_constant",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "13"
+                            },
+                            "value": "56"
+                        }
+                    },
+                    "then_statements": [],
+                    "else_block": {
+                        "else_statements": [],
+                        "end_if": {
+                            "label": ""
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"lt"},"right":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:13)-(2:17)","tag":"binary"},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"lt"},"right":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:13)-(2:17)","tag":"binary"},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	asnmt := result first statementBlock statements first.
+	self assert: asnmt class equals: FASTFortranIfBlockStatement.
+
+	expr := asnmt condition.
+	self assert: expr class equals: FASTFortranBinaryExpression.
+	self assert: expr operator equals: '.lt.'.
+	self assert: expr startPos equals: 34.
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left primitiveValue equals: '5'.
+	self assert: expr left startPos equals: 34.
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '6'.
+	self assert: expr right startPos equals: 38
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testBinaryExpressionLteKeyword [
+	
+	| result asnmt expr |
+	fortranCode := '      PROGRAM MYPROG
+       IF ( 5 .LE. 6 ) THEN
+       END IF
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testBinaryExpressionLteKeyword.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "block_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "expression": {
+                        "tag": "logical_expression",
+                        "expression": {
+                            "tag": "logical_factor",
+                            "negated": "false",
+                            "expression": {
+                                "tag": "logical_primary",
+                                "expression": {
+                                    "tag": "binary_expression",
+                                    "lhs": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "13"
+                                        },
+                                        "value": "5"
+                                    },
+                                    "operator": ".LE.",
+                                    "rhs": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "20"
+                                        },
+                                        "value": "6"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "then_statements": [],
+                    "else_block": {
+                        "else_statements": [],
+                        "end_if": {
+                            "label": ""
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"lte"},"right":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:13)-(2:20)","tag":"binary"},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"lte"},"right":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:13)-(2:20)","tag":"binary"},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	asnmt := result first statementBlock statements first.
+	self assert: asnmt class equals: FASTFortranIfBlockStatement.
+
+	expr := asnmt condition.
+	self assert: expr class equals: FASTFortranBinaryExpression.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: expr operator equals: '.LE.'.
+	"self assert: expr startPos equals: 34."
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left primitiveValue equals: '5'.
+	"self assert: expr left startPos equals: 34."
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '6'.
+	"self assert: expr right startPos equals: 41."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: expr operator equals: '.le.'.
+	self assert: expr startPos equals: 34.
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left primitiveValue equals: '5'.
+	self assert: expr left startPos equals: 34.
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '6'.
+	self assert: expr right startPos equals: 41.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testBinaryExpressionMultiplication [
+
+	| result asnmt expr |
+	fortranCode := '      PROGRAM MYPROG
+       i = 5 * 6
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testBinaryExpressionMultiplication.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "8"
+                            },
+                            "name": "I"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "binary_expression",
+                                "lhs": {
+                                    "tag": "unsigned_int_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "12"
+                                    },
+                                    "value": "5"
+                                },
+                                "operator": "*",
+                                "rhs": {
+                                    "tag": "unsigned_int_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "16"
+                                    },
+                                    "value": "6"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:16)","statement":{"anno":[],"expression":{"anno":[],"left":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"multiplication"},"right":{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:12)-(2:16)","tag":"binary"},"span":"(2:8)-(2:16)","tag":"assign_expression","target":{"anno":[],"span":"(2:8)-(2:8)","tag":"value","value":{"contents":"i","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:16)","statement":{"anno":[],"expression":{"anno":[],"left":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"multiplication"},"right":{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:12)-(2:16)","tag":"binary"},"span":"(2:8)-(2:16)","tag":"assign_expression","target":{"anno":[],"span":"(2:8)-(2:8)","tag":"value","value":{"contents":"i","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	asnmt := result first statementBlock statements first.
+	self assert: asnmt class equals: FASTFortranAssignmentStatement.
+
+	expr := asnmt expression.
+	self assert: expr class equals: FASTFortranBinaryExpression.
+	self assert: expr operator equals: '*'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: expr startPos equals: 33."
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	"self assert: expr left startPos equals: 33."
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	"self assert: expr right startPos equals: 37."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: expr startPos equals: 33.
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left startPos equals: 33.
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right startPos equals: 37.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testBinaryExpressionNeKeyword [
+	
+	| result asnmt expr |
+	fortranCode := '      PROGRAM MYPROG
+       IF ( 5 .ne. 6 ) THEN
+       END IF
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testBinaryExpressionNeKeyword.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "block_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "expression": {
+                        "tag": "logical_expression",
+                        "expression": {
+                            "tag": "logical_factor",
+                            "negated": "false",
+                            "expression": {
+                                "tag": "logical_primary",
+                                "expression": {
+                                    "tag": "binary_expression",
+                                    "lhs": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "13"
+                                        },
+                                        "value": "5"
+                                    },
+                                    "operator": ".NE.",
+                                    "rhs": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "20"
+                                        },
+                                        "value": "6"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "then_statements": [],
+                    "else_block": {
+                        "else_statements": [],
+                        "end_if": {
+                            "label": ""
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"ne"},"right":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:13)-(2:20)","tag":"binary"},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"op":{"tag":"ne"},"right":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["6",null],"tag":"integer"}},"span":"(2:13)-(2:20)","tag":"binary"},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	asnmt := result first statementBlock statements first.
+	self assert: asnmt class equals: FASTFortranIfBlockStatement.
+
+	expr := asnmt condition.
+	self assert: expr class equals: FASTFortranBinaryExpression.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: expr operator equals: '.NE.'.
+	"self assert: expr startPos equals: 34."
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left primitiveValue equals: '5'.
+	"self assert: expr left startPos equals: 34."
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '6'.
+	"self assert: expr right startPos equals: 41."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: expr operator equals: '.ne.'.
+	self assert: expr startPos equals: 34.
+
+	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr left primitiveValue equals: '5'.
+	self assert: expr left startPos equals: 34.
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '6'.
+	self assert: expr right startPos equals: 41.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testBinaryExpressionSubstraction [
+	
+	| result expr |
+	fortranCode := '      PROGRAM MYPROG
+       i = max-1
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testBinaryExpressionSubstraction.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "8"
+                            },
+                            "name": "I"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "binary_expression",
+                                "lhs": {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "12"
+                                    },
+                                    "name": "MAX"
+                                },
+                                "operator": "-",
+                                "rhs": {
+                                    "tag": "unsigned_int_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "16"
+                                    },
+                                    "value": "1"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:16)","statement":{"anno":[],"expression":{"anno":[],"left":{"anno":[],"span":"(2:12)-(2:14)","tag":"value","value":{"contents":"max","tag":"variable"}},"op":{"tag":"subtraction"},"right":{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:12)-(2:16)","tag":"binary"},"span":"(2:8)-(2:16)","tag":"assign_expression","target":{"anno":[],"span":"(2:8)-(2:8)","tag":"value","value":{"contents":"i","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:16)","statement":{"anno":[],"expression":{"anno":[],"left":{"anno":[],"span":"(2:12)-(2:14)","tag":"value","value":{"contents":"max","tag":"variable"}},"op":{"tag":"subtraction"},"right":{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:12)-(2:16)","tag":"binary"},"span":"(2:8)-(2:16)","tag":"assign_expression","target":{"anno":[],"span":"(2:8)-(2:8)","tag":"value","value":{"contents":"i","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	expr := result first statementBlock statements first expression.
+
+	self assert: expr class equals: FASTFortranBinaryExpression.
+	self assert: expr operator equals: '-'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: expr startPos equals: 33."
+
+	self assert: expr left class equals: FASTFortranScalarVariable.
+	self assert: expr left name equals: 'max'.
+	"self assert: expr left startPos equals: 33."
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '1'.
+	"self assert: expr right startPos equals: 37."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: expr startPos equals: 33.
+
+	self assert: expr left class equals: FASTFortranScalarVariable.
+	self assert: expr left name equals: 'max'.
+	self assert: expr left startPos equals: 33.
+
+	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr right primitiveValue equals: '1'.
+	self assert: expr right startPos equals: 37.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testBinaryExpressionUnaryMinus [
+	
+	| result asnmt expr |
+	fortranCode := '      PROGRAM MYPROG
+       i = -i
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testBinaryExpressionUnaryMinus.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "8"
+                            },
+                            "name": "I"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "constant_signed",
+                                "sign": "-",
+                                "constant": {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "13"
+                                    },
+                                    "name": "I"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:13)","statement":{"anno":[],"expression":{"anno":[],"expression":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"i","tag":"variable"}},"op":{"tag":"minus"},"span":"(2:12)-(2:13)","tag":"unary"},"span":"(2:8)-(2:13)","tag":"assign_expression","target":{"anno":[],"span":"(2:8)-(2:8)","tag":"value","value":{"contents":"i","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:13)","statement":{"anno":[],"expression":{"anno":[],"expression":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"i","tag":"variable"}},"op":{"tag":"minus"},"span":"(2:12)-(2:13)","tag":"unary"},"span":"(2:8)-(2:13)","tag":"assign_expression","target":{"anno":[],"span":"(2:8)-(2:8)","tag":"value","value":{"contents":"i","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	asnmt := result first statementBlock statements first.
+	self assert: asnmt class equals: FASTFortranAssignmentStatement.	
+	
+	expr := asnmt expression.
+	self assert: expr class equals: FASTFortranUnaryExpression.
+	self assert: expr operator equals: '-'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: expr startPos equals: 33."
+=======
+	self assert: expr startPos equals: 33.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: expr startPos equals: 33.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	self assert: expr expression class equals: FASTFortranScalarVariable.
+	self assert: expr expression name equals: 'i'.
+
+]
+
+{ #category : #'tests-programUnit' }
+SyntaxJsonToFASTTests >> testBlockData [
+	| result bd |
+
+	fortranCode := '      block data myblck
+<<<<<<< HEAD
+<<<<<<< HEAD
+      end
+'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testBlockData.FOR",
+    "program_units": [
+        {
+            "tag": "block_data",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "18"
+                },
+                "name": "MYBLCK"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": []
+        }
+    ]
+}'.
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+      common /mycom/ i
+      end
+'.
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:22)","statement":{"anno":[],"common_groups":{"anno":[],"list":[{"anno":[],"name":{"anno":[],"span":"(2:14)-(2:20)","tag":"value","value":{"contents":"mycom","tag":"variable"}},"span":"(2:14)-(2:22)","vars":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:22)-(2:22)","type":"scalar","variable":{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":"i","tag":"variable"}}}],"span":"(2:22)-(2:22)"}}],"span":"(2:14)-(2:22)"},"span":"(2:7)-(2:22)","tag":"common"},"tag":"statement"}],"name":"myblck","span":"(1:7)-(3:9)","tag":"block_data"}]}'.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	bd := result first.
+	self assert: bd class equals: FASTFortranBlockData.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: bd name primitiveValue equals: 'MYBLCK'.
+	"self assert: bd startPos equals: 7."
+=======
+	self assert: bd name equals: 'myblck'.
+	self assert: bd startPos equals: 7.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: bd name equals: 'myblck'.
+	self assert: bd startPos equals: 7.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testCallSubroutine [
+
+	| result call arg |
+	fortranCode := '      PROGRAM TESTALT
+       CALL RANK ( N, *8 )
+      END 
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testCallSubroutine.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "TESTALT"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "call_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "name": {
+                        "tag": "symbolic_name",
+                        "start_pos": {
+                            "line": "2",
+                            "column": "13"
+                        },
+                        "name": "RANK"
+                    },
+                    "arguments": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "20"
+                            },
+                            "name": "N"
+                        },
+                        {
+                            "tag": "argument_with_return_specifier",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "23"
+                            },
+                            "return_specifier": "*",
+                            "argument": "8"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:26)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"expr":{"contents":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":"n","tag":"variable"}},"tag":"expr"},"name":null,"span":"(2:20)-(2:20)"},{"anno":[],"expr":{"contents":{"anno":[],"span":"(2:23)-(2:24)","tag":"return_spec","target":{"anno":[],"span":"(2:24)-(2:24)","tag":"value","value":{"contents":["8",null],"tag":"integer"}}},"tag":"expr"},"name":null,"span":"(2:23)-(2:24)"}],"span":"(2:18)-(2:26)"},"function":{"anno":[],"span":"(2:13)-(2:16)","tag":"value","value":{"contents":"rank","tag":"variable"}},"span":"(2:8)-(2:26)","tag":"call"},"tag":"statement"}],"name":"testalt","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:26)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"expr":{"contents":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":"n","tag":"variable"}},"tag":"expr"},"name":null,"span":"(2:20)-(2:20)"},{"anno":[],"expr":{"contents":{"anno":[],"span":"(2:23)-(2:24)","tag":"return_spec","target":{"anno":[],"span":"(2:24)-(2:24)","tag":"value","value":{"contents":["8",null],"tag":"integer"}}},"tag":"expr"},"name":null,"span":"(2:23)-(2:24)"}],"span":"(2:18)-(2:26)"},"function":{"anno":[],"span":"(2:13)-(2:16)","tag":"value","value":{"contents":"rank","tag":"variable"}},"span":"(2:8)-(2:26)","tag":"call"},"tag":"statement"}],"name":"testalt","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first class equals: FASTFortranProgramMain.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	call := result first statementBlock statements anyOne.
+	self assert: call class equals: FASTFortranCallStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: call name primitiveValue equals: 'RANK'.
+	self assert: call arguments size equals: 2.
+	"self assert: call startPos equals: 30.
+	self assert: call endPos equals: 48."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: call name equals: 'rank'.
+	self assert: call arguments size equals: 2.
+	self assert: call startPos equals: 30.
+	self assert: call endPos equals: 48.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+
+	arg := call arguments first.
+	self assert: arg class equals: FASTFortranScalarVariable.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: arg name equals: 'N'.
+
+	arg := call arguments second.
+	self assert: arg class equals: FASTFortranCharacterLiteral.
+	self assert: arg primitiveValue equals: '*8'.
+	self flag: 'return specifier type was erased, represented as integer *8'
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: arg name equals: 'n'.
+
+	arg := call arguments second.
+	self assert: arg class equals: FASTFortranIntegerLiteral.
+	self assert: arg primitiveValue equals: '8'.
+	self flag: 'what happened to "*" ("*8")?'
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+]
+
+{ #category : #tests }
+SyntaxJsonToFASTTests >> testComment [
+
+	| result cmt |
+	fortranCode := '      integer function aFct()
+C comment in a function''s body
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {
+        "2": "C comment in a function''s body\n"
+    },
+    "file": "test/pharo/testComment.FOR",
+    "program_units": [
+        {
+            "tag": "function",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "24"
+                },
+                "name": "AFCT"
+            },
+            "parameters": [],
+            "return_type": {
+                "tag": "type_reference",
+                "name": "INTEGER"
+            },
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": []
+        }
+    ]
+}'.
+
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"fortran77.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"comment":" comment in a function''s body","span":"(2:1)-(2:30)","tag":"comment"}],"name":"afct","result":null,"span":"(1:7)-(3:9)","subprograms":null,"tag":"function","type":{"anno":[],"base_type":"integer","selector":null,"span":"(1:7)-(1:13)"}}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"fortran77.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"comment":" comment in a function''s body","span":"(2:1)-(2:30)","tag":"comment"}],"name":"afct","result":null,"span":"(1:7)-(3:9)","subprograms":null,"tag":"function","type":{"anno":[],"base_type":"integer","selector":null,"span":"(1:7)-(1:13)"}}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	cmt := result first statementBlock comments anyOne.
+	self assert: cmt content equals: 'C comment in a function''s body'.
+	self assert: cmt startPos equals: 31.
+	self assert: cmt endPos equals: 60.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testCommonStatementMultipleGroups [
+
+	| result stmt commonGroup |
+	fortranCode := '      program simplemain
+      COMMON / name1 / var1, var2 / name2 / var3, var4
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testCommonStatementMultipleGroups.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "SIMPLEMAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "common_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "common_parameters": [
+                        {
+                            "name": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "16"
+                                },
+                                "name": "NAME1"
+                            },
+                            "nlist": [
+                                {
+                                    "tag": "variable_declarator",
+                                    "variable": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "24"
+                                        },
+                                        "name": "VAR1"
+                                    },
+                                    "dimension_declarators": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": {},
+                            "nlist": [
+                                {
+                                    "tag": "variable_declarator",
+                                    "variable": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "30"
+                                        },
+                                        "name": "VAR2"
+                                    },
+                                    "dimension_declarators": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "37"
+                                },
+                                "name": "NAME2"
+                            },
+                            "nlist": [
+                                {
+                                    "tag": "variable_declarator",
+                                    "variable": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "45"
+                                        },
+                                        "name": "VAR3"
+                                    },
+                                    "dimension_declarators": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": {},
+                            "nlist": [
+                                {
+                                    "tag": "variable_declarator",
+                                    "variable": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "51"
+                                        },
+                                        "name": "VAR4"
+                                    },
+                                    "dimension_declarators": []
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:53)","statement":{"anno":[],"common_groups":{"anno":[],"list":[{"anno":[],"name":{"anno":[],"span":"(2:13)-(2:21)","tag":"value","value":{"contents":"name1","tag":"variable"}},"span":"(2:13)-(2:32)","vars":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:23)-(2:26)","type":"scalar","variable":{"anno":[],"span":"(2:23)-(2:26)","tag":"value","value":{"contents":"var1","tag":"variable"}}},{"anno":[],"initial":null,"length":null,"span":"(2:29)-(2:32)","type":"scalar","variable":{"anno":[],"span":"(2:29)-(2:32)","tag":"value","value":{"contents":"var2","tag":"variable"}}}],"span":"(2:23)-(2:32)"}},{"anno":[],"name":{"anno":[],"span":"(2:34)-(2:42)","tag":"value","value":{"contents":"name2","tag":"variable"}},"span":"(2:34)-(2:53)","vars":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:44)-(2:47)","type":"scalar","variable":{"anno":[],"span":"(2:44)-(2:47)","tag":"value","value":{"contents":"var3","tag":"variable"}}},{"anno":[],"initial":null,"length":null,"span":"(2:50)-(2:53)","type":"scalar","variable":{"anno":[],"span":"(2:50)-(2:53)","tag":"value","value":{"contents":"var4","tag":"variable"}}}],"span":"(2:44)-(2:53)"}}],"span":"(2:13)-(2:53)"},"span":"(2:7)-(2:53)","tag":"common"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:53)","statement":{"anno":[],"common_groups":{"anno":[],"list":[{"anno":[],"name":{"anno":[],"span":"(2:13)-(2:21)","tag":"value","value":{"contents":"name1","tag":"variable"}},"span":"(2:13)-(2:32)","vars":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:23)-(2:26)","type":"scalar","variable":{"anno":[],"span":"(2:23)-(2:26)","tag":"value","value":{"contents":"var1","tag":"variable"}}},{"anno":[],"initial":null,"length":null,"span":"(2:29)-(2:32)","type":"scalar","variable":{"anno":[],"span":"(2:29)-(2:32)","tag":"value","value":{"contents":"var2","tag":"variable"}}}],"span":"(2:23)-(2:32)"}},{"anno":[],"name":{"anno":[],"span":"(2:34)-(2:42)","tag":"value","value":{"contents":"name2","tag":"variable"}},"span":"(2:34)-(2:53)","vars":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:44)-(2:47)","type":"scalar","variable":{"anno":[],"span":"(2:44)-(2:47)","tag":"value","value":{"contents":"var3","tag":"variable"}}},{"anno":[],"initial":null,"length":null,"span":"(2:50)-(2:53)","type":"scalar","variable":{"anno":[],"span":"(2:50)-(2:53)","tag":"value","value":{"contents":"var4","tag":"variable"}}}],"span":"(2:44)-(2:53)"}}],"span":"(2:13)-(2:53)"},"span":"(2:7)-(2:53)","tag":"common"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranCommonStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 78."
+=======
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 78.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 78.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	self assert: stmt groups size equals: 2.
+
+	commonGroup := stmt groups first.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: commonGroup name equals: 'NAME1'.
+	self assert: commonGroup declarators size equals: 2.
+
+	commonGroup := stmt groups second.
+	self assert: commonGroup name equals: 'NAME2'.
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: commonGroup name equals: 'name1'.
+	self assert: commonGroup declarators size equals: 2.
+
+	commonGroup := stmt groups second.
+	self assert: commonGroup name equals: 'name2'.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: commonGroup declarators size equals: 2.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testCommonStatementNamed [
+
+	| result stmt commonGroup |
+	fortranCode := '      program simplemain
+      COMMON / name / var1, var2
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testCommonStatementNamed.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "SIMPLEMAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "common_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "parameters": [
+                        {
+                            "name": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "16"
+                                },
+                                "name": "NAME"
+                            },
+                            "nlist": [
+                                {
+                                    "tag": "variable_declarator",
+                                    "variable": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "23"
+                                        },
+                                        "name": "VAR1"
+                                    },
+                                    "dimension_declarators": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": {},
+                            "nlist": [
+                                {
+                                    "tag": "variable_declarator",
+                                    "variable": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "29"
+                                        },
+                                        "name": "VAR2"
+                                    },
+                                    "dimension_declarators": []
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:32)","statement":{"anno":[],"common_groups":{"anno":[],"list":[{"anno":[],"name":{"anno":[],"span":"(2:14)-(2:21)","tag":"value","value":{"contents":"name","tag":"variable"}},"span":"(2:14)-(2:32)","vars":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:23)-(2:26)","type":"scalar","variable":{"anno":[],"span":"(2:23)-(2:26)","tag":"value","value":{"contents":"var1","tag":"variable"}}},{"anno":[],"initial":null,"length":null,"span":"(2:29)-(2:32)","type":"scalar","variable":{"anno":[],"span":"(2:29)-(2:32)","tag":"value","value":{"contents":"var2","tag":"variable"}}}],"span":"(2:23)-(2:32)"}}],"span":"(2:14)-(2:32)"},"span":"(2:7)-(2:32)","tag":"common"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:32)","statement":{"anno":[],"common_groups":{"anno":[],"list":[{"anno":[],"name":{"anno":[],"span":"(2:14)-(2:21)","tag":"value","value":{"contents":"name","tag":"variable"}},"span":"(2:14)-(2:32)","vars":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:23)-(2:26)","type":"scalar","variable":{"anno":[],"span":"(2:23)-(2:26)","tag":"value","value":{"contents":"var1","tag":"variable"}}},{"anno":[],"initial":null,"length":null,"span":"(2:29)-(2:32)","type":"scalar","variable":{"anno":[],"span":"(2:29)-(2:32)","tag":"value","value":{"contents":"var2","tag":"variable"}}}],"span":"(2:23)-(2:32)"}}],"span":"(2:14)-(2:32)"},"span":"(2:7)-(2:32)","tag":"common"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranCommonStatement.
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 57.
+
+	self assert: stmt groups size equals: 1.
+
+	commonGroup := stmt groups first.
+	self assert: commonGroup name equals: 'name'.
+	self assert: commonGroup declarators size equals: 2.
+	self assert: commonGroup declarators first startPos equals: 48.
+	self assert: commonGroup declarators second startPos equals: 54.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testCommonStatementNoName [
+
+	| result stmt commonGroup |
+	fortranCode := '      program simplemain
+      COMMON var1, var2
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testCommonStatementNoName.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "SIMPLEMAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "common_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "parameters": [
+                        {
+                            "name": {},
+                            "nlist": [
+                                {
+                                    "tag": "variable_declarator",
+                                    "variable": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "14"
+                                        },
+                                        "name": "VAR1"
+                                    },
+                                    "dimension_declarators": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": {},
+                            "nlist": [
+                                {
+                                    "tag": "variable_declarator",
+                                    "variable": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "20"
+                                        },
+                                        "name": "VAR2"
+                                    },
+                                    "dimension_declarators": []
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:23)","statement":{"anno":[],"common_groups":{"anno":[],"list":[{"anno":[],"name":null,"span":"(2:14)-(2:23)","vars":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:14)-(2:17)","type":"scalar","variable":{"anno":[],"span":"(2:14)-(2:17)","tag":"value","value":{"contents":"var1","tag":"variable"}}},{"anno":[],"initial":null,"length":null,"span":"(2:20)-(2:23)","type":"scalar","variable":{"anno":[],"span":"(2:20)-(2:23)","tag":"value","value":{"contents":"var2","tag":"variable"}}}],"span":"(2:14)-(2:23)"}}],"span":"(2:14)-(2:23)"},"span":"(2:7)-(2:23)","tag":"common"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:23)","statement":{"anno":[],"common_groups":{"anno":[],"list":[{"anno":[],"name":null,"span":"(2:14)-(2:23)","vars":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:14)-(2:17)","type":"scalar","variable":{"anno":[],"span":"(2:14)-(2:17)","tag":"value","value":{"contents":"var1","tag":"variable"}}},{"anno":[],"initial":null,"length":null,"span":"(2:20)-(2:23)","type":"scalar","variable":{"anno":[],"span":"(2:20)-(2:23)","tag":"value","value":{"contents":"var2","tag":"variable"}}}],"span":"(2:14)-(2:23)"}}],"span":"(2:14)-(2:23)"},"span":"(2:7)-(2:23)","tag":"common"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranCommonStatement.
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 48.
+
+	self assert: stmt groups size equals: 1.
+
+	commonGroup := stmt groups first.
+	self assert: commonGroup name equals: nil.
+	self assert: commonGroup declarators size equals: 2.
+
+	self assert: commonGroup declarators first class equals: FASTFortranVariableDeclarator.
+	self assert: commonGroup declarators first variable equals: 'var1'.
+	self assert: commonGroup declarators first startPos equals: 39.
+
+	self assert: commonGroup declarators second class equals: FASTFortranVariableDeclarator.
+	self assert: commonGroup declarators second variable equals: 'var2'.
+	self assert: commonGroup declarators second startPos equals: 45.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testContinueStatement [
+
+	| result stmt |
+	fortranCode := '      PROGRAM MYPROG
+110   CONTINUE
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testContinueStatement.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "label": "110",
+                    "tag": "continue_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":{"anno":[],"span":"(2:1)-(2:3)","tag":"value","value":{"contents":["110",null],"tag":"integer"}},"span":"(2:1)-(2:14)","statement":{"anno":[],"span":"(2:7)-(2:14)","tag":"continue"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":{"anno":[],"span":"(2:1)-(2:3)","tag":"value","value":{"contents":["110",null],"tag":"integer"}},"span":"(2:1)-(2:14)","statement":{"anno":[],"span":"(2:7)-(2:14)","tag":"continue"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranContinueStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 35."
+=======
+	self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 35.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 35.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	self assert: stmt label equals: '110'.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDataStatement [
+
+	| result stmt dataGroup |
+	fortranCode := '      program simplemain
+      DATA chaine1, chaine2  /''Blah'' , ''Deux'' / , chaine3 / ''Encore'' /
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testDataStatement.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "SIMPLEMAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "data_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "data_parameters": [
+                        {
+                            "nlist": [
+                                {
+                                    "tag": "symbolic_name",
+                                   "start_pos": {
+                                        "line": "2",
+                                        "column": "12"
+                                    },
+                                    "name": "CHAINE1"
+                                },
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "21"
+                                    },
+                                    "name": "CHAINE2"
+                                }
+                            ],
+                            "clist": [
+                                {
+                                    "tag": "data_statement_constant",
+                                    "occurence": {},
+                                    "constant": {
+                                        "tag": "character_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "31"
+                                        },
+                                        "value": "''Blah''"
+                                    }
+                                },
+                                {
+                                    "tag": "data_statement_constant",
+                                    "occurence": {},
+                                    "constant": {
+                                        "tag": "character_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "40"
+                                        },
+                                        "value": "''Deux''"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "nlist": [
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "51"
+                                    },
+                                    "name": "CHAINE3"
+                                }
+                            ],
+                            "clist": [
+                                {
+                                    "tag": "data_statement_constant",
+                                    "occurence": {},
+                                    "constant": {
+                                        "tag": "character_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "61"
+                                        },
+                                        "value": "''Encore''"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:47)","statement":{"anno":[],"data_groups":{"anno":[],"list":[{"anno":[],"initializers":{"anno":[],"list":[{"anno":[],"span":"(2:31)-(2:36)","tag":"value","value":{"contents":"Blah","tag":"string"}},{"anno":[],"span":"(2:40)-(2:45)","tag":"value","value":{"contents":"Deux","tag":"string"}}],"span":"(2:31)-(2:45)"},"names":{"anno":[],"list":[{"anno":[],"span":"(2:12)-(2:18)","tag":"value","value":{"contents":"chaine1","tag":"variable"}},{"anno":[],"span":"(2:21)-(2:27)","tag":"value","value":{"contents":"chaine2","tag":"variable"}}],"span":"(2:12)-(2:27)"},"span":"(2:12)-(2:47)"},{"anno":[],"initializers":{"anno":[],"list":[{"anno":[],"span":"(2:61)-(2:68)","tag":"value","value":{"contents":"Encore","tag":"string"}}],"span":"(2:61)-(2:68)"},"names":{"anno":[],"list":[{"anno":[],"span":"(2:51)-(2:57)","tag":"value","value":{"contents":"chaine3","tag":"variable"}}],"span":"(2:51)-(2:57)"},"span":"(2:51)-(2:70)"}],"span":"(2:12)-(2:70)"},"span":"(2:7)-(2:47)","tag":"data"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranDataStatement.
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 95.
+
+	self assert: stmt variableGroups size equals: 2.
+
+	dataGroup := stmt variableGroups first.
+	self assert: dataGroup variables size equals: 2.
+	self assert: dataGroup variables first class equals: FASTFortranScalarVariable.
+	self assert: dataGroup variables first name equals: 'chaine1'.
+	self assert: dataGroup variables first startPos equals: 37.
+
+	self assert: dataGroup dataConstants size equals: 2.
+	self assert: dataGroup dataConstants first class equals: FASTFortranCharacterLiteral.
+	self assert: dataGroup dataConstants first primitiveValue equals: 'Blah'.
+	self assert: dataGroup dataConstants first startPos equals: 56.
+
+	dataGroup := stmt variableGroups second.
+	self assert: dataGroup variables size equals: 1.
+	self assert: dataGroup variables first class equals: FASTFortranScalarVariable.
+	self assert: dataGroup variables first name equals: 'chaine3'.
+	self assert: dataGroup variables first startPos equals: 76.
+
+	self assert: dataGroup dataConstants size equals: 1.
+	self assert: dataGroup dataConstants first class equals: FASTFortranCharacterLiteral.
+	self assert: dataGroup dataConstants first primitiveValue equals: 'Encore'.
+	self assert: dataGroup dataConstants first startPos equals: 86.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDataStatementOccurence [
+
+	| result stmt dataGroup |
+	fortranCode := '       DATA VEC /3*9.0/
+       END
+'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/data-occurence.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": "null",
+				"parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "8"
+            },
+            "end_pos": {
+                "line": "2",
+                "column": "10"
+            },
+            "statement_list": [
+                {
+                    "tag": "data_statement",
+                    "start_pos": {
+                        "line": "1",
+                        "column": "8"
+                    },
+                    "data_parameters": [
+                        {
+                            "nlist": [
+                                {
+                                    "tag": "variable_declarator",
+                                    "variable": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "1",
+                                            "column": "13"
+                                        },
+                                        "name": "VEC"
+                                    },
+                                    "dimension_declarators": []
+                                }
+                            ],
+                            "clist": [
+                                {
+                                    "tag": "data_statement_constant",
+                                    "occurence": {
+                                        "tag": "nonzero_unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "1",
+                                            "column": "18"
+                                        },
+                                        "value": "3"
+                                    },
+                                    "constant": {
+                                        "tag": "unsigned_real_constant",
+                                        "start_pos": {
+                                            "line": "1",
+                                            "column": "20"
+                                        },
+                                        "value": "9.0"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:47)","statement":{"anno":[],"data_groups":{"anno":[],"list":[{"anno":[],"initializers":{"anno":[],"list":[{"anno":[],"span":"(2:31)-(2:36)","tag":"value","value":{"contents":"Blah","tag":"string"}},{"anno":[],"span":"(2:40)-(2:45)","tag":"value","value":{"contents":"Deux","tag":"string"}}],"span":"(2:31)-(2:45)"},"names":{"anno":[],"list":[{"anno":[],"span":"(2:12)-(2:18)","tag":"value","value":{"contents":"chaine1","tag":"variable"}},{"anno":[],"span":"(2:21)-(2:27)","tag":"value","value":{"contents":"chaine2","tag":"variable"}}],"span":"(2:12)-(2:27)"},"span":"(2:12)-(2:47)"},{"anno":[],"initializers":{"anno":[],"list":[{"anno":[],"span":"(2:61)-(2:68)","tag":"value","value":{"contents":"Encore","tag":"string"}}],"span":"(2:61)-(2:68)"},"names":{"anno":[],"list":[{"anno":[],"span":"(2:51)-(2:57)","tag":"value","value":{"contents":"chaine3","tag":"variable"}}],"span":"(2:51)-(2:57)"},"span":"(2:51)-(2:70)"}],"span":"(2:12)-(2:70)"},"span":"(2:7)-(2:47)","tag":"data"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranDataStatement.
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 95.
+
+	self assert: stmt variableGroups size equals: 2.
+
+	dataGroup := stmt variableGroups first.
+	self assert: dataGroup variables size equals: 2.
+	self assert: dataGroup variables first class equals: FASTFortranScalarVariable.
+	self assert: dataGroup variables first name equals: 'chaine1'.
+	self assert: dataGroup variables first startPos equals: 37.
+
+	self assert: dataGroup dataConstants size equals: 2.
+	self assert: dataGroup dataConstants first class equals: FASTFortranCharacterLiteral.
+	self assert: dataGroup dataConstants first primitiveValue equals: 'Blah'.
+	self assert: dataGroup dataConstants first startPos equals: 56.
+
+	dataGroup := stmt variableGroups second.
+	self assert: dataGroup variables size equals: 1.
+	self assert: dataGroup variables first class equals: FASTFortranScalarVariable.
+	self assert: dataGroup variables first name equals: 'chaine3'.
+	self assert: dataGroup variables first startPos equals: 76.
+
+	self assert: dataGroup dataConstants size equals: 1.
+	self assert: dataGroup dataConstants first class equals: FASTFortranCharacterLiteral.
+	self assert: dataGroup dataConstants first primitiveValue equals: 'Encore'.
+	self assert: dataGroup dataConstants first startPos equals: 86.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDeclarationIntegerWithInitializer [
+
+	| result stmt declarator |
+	fortranCode := '      program main
+      integer i = 1
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testDeclarationIntegerWithInitializer.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "7"
+                            },
+                            "name": "INTEGERI"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "unsigned_int_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "19"
+                                },
+                                "value": "1"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"FastTmp/tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:15)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:15)-(2:15)","type":"scalar","variable":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":"i","tag":"variable"}}}],"span":"(2:15)-(2:15)"},"span":"(2:7)-(2:15)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"FastTmp/tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:15)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:15)-(2:15)","type":"scalar","variable":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":"i","tag":"variable"}}}],"span":"(2:15)-(2:15)"},"span":"(2:7)-(2:15)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 34.
+
+	self assert: stmt declarators size equals: 1.
+	declarator := stmt declarators anyOne.
+	self assert: declarator class equals: FASTFortranVariableDeclarator.
+	self assert: declarator variable equals: 'i'.
+	self assert: declarator startPos equals: 34.
+
+	self assert: stmt type class equals: FASTFortranIntegerType.
+	self assert: stmt type startPos equals: 26.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDimensionStatementAsterisk [
+
+	| result stmt decl |
+	fortranCode := '      program simplemain
+      DIMENSION A(*), B(N,*)
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testDimensionStatementAsterisk.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "SIMPLEMAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "dimension_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "array_declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "17"
+                                },
+                                "name": "A"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "tag": "literal_expression",
+                                    "literal": {
+                                        "asterisk": "*"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "23"
+                                },
+                                "name": "B"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "lower_bound": {
+                                        "tag": "variable_expression",
+                                        "variable": {
+                                            "tag": "symbolic_name",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "25"
+                                            },
+                                            "name": "N"
+                                        }
+                                    }
+                                },
+                                {
+                                    "tag": "literal_expression",
+                                    "literal": {
+                                        "asterisk": "*"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:28)","statement":{"anno":[],"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:19)","upper":{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"tag":"star"}}}],"span":"(2:19)-(2:19)"},"initial":null,"length":null,"span":"(2:17)-(2:20)","type":"array","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"a","tag":"variable"}}},{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:25)-(2:25)","upper":{"anno":[],"span":"(2:25)-(2:25)","tag":"value","value":{"contents":"n","tag":"variable"}}},{"anno":[],"lower":null,"span":"(2:27)-(2:27)","upper":{"anno":[],"span":"(2:27)-(2:27)","tag":"value","value":{"tag":"star"}}}],"span":"(2:25)-(2:27)"},"initial":null,"length":null,"span":"(2:23)-(2:28)","type":"array","variable":{"anno":[],"span":"(2:23)-(2:23)","tag":"value","value":{"contents":"b","tag":"variable"}}}],"span":"(2:17)-(2:28)"},"span":"(2:7)-(2:28)","tag":"dimension"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:28)","statement":{"anno":[],"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:19)","upper":{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"tag":"star"}}}],"span":"(2:19)-(2:19)"},"initial":null,"length":null,"span":"(2:17)-(2:20)","type":"array","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"a","tag":"variable"}}},{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:25)-(2:25)","upper":{"anno":[],"span":"(2:25)-(2:25)","tag":"value","value":{"contents":"n","tag":"variable"}}},{"anno":[],"lower":null,"span":"(2:27)-(2:27)","upper":{"anno":[],"span":"(2:27)-(2:27)","tag":"value","value":{"tag":"star"}}}],"span":"(2:25)-(2:27)"},"initial":null,"length":null,"span":"(2:23)-(2:28)","type":"array","variable":{"anno":[],"span":"(2:23)-(2:23)","tag":"value","value":{"contents":"b","tag":"variable"}}}],"span":"(2:17)-(2:28)"},"span":"(2:7)-(2:28)","tag":"dimension"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranDimensionStatement.
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 53.
+
+	self assert: stmt declarators size equals: 2.
+
+	decl := stmt declarators first.
+	self assert: decl variable equals: 'a'.
+	self assert: decl dimensions size equals: 1.
+	self assert: decl dimensions anyOne lowerBound equals: nil. 
+	self assert: decl dimensions anyOne upperBound class equals: FASTFortranAsterisk.
+
+	decl := stmt declarators second.
+	self assert: decl variable equals: 'b'.
+	self assert: decl dimensions size equals: 2.
+	self assert: decl dimensions first lowerBound equals: nil. 
+	self assert: decl dimensions first upperBound class equals: FASTFortranScalarVariable.
+	self assert: decl dimensions second lowerBound equals: nil. 
+	self assert: decl dimensions second upperBound class equals: FASTFortranAsterisk.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDimensionStatementExpression [
+
+	| result stmt decl |
+	fortranCode := '      program simplemain
+      DIMENSION M(HI, HI*3 + LO)
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testDimensionStatementExpression.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "SIMPLEMAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "dimension_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "array_declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "17"
+                                },
+                                "name": "M"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "lower_bound": {
+                                        "tag": "variable_expression",
+                                        "variable": {
+                                            "tag": "symbolic_name",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "19"
+                                            },
+                                            "name": "HI"
+                                        }
+                                    }
+                                },
+                                {
+                                    "tag": "binary_expression",
+                                    "lhs": {
+                                        "tag": "binary_expression",
+                                        "lhs": {
+                                            "tag": "variable_expression",
+                                            "variable": {
+                                                "tag": "symbolic_name",
+                                                "start_pos": {
+                                                    "line": "2",
+                                                    "column": "23"
+                                                },
+                                                "name": "HI"
+                                            }
+                                        },
+                                        "operator": "*",
+                                        "expression": {
+                                            "tag": "literal_expression",
+                                            "literal": {
+                                                "tag": "unsigned_int_constant",
+                                                "start_pos": {
+                                                    "line": "2",
+                                                    "column": "26"
+                                                },
+                                                "value": "3"
+                                            }
+                                        }
+                                    },
+                                    "operator": "+",
+                                    "expression": {
+                                        "tag": "variable_expression",
+                                        "variable": {
+                                            "tag": "symbolic_name",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "30"
+                                            },
+                                            "name": "LO"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:32)","statement":{"anno":[],"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:20)","upper":{"anno":[],"span":"(2:19)-(2:20)","tag":"value","value":{"contents":"hi","tag":"variable"}}},{"anno":[],"lower":null,"span":"(2:23)-(2:31)","upper":{"anno":[],"left":{"anno":[],"left":{"anno":[],"span":"(2:23)-(2:24)","tag":"value","value":{"contents":"hi","tag":"variable"}},"op":{"tag":"multiplication"},"right":{"anno":[],"span":"(2:26)-(2:26)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"span":"(2:23)-(2:26)","tag":"binary"},"op":{"tag":"addition"},"right":{"anno":[],"span":"(2:30)-(2:31)","tag":"value","value":{"contents":"lo","tag":"variable"}},"span":"(2:23)-(2:31)","tag":"binary"}}],"span":"(2:19)-(2:31)"},"initial":null,"length":null,"span":"(2:17)-(2:32)","type":"array","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"m","tag":"variable"}}}],"span":"(2:17)-(2:32)"},"span":"(2:7)-(2:32)","tag":"dimension"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:32)","statement":{"anno":[],"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:20)","upper":{"anno":[],"span":"(2:19)-(2:20)","tag":"value","value":{"contents":"hi","tag":"variable"}}},{"anno":[],"lower":null,"span":"(2:23)-(2:31)","upper":{"anno":[],"left":{"anno":[],"left":{"anno":[],"span":"(2:23)-(2:24)","tag":"value","value":{"contents":"hi","tag":"variable"}},"op":{"tag":"multiplication"},"right":{"anno":[],"span":"(2:26)-(2:26)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"span":"(2:23)-(2:26)","tag":"binary"},"op":{"tag":"addition"},"right":{"anno":[],"span":"(2:30)-(2:31)","tag":"value","value":{"contents":"lo","tag":"variable"}},"span":"(2:23)-(2:31)","tag":"binary"}}],"span":"(2:19)-(2:31)"},"initial":null,"length":null,"span":"(2:17)-(2:32)","type":"array","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"m","tag":"variable"}}}],"span":"(2:17)-(2:32)"},"span":"(2:7)-(2:32)","tag":"dimension"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranDimensionStatement.
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 57.
+
+	self assert: stmt declarators size equals: 1.
+	decl := stmt declarators anyOne.
+
+	self assert: decl variable equals: 'm'.
+	self assert: decl dimensions size equals: 2.
+	self assert: decl dimensions first lowerBound equals: nil. 
+	self assert: decl dimensions first upperBound class equals: FASTFortranScalarVariable.
+	self assert: decl dimensions second lowerBound equals: nil. 
+	self assert: decl dimensions second upperBound class equals: FASTFortranBinaryExpression.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDimensionStatementMultipleDim [
+
+	| result stmt decl |
+	fortranCode := '      program simplemain
+      DIMENSION V(4,4) 
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testDimensionStatementMultipleDim.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "SIMPLEMAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "dimension_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "array_declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "17"
+                                },
+                                "name": "V"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "19"
+                                            },
+                                            "value": "4"
+                                        }
+                                    }
+                                },
+                                {
+                                    "tag": "literal_expression",
+                                    "literal": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "21"
+                                        },
+                                        "value": "4"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:22)","statement":{"anno":[],"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:19)","upper":{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"contents":["4",null],"tag":"integer"}}},{"anno":[],"lower":null,"span":"(2:21)-(2:21)","upper":{"anno":[],"span":"(2:21)-(2:21)","tag":"value","value":{"contents":["4",null],"tag":"integer"}}}],"span":"(2:19)-(2:21)"},"initial":null,"length":null,"span":"(2:17)-(2:22)","type":"array","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"v","tag":"variable"}}}],"span":"(2:17)-(2:22)"},"span":"(2:7)-(2:22)","tag":"dimension"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:22)","statement":{"anno":[],"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:19)","upper":{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"contents":["4",null],"tag":"integer"}}},{"anno":[],"lower":null,"span":"(2:21)-(2:21)","upper":{"anno":[],"span":"(2:21)-(2:21)","tag":"value","value":{"contents":["4",null],"tag":"integer"}}}],"span":"(2:19)-(2:21)"},"initial":null,"length":null,"span":"(2:17)-(2:22)","type":"array","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"v","tag":"variable"}}}],"span":"(2:17)-(2:22)"},"span":"(2:7)-(2:22)","tag":"dimension"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranDimensionStatement.
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 47.
+
+	self assert: stmt declarators size equals: 1.
+	decl := stmt declarators anyOne.
+
+	self assert: decl variable equals: 'v'.
+	self assert: decl dimensions size equals: 2.
+	self assert: decl dimensions first lowerBound equals: nil. 
+	self assert: decl dimensions first upperBound class equals: FASTFortranIntegerLiteral.
+	self assert: decl dimensions second lowerBound equals: nil. 
+	self assert: decl dimensions second upperBound class equals: FASTFortranIntegerLiteral.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDimensionStatementMultipleVariables [
+
+	| result stmt decl |
+	fortranCode := '      program simplemain
+      DIMENSION M(4,4), V(100)
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testDimensionStatementMultipleVariables.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "SIMPLEMAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "dimension_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "array_declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "17"
+                                },
+                                "name": "M"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "19"
+                                            },
+                                            "value": "4"
+                                        }
+                                    }
+                                },
+                                {
+                                    "tag": "literal_expression",
+                                    "literal": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "21"
+                                        },
+                                        "value": "4"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "25"
+                                },
+                                "name": "V"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "tag": "literal_expression",
+                                    "literal": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "27"
+                                        },
+                                        "value": "100"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:30)","statement":{"anno":[],"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:19)","upper":{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"contents":["4",null],"tag":"integer"}}},{"anno":[],"lower":null,"span":"(2:21)-(2:21)","upper":{"anno":[],"span":"(2:21)-(2:21)","tag":"value","value":{"contents":["4",null],"tag":"integer"}}}],"span":"(2:19)-(2:21)"},"initial":null,"length":null,"span":"(2:17)-(2:22)","type":"array","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"m","tag":"variable"}}},{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:27)-(2:29)","upper":{"anno":[],"span":"(2:27)-(2:29)","tag":"value","value":{"contents":["100",null],"tag":"integer"}}}],"span":"(2:27)-(2:29)"},"initial":null,"length":null,"span":"(2:25)-(2:30)","type":"array","variable":{"anno":[],"span":"(2:25)-(2:25)","tag":"value","value":{"contents":"v","tag":"variable"}}}],"span":"(2:17)-(2:30)"},"span":"(2:7)-(2:30)","tag":"dimension"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:30)","statement":{"anno":[],"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:19)","upper":{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"contents":["4",null],"tag":"integer"}}},{"anno":[],"lower":null,"span":"(2:21)-(2:21)","upper":{"anno":[],"span":"(2:21)-(2:21)","tag":"value","value":{"contents":["4",null],"tag":"integer"}}}],"span":"(2:19)-(2:21)"},"initial":null,"length":null,"span":"(2:17)-(2:22)","type":"array","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"m","tag":"variable"}}},{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:27)-(2:29)","upper":{"anno":[],"span":"(2:27)-(2:29)","tag":"value","value":{"contents":["100",null],"tag":"integer"}}}],"span":"(2:27)-(2:29)"},"initial":null,"length":null,"span":"(2:25)-(2:30)","type":"array","variable":{"anno":[],"span":"(2:25)-(2:25)","tag":"value","value":{"contents":"v","tag":"variable"}}}],"span":"(2:17)-(2:30)"},"span":"(2:7)-(2:30)","tag":"dimension"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranDimensionStatement.
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 55.
+
+	self assert: stmt declarators size equals: 2.
+
+	decl := stmt declarators first.
+	self assert: decl variable equals: 'm'.
+	self assert: decl dimensions size equals: 2.
+
+	decl := stmt declarators second.
+	self assert: decl variable equals: 'v'.
+	self assert: decl dimensions size equals: 1.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDimensionStatementRange [
+
+	| result stmt decl |
+	fortranCode := '      program simplemain
+      DIMENSION M(-3:3, 4, 3:9)
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testDimensionStatementRange.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "SIMPLEMAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "dimension_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "array_declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "17"
+                                },
+                                "name": "M"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "lower_bound": {
+                                        "tag": "unary_expression",
+                                        "operator": "-",
+                                        "expression": {
+                                            "tag": "literal_expression",
+                                            "literal": {
+                                                "tag": "unsigned_int_constant",
+                                                "start_pos": {
+                                                    "line": "2",
+                                                    "column": "20"
+                                                },
+                                                "value": "3"
+                                            }
+                                        }
+                                    },
+                                    "upper_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "22"
+                                            },
+                                            "value": "3"
+                                        }
+                                    }
+                                },
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "25"
+                                            },
+                                            "value": "4"
+                                        }
+                                    }
+                                },
+                                {
+                                    "lower_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "28"
+                                            },
+                                            "value": "3"
+                                        }
+                                    },
+                                    "upper_bound": {
+                                        "tag": "literal_expression",
+                                        "literal": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "30"
+                                            },
+                                            "value": "9"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:31)","statement":{"anno":[],"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":{"anno":[],"expression":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"op":{"tag":"minus"},"span":"(2:19)-(2:20)","tag":"unary"},"span":"(2:19)-(2:22)","upper":{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":["3",null],"tag":"integer"}}},{"anno":[],"lower":null,"span":"(2:25)-(2:25)","upper":{"anno":[],"span":"(2:25)-(2:25)","tag":"value","value":{"contents":["4",null],"tag":"integer"}}},{"anno":[],"lower":{"anno":[],"span":"(2:28)-(2:28)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"span":"(2:28)-(2:30)","upper":{"anno":[],"span":"(2:30)-(2:30)","tag":"value","value":{"contents":["9",null],"tag":"integer"}}}],"span":"(2:19)-(2:30)"},"initial":null,"length":null,"span":"(2:17)-(2:31)","type":"array","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"m","tag":"variable"}}}],"span":"(2:17)-(2:31)"},"span":"(2:7)-(2:31)","tag":"dimension"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:31)","statement":{"anno":[],"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":{"anno":[],"expression":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"op":{"tag":"minus"},"span":"(2:19)-(2:20)","tag":"unary"},"span":"(2:19)-(2:22)","upper":{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":["3",null],"tag":"integer"}}},{"anno":[],"lower":null,"span":"(2:25)-(2:25)","upper":{"anno":[],"span":"(2:25)-(2:25)","tag":"value","value":{"contents":["4",null],"tag":"integer"}}},{"anno":[],"lower":{"anno":[],"span":"(2:28)-(2:28)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"span":"(2:28)-(2:30)","upper":{"anno":[],"span":"(2:30)-(2:30)","tag":"value","value":{"contents":["9",null],"tag":"integer"}}}],"span":"(2:19)-(2:30)"},"initial":null,"length":null,"span":"(2:17)-(2:31)","type":"array","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"m","tag":"variable"}}}],"span":"(2:17)-(2:31)"},"span":"(2:7)-(2:31)","tag":"dimension"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranDimensionStatement.
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 56.
+
+	self assert: stmt declarators size equals: 1.
+	decl := stmt declarators anyOne.
+
+	self assert: decl variable equals: 'm'.
+	self assert: decl dimensions size equals: 3.
+
+	self assert: decl dimensions first lowerBound class equals: FASTFortranIntegerLiteral. 
+	self assert: decl dimensions first upperBound class equals: FASTFortranIntegerLiteral.
+
+	self assert: decl dimensions second lowerBound equals: nil. 
+	self assert: decl dimensions second upperBound class equals: FASTFortranIntegerLiteral.
+	
+	self assert: decl dimensions third lowerBound class equals: FASTFortranIntegerLiteral.
+	self assert: decl dimensions third upperBound class equals: FASTFortranIntegerLiteral.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDimensionStatementSimple [
+
+	| result stmt decl |
+	fortranCode := '      program simplemain
+      DIMENSION V(1000) 
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testDimensionStatementSimple.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "SIMPLEMAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "dimension_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "array_declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "17"
+                                },
+                                "name": "V"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "tag": "literal_expression",
+                                    "literal": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "19"
+                                        },
+                                        "value": "1000"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:23)","statement":{"anno":[],"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:22)","upper":{"anno":[],"span":"(2:19)-(2:22)","tag":"value","value":{"contents":["1000",null],"tag":"integer"}}}],"span":"(2:19)-(2:22)"},"initial":null,"length":null,"span":"(2:17)-(2:23)","type":"array","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"v","tag":"variable"}}}],"span":"(2:17)-(2:23)"},"span":"(2:7)-(2:23)","tag":"dimension"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:23)","statement":{"anno":[],"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:22)","upper":{"anno":[],"span":"(2:19)-(2:22)","tag":"value","value":{"contents":["1000",null],"tag":"integer"}}}],"span":"(2:19)-(2:22)"},"initial":null,"length":null,"span":"(2:17)-(2:23)","type":"array","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"v","tag":"variable"}}}],"span":"(2:17)-(2:23)"},"span":"(2:7)-(2:23)","tag":"dimension"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranDimensionStatement.
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 48.
+
+	self assert: stmt declarators size equals: 1.
+	decl := stmt declarators anyOne.
+
+	self assert: decl variable equals: 'v'.
+	self assert: decl dimensions size equals: 1.
+	self assert: decl dimensions anyOne lowerBound equals: nil. 
+	self assert: decl dimensions anyOne upperBound class equals: FASTFortranIntegerLiteral.
+	self assert: decl dimensions anyOne upperBound primitiveValue equals: '1000'.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDimensionStatementVarDims [
+
+	| result stmt decl |
+	fortranCode := '      program simplemain
+      DIMENSION M(N,N)
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testDimensionStatementVarDims.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "SIMPLEMAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "dimension_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "array_declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "17"
+                                },
+                                "name": "M"
+                            },
+                            "dimension_declarators": [
+                                {
+                                    "lower_bound": {
+                                        "tag": "variable_expression",
+                                        "variable": {
+                                            "tag": "symbolic_name",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "19"
+                                            },
+                                            "name": "N"
+                                        }
+                                    }
+                                },
+                                {
+                                    "tag": "variable_expression",
+                                    "variable": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "21"
+                                        },
+                                        "name": "N"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:22)","statement":{"anno":[],"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:19)","upper":{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"contents":"n","tag":"variable"}}},{"anno":[],"lower":null,"span":"(2:21)-(2:21)","upper":{"anno":[],"span":"(2:21)-(2:21)","tag":"value","value":{"contents":"n","tag":"variable"}}}],"span":"(2:19)-(2:21)"},"initial":null,"length":null,"span":"(2:17)-(2:22)","type":"array","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"m","tag":"variable"}}}],"span":"(2:17)-(2:22)"},"span":"(2:7)-(2:22)","tag":"dimension"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:22)","statement":{"anno":[],"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:19)-(2:19)","upper":{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"contents":"n","tag":"variable"}}},{"anno":[],"lower":null,"span":"(2:21)-(2:21)","upper":{"anno":[],"span":"(2:21)-(2:21)","tag":"value","value":{"contents":"n","tag":"variable"}}}],"span":"(2:19)-(2:21)"},"initial":null,"length":null,"span":"(2:17)-(2:22)","type":"array","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"m","tag":"variable"}}}],"span":"(2:17)-(2:22)"},"span":"(2:7)-(2:22)","tag":"dimension"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranDimensionStatement.
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 47.
+
+	self assert: stmt declarators size equals: 1.
+	decl := stmt declarators anyOne.
+
+	self assert: decl variable equals: 'm'.
+	self assert: decl dimensions size equals: 2.
+	self assert: decl dimensions first upperBound class equals: FASTFortranScalarVariable.
+	self assert: decl dimensions first upperBound name equals: 'n'.
+	self assert: decl dimensions second upperBound class equals: FASTFortranScalarVariable.
+	self assert: decl dimensions second upperBound name equals: 'n'.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDoStatementEmptyInitIncrementLimit [
+
+	| result stmt control |
+	fortranCode := '      program main
+      do i = len(chaine),1,-1
+      end do
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testDoStatementEmptyInitIncrementLimit.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "7"
+                            },
+                            "name": "DOI"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "character_expression",
+                            "expression": {
+                                "tag": "substring",
+                                "array": {
+                                    "tag": "array_element_name",
+                                    "name": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "14"
+                                        },
+                                        "name": "LEN"
+                                    },
+                                    "qualifiers_list": [
+                                        {
+                                            "tag": "symbolic_name",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "18"
+                                            },
+                                            "name": "CHAINE"
+                                        }
+                                    ]
+                                },
+                                "lower_bound": {
+                                    "tag": "unsigned_int_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "26"
+                                    },
+                                    "value": "1"
+                                },
+                                "upper_bound": {
+                                    "tag": "constant_signed",
+                                    "sign": "-",
+                                    "constant": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "29"
+                                        },
+                                        "value": "1"
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "3",
+                        "column": "7"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "3",
+                                "column": "7"
+                            },
+                            "name": "ENDDO"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "character_expression",
+                            "expression": {
+                                "tag": "character_constant",
+                                "start_pos": {
+                                    "line": "3",
+                                    "column": "13"
+                                },
+                                "value": ""
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"body":[],"do_spec":{"anno":[],"increment":{"anno":[],"expression":{"anno":[],"span":"(2:29)-(2:29)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"op":{"tag":"minus"},"span":"(2:28)-(2:29)","tag":"unary"},"initial":{"anno":[],"expression":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"expr":{"contents":{"anno":[],"span":"(2:18)-(2:23)","tag":"value","value":{"contents":"chaine","tag":"variable"}},"tag":"expr"},"name":null,"span":"(2:18)-(2:23)"}],"span":"(2:18)-(2:23)"},"function":{"anno":[],"span":"(2:14)-(2:16)","tag":"value","value":{"contents":"len","tag":"intrinsic"}},"span":"(2:14)-(2:24)","tag":"function_call"},"span":"(2:10)-(2:24)","tag":"assign_expression","target":{"anno":[],"span":"(2:10)-(2:10)","tag":"value","value":{"contents":"i","tag":"variable"}}},"limit":{"anno":[],"span":"(2:26)-(2:26)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:10)-(2:29)"},"end_label":null,"label":null,"name":null,"span":"(2:7)-(3:12)","tag":"do","target":null}],"name":"main","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"body":[],"do_spec":{"anno":[],"increment":{"anno":[],"expression":{"anno":[],"span":"(2:29)-(2:29)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"op":{"tag":"minus"},"span":"(2:28)-(2:29)","tag":"unary"},"initial":{"anno":[],"expression":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"expr":{"contents":{"anno":[],"span":"(2:18)-(2:23)","tag":"value","value":{"contents":"chaine","tag":"variable"}},"tag":"expr"},"name":null,"span":"(2:18)-(2:23)"}],"span":"(2:18)-(2:23)"},"function":{"anno":[],"span":"(2:14)-(2:16)","tag":"value","value":{"contents":"len","tag":"intrinsic"}},"span":"(2:14)-(2:24)","tag":"function_call"},"span":"(2:10)-(2:24)","tag":"assign_expression","target":{"anno":[],"span":"(2:10)-(2:10)","tag":"value","value":{"contents":"i","tag":"variable"}}},"limit":{"anno":[],"span":"(2:26)-(2:26)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:10)-(2:29)"},"end_label":null,"label":null,"name":null,"span":"(2:7)-(3:12)","tag":"do","target":null}],"name":"main","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranDoStatement.
+	self assert: stmt loopControl isNotNil.
+	self assert: stmt statementBlock statements isEmpty.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 61.
+
+	control := stmt loopControl.
+	self assert: control class equals: FASTFortranLoopControlExpression.
+	self assert: control startPos equals: 29.
+
+	self assert: control init class equals: FASTFortranAssignmentExpression.
+	self assert: control init startPos equals: 29.
+
+	self assert: control increment class equals: FASTFortranIntegerLiteral.
+	self assert: control increment startPos equals: 47.
+	self assert: control increment primitiveValue equals: '-1'.
+
+	self assert: control limit class equals: FASTFortranIntegerLiteral.
+	self assert: control limit startPos equals: 45.
+	self assert: control limit primitiveValue equals: '1'.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDoStatementEmptyNoIncrement [
+
+	| result stmt control |
+	fortranCode := '      program main
+      do i=1, max
+      end do
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testDoStatementEmptyNoIncrement.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "7"
+                            },
+                            "name": "DOI"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "binary_expression",
+                                "lhs": {
+                                    "tag": "unsigned_int_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "12"
+                                    },
+                                    "value": "1"
+                                },
+                                "operator": "*",
+                                "expression": {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "15"
+                                    },
+                                    "name": "MAX"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "3",
+                        "column": "7"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "3",
+                                "column": "7"
+                            },
+                            "name": "ENDDO"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "character_expression",
+                            "expression": {
+                                "tag": "character_constant",
+                                "start_pos": {
+                                    "line": "3",
+                                    "column": "13"
+                                },
+                                "value": ""
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"body":[],"do_spec":{"anno":[],"increment":null,"initial":{"anno":[],"expression":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:10)-(2:12)","tag":"assign_expression","target":{"anno":[],"span":"(2:10)-(2:10)","tag":"value","value":{"contents":"i","tag":"variable"}}},"limit":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"max","tag":"variable"}},"span":"(2:10)-(2:17)"},"end_label":null,"label":null,"name":null,"span":"(2:7)-(3:12)","tag":"do","target":null}],"name":"main","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"body":[],"do_spec":{"anno":[],"increment":null,"initial":{"anno":[],"expression":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:10)-(2:12)","tag":"assign_expression","target":{"anno":[],"span":"(2:10)-(2:10)","tag":"value","value":{"contents":"i","tag":"variable"}}},"limit":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"max","tag":"variable"}},"span":"(2:10)-(2:17)"},"end_label":null,"label":null,"name":null,"span":"(2:7)-(3:12)","tag":"do","target":null}],"name":"main","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranDoStatement.
+	self assert: stmt loopControl isNotNil.
+	self assert: stmt statementBlock statements isEmpty.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 49.
+
+	control := stmt loopControl.
+	self assert: control class equals: FASTFortranLoopControlExpression.
+	self assert: control limit class equals: FASTFortranScalarVariable.
+	self assert: control limit name equals: 'max'.
+	self assert: control increment isNil.
+	self assert: control startPos equals: 29.
+
+	self assert: control init class equals: FASTFortranAssignmentExpression.
+	self assert: control init startPos equals: 29.
+
+	self assert: control init variable class equals: FASTFortranScalarVariable.
+	self assert: control init variable name equals: 'i'.
+	self assert: control init variable startPos equals: 29.
+
+	self assert: control init expression class equals: FASTFortranIntegerLiteral.
+	self assert: control init expression primitiveValue equals: '1'.
+	self assert: control init expression startPos equals: 31.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDoStatementNestedOneContinue [
+
+	| result stmt |
+	fortranCode := '      program main
+      DO 30 L=1,10
+      A=1
+      DO 30 M=L,10
+      a=2
+   30 CONTINUE
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testDoStatementNestedOneContinue.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "7",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "do_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "statement_number": "30",
+                    "loop_control": {
+                        "variable_name": {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "13"
+                            },
+                            "name": "L"
+                        },
+                        "init": {
+                            "tag": "unsigned_int_constant",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "15"
+                            },
+                            "value": "1"
+                        },
+                        "increment": null
+                    },
+                    "statements_list": [
+                        {
+                            "tag": "assignment_statement",
+                            "start_pos": {
+                                "line": "3",
+                                "column": "7"
+                            },
+                            "left": [
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "3",
+                                        "column": "7"
+                                    },
+                                    "name": "A"
+                                }
+                            ],
+                            "right": [
+                                {
+                                    "tag": "arithmetic_expression",
+                                    "expression": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "3",
+                                            "column": "9"
+                                        },
+                                        "value": "1"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "tag": "do_statement",
+                            "start_pos": {
+                                "line": "4",
+                                "column": "7"
+                            },
+                            "statement_number": "30",
+                            "loop_control": {
+                                "variable_name": {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "4",
+                                        "column": "13"
+                                    },
+                                    "name": "M"
+                                },
+                                "init": {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "4",
+                                        "column": "15"
+                                    },
+                                    "name": "L"
+                                },
+                                "increment": null
+                            },
+                            "statements_list": [
+                                {
+                                    "tag": "assignment_statement",
+                                    "start_pos": {
+                                        "line": "5",
+                                        "column": "7"
+                                    },
+                                    "left": [
+                                        {
+                                            "tag": "symbolic_name",
+                                            "start_pos": {
+                                                "line": "5",
+                                                "column": "7"
+                                            },
+                                            "name": "A"
+                                        }
+                                    ],
+                                    "right": [
+                                        {
+                                            "tag": "arithmetic_expression",
+                                            "expression": {
+                                                "tag": "unsigned_int_constant",
+                                                "start_pos": {
+                                                    "line": "5",
+                                                    "column": "9"
+                                                },
+                                                "value": "2"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "30",
+                                    "tag": "continue_statement",
+                                    "start_pos": {
+                                        "line": "6",
+                                        "column": "7"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"body":[{"anno":[],"label":null,"span":"(3:7)-(3:9)","statement":{"anno":[],"expression":{"anno":[],"span":"(3:9)-(3:9)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(3:7)-(3:9)","tag":"assign_expression","target":{"anno":[],"span":"(3:7)-(3:7)","tag":"value","value":{"contents":"a","tag":"variable"}}},"tag":"statement"},{"anno":[],"body":[{"anno":[],"label":null,"span":"(5:7)-(5:9)","statement":{"anno":[],"expression":{"anno":[],"span":"(5:9)-(5:9)","tag":"value","value":{"contents":["2",null],"tag":"integer"}},"span":"(5:7)-(5:9)","tag":"assign_expression","target":{"anno":[],"span":"(5:7)-(5:7)","tag":"value","value":{"contents":"a","tag":"variable"}}},"tag":"statement"}],"do_spec":{"anno":[],"increment":null,"initial":{"anno":[],"expression":{"anno":[],"span":"(4:15)-(4:15)","tag":"value","value":{"contents":"l","tag":"variable"}},"span":"(4:13)-(4:15)","tag":"assign_expression","target":{"anno":[],"span":"(4:13)-(4:13)","tag":"value","value":{"contents":"m","tag":"variable"}}},"limit":{"anno":[],"span":"(4:17)-(4:18)","tag":"value","value":{"contents":["10",null],"tag":"integer"}},"span":"(4:13)-(4:18)"},"end_label":{"anno":[],"span":"(6:4)-(6:5)","tag":"value","value":{"contents":["30",null],"tag":"integer"}},"label":null,"name":null,"span":"(4:7)-(5:9)","tag":"do","target":{"anno":[],"span":"(4:10)-(4:11)","tag":"value","value":{"contents":["30",null],"tag":"integer"}}}],"do_spec":{"anno":[],"increment":null,"initial":{"anno":[],"expression":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:13)-(2:15)","tag":"assign_expression","target":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"l","tag":"variable"}}},"limit":{"anno":[],"span":"(2:17)-(2:18)","tag":"value","value":{"contents":["10",null],"tag":"integer"}},"span":"(2:13)-(2:18)"},"end_label":{"anno":[],"span":"(6:4)-(6:5)","tag":"value","value":{"contents":["30",null],"tag":"integer"}},"label":null,"name":null,"span":"(2:7)-(5:9)","tag":"do","target":{"anno":[],"span":"(2:10)-(2:11)","tag":"value","value":{"contents":["30",null],"tag":"integer"}}}],"name":"main","span":"(1:7)-(7:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"body":[{"anno":[],"label":null,"span":"(3:7)-(3:9)","statement":{"anno":[],"expression":{"anno":[],"span":"(3:9)-(3:9)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(3:7)-(3:9)","tag":"assign_expression","target":{"anno":[],"span":"(3:7)-(3:7)","tag":"value","value":{"contents":"a","tag":"variable"}}},"tag":"statement"},{"anno":[],"body":[{"anno":[],"label":null,"span":"(5:7)-(5:9)","statement":{"anno":[],"expression":{"anno":[],"span":"(5:9)-(5:9)","tag":"value","value":{"contents":["2",null],"tag":"integer"}},"span":"(5:7)-(5:9)","tag":"assign_expression","target":{"anno":[],"span":"(5:7)-(5:7)","tag":"value","value":{"contents":"a","tag":"variable"}}},"tag":"statement"}],"do_spec":{"anno":[],"increment":null,"initial":{"anno":[],"expression":{"anno":[],"span":"(4:15)-(4:15)","tag":"value","value":{"contents":"l","tag":"variable"}},"span":"(4:13)-(4:15)","tag":"assign_expression","target":{"anno":[],"span":"(4:13)-(4:13)","tag":"value","value":{"contents":"m","tag":"variable"}}},"limit":{"anno":[],"span":"(4:17)-(4:18)","tag":"value","value":{"contents":["10",null],"tag":"integer"}},"span":"(4:13)-(4:18)"},"end_label":{"anno":[],"span":"(6:4)-(6:5)","tag":"value","value":{"contents":["30",null],"tag":"integer"}},"label":null,"name":null,"span":"(4:7)-(5:9)","tag":"do","target":{"anno":[],"span":"(4:10)-(4:11)","tag":"value","value":{"contents":["30",null],"tag":"integer"}}}],"do_spec":{"anno":[],"increment":null,"initial":{"anno":[],"expression":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:13)-(2:15)","tag":"assign_expression","target":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"l","tag":"variable"}}},"limit":{"anno":[],"span":"(2:17)-(2:18)","tag":"value","value":{"contents":["10",null],"tag":"integer"}},"span":"(2:13)-(2:18)"},"end_label":{"anno":[],"span":"(6:4)-(6:5)","tag":"value","value":{"contents":["30",null],"tag":"integer"}},"label":null,"name":null,"span":"(2:7)-(5:9)","tag":"do","target":{"anno":[],"span":"(2:10)-(2:11)","tag":"value","value":{"contents":["30",null],"tag":"integer"}}}],"name":"main","span":"(1:7)-(7:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	"DO 30 L=1,10"
+	stmt := result first statementBlock statements anyOne.	
+	self assert: stmt class equals: FASTFortranDoStatement.
+	self assert: stmt statementBlock statements size equals: 3.
+	self assert: stmt labelReferences size equals: 1.
+	self assert: stmt labelReferences first class equals: FASTFortranLabelReference.
+	self assert: stmt labelReferences first label equals: '30'.
+
+	"A=1"
+	stmt := result first statementBlock statements first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranAssignmentStatement.
+
+	"DO 30 M=L,10"
+	stmt := result first statementBlock statements first statementBlock statements second.
+	self assert: stmt class equals: FASTFortranDoStatement.
+	self assert: stmt statementBlock statements size equals: 1.
+	self assert: stmt labelReferences size equals: 1.
+	self assert: stmt labelReferences first class equals: FASTFortranLabelReference.
+	self assert: stmt labelReferences first label equals: '30'.
+
+	"a=2"
+	stmt := stmt statementBlock statements first.
+	self assert: stmt class equals: FASTFortranAssignmentStatement.
+
+	"30 CONTINUE"
+	stmt := result first statementBlock statements first statementBlock statements third.
+	self assert: stmt class equals: FASTFortranContinueStatement.
+	self assert: stmt label equals: '30'.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDoStatementWithComment [
+
+	| result stmt |
+	fortranCode := '      program main
+      do i=1, max
+C comment in loop
+      end do
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {
+        "3": "C comment in loop\n"
+    },
+    "file": "test/pharo/testDoStatementWithComment.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "5",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "7"
+                            },
+                            "name": "DOI"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "binary_expression",
+                                "lhs": {
+                                    "tag": "unsigned_int_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "12"
+                                    },
+                                    "value": "1"
+                                },
+                                "operator": "*",
+                                "expression": {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "15"
+                                    },
+                                    "name": "MAX"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "4",
+                        "column": "7"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "4",
+                                "column": "7"
+                            },
+                            "name": "ENDDO"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "character_expression",
+                            "expression": {
+                                "tag": "character_constant",
+                                "start_pos": {
+                                    "line": "4",
+                                    "column": "13"
+                                },
+                                "value": ""
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"body":[{"anno":[],"comment":" comment in loop","span":"(3:1)-(3:17)","tag":"comment"}],"do_spec":{"anno":[],"increment":null,"initial":{"anno":[],"expression":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:10)-(2:12)","tag":"assign_expression","target":{"anno":[],"span":"(2:10)-(2:10)","tag":"value","value":{"contents":"i","tag":"variable"}}},"limit":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"max","tag":"variable"}},"span":"(2:10)-(2:17)"},"end_label":null,"label":null,"name":null,"span":"(2:7)-(4:12)","tag":"do","target":null}],"name":"main","span":"(1:7)-(5:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"body":[{"anno":[],"comment":" comment in loop","span":"(3:1)-(3:17)","tag":"comment"}],"do_spec":{"anno":[],"increment":null,"initial":{"anno":[],"expression":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:10)-(2:12)","tag":"assign_expression","target":{"anno":[],"span":"(2:10)-(2:10)","tag":"value","value":{"contents":"i","tag":"variable"}}},"limit":{"anno":[],"span":"(2:15)-(2:17)","tag":"value","value":{"contents":"max","tag":"variable"}},"span":"(2:10)-(2:17)"},"end_label":null,"label":null,"name":null,"span":"(2:7)-(4:12)","tag":"do","target":null}],"name":"main","span":"(1:7)-(5:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranDoStatement.
+	self assert: stmt loopControl isNotNil.
+	self assert: stmt statementBlock statements isEmpty.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 67.
+
+	self assert: stmt statementBlock comments size equals: 1.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDoStatementWithLabelAndContinue [
+
+	| result stmt |
+	fortranCode := '      program main
+      do 100 i=1, max
+      a=1
+100   continue
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testDoStatementWithLabelAndContinue.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "5",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "do_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "statement_number": "100",
+                    "loop_control": {
+                        "variable_name": {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "14"
+                            },
+                            "name": "I"
+                        },
+                        "init": {
+                            "tag": "unsigned_int_constant",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "16"
+                            },
+                            "value": "1"
+                        },
+                        "increment": null
+                    },
+                    "statements_list": [
+                        {
+                            "tag": "assignment_statement",
+                            "start_pos": {
+                                "line": "3",
+                                "column": "7"
+                            },
+                            "left": [
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "3",
+                                        "column": "7"
+                                    },
+                                    "name": "A"
+                                }
+                            ],
+                            "right": [
+                                {
+                                    "tag": "arithmetic_expression",
+                                    "expression": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "3",
+                                            "column": "9"
+                                        },
+                                        "value": "1"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "label": "100",
+                            "tag": "continue_statement",
+                            "start_pos": {
+                                "line": "4",
+                                "column": "7"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"body":[{"anno":[],"label":null,"span":"(3:7)-(3:9)","statement":{"anno":[],"expression":{"anno":[],"span":"(3:9)-(3:9)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(3:7)-(3:9)","tag":"assign_expression","target":{"anno":[],"span":"(3:7)-(3:7)","tag":"value","value":{"contents":"a","tag":"variable"}}},"tag":"statement"}],"do_spec":{"anno":[],"increment":null,"initial":{"anno":[],"expression":{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:14)-(2:16)","tag":"assign_expression","target":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"contents":"i","tag":"variable"}}},"limit":{"anno":[],"span":"(2:19)-(2:21)","tag":"value","value":{"contents":"max","tag":"variable"}},"span":"(2:14)-(2:21)"},"end_label":{"anno":[],"span":"(4:1)-(4:3)","tag":"value","value":{"contents":["100",null],"tag":"integer"}},"label":null,"name":null,"span":"(2:7)-(3:9)","tag":"do","target":{"anno":[],"span":"(2:10)-(2:12)","tag":"value","value":{"contents":["100",null],"tag":"integer"}}}],"name":"main","span":"(1:7)-(5:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"body":[{"anno":[],"label":null,"span":"(3:7)-(3:9)","statement":{"anno":[],"expression":{"anno":[],"span":"(3:9)-(3:9)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(3:7)-(3:9)","tag":"assign_expression","target":{"anno":[],"span":"(3:7)-(3:7)","tag":"value","value":{"contents":"a","tag":"variable"}}},"tag":"statement"}],"do_spec":{"anno":[],"increment":null,"initial":{"anno":[],"expression":{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:14)-(2:16)","tag":"assign_expression","target":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"contents":"i","tag":"variable"}}},"limit":{"anno":[],"span":"(2:19)-(2:21)","tag":"value","value":{"contents":"max","tag":"variable"}},"span":"(2:14)-(2:21)"},"end_label":{"anno":[],"span":"(4:1)-(4:3)","tag":"value","value":{"contents":["100",null],"tag":"integer"}},"label":null,"name":null,"span":"(2:7)-(3:9)","tag":"do","target":{"anno":[],"span":"(2:10)-(2:12)","tag":"value","value":{"contents":["100",null],"tag":"integer"}}}],"name":"main","span":"(1:7)-(5:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranDoStatement.
+	self assert: stmt loopControl isNotNil.
+
+	self assert: stmt labelReferences size equals: 1.
+	self assert: stmt labelReferences anyOne class equals: FASTFortranLabelReference.
+	self assert: stmt labelReferences anyOne label equals: '100'.
+
+	self assert: stmt statementBlock statements size equals: 2.
+
+	self assert: stmt statementBlock statements first class equals: FASTFortranAssignmentStatement.
+	self assert: stmt statementBlock statements first startPos equals: 48.
+	
+	self assert: stmt statementBlock statements second class equals: FASTFortranContinueStatement.
+	self assert: stmt statementBlock statements second label equals: '100'.
+	self assert: stmt statementBlock statements second startPos equals: 52.
+	
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testDoStatementWithLabelAndTerminalStatement [
+
+	| result stmt |
+	fortranCode := '      program main
+      do 100 i=1, max
+100   print *,i
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testDoStatementWithLabelAndTerminalStatement.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "do_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "statement_number": "100",
+                    "loop_control": {
+                        "variable_name": {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "14"
+                            },
+                            "name": "I"
+                        },
+                        "init": {
+                            "tag": "unsigned_int_constant",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "16"
+                            },
+                            "value": "1"
+                        },
+                        "increment": null
+                    },
+                    "statements_list": [
+                        {
+                            "label": "100",
+                            "tag": "print_statement",
+                            "start_pos": {
+                                "line": "3",
+                                "column": "7"
+                            },
+                            "io_list": [
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "3",
+                                        "column": "15"
+                                    },
+                                    "name": "I"
+                                }
+                            ],
+                            "format": [
+                                {
+                                    "name": "FMT",
+                                    "parameter": {
+                                        "asterisk": "*"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"body":[{"anno":[],"label":{"anno":[],"span":"(3:1)-(3:3)","tag":"value","value":{"contents":["100",null],"tag":"integer"}},"span":"(3:1)-(3:15)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(3:15)-(3:15)","tag":"value","value":{"contents":"i","tag":"variable"}}],"span":"(3:15)-(3:15)"},"format":{"anno":[],"span":"(3:13)-(3:13)","tag":"value","value":{"tag":"star"}},"span":"(3:7)-(3:15)","tag":"print"},"tag":"statement"}],"do_spec":{"anno":[],"increment":null,"initial":{"anno":[],"expression":{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:14)-(2:16)","tag":"assign_expression","target":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"contents":"i","tag":"variable"}}},"limit":{"anno":[],"span":"(2:19)-(2:21)","tag":"value","value":{"contents":"max","tag":"variable"}},"span":"(2:14)-(2:21)"},"end_label":{"anno":[],"span":"(3:1)-(3:3)","tag":"value","value":{"contents":["100",null],"tag":"integer"}},"label":null,"name":null,"span":"(2:7)-(3:15)","tag":"do","target":{"anno":[],"span":"(2:10)-(2:12)","tag":"value","value":{"contents":["100",null],"tag":"integer"}}}],"name":"main","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"body":[{"anno":[],"label":{"anno":[],"span":"(3:1)-(3:3)","tag":"value","value":{"contents":["100",null],"tag":"integer"}},"span":"(3:1)-(3:15)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(3:15)-(3:15)","tag":"value","value":{"contents":"i","tag":"variable"}}],"span":"(3:15)-(3:15)"},"format":{"anno":[],"span":"(3:13)-(3:13)","tag":"value","value":{"tag":"star"}},"span":"(3:7)-(3:15)","tag":"print"},"tag":"statement"}],"do_spec":{"anno":[],"increment":null,"initial":{"anno":[],"expression":{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:14)-(2:16)","tag":"assign_expression","target":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"contents":"i","tag":"variable"}}},"limit":{"anno":[],"span":"(2:19)-(2:21)","tag":"value","value":{"contents":"max","tag":"variable"}},"span":"(2:14)-(2:21)"},"end_label":{"anno":[],"span":"(3:1)-(3:3)","tag":"value","value":{"contents":["100",null],"tag":"integer"}},"label":null,"name":null,"span":"(2:7)-(3:15)","tag":"do","target":{"anno":[],"span":"(2:10)-(2:12)","tag":"value","value":{"contents":["100",null],"tag":"integer"}}}],"name":"main","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranDoStatement.
+	self assert: stmt loopControl isNotNil.
+
+	self assert: stmt labelReferences size equals: 1.
+	self assert: stmt labelReferences anyOne class equals: FASTFortranLabelReference.
+	self assert: stmt labelReferences anyOne label equals: '100'.
+
+	self assert: stmt statementBlock statements size equals: 1.
+	self assert: stmt statementBlock statements anyOne class equals: FASTFortranPrintStatement.
+	self assert: stmt statementBlock statements anyOne label equals: '100'.
+	self assert: stmt statementBlock statements anyOne startPos equals: 48.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testEntryStatement [
+
+	| result stmt |
+	fortranCode := '      SUBROUTINE SUBRTN
+      ENTRY XYZ(ABC,*)
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testEntryStatement.FOR",
+    "program_units": [
+        {
+            "tag": "subroutine",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "18"
+                },
+                "name": "SUBRTN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "name": {
+                        "tag": "symbolic_name",
+                        "start_pos": {
+                            "line": "2",
+                            "column": "13"
+                        },
+                        "name": "XYZ"
+                    },
+                    "parameters": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "17"
+                            },
+                            "name": "ABC"
+                        },
+                        "*"
+                    ],
+                    "tag": "entry_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:22)","statement":{"anno":[],"args":{"anno":[],"list":[{"anno":[],"span":"(2:17)-(2:19)","tag":"value","value":{"contents":"abc","tag":"variable"}},{"anno":[],"span":"(2:21)-(2:21)","tag":"value","value":{"tag":"star"}}],"span":"(2:16)-(2:22)"},"name":{"anno":[],"span":"(2:13)-(2:15)","tag":"value","value":{"contents":"xyz","tag":"variable"}},"return":null,"span":"(2:7)-(2:22)","tag":"entry"},"tag":"statement"}],"name":"subrtn","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:22)","statement":{"anno":[],"args":{"anno":[],"list":[{"anno":[],"span":"(2:17)-(2:19)","tag":"value","value":{"contents":"abc","tag":"variable"}},{"anno":[],"span":"(2:21)-(2:21)","tag":"value","value":{"tag":"star"}}],"span":"(2:16)-(2:22)"},"name":{"anno":[],"span":"(2:13)-(2:15)","tag":"value","value":{"contents":"xyz","tag":"variable"}},"return":null,"span":"(2:7)-(2:22)","tag":"entry"},"tag":"statement"}],"name":"subrtn","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranEntryStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: stmt name primitiveValue equals: 'XYZ'.
+	"self assert: stmt startPos equals: 31.
+	self assert: stmt endPos equals: 46."
+=======
+	self assert: stmt name equals: 'xyz'.
+	self assert: stmt startPos equals: 31.
+	self assert: stmt endPos equals: 46.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: stmt name equals: 'xyz'.
+	self assert: stmt startPos equals: 31.
+	self assert: stmt endPos equals: 46.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	self assert: stmt entryArguments size equals: 2.
+
+	self assert: stmt entryArguments first class equals: FASTFortranScalarVariable.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: stmt entryArguments first name equals: 'ABC'.
+	"self assert: stmt entryArguments first startPos equals: 41."
+
+	self assert: stmt entryArguments second class equals: FASTFortranAsterisk.
+	"self assert: stmt entryArguments second startPos equals: 45."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: stmt entryArguments first name equals: 'abc'.
+	self assert: stmt entryArguments first startPos equals: 41.
+
+	self assert: stmt entryArguments second class equals: FASTFortranAsterisk.
+	self assert: stmt entryArguments second startPos equals: 45.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testEquivalenceStatementOneGroupArrayVariables [
+
+	| result stmt grp |
+	fortranCode := '      SUBROUTINE SUBRTN
+      EQUIVALENCE (a,b(1),c(2))
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testEquivalenceStatementOneGroupArrayVariables.FOR",
+    "program_units": [
+        {
+            "tag": "subroutine",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "18"
+                },
+                "name": "SUBRTN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "equivalence_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "parameters": [
+                        [
+                            {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "20"
+                                },
+                                "name": "A"
+                            },
+                            {
+                                "tag": "array_element_name",
+                                "name": {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "22"
+                                    },
+                                    "name": "B"
+                                },
+                                "qualifiers_list": [
+                                    {
+                                        "tag": "arithmetic_expression",
+                                        "expression": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "24"
+                                            },
+                                            "value": "1"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "tag": "array_element_name",
+                                "name": {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "27"
+                                    },
+                                    "name": "C"
+                                },
+                                "qualifiers_list": [
+                                    {
+                                        "tag": "arithmetic_expression",
+                                        "expression": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "2",
+                                                "column": "29"
+                                            },
+                                            "value": "2"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:31)","statement":{"anno":[],"groups":{"anno":[],"list":[{"anno":[],"list":[{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":"a","tag":"variable"}},{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"expr":{"contents":{"anno":[],"span":"(2:24)-(2:24)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"tag":"expr"},"name":null,"span":"(2:24)-(2:24)"}],"span":"(2:24)-(2:24)"},"function":{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":"b","tag":"variable"}},"span":"(2:22)-(2:25)","tag":"function_call"},{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"expr":{"contents":{"anno":[],"span":"(2:29)-(2:29)","tag":"value","value":{"contents":["2",null],"tag":"integer"}},"tag":"expr"},"name":null,"span":"(2:29)-(2:29)"}],"span":"(2:29)-(2:29)"},"function":{"anno":[],"span":"(2:27)-(2:27)","tag":"value","value":{"contents":"c","tag":"variable"}},"span":"(2:27)-(2:30)","tag":"function_call"}],"span":"(2:19)-(2:31)"}],"span":"(2:19)-(2:31)"},"span":"(2:7)-(2:31)","tag":"equivalence"},"tag":"statement"}],"name":"subrtn","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:31)","statement":{"anno":[],"groups":{"anno":[],"list":[{"anno":[],"list":[{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":"a","tag":"variable"}},{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"expr":{"contents":{"anno":[],"span":"(2:24)-(2:24)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"tag":"expr"},"name":null,"span":"(2:24)-(2:24)"}],"span":"(2:24)-(2:24)"},"function":{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":"b","tag":"variable"}},"span":"(2:22)-(2:25)","tag":"function_call"},{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"expr":{"contents":{"anno":[],"span":"(2:29)-(2:29)","tag":"value","value":{"contents":["2",null],"tag":"integer"}},"tag":"expr"},"name":null,"span":"(2:29)-(2:29)"}],"span":"(2:29)-(2:29)"},"function":{"anno":[],"span":"(2:27)-(2:27)","tag":"value","value":{"contents":"c","tag":"variable"}},"span":"(2:27)-(2:30)","tag":"function_call"}],"span":"(2:19)-(2:31)"}],"span":"(2:19)-(2:31)"},"span":"(2:7)-(2:31)","tag":"equivalence"},"tag":"statement"}],"name":"subrtn","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranEquivalenceStatement.
+	self assert: stmt startPos equals: 31.
+	self assert: stmt endPos equals: 55.
+
+	self assert: stmt variableGroups size equals: 1.
+
+	grp := stmt variableGroups first.
+	self assert: grp class equals: FASTFortranEquivalenceGroup.
+	self assert: grp startPos equals: 43.
+
+	self assert: grp variables size equals: 3.
+	self assert: grp variables first class equals: FASTFortranScalarVariable.
+	self assert: grp variables second class equals: FASTFortranArrayVariable.
+	self assert: grp variables third class equals: FASTFortranArrayVariable.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testEquivalenceStatementOneGroupScalarVariables [
+
+	| result stmt grp |
+	fortranCode := '      SUBROUTINE SUBRTN
+      EQUIVALENCE (a,b,c)
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testEquivalenceStatementOneGroupScalarVariables.FOR",
+    "program_units": [
+        {
+            "tag": "subroutine",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "18"
+                },
+                "name": "SUBRTN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "equivalence_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "parameters": [
+                        [
+                            {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "20"
+                                },
+                                "name": "A"
+                            },
+                            {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "22"
+                                },
+                                "name": "B"
+                            },
+                            {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "24"
+                                },
+                                "name": "C"
+                            }
+                        ]
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:25)","statement":{"anno":[],"groups":{"anno":[],"list":[{"anno":[],"list":[{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":"a","tag":"variable"}},{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":"b","tag":"variable"}},{"anno":[],"span":"(2:24)-(2:24)","tag":"value","value":{"contents":"c","tag":"variable"}}],"span":"(2:19)-(2:25)"}],"span":"(2:19)-(2:25)"},"span":"(2:7)-(2:25)","tag":"equivalence"},"tag":"statement"}],"name":"subrtn","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:25)","statement":{"anno":[],"groups":{"anno":[],"list":[{"anno":[],"list":[{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":"a","tag":"variable"}},{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":"b","tag":"variable"}},{"anno":[],"span":"(2:24)-(2:24)","tag":"value","value":{"contents":"c","tag":"variable"}}],"span":"(2:19)-(2:25)"}],"span":"(2:19)-(2:25)"},"span":"(2:7)-(2:25)","tag":"equivalence"},"tag":"statement"}],"name":"subrtn","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranEquivalenceStatement.
+	self assert: stmt startPos equals: 31.
+	self assert: stmt endPos equals: 49.
+
+	self assert: stmt variableGroups size equals: 1.
+
+	grp := stmt variableGroups first.
+	self assert: grp class equals: FASTFortranEquivalenceGroup.
+	self assert: grp startPos equals: 43.
+
+	self assert: grp variables size equals: 3.
+	grp variables do: [ :var |
+		self assert: var class equals: FASTFortranScalarVariable.
+		#(44 46 48) includes: var startPos.
+		#('a' 'b' 'c') includes: var name
+		
+	]
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testEquivalenceStatementSeveralGroups [
+
+	| result stmt grp |
+	fortranCode := '      SUBROUTINE SUBRTN
+      EQUIVALENCE (a,b,c), (d,e)
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testEquivalenceStatementSeveralGroups.FOR",
+    "program_units": [
+        {
+            "tag": "subroutine",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "18"
+                },
+                "name": "SUBRTN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "equivalence_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "equivalence_parameters": [
+                        [
+                            {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "20"
+                                },
+                                "name": "A"
+                            },
+                            {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "22"
+                                },
+                                "name": "B"
+                            },
+                            {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "24"
+                                },
+                                "name": "C"
+                            }
+                        ],
+                        [
+                            {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "29"
+                                },
+                                "name": "D"
+                            },
+                            {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "31"
+                                },
+                                "name": "E"
+                            }
+                        ]
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:32)","statement":{"anno":[],"groups":{"anno":[],"list":[{"anno":[],"list":[{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":"a","tag":"variable"}},{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":"b","tag":"variable"}},{"anno":[],"span":"(2:24)-(2:24)","tag":"value","value":{"contents":"c","tag":"variable"}}],"span":"(2:19)-(2:25)"},{"anno":[],"list":[{"anno":[],"span":"(2:29)-(2:29)","tag":"value","value":{"contents":"d","tag":"variable"}},{"anno":[],"span":"(2:31)-(2:31)","tag":"value","value":{"contents":"e","tag":"variable"}}],"span":"(2:28)-(2:32)"}],"span":"(2:19)-(2:32)"},"span":"(2:7)-(2:32)","tag":"equivalence"},"tag":"statement"}],"name":"subrtn","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:32)","statement":{"anno":[],"groups":{"anno":[],"list":[{"anno":[],"list":[{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":"a","tag":"variable"}},{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":"b","tag":"variable"}},{"anno":[],"span":"(2:24)-(2:24)","tag":"value","value":{"contents":"c","tag":"variable"}}],"span":"(2:19)-(2:25)"},{"anno":[],"list":[{"anno":[],"span":"(2:29)-(2:29)","tag":"value","value":{"contents":"d","tag":"variable"}},{"anno":[],"span":"(2:31)-(2:31)","tag":"value","value":{"contents":"e","tag":"variable"}}],"span":"(2:28)-(2:32)"}],"span":"(2:19)-(2:32)"},"span":"(2:7)-(2:32)","tag":"equivalence"},"tag":"statement"}],"name":"subrtn","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranEquivalenceStatement.
+	self assert: stmt startPos equals: 31.
+	self assert: stmt endPos equals: 56.
+
+	self assert: stmt variableGroups size equals: 2.
+
+	grp := stmt variableGroups first.
+	self assert: grp class equals: FASTFortranEquivalenceGroup.
+	self assert: grp variables size equals: 3.
+	self assert: grp startPos equals: 43.
+
+	grp := stmt variableGroups second.
+	self assert: grp class equals: FASTFortranEquivalenceGroup.
+	self assert: grp variables size equals: 2.
+	self assert: grp startPos equals: 52.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testExit [
+<<<<<<< HEAD
+<<<<<<< HEAD
+"NOT FORTRAN-77"
+=======
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	| result stmt |
+	fortranCode := '      PROGRAM TESTALT
+       exit
+      END 
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := ''.
+	"result := self visitJsonCode.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:11)","statement":{"anno":[],"span":"(2:8)-(2:11)","tag":"exit","var":null},"tag":"statement"}],"name":"testalt","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	result := self visitJsonCode.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:11)","statement":{"anno":[],"span":"(2:8)-(2:11)","tag":"exit","var":null},"tag":"statement"}],"name":"testalt","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	result := self visitJsonCode.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranExitStatement.
+	self assert: stmt startPos equals: 30.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: stmt endPos equals: 33."
+=======
+	self assert: stmt endPos equals: 33.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: stmt endPos equals: 33.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testExternalStatement [
+
+	| result stmt |
+	fortranCode := '      program main
+      external mypnt
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testExternalStatement.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "external_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "proc_list": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "16"
+                            },
+                            "name": "MYPNT"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:20)","statement":{"anno":[],"span":"(2:7)-(2:20)","tag":"external","vars":{"anno":[],"list":[{"anno":[],"span":"(2:16)-(2:20)","tag":"value","value":{"contents":"mypnt","tag":"variable"}}],"span":"(2:16)-(2:20)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:20)","statement":{"anno":[],"span":"(2:7)-(2:20)","tag":"external","vars":{"anno":[],"list":[{"anno":[],"span":"(2:16)-(2:20)","tag":"value","value":{"contents":"mypnt","tag":"variable"}}],"span":"(2:16)-(2:20)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranExternalStatement.
+	self assert: stmt name equals: 'mypnt'.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 39.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testFormatStatement [
+
+	| result stmt |
+	fortranCode := '      PROGRAM MYPROG
+110   FORMAT( A8, 2X, I4, F8.2, F8.2 ) 
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testFormatStatement.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "label": "110",
+                    "tag": "format_statement",
+                    "specification": [
+                        {
+                            "tag": "format_specification",
+                            "repeat_factor": "",
+                            "descriptor": {
+                                "tag": "repeatable_edit_descriptor",
+                                "repeated_descriptors": [
+                                    "A8"
+                                ]
+                            },
+                            "slash": ""
+                        },
+                        {
+                            "tag": "format_specification",
+                            "repeat_factor": "",
+                            "descriptor": {
+                                "tag": "nonrepeatable_edit_descriptor",
+                                "descriptor": "2X"
+                            },
+                            "slash": ""
+                        },
+                        {
+                            "tag": "format_specification",
+                            "repeat_factor": "",
+                            "descriptor": {
+                                "tag": "repeatable_edit_descriptor",
+                                "repeated_descriptors": [
+                                    "I4"
+                                ]
+                            },
+                            "slash": ""
+                        },
+                        {
+                            "tag": "format_specification",
+                            "repeat_factor": "",
+                            "descriptor": {
+                                "tag": "repeatable_edit_descriptor",
+                                "repeated_descriptors": [
+                                    "F8.2"
+                                ]
+                            },
+                            "slash": ""
+                        },
+                        {
+                            "tag": "format_specification",
+                            "repeat_factor": "",
+                            "descriptor": {
+                                "tag": "repeatable_edit_descriptor",
+                                "repeated_descriptors": [
+                                    "F8.2"
+                                ]
+                            },
+                            "slash": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":{"anno":[],"span":"(2:1)-(2:3)","tag":"value","value":{"contents":["110",null],"tag":"integer"}},"span":"(2:1)-(2:38)","statement":{"anno":[],"format":"(a8,2x,i4,f8.2,f8.2)","span":"(2:7)-(2:38)","tag":"format"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":{"anno":[],"span":"(2:1)-(2:3)","tag":"value","value":{"contents":["110",null],"tag":"integer"}},"span":"(2:1)-(2:38)","statement":{"anno":[],"format":"(a8,2x,i4,f8.2,f8.2)","span":"(2:7)-(2:38)","tag":"format"},"tag":"statement"}],"name":"simplemain","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranFormatStatement.
+	self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 59.
+
+	self assert: stmt label equals: '110'.
+
+	self assert: stmt formatDescription equals: '(a8,2x,i4,f8.2,f8.2)'
+
+]
+
+{ #category : #'tests-programUnit' }
+SyntaxJsonToFASTTests >> testFunctionNoParameter [
+
+	| result fct |
+	fortranCode := '      integer function aFct()
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testFunctionNoParameter.FOR",
+    "program_units": [
+        {
+            "tag": "function",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "24"
+                },
+                "name": "AFCT"
+            },
+            "parameters": [],
+            "return_type": {
+                "tag": "type_reference",
+                "name": "INTEGER"
+            },
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "2",
+                "column": "9"
+            },
+            "statement_list": []
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[],"name":"afct","result":null,"span":"(1:7)-(2:9)","subprograms":null,"tag":"function","type":{"anno":[],"base_type":"integer","selector":null,"span":"(1:7)-(1:13)"}}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[],"name":"afct","result":null,"span":"(1:7)-(2:9)","subprograms":null,"tag":"function","type":{"anno":[],"base_type":"integer","selector":null,"span":"(1:7)-(1:13)"}}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result isNotEmpty.
+	fct := result first.
+
+	self assert: fct class equals: FASTFortranFunction.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: fct name primitiveValue equals: 'AFCT'.
+	self assert: fct parameters isEmpty.
+	self assert: fct statementBlock statements isEmpty.
+	"self assert: fct startPos equals: 7."
+
+	self assert: fct returnType class equals: FASTFortranIntegerType.
+	"self assert: fct returnType startPos equals: 7."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: fct name equals: 'afct'.
+	self assert: fct parameters isEmpty.
+	self assert: fct statementBlock statements isEmpty.
+	self assert: fct startPos equals: 7.
+
+	self assert: fct returnType class equals: FASTFortranIntegerType.
+	self assert: fct returnType startPos equals: 7.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testFunctionStatement [
+
+	| result stmt |
+	fortranCode := '      program main
+      add(x,y) = x + y
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testFunctionStatement.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "left": [
+                        {
+                            "tag": "array_element_name",
+                            "name": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "7"
+                                },
+                                "name": "ADD"
+                            },
+                            "qualifiers_list": [
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "11"
+                                    },
+                                    "name": "X"
+                                },
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "13"
+                                    },
+                                    "name": "Y"
+                                }
+                            ]
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "arithmetic_expression",
+                            "expression": {
+                                "tag": "binary_expression",
+                                "lhs": {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "18"
+                                    },
+                                    "name": "X"
+                                },
+                                "operator": "+",
+                                "rhs": {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "22"
+                                    },
+                                    "name": "Y"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:22)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"x","tag":"variable"}},{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"y","tag":"variable"}}],"span":"(2:11)-(2:13)"},"body":{"anno":[],"left":{"anno":[],"span":"(2:18)-(2:18)","tag":"value","value":{"contents":"x","tag":"variable"}},"op":{"tag":"addition"},"right":{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":"y","tag":"variable"}},"span":"(2:18)-(2:22)","tag":"binary"},"name":{"anno":[],"span":"(2:7)-(2:9)","tag":"value","value":{"contents":"add","tag":"variable"}},"span":"(2:7)-(2:22)","tag":"function"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:22)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:11)-(2:11)","tag":"value","value":{"contents":"x","tag":"variable"}},{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"y","tag":"variable"}}],"span":"(2:11)-(2:13)"},"body":{"anno":[],"left":{"anno":[],"span":"(2:18)-(2:18)","tag":"value","value":{"contents":"x","tag":"variable"}},"op":{"tag":"addition"},"right":{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":"y","tag":"variable"}},"span":"(2:18)-(2:22)","tag":"binary"},"name":{"anno":[],"span":"(2:7)-(2:9)","tag":"value","value":{"contents":"add","tag":"variable"}},"span":"(2:7)-(2:22)","tag":"function"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranFunctionStatement.
+	self assert: stmt name equals: 'add'.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 41.
+
+	self assert: stmt arguments size equals: 2.
+	stmt arguments do: [:arg |
+		self assert: arg class equals: FASTFortranScalarVariable ].
+	self assert: stmt expression class equals: FASTFortranBinaryExpression
+
+]
+
+{ #category : #'tests-programUnit' }
+SyntaxJsonToFASTTests >> testFunctionWithParameter [
+
+	| result fct param |
+	fortranCode := '
+      integer function aFct(i,j)
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testFunctionWithParameter.FOR",
+    "program_units": [
+        {
+            "tag": "function",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "2",
+                    "column": "24"
+                },
+                "name": "AFCT"
+            },
+            "parameters": [
+                {
+                    "tag": "symbolic_name",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "29"
+                    },
+                    "name": "I"
+                },
+                {
+                    "tag": "symbolic_name",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "31"
+                    },
+                    "name": "J"
+                }
+            ],
+            "return_type": {
+                "tag": "type_reference",
+                "name": "INTEGER"
+            },
+            "start_pos": {
+                "line": "2",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": []
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:29)-(2:29)","tag":"value","value":{"contents":"i","tag":"variable"}},{"anno":[],"span":"(2:31)-(2:31)","tag":"value","value":{"contents":"j","tag":"variable"}}],"span":"(2:29)-(2:31)"},"blocks":[],"name":"afct","result":null,"span":"(2:7)-(3:9)","subprograms":null,"tag":"function","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:29)-(2:29)","tag":"value","value":{"contents":"i","tag":"variable"}},{"anno":[],"span":"(2:31)-(2:31)","tag":"value","value":{"contents":"j","tag":"variable"}}],"span":"(2:29)-(2:31)"},"blocks":[],"name":"afct","result":null,"span":"(2:7)-(3:9)","subprograms":null,"tag":"function","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	result := self visitJsonCode.
+
+	self assert: result isNotEmpty.
+	fct := result first.
+
+	self assert: fct class equals: FASTFortranFunction.
+	self assert: fct parameters size equals: 2.
+
+	self flag: 'should be a FASTFortranParameter, not a FASTFortranVariableExpression ?'.
+	param := fct parameters first.
+	self assert: param class equals: FASTFortranScalarVariable.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: param name equals: 'I'.
+	"self assert: param startPos equals: 30."
+
+	param := fct parameters second.
+	self assert: param class equals: FASTFortranScalarVariable.
+	self assert: param name equals: 'J'.
+	"self assert: param startPos equals: 32."
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: param name equals: 'i'.
+	self assert: param startPos equals: 30.
+
+	param := fct parameters second.
+	self assert: param class equals: FASTFortranScalarVariable.
+	self assert: param name equals: 'j'.
+	self assert: param startPos equals: 32.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+]
+
+{ #category : #'tests-programUnit' }
+SyntaxJsonToFASTTests >> testFunctionWithStatement [
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+"syntax does not have return expression"
+
+=======
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	| result fct |
+	fortranCode := '      integer function aFct()
+      return 1
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testFunctionWithStatement.FOR",
+    "program_units": [
+        {
+            "tag": "function",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "24"
+                },
+                "name": "AFCT"
+            },
+            "parameters": [],
+            "return_type": {
+                "tag": "type_reference",
+                "name": "INTEGER"
+            },
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "return_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:14)","statement":{"anno":[],"span":"(2:7)-(2:14)","tag":"return","target":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"contents":["1",null],"tag":"integer"}}},"tag":"statement"}],"name":"afct","result":null,"span":"(1:7)-(3:9)","subprograms":null,"tag":"function","type":{"anno":[],"base_type":"integer","selector":null,"span":"(1:7)-(1:13)"}}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:14)","statement":{"anno":[],"span":"(2:7)-(2:14)","tag":"return","target":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"contents":["1",null],"tag":"integer"}}},"tag":"statement"}],"name":"afct","result":null,"span":"(1:7)-(3:9)","subprograms":null,"tag":"function","type":{"anno":[],"base_type":"integer","selector":null,"span":"(1:7)-(1:13)"}}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result isNotEmpty.
+	fct := result first.
+
+	self assert: fct class equals: FASTFortranFunction.
+	self assert: fct name equals: 'afct'.
+	self assert: fct parameters isEmpty.
+	self assert: fct startPos equals: 7.
+
+	self assert: fct statementBlock statements size equals: 1.
+	self assert: fct statementBlock startPos equals: 37.
+	self assert: fct statementBlock endPos equals: 44.
+
+	self assert: fct returnType class equals: FASTFortranIntegerType.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testGoto [
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+"Syntax: need to rename goto type to something like goto_type"
+
+=======
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	| result stmt |
+	fortranCode := '      PROGRAM TESTALT
+       GOTO 100
+      END 
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testGoto.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "TESTALT"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "goto_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "type": "unconditional",
+                    "labels": [
+                        "100"
+                    ],
+                    "var": []
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:15)","statement":{"anno":[],"span":"(2:8)-(2:15)","tag":"goto","target":{"anno":[],"span":"(2:13)-(2:15)","tag":"value","value":{"contents":["100",null],"tag":"integer"}}},"tag":"statement"}],"name":"testalt","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:15)","statement":{"anno":[],"span":"(2:8)-(2:15)","tag":"goto","target":{"anno":[],"span":"(2:13)-(2:15)","tag":"value","value":{"contents":["100",null],"tag":"integer"}}},"tag":"statement"}],"name":"testalt","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranGoToStatement.
+	self assert: stmt startPos equals: 30.
+	self assert: stmt endPos equals: 37.
+
+
+	self assert: stmt labelReferences size equals: 1.
+	self assert: stmt labelReferences anyOne label equals: '100'.
+	self assert: stmt labelReferences anyOne startPos equals: 35.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testGotoComputed [
+
+	| result stmt |
+	fortranCode := '      PROGRAM TESTALT
+       GOTO (100,200,300,400) var
+      END 
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testGotoComputed.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "TESTALT"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "goto_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "type": "computed",
+                    "labels": [
+                        "100",
+                        "200",
+                        "300",
+                        "400"
+                    ],
+                    "var": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "31"
+                            },
+                            "name": "VAR"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:33)","statement":{"anno":[],"labels":{"anno":[],"list":[{"anno":[],"span":"(2:14)-(2:16)","tag":"value","value":{"contents":["100",null],"tag":"integer"}},{"anno":[],"span":"(2:18)-(2:20)","tag":"value","value":{"contents":["200",null],"tag":"integer"}},{"anno":[],"span":"(2:22)-(2:24)","tag":"value","value":{"contents":["300",null],"tag":"integer"}},{"anno":[],"span":"(2:26)-(2:28)","tag":"value","value":{"contents":["400",null],"tag":"integer"}}],"span":"(2:13)-(2:29)"},"span":"(2:8)-(2:33)","tag":"goto_computed","target":{"anno":[],"span":"(2:31)-(2:33)","tag":"value","value":{"contents":"var","tag":"variable"}}},"tag":"statement"}],"name":"testalt","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:33)","statement":{"anno":[],"labels":{"anno":[],"list":[{"anno":[],"span":"(2:14)-(2:16)","tag":"value","value":{"contents":["100",null],"tag":"integer"}},{"anno":[],"span":"(2:18)-(2:20)","tag":"value","value":{"contents":["200",null],"tag":"integer"}},{"anno":[],"span":"(2:22)-(2:24)","tag":"value","value":{"contents":["300",null],"tag":"integer"}},{"anno":[],"span":"(2:26)-(2:28)","tag":"value","value":{"contents":["400",null],"tag":"integer"}}],"span":"(2:13)-(2:29)"},"span":"(2:8)-(2:33)","tag":"goto_computed","target":{"anno":[],"span":"(2:31)-(2:33)","tag":"value","value":{"contents":"var","tag":"variable"}}},"tag":"statement"}],"name":"testalt","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranGoToComputedStatement.
+	self assert: stmt startPos equals: 30.
+	self assert: stmt endPos equals: 55.
+
+
+	self assert: stmt labelReferences size equals: 4.
+	stmt labelReferences do: [ :label |
+		self assert: label class equals: FASTFortranLabelReference.
+		self assert: (label label endsWith: '00').
+		self assert: (#(36 40 44 48) includes: label startPos)
+	].
+
+	self assert: stmt selectorExpression class equals: FASTFortranScalarVariable.
+	self assert: stmt selectorExpression name equals: 'var'.
+	self assert: stmt selectorExpression startPos equals: 53.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testIfArithmetic [
+
+	| result conditional |
+	fortranCode := '      PROGRAM MYPROG
+         IF ( A ) 10, 20, 30
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testIfArithmetic.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "arithmetic_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "10"
+                    },
+                    "expression": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "15"
+                            },
+                            "name": "A"
+                        }
+                    ],
+                    "s1": "10",
+                    "s2": "20",
+                    "s3": "30"
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:10)-(2:28)","statement":{"anno":[],"equal":{"anno":[],"span":"(2:23)-(2:24)","tag":"value","value":{"contents":["20",null],"tag":"integer"}},"expression":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":"a","tag":"variable"}},"greater":{"anno":[],"span":"(2:27)-(2:28)","tag":"value","value":{"contents":["30",null],"tag":"integer"}},"less":{"anno":[],"span":"(2:19)-(2:20)","tag":"value","value":{"contents":["10",null],"tag":"integer"}},"span":"(2:10)-(2:28)","tag":"if_arithmetic"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:10)-(2:28)","statement":{"anno":[],"equal":{"anno":[],"span":"(2:23)-(2:24)","tag":"value","value":{"contents":["20",null],"tag":"integer"}},"expression":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":"a","tag":"variable"}},"greater":{"anno":[],"span":"(2:27)-(2:28)","tag":"value","value":{"contents":["30",null],"tag":"integer"}},"less":{"anno":[],"span":"(2:19)-(2:20)","tag":"value","value":{"contents":["10",null],"tag":"integer"}},"span":"(2:10)-(2:28)","tag":"if_arithmetic"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	conditional := result first statementBlock statements first.
+	self assert: conditional class equals: FASTFortranIfArithmeticStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: conditional startPos equals: 31.
+	self assert: conditional endPos equals: 49."
+
+	self assert: conditional condition class equals: FASTFortranScalarVariable.
+	self assert: conditional condition name equals: 'A'.
+	"self assert: conditional condition startPos equals: 36."
+
+	self assert: conditional lessLabel class equals: FASTFortranLabelReference.
+	self assert: conditional lessLabel label equals: '10'.
+	"self assert: conditional lessLabel startPos equals: 40."
+
+	self assert: conditional equalLabel class equals: FASTFortranLabelReference.
+	self assert: conditional equalLabel label equals: '20'.
+	"self assert: conditional equalLabel startPos equals: 44."
+
+	self assert: conditional greaterLabel class equals: FASTFortranLabelReference.
+	self assert: conditional greaterLabel label equals: '30'.
+	"self assert: conditional greaterLabel startPos equals: 48"
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: conditional startPos equals: 31.
+	self assert: conditional endPos equals: 49.
+
+	self assert: conditional condition class equals: FASTFortranScalarVariable.
+	self assert: conditional condition name equals: 'a'.
+	self assert: conditional condition startPos equals: 36.
+
+	self assert: conditional lessLabel class equals: FASTFortranLabelReference.
+	self assert: conditional lessLabel label equals: '10'.
+	self assert: conditional lessLabel startPos equals: 40.
+
+	self assert: conditional equalLabel class equals: FASTFortranLabelReference.
+	self assert: conditional equalLabel label equals: '20'.
+	self assert: conditional equalLabel startPos equals: 44.
+
+	self assert: conditional greaterLabel class equals: FASTFortranLabelReference.
+	self assert: conditional greaterLabel label equals: '30'.
+	self assert: conditional greaterLabel startPos equals: 48
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testIfElseIf [
+	"note: starting and ending position of else block are approximate"
+
+	| result conditional |
+	fortranCode := '      PROGRAM MYPROG
+         IF ( A ) THEN
+          a = 1
+         else if ( b ) then
+          b = 1
+         else if ( c ) then
+          c = 1
+         ELSE
+          d = 1
+         END IF
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testIfElseIf.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "11",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "block_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "10"
+                    },
+                    "expression": {
+                        "tag": "symbolic_name",
+                        "start_pos": {
+                            "line": "2",
+                            "column": "15"
+                        },
+                        "name": "A"
+                    },
+                    "then_statements": [
+                        {
+                            "tag": "assignment_statement",
+                            "start_pos": {
+                                "line": "3",
+                                "column": "11"
+                            },
+                            "left": [
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "3",
+                                        "column": "11"
+                                    },
+                                    "name": "A"
+                                }
+                            ],
+                            "right": [
+                                {
+                                    "tag": "arithmetic_expression",
+                                    "expression": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "3",
+                                            "column": "15"
+                                        },
+                                        "value": "1"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "else_block": {
+                        "tag": "if_else_block",
+                        "label": "",
+                        "expression": {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "4",
+                                "column": "20"
+                            },
+                            "name": "B"
+                        },
+                        "then_statements": [
+                            {
+                                "tag": "assignment_statement",
+                                "start_pos": {
+                                    "line": "5",
+                                    "column": "11"
+                                },
+                                "left": [
+                                    {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "5",
+                                            "column": "11"
+                                        },
+                                        "name": "B"
+                                    }
+                                ],
+                                "right": [
+                                    {
+                                        "tag": "arithmetic_expression",
+                                        "expression": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "5",
+                                                "column": "15"
+                                            },
+                                            "value": "1"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "else_block": {
+                            "tag": "if_else_block",
+                            "label": "",
+                            "expression": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "6",
+                                    "column": "20"
+                                },
+                                "name": "C"
+                            },
+                            "then_statements": [
+                                {
+                                    "tag": "assignment_statement",
+                                    "start_pos": {
+                                        "line": "7",
+                                        "column": "11"
+                                    },
+                                    "left": [
+                                        {
+                                            "tag": "symbolic_name",
+                                            "start_pos": {
+                                                "line": "7",
+                                                "column": "11"
+                                            },
+                                            "name": "C"
+                                        }
+                                    ],
+                                    "right": [
+                                        {
+                                            "tag": "arithmetic_expression",
+                                            "expression": {
+                                                "tag": "unsigned_int_constant",
+                                                "start_pos": {
+                                                    "line": "7",
+                                                    "column": "15"
+                                                },
+                                                "value": "1"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ],
+                            "else_block": {
+                                "tag": "else_statement",
+                                "else_label": "",
+                                "else_statements": [
+                                    {
+                                        "tag": "assignment_statement",
+                                        "start_pos": {
+                                            "line": "9",
+                                            "column": "11"
+                                        },
+                                        "left": [
+                                            {
+                                                "tag": "symbolic_name",
+                                                "start_pos": {
+                                                    "line": "9",
+                                                    "column": "11"
+                                                },
+                                                "name": "D"
+                                            }
+                                        ],
+                                        "right": [
+                                            {
+                                                "tag": "arithmetic_expression",
+                                                "expression": {
+                                                    "tag": "unsigned_int_constant",
+                                                    "start_pos": {
+                                                        "line": "9",
+                                                        "column": "15"
+                                                    },
+                                                    "value": "1"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "end_if": {
+                                    "label": ""
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
+'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(9:11)-(9:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(9:15)-(9:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(9:11)-(9:15)","tag":"assign_expression","target":{"anno":[],"span":"(9:11)-(9:11)","tag":"value","value":{"contents":"d","tag":"variable"}}},"tag":"statement"}],"conditions":[[{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":"a","tag":"variable"}},[{"anno":[],"label":null,"span":"(3:11)-(3:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(3:15)-(3:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(3:11)-(3:15)","tag":"assign_expression","target":{"anno":[],"span":"(3:11)-(3:11)","tag":"value","value":{"contents":"a","tag":"variable"}}},"tag":"statement"}]],[{"anno":[],"span":"(4:20)-(4:20)","tag":"value","value":{"contents":"b","tag":"variable"}},[{"anno":[],"label":null,"span":"(5:11)-(5:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(5:15)-(5:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(5:11)-(5:15)","tag":"assign_expression","target":{"anno":[],"span":"(5:11)-(5:11)","tag":"value","value":{"contents":"b","tag":"variable"}}},"tag":"statement"}]],[{"anno":[],"span":"(6:20)-(6:20)","tag":"value","value":{"contents":"c","tag":"variable"}},[{"anno":[],"label":null,"span":"(7:11)-(7:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(7:15)-(7:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(7:11)-(7:15)","tag":"assign_expression","target":{"anno":[],"span":"(7:11)-(7:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}]]],"end_label":null,"label":null,"name":null,"span":"(2:10)-(10:15)","tag":"if"}],"name":"myprog","span":"(1:7)-(11:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(9:11)-(9:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(9:15)-(9:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(9:11)-(9:15)","tag":"assign_expression","target":{"anno":[],"span":"(9:11)-(9:11)","tag":"value","value":{"contents":"d","tag":"variable"}}},"tag":"statement"}],"conditions":[[{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":"a","tag":"variable"}},[{"anno":[],"label":null,"span":"(3:11)-(3:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(3:15)-(3:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(3:11)-(3:15)","tag":"assign_expression","target":{"anno":[],"span":"(3:11)-(3:11)","tag":"value","value":{"contents":"a","tag":"variable"}}},"tag":"statement"}]],[{"anno":[],"span":"(4:20)-(4:20)","tag":"value","value":{"contents":"b","tag":"variable"}},[{"anno":[],"label":null,"span":"(5:11)-(5:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(5:15)-(5:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(5:11)-(5:15)","tag":"assign_expression","target":{"anno":[],"span":"(5:11)-(5:11)","tag":"value","value":{"contents":"b","tag":"variable"}}},"tag":"statement"}]],[{"anno":[],"span":"(6:20)-(6:20)","tag":"value","value":{"contents":"c","tag":"variable"}},[{"anno":[],"label":null,"span":"(7:11)-(7:15)","statement":{"anno":[],"expression":{"anno":[],"span":"(7:15)-(7:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(7:11)-(7:15)","tag":"assign_expression","target":{"anno":[],"span":"(7:11)-(7:11)","tag":"value","value":{"contents":"c","tag":"variable"}}},"tag":"statement"}]]],"end_label":null,"label":null,"name":null,"span":"(2:10)-(10:15)","tag":"if"}],"name":"myprog","span":"(1:7)-(11:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1. .
+
+	conditional := result first statementBlock statements first.
+	self assert: conditional class equals: FASTFortranIfBlockStatement.
+	self assert: conditional thenStatementBlock statements size equals: 1.
+	self assert: conditional elseStatementBlock statements size equals: 1.
+	self assert: conditional thenStatementBlock startPos equals: 55.
+	self assert: conditional elseStatementBlock startPos equals: 77.
+
+	conditional := conditional elseStatementBlock statements first.
+	self assert: conditional class equals: FASTFortranIfBlockStatement.
+	self assert: conditional thenStatementBlock statements size equals: 1.
+	self assert: conditional elseStatementBlock statements size equals: 1.
+	self assert: conditional thenStatementBlock startPos equals: 99.
+	self assert: conditional elseStatementBlock startPos equals: 121.
+
+	conditional := conditional elseStatementBlock statements first.
+	self assert: conditional class equals: FASTFortranIfBlockStatement.
+	self assert: conditional thenStatementBlock statements size equals: 1.
+	self assert: conditional elseStatementBlock statements size equals: 1.
+	self assert: conditional thenStatementBlock startPos equals: 143.
+	self assert: conditional elseStatementBlock startPos equals: 173.
+	
+	conditional := conditional elseStatementBlock statements first.
+	self assert: conditional class equals: FASTFortranAssignmentStatement.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testIfElseWithComment [
+
+	| result conditional |
+	
+	fortranCode := '      PROGRAM MYPROG
+       IF ( A ) THEN 
+       ELSE
+C comment in else part
+       END IF
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {
+        "4": "C comment in else part\n"
+    },
+    "file": "test/pharo/testIfElseWithComment.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "6",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "block_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "expression": {
+                        "tag": "symbolic_name",
+                        "start_pos": {
+                            "line": "2",
+                            "column": "13"
+                        },
+                        "name": "A"
+                    },
+                    "then_statements": [],
+                    "else_block": {
+                        "tag": "else_statement",
+                        "else_label": "",
+                        "else_statements": [],
+                        "end_if": {
+                            "label": ""
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":[{"anno":[],"comment":" comment in else part","span":"(4:1)-(4:22)","tag":"comment"}],"conditions":[[{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"a","tag":"variable"}},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(5:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(6:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":[{"anno":[],"comment":" comment in else part","span":"(4:1)-(4:22)","tag":"comment"}],"conditions":[[{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"a","tag":"variable"}},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(5:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(6:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	conditional := result first statementBlock statements first.
+	self assert: conditional class equals: FASTFortranIfBlockStatement.
+	self assert: conditional thenStatementBlock statements isEmpty.
+	self assert: conditional elseStatementBlock statements isEmpty.
+	self assert: conditional elseStatementBlock comments size equals: 1.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testIfElseWithStatement [
+
+	| result conditional |
+	
+	fortranCode := '      PROGRAM MYPROG
+       IF ( A ) THEN 
+       ELSE
+        I = 1 
+       END IF
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testIfElseWithStatement.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "6",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "block_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "expression": {
+                        "tag": "symbolic_name",
+                        "start_pos": {
+                            "line": "2",
+                            "column": "13"
+                        },
+                        "name": "A"
+                    },
+                    "then_statements": [],
+                    "else_block": {
+                        "tag": "else_statement",
+                        "else_label": "",
+                        "else_statements": [
+                            {
+                                "tag": "assignment_statement",
+                                "start_pos": {
+                                    "line": "4",
+                                    "column": "9"
+                                },
+                                "left": [
+                                    {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "4",
+                                            "column": "9"
+                                        },
+                                        "name": "I"
+                                    }
+                                ],
+                                "right": [
+                                    {
+                                        "tag": "arithmetic_expression",
+                                        "expression": {
+                                            "tag": "unsigned_int_constant",
+                                            "start_pos": {
+                                                "line": "4",
+                                                "column": "13"
+                                            },
+                                            "value": "1"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "end_if": {
+                            "label": ""
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(4:9)-(4:13)","statement":{"anno":[],"expression":{"anno":[],"span":"(4:13)-(4:13)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(4:9)-(4:13)","tag":"assign_expression","target":{"anno":[],"span":"(4:9)-(4:9)","tag":"value","value":{"contents":"i","tag":"variable"}}},"tag":"statement"}],"conditions":[[{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"a","tag":"variable"}},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(5:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(6:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(4:9)-(4:13)","statement":{"anno":[],"expression":{"anno":[],"span":"(4:13)-(4:13)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(4:9)-(4:13)","tag":"assign_expression","target":{"anno":[],"span":"(4:9)-(4:9)","tag":"value","value":{"contents":"i","tag":"variable"}}},"tag":"statement"}],"conditions":[[{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"a","tag":"variable"}},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(5:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(6:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	conditional := result first statementBlock statements first.
+	self assert: conditional class equals: FASTFortranIfBlockStatement.
+	self assert: conditional thenStatementBlock statements size equals: 0.
+	self assert: conditional elseStatementBlock statements size equals: 1.
+	self assert: conditional elseStatementBlock statements first class equals: FASTFortranAssignmentStatement.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testIfEmpty [
+
+	| result conditional |
+	fortranCode := '      PROGRAM MYPROG
+<<<<<<< HEAD
+<<<<<<< HEAD
+       IF ( A(1) ) THEN
+       END IF
+      END
+'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testIfEmpty.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "block_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "expression": {
+                        "tag": "symbolic_name",
+                        "start_pos": {
+                            "line": "2",
+                            "column": "13"
+                        },
+                        "name": "A"
+                    },
+                    "then_statements": [],
+                    "else_block": {
+                        "else_statements": [],
+                        "end_if": {
+                            "label": ""
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+       IF ( A ) THEN
+       END IF
+      END
+'.
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"a","tag":"variable"}},[]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(3:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+	
+	conditional := result first statementBlock statements first.
+	self assert: conditional class equals: FASTFortranIfBlockStatement.
+	self assert: conditional condition class equals: FASTFortranScalarVariable.
+	self assert: conditional condition name equals: 'a'.
+	self assert: conditional thenStatementBlock statements size equals: 0.
+	self assert: conditional elseStatementBlock equals: nil.
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+"	self assert: conditional startPos equals: 29.
+	self assert: conditional endPos equals: 55."
+=======
+	self assert: conditional startPos equals: 29.
+	self assert: conditional endPos equals: 55.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: conditional startPos equals: 29.
+	self assert: conditional endPos equals: 55.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testIfThenWithComment [
+
+	| result conditional |
+	fortranCode := '      PROGRAM MYPROG
+       IF ( A ) THEN
+C comment in then part
+       END IF
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {
+        "3": "C comment in then part\n"
+    },
+    "file": "test/pharo/testIfThenWithComment.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "5",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "block_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "expression": {
+                        "tag": "symbolic_name",
+                        "start_pos": {
+                            "line": "2",
+                            "column": "13"
+                        },
+                        "name": "A"
+                    },
+                    "then_statements": [],
+                    "else_block": {
+                        "else_statements": [],
+                        "end_if": {
+                            "label": ""
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"a","tag":"variable"}},[{"anno":[],"comment":" comment in then part","span":"(3:1)-(3:22)","tag":"comment"}]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(4:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(5:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"a","tag":"variable"}},[{"anno":[],"comment":" comment in then part","span":"(3:1)-(3:22)","tag":"comment"}]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(4:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(5:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	conditional := result first statementBlock statements first.
+	self assert: conditional class equals: FASTFortranIfBlockStatement.
+	self assert: conditional thenStatementBlock statements isEmpty.
+	self assert: conditional thenStatementBlock comments size equals: 1.
+	self assert: conditional thenStatementBlock startPos equals: 43.
+	self assert: conditional thenStatementBlock endPos equals: 64.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testIfThenWithStatement [
+
+	| result conditional |
+	fortranCode := '      PROGRAM MYPROG
+       IF ( A ) THEN
+        I = 1
+       END IF
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testIfThenWithStatement.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "5",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "block_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "expression": {
+                        "tag": "symbolic_name",
+                        "start_pos": {
+                            "line": "2",
+                            "column": "13"
+                        },
+                        "name": "A"
+                    },
+                    "then_statements": [
+                        {
+                            "tag": "assignment_statement",
+                            "start_pos": {
+                                "line": "3",
+                                "column": "9"
+                            },
+                            "left": [
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "3",
+                                        "column": "9"
+                                    },
+                                    "name": "I"
+                                }
+                            ],
+                            "right": [
+                                {
+                                    "tag": "arithmetic_expression",
+                                    "expression": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "3",
+                                            "column": "13"
+                                        },
+                                        "value": "1"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "else_block": {
+                        "else_statements": [],
+                        "end_if": {
+                            "label": ""
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"a","tag":"variable"}},[{"anno":[],"label":null,"span":"(3:9)-(3:13)","statement":{"anno":[],"expression":{"anno":[],"span":"(3:13)-(3:13)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(3:9)-(3:13)","tag":"assign_expression","target":{"anno":[],"span":"(3:9)-(3:9)","tag":"value","value":{"contents":"i","tag":"variable"}}},"tag":"statement"}]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(4:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(5:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"a","tag":"variable"}},[{"anno":[],"label":null,"span":"(3:9)-(3:13)","statement":{"anno":[],"expression":{"anno":[],"span":"(3:13)-(3:13)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(3:9)-(3:13)","tag":"assign_expression","target":{"anno":[],"span":"(3:9)-(3:9)","tag":"value","value":{"contents":"i","tag":"variable"}}},"tag":"statement"}]]],"end_label":null,"label":null,"name":null,"span":"(2:8)-(4:13)","tag":"if"}],"name":"myprog","span":"(1:7)-(5:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	conditional := result first statementBlock statements first.
+	self assert: conditional class equals: FASTFortranIfBlockStatement.
+	self assert: conditional thenStatementBlock class equals: FASTFortranStatementBlock.
+	self assert: conditional thenStatementBlock statements size equals: 1.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: conditional thenStatementBlock startPos equals: 51.
+	self assert: conditional thenStatementBlock endPos equals: 55."
+=======
+	self assert: conditional thenStatementBlock startPos equals: 51.
+	self assert: conditional thenStatementBlock endPos equals: 55.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: conditional thenStatementBlock startPos equals: 51.
+	self assert: conditional thenStatementBlock endPos equals: 55.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testIfThenWithTwoStatements [
+
+	| result conditional thenStatements|
+	fortranCode := '      PROGRAM MYPROG
+      if (iur .eq. 0) then 
+         write(*,*) '' user'',name,'' does not exist''
+         return
+      end if 
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testIfThenWithTwoStatements.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "6",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "block_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "expression": {
+                        "tag": "logical_expression",
+                        "expression": {
+                            "tag": "logical_factor",
+                            "negated": "false",
+                            "expression": {
+                                "tag": "logical_primary",
+                                "expression": {
+                                    "tag": "binary_expression",
+                                    "lhs": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "11"
+                                        },
+                                        "name": "IUR"
+                                    },
+                                    "operator": ".EQ.",
+                                    "expression": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "20"
+                                        },
+                                        "value": "0"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "then_statements": [
+                        {
+                            "tag": "write_statement",
+                            "start_pos": {
+                                "line": "3",
+                                "column": "10"
+                            },
+                            "control_info_list": [
+                                {
+                                    "name": "UNIT",
+                                    "parameter": {
+                                        "asterisk": "*"
+                                    }
+                                },
+                                {
+                                    "name": "FMT",
+                                    "parameter": {
+                                        "asterisk": "*"
+                                    }
+                                }
+                            ],
+                            "io_list": [
+                                {
+                                    "tag": "character_expression",
+                                    "expression": {
+                                        "tag": "character_constant",
+                                        "start_pos": {
+                                            "line": "3",
+                                            "column": "21"
+                                        },
+                                        "value": "user "
+                                    }
+                                },
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "3",
+                                        "column": "29"
+                                    },
+                                    "name": "NAME"
+                                },
+                                {
+                                    "tag": "character_expression",
+                                    "expression": {
+                                        "tag": "character_constant",
+                                        "start_pos": {
+                                            "line": "3",
+                                            "column": "34"
+                                        },
+                                        "value": " does not exist"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "tag": "return_statement",
+                            "start_pos": {
+                                "line": "4",
+                                "column": "10"
+                            }
+                        }
+                    ],
+                    "else_block": {
+                        "else_statements": [],
+                        "end_if": {
+                            "label": ""
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:11)-(2:13)","tag":"value","value":{"contents":"iur","tag":"variable"}},"op":{"tag":"eq"},"right":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["0",null],"tag":"integer"}},"span":"(2:11)-(2:20)","tag":"binary"},[{"anno":[],"label":null,"span":"(3:10)-(3:50)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(3:21)-(3:27)","tag":"value","value":{"contents":" user","tag":"string"}},{"anno":[],"span":"(3:29)-(3:32)","tag":"value","value":{"contents":"name","tag":"variable"}},{"anno":[],"span":"(3:34)-(3:50)","tag":"value","value":{"contents":" does not exist","tag":"string"}}],"span":"(3:21)-(3:50)"},"format":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(3:16)-(3:16)","tag":"value","value":{"tag":"star"}},"name":null,"span":"(3:16)-(3:16)"},{"anno":[],"expr":{"anno":[],"span":"(3:18)-(3:18)","tag":"value","value":{"tag":"star"}},"name":null,"span":"(3:18)-(3:18)"}],"span":"(3:15)-(3:19)"},"span":"(3:10)-(3:50)","tag":"write"},"tag":"statement"},{"anno":[],"label":null,"span":"(4:10)-(4:15)","statement":{"anno":[],"span":"(4:10)-(4:15)","tag":"return","target":null},"tag":"statement"}]]],"end_label":null,"label":null,"name":null,"span":"(2:7)-(5:12)","tag":"if"}],"name":"myprog","span":"(1:7)-(6:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"blocks":null,"conditions":[[{"anno":[],"left":{"anno":[],"span":"(2:11)-(2:13)","tag":"value","value":{"contents":"iur","tag":"variable"}},"op":{"tag":"eq"},"right":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["0",null],"tag":"integer"}},"span":"(2:11)-(2:20)","tag":"binary"},[{"anno":[],"label":null,"span":"(3:10)-(3:50)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(3:21)-(3:27)","tag":"value","value":{"contents":" user","tag":"string"}},{"anno":[],"span":"(3:29)-(3:32)","tag":"value","value":{"contents":"name","tag":"variable"}},{"anno":[],"span":"(3:34)-(3:50)","tag":"value","value":{"contents":" does not exist","tag":"string"}}],"span":"(3:21)-(3:50)"},"format":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(3:16)-(3:16)","tag":"value","value":{"tag":"star"}},"name":null,"span":"(3:16)-(3:16)"},{"anno":[],"expr":{"anno":[],"span":"(3:18)-(3:18)","tag":"value","value":{"tag":"star"}},"name":null,"span":"(3:18)-(3:18)"}],"span":"(3:15)-(3:19)"},"span":"(3:10)-(3:50)","tag":"write"},"tag":"statement"},{"anno":[],"label":null,"span":"(4:10)-(4:15)","statement":{"anno":[],"span":"(4:10)-(4:15)","tag":"return","target":null},"tag":"statement"}]]],"end_label":null,"label":null,"name":null,"span":"(2:7)-(5:12)","tag":"if"}],"name":"myprog","span":"(1:7)-(6:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	conditional := result first statementBlock statements first.
+	self assert: conditional class equals: FASTFortranIfBlockStatement.
+	
+	thenStatements := conditional thenStatementBlock statements.
+	self assert: thenStatements size equals: 2.
+	self assert: thenStatements first class equals: FASTFortranWriteStatement.
+	self assert: thenStatements second class equals: FASTFortranReturnStatement
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testImplicitNoneStatement [
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+"Syntax: not supported now"
+
+=======
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	| result stmt |
+	fortranCode := '      PROGRAM MYPROG
+       implicit none
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := ''.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:20)","statement":{"anno":[],"items":null,"span":"(2:8)-(2:20)","tag":"implicit"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:20)","statement":{"anno":[],"items":null,"span":"(2:8)-(2:20)","tag":"implicit"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranImplicitStatement.
+	self assert: stmt startPos equals: 29.
+	self assert: stmt endPos equals: 41.
+
+	self assert: stmt typingRules isEmpty
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testImplicitStatement [
+
+	| result stmt rule |
+	fortranCode := '      PROGRAM MYPROG
+       IMPLICIT LOGICAL (A-Z)
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testImplicitStatement.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "implicit_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "parameters": [
+                        {
+                            "type": {
+                                "tag": "type_reference",
+                                "name": "LOGICAL"
+                            },
+                            "elements": [
+                                {
+                                    "tag": "implicit_element",
+                                    "left": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "26"
+                                        },
+                                        "name": "A"
+                                    },
+                                    "right": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "28"
+                                        },
+                                        "name": "Z"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:29)","statement":{"anno":[],"items":{"anno":[],"list":[{"anno":[],"elements":{"anno":[],"list":[{"anno":[],"from":"a","span":"(2:26)-(2:28)","to":"z"}],"span":"(2:26)-(2:28)"},"span":"(2:17)-(2:29)","type":{"anno":[],"base_type":"logical","selector":null,"span":"(2:17)-(2:23)"}}],"span":"(2:17)-(2:29)"},"span":"(2:8)-(2:29)","tag":"implicit"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:29)","statement":{"anno":[],"items":{"anno":[],"list":[{"anno":[],"elements":{"anno":[],"list":[{"anno":[],"from":"a","span":"(2:26)-(2:28)","to":"z"}],"span":"(2:26)-(2:28)"},"span":"(2:17)-(2:29)","type":{"anno":[],"base_type":"logical","selector":null,"span":"(2:17)-(2:23)"}}],"span":"(2:17)-(2:29)"},"span":"(2:8)-(2:29)","tag":"implicit"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+
+	self assert: stmt class equals: FASTFortranImplicitStatement.
+	self assert: stmt startPos equals: 29.
+	self assert: stmt endPos equals: 50.
+
+	self assert: stmt typingRules size equals: 1.
+
+	rule := stmt typingRules anyOne.
+	self assert: rule type class equals: FASTFortranLogicalType.
+	
+	self assert: rule ranges size equals: 1.
+	self assert: rule ranges anyOne class equals: FASTFortranImplicitRange.
+	self assert: rule ranges anyOne from equals: 'a'.
+	self assert: rule ranges anyOne to   equals: 'z'.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testImplicitStatementCharacterSize [
+
+	| result stmt rule |
+	fortranCode := '      PROGRAM MYPROG
+       IMPLICIT CHARACTER*4 (C,S) 
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testImplicitStatementCharacterSize.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "implicit_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "parameters": [
+                        {
+                            "type": {
+                                "tag": "type_reference",
+                                "name": "CHARACTER",
+                                "len_specification": {
+                                    "tag": "nonzero_unsigned_int_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "27"
+                                    },
+                                    "value": "4"
+                                }
+                            },
+                            "elements": [
+                                {
+                                    "tag": "implicit_element",
+                                    "left": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "30"
+                                        },
+                                        "name": "C"
+                                    },
+                                    "right": {}
+                                },
+                                {
+                                    "tag": "implicit_element",
+                                    "left": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "32"
+                                        },
+                                        "name": "S"
+                                    },
+                                    "right": {}
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:33)","statement":{"anno":[],"items":{"anno":[],"list":[{"anno":[],"elements":{"anno":[],"list":[{"anno":[],"from":"c","span":"(2:30)-(2:30)","to":null},{"anno":[],"from":"s","span":"(2:32)-(2:32)","to":null}],"span":"(2:30)-(2:32)"},"span":"(2:17)-(2:33)","type":{"anno":[],"base_type":"character","selector":{"anno":[],"kind":null,"length":{"anno":[],"span":"(2:27)-(2:27)","tag":"value","value":{"contents":["4",null],"tag":"integer"}},"span":"(2:26)-(2:27)"},"span":"(2:17)-(2:27)"}}],"span":"(2:17)-(2:33)"},"span":"(2:8)-(2:33)","tag":"implicit"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:33)","statement":{"anno":[],"items":{"anno":[],"list":[{"anno":[],"elements":{"anno":[],"list":[{"anno":[],"from":"c","span":"(2:30)-(2:30)","to":null},{"anno":[],"from":"s","span":"(2:32)-(2:32)","to":null}],"span":"(2:30)-(2:32)"},"span":"(2:17)-(2:33)","type":{"anno":[],"base_type":"character","selector":{"anno":[],"kind":null,"length":{"anno":[],"span":"(2:27)-(2:27)","tag":"value","value":{"contents":["4",null],"tag":"integer"}},"span":"(2:26)-(2:27)"},"span":"(2:17)-(2:27)"}}],"span":"(2:17)-(2:33)"},"span":"(2:8)-(2:33)","tag":"implicit"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+
+	self assert: stmt class equals: FASTFortranImplicitStatement.
+	self assert: stmt startPos equals: 29.
+	self assert: stmt endPos equals: 54.
+
+	self assert: stmt typingRules size equals: 1.
+
+	rule := stmt typingRules anyOne.
+	self assert: rule type class equals: FASTFortranCharacterType.
+	self assert: rule type size class equals: FASTFortranIntegerLiteral.
+	self assert: rule type size primitiveValue equals: '4'.
+
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testImplicitStatementNoRange [
+
+	| result stmt rule |
+	fortranCode := '      PROGRAM MYPROG
+       IMPLICIT COMPLEX (U,V,W)
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testImplicitStatementNoRange.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "implicit_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "parameters": [
+                        {
+                            "type": {
+                                "tag": "type_reference",
+                                "name": "COMPLEX"
+                            },
+                            "elements": [
+                                {
+                                    "tag": "implicit_element",
+                                    "left": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "26"
+                                        },
+                                        "name": "U"
+                                    },
+                                    "right": {}
+                                },
+                                {
+                                    "tag": "implicit_element",
+                                    "left": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "28"
+                                        },
+                                        "name": "V"
+                                    },
+                                    "right": {}
+                                },
+                                {
+                                    "tag": "implicit_element",
+                                    "left": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "30"
+                                        },
+                                        "name": "W"
+                                    },
+                                    "right": {}
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:31)","statement":{"anno":[],"items":{"anno":[],"list":[{"anno":[],"elements":{"anno":[],"list":[{"anno":[],"from":"u","span":"(2:26)-(2:26)","to":null},{"anno":[],"from":"v","span":"(2:28)-(2:28)","to":null},{"anno":[],"from":"w","span":"(2:30)-(2:30)","to":null}],"span":"(2:26)-(2:30)"},"span":"(2:17)-(2:31)","type":{"anno":[],"base_type":"complex","selector":null,"span":"(2:17)-(2:23)"}}],"span":"(2:17)-(2:31)"},"span":"(2:8)-(2:31)","tag":"implicit"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:31)","statement":{"anno":[],"items":{"anno":[],"list":[{"anno":[],"elements":{"anno":[],"list":[{"anno":[],"from":"u","span":"(2:26)-(2:26)","to":null},{"anno":[],"from":"v","span":"(2:28)-(2:28)","to":null},{"anno":[],"from":"w","span":"(2:30)-(2:30)","to":null}],"span":"(2:26)-(2:30)"},"span":"(2:17)-(2:31)","type":{"anno":[],"base_type":"complex","selector":null,"span":"(2:17)-(2:23)"}}],"span":"(2:17)-(2:31)"},"span":"(2:8)-(2:31)","tag":"implicit"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+
+	self assert: stmt class equals: FASTFortranImplicitStatement.
+	self assert: stmt startPos equals: 29.
+	self assert: stmt endPos equals: 52.
+
+	self assert: stmt typingRules size equals: 1.
+
+	rule := stmt typingRules anyOne.
+	self assert: rule type class equals: FASTFortranComplexType.
+	
+	self assert: rule ranges size equals: 3.
+	rule ranges do: [ :range |
+		self assert: range to equals: nil.
+	]
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testImplicitStatementSeveralItems [
+
+	| result stmt |
+	fortranCode := '      PROGRAM MYPROG
+       IMPLICIT LOGICAL (l-N), INTEGER (C,S) 
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testImplicitStatementSeveralItems.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "implicit_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "parameters": [
+                        {
+                            "type": {
+                                "tag": "type_reference",
+                                "name": "LOGICAL"
+                            },
+                            "elements": [
+                                {
+                                    "tag": "implicit_element",
+                                    "left": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "26"
+                                        },
+                                        "name": "L"
+                                    },
+                                    "right": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "28"
+                                        },
+                                        "name": "N"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": {
+                                "tag": "type_reference",
+                                "name": "INTEGER"
+                            },
+                            "elements": [
+                                {
+                                    "tag": "implicit_element",
+                                    "left": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "41"
+                                        },
+                                        "name": "C"
+                                    },
+                                    "right": {}
+                                },
+                                {
+                                    "tag": "implicit_element",
+                                    "left": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "43"
+                                        },
+                                        "name": "S"
+                                    },
+                                    "right": {}
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:44)","statement":{"anno":[],"items":{"anno":[],"list":[{"anno":[],"elements":{"anno":[],"list":[{"anno":[],"from":"l","span":"(2:26)-(2:28)","to":"n"}],"span":"(2:26)-(2:28)"},"span":"(2:17)-(2:29)","type":{"anno":[],"base_type":"logical","selector":null,"span":"(2:17)-(2:23)"}},{"anno":[],"elements":{"anno":[],"list":[{"anno":[],"from":"c","span":"(2:41)-(2:41)","to":null},{"anno":[],"from":"s","span":"(2:43)-(2:43)","to":null}],"span":"(2:41)-(2:43)"},"span":"(2:32)-(2:44)","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:32)-(2:38)"}}],"span":"(2:17)-(2:44)"},"span":"(2:8)-(2:44)","tag":"implicit"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:44)","statement":{"anno":[],"items":{"anno":[],"list":[{"anno":[],"elements":{"anno":[],"list":[{"anno":[],"from":"l","span":"(2:26)-(2:28)","to":"n"}],"span":"(2:26)-(2:28)"},"span":"(2:17)-(2:29)","type":{"anno":[],"base_type":"logical","selector":null,"span":"(2:17)-(2:23)"}},{"anno":[],"elements":{"anno":[],"list":[{"anno":[],"from":"c","span":"(2:41)-(2:41)","to":null},{"anno":[],"from":"s","span":"(2:43)-(2:43)","to":null}],"span":"(2:41)-(2:43)"},"span":"(2:32)-(2:44)","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:32)-(2:38)"}}],"span":"(2:17)-(2:44)"},"span":"(2:8)-(2:44)","tag":"implicit"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+
+	self assert: stmt class equals: FASTFortranImplicitStatement.
+	self assert: stmt startPos equals: 29.
+	self assert: stmt endPos equals: 65.
+
+	self assert: stmt typingRules size equals: 2.
+
+	self assert: stmt typingRules first class equals: FASTFortranImplicitTypingRule.
+	self assert: stmt typingRules first type class equals: FASTFortranLogicalType.
+	self assert: stmt typingRules second class equals: FASTFortranImplicitTypingRule.
+	self assert: stmt typingRules second type class equals: FASTFortranIntegerType.
+
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testImpliedDoExpression [
+
+	| result stmt control |
+	fortranCode := '      PROGRAM MYPROG
+      WRITE (*,*) (SPACE,I,I=1,N)
+
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testImpliedDoExpression.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "write_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "control_info_list": [
+                        {
+                            "name": "UNIT",
+                            "parameter": {
+                                "asterisk": "*"
+                            }
+                        },
+                        {
+                            "name": "FMT",
+                            "parameter": {
+                                "asterisk": "*"
+                            }
+                        }
+                    ],
+                    "io_list": [
+                        {
+                            "tag": "data_imply_do_list",
+                            "dlist": [
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "20"
+                                    },
+                                    "name": "SPACE"
+                                },
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "26"
+                                    },
+                                    "name": "I"
+                                },
+                                {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "28"
+                                    },
+                                    "name": "I"
+                                }
+                            ],
+                            "m1": {
+                                "tag": "unsigned_int_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "30"
+                                },
+                                "value": "1"
+                            },
+                            "m2": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "32"
+                                },
+                                "name": "N"
+                            },
+                            "m3": {}
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:33)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"do_spec":{"anno":[],"increment":null,"initial":{"anno":[],"expression":{"anno":[],"span":"(2:30)-(2:30)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:28)-(2:30)","tag":"assign_expression","target":{"anno":[],"span":"(2:28)-(2:28)","tag":"value","value":{"contents":"i","tag":"variable"}}},"limit":{"anno":[],"span":"(2:32)-(2:32)","tag":"value","value":{"contents":"n","tag":"variable"}},"span":"(2:28)-(2:32)"},"expressions":{"anno":[],"list":[{"anno":[],"span":"(2:20)-(2:24)","tag":"value","value":{"contents":"space","tag":"variable"}},{"anno":[],"span":"(2:26)-(2:26)","tag":"value","value":{"contents":"i","tag":"variable"}}],"span":"(2:20)-(2:26)"},"span":"(2:19)-(2:33)","tag":"implied_do"}],"span":"(2:19)-(2:33)"},"format":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"tag":"star"}},"name":null,"span":"(2:14)-(2:14)"},{"anno":[],"expr":{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"tag":"star"}},"name":null,"span":"(2:16)-(2:16)"}],"span":"(2:13)-(2:17)"},"span":"(2:7)-(2:33)","tag":"write"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:33)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"do_spec":{"anno":[],"increment":null,"initial":{"anno":[],"expression":{"anno":[],"span":"(2:30)-(2:30)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:28)-(2:30)","tag":"assign_expression","target":{"anno":[],"span":"(2:28)-(2:28)","tag":"value","value":{"contents":"i","tag":"variable"}}},"limit":{"anno":[],"span":"(2:32)-(2:32)","tag":"value","value":{"contents":"n","tag":"variable"}},"span":"(2:28)-(2:32)"},"expressions":{"anno":[],"list":[{"anno":[],"span":"(2:20)-(2:24)","tag":"value","value":{"contents":"space","tag":"variable"}},{"anno":[],"span":"(2:26)-(2:26)","tag":"value","value":{"contents":"i","tag":"variable"}}],"span":"(2:20)-(2:26)"},"span":"(2:19)-(2:33)","tag":"implied_do"}],"span":"(2:19)-(2:33)"},"format":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"tag":"star"}},"name":null,"span":"(2:14)-(2:14)"},{"anno":[],"expr":{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"tag":"star"}},"name":null,"span":"(2:16)-(2:16)"}],"span":"(2:13)-(2:17)"},"span":"(2:7)-(2:33)","tag":"write"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranWriteStatement.
+	self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 54.
+
+	self assert: stmt arguments size equals: 1.
+
+	self assert: stmt arguments anyOne class equals: FASTFortranImpliedDoExpression.
+	self assert: stmt arguments first startPos equals: 40.
+
+	self assert: stmt arguments anyOne variables size equals: 2.	
+
+	control := stmt arguments first loopControl.
+	self assert: control class equals: FASTFortranLoopControlExpression.
+	self assert: control limit class equals: FASTFortranScalarVariable.
+	self assert: control limit name equals: 'n'.
+	self assert: control increment isNil.
+
+	self assert: control init class equals: FASTFortranAssignmentExpression.
+
+	self assert: control init variable class equals: FASTFortranScalarVariable.
+	self assert: control init variable name equals: 'i'.
+
+	self assert: control init expression class equals: FASTFortranIntegerLiteral.
+	self assert: control init expression primitiveValue equals: '1'.
+
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testInquireStatement [
+
+	| stmt result |
+	fortranCode := '      program main
+      inquire(unit=xunit,form=zform,err=10,iostat=zios)
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testInquireStatement.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "inquire_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "parameters": [
+                        {
+                            "name": "UNIT",
+                            "parameter": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "20"
+                                },
+                                "name": "XUNIT"
+                            }
+                        },
+                        {
+                            "name": "FORM",
+                            "parameter": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "31"
+                                },
+                                "name": "ZFORM"
+                            }
+                        },
+                        {
+                            "name": "ERR",
+                            "parameter": {
+                                "label_ref": "10"
+                            }
+                        },
+                        {
+                            "name": "IOSTAT",
+                            "parameter": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "51"
+                                },
+                                "name": "ZIOS"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:55)","statement":{"anno":[],"span":"(2:7)-(2:55)","specification":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:20)-(2:24)","tag":"value","value":{"contents":"xunit","tag":"variable"}},"name":"unit","span":"(2:15)-(2:24)"},{"anno":[],"expr":{"anno":[],"span":"(2:31)-(2:35)","tag":"value","value":{"contents":"zform","tag":"variable"}},"name":"form","span":"(2:26)-(2:35)"},{"anno":[],"expr":{"anno":[],"span":"(2:41)-(2:42)","tag":"value","value":{"contents":["10",null],"tag":"integer"}},"name":"err","span":"(2:37)-(2:42)"},{"anno":[],"expr":{"anno":[],"span":"(2:51)-(2:54)","tag":"value","value":{"contents":"zios","tag":"variable"}},"name":"iostat","span":"(2:44)-(2:54)"}],"span":"(2:14)-(2:55)"},"tag":"inquire"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:55)","statement":{"anno":[],"span":"(2:7)-(2:55)","specification":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:20)-(2:24)","tag":"value","value":{"contents":"xunit","tag":"variable"}},"name":"unit","span":"(2:15)-(2:24)"},{"anno":[],"expr":{"anno":[],"span":"(2:31)-(2:35)","tag":"value","value":{"contents":"zform","tag":"variable"}},"name":"form","span":"(2:26)-(2:35)"},{"anno":[],"expr":{"anno":[],"span":"(2:41)-(2:42)","tag":"value","value":{"contents":["10",null],"tag":"integer"}},"name":"err","span":"(2:37)-(2:42)"},{"anno":[],"expr":{"anno":[],"span":"(2:51)-(2:54)","tag":"value","value":{"contents":"zios","tag":"variable"}},"name":"iostat","span":"(2:44)-(2:54)"}],"span":"(2:14)-(2:55)"},"tag":"inquire"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranInquireStatement.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 74.
+
+	self assert: stmt ioParameters size equals: 4.
+
+	self assert: stmt ioParameters first class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters first startPos equals: 34.
+	self assert: stmt ioParameters first variable name equals: 'unit'.
+	self assert: stmt ioParameters second class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters second startPos equals: 45.
+	self assert: stmt ioParameters second variable name equals: 'form'.
+	self assert: stmt ioParameters third class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters third startPos equals: 56.
+	self assert: stmt ioParameters third variable name equals: 'err'.
+	self assert: stmt ioParameters fourth class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters fourth startPos equals: 63.
+	self assert: stmt ioParameters fourth variable name equals: 'iostat'.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testInquireStatementFilename [
+<<<<<<< HEAD
+<<<<<<< HEAD
+"Syntax: no json was generated"
+=======
+
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	| stmt result |
+	fortranCode := '      program main
+      NQUIRE( FILE=''.profile'', EXIST=THERE ) end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := ''.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:45)","statement":{"anno":[],"span":"(2:7)-(2:45)","specification":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:21)-(2:30)","tag":"value","value":{"contents":".profile","tag":"string"}},"name":"file","span":"(2:16)-(2:30)"},{"anno":[],"expr":{"anno":[],"span":"(2:39)-(2:43)","tag":"value","value":{"contents":"there","tag":"variable"}},"name":"exist","span":"(2:33)-(2:43)"}],"span":"(2:14)-(2:45)"},"tag":"inquire"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:45)","statement":{"anno":[],"span":"(2:7)-(2:45)","specification":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:21)-(2:30)","tag":"value","value":{"contents":".profile","tag":"string"}},"name":"file","span":"(2:16)-(2:30)"},{"anno":[],"expr":{"anno":[],"span":"(2:39)-(2:43)","tag":"value","value":{"contents":"there","tag":"variable"}},"name":"exist","span":"(2:33)-(2:43)"}],"span":"(2:14)-(2:45)"},"tag":"inquire"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranInquireStatement.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 64.
+
+	self assert: stmt ioParameters size equals: 2.
+
+	self assert: stmt ioParameters first class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters first startPos equals: 35.
+	self assert: stmt ioParameters first variable name equals: 'file'.
+	self assert: stmt ioParameters first expression class equals: FASTFortranCharacterLiteral.
+	self assert: stmt ioParameters first expression primitiveValue equals: '.profile'.
+
+	self assert: stmt ioParameters second class equals: FASTFortranAssignmentExpression.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testInquireStatementImplicitUnit [
+
+	| stmt result |
+	fortranCode := '      program main
+      INQUIRE ( 3, OPENED=OK, NAMED=HASNAME, NAME=FN ) 
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testInquireStatementImplicitUnit.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "inquire_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "parameters": [
+                        {
+                            "name": "UNIT",
+                            "parameter": {
+                                "tag": "unsigned_int_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "17"
+                                },
+                                "value": "3"
+                            }
+                        },
+                        {
+                            "name": "OPENED",
+                            "parameter": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "27"
+                                },
+                                "name": "OK"
+                            }
+                        },
+                        {
+                            "name": "NAMED",
+                            "parameter": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "37"
+                                },
+                                "name": "HASNAME"
+                            }
+                        },
+                        {
+                            "name": "NAME",
+                            "parameter": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "51"
+                                },
+                                "name": "FN"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:54)","statement":{"anno":[],"span":"(2:7)-(2:54)","specification":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"name":null,"span":"(2:17)-(2:17)"},{"anno":[],"expr":{"anno":[],"span":"(2:27)-(2:28)","tag":"value","value":{"contents":"ok","tag":"variable"}},"name":"opened","span":"(2:20)-(2:28)"},{"anno":[],"expr":{"anno":[],"span":"(2:37)-(2:43)","tag":"value","value":{"contents":"hasname","tag":"variable"}},"name":"named","span":"(2:31)-(2:43)"},{"anno":[],"expr":{"anno":[],"span":"(2:51)-(2:52)","tag":"value","value":{"contents":"fn","tag":"variable"}},"name":"name","span":"(2:46)-(2:52)"}],"span":"(2:15)-(2:54)"},"tag":"inquire"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:54)","statement":{"anno":[],"span":"(2:7)-(2:54)","specification":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"name":null,"span":"(2:17)-(2:17)"},{"anno":[],"expr":{"anno":[],"span":"(2:27)-(2:28)","tag":"value","value":{"contents":"ok","tag":"variable"}},"name":"opened","span":"(2:20)-(2:28)"},{"anno":[],"expr":{"anno":[],"span":"(2:37)-(2:43)","tag":"value","value":{"contents":"hasname","tag":"variable"}},"name":"named","span":"(2:31)-(2:43)"},{"anno":[],"expr":{"anno":[],"span":"(2:51)-(2:52)","tag":"value","value":{"contents":"fn","tag":"variable"}},"name":"name","span":"(2:46)-(2:52)"}],"span":"(2:15)-(2:54)"},"tag":"inquire"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranInquireStatement.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 73.
+
+	self assert: stmt ioParameters size equals: 4.
+
+	self assert: stmt ioParameters first class equals: FASTFortranIntegerLiteral.
+	self assert: stmt ioParameters first startPos equals: 36.
+	self assert: stmt ioParameters first primitiveValue equals: '3'.
+
+	self assert: stmt ioParameters second class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters third class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters fourth class equals: FASTFortranAssignmentExpression.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testIntrinsicStatement [
+
+	| result stmt |
+	fortranCode := '      PROGRAM MYPROG
+       intrinsic SIN, COS
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testIntrinsicStatement.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "intrinsic_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "fun_list": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "18"
+                            },
+                            "name": "SIN"
+                        },
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "23"
+                            },
+                            "name": "COS"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:25)","statement":{"anno":[],"span":"(2:8)-(2:25)","tag":"intrinsic","vars":{"anno":[],"list":[{"anno":[],"span":"(2:18)-(2:20)","tag":"value","value":{"contents":"sin","tag":"variable"}},{"anno":[],"span":"(2:23)-(2:25)","tag":"value","value":{"contents":"cos","tag":"variable"}}],"span":"(2:18)-(2:25)"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:25)","statement":{"anno":[],"span":"(2:8)-(2:25)","tag":"intrinsic","vars":{"anno":[],"list":[{"anno":[],"span":"(2:18)-(2:20)","tag":"value","value":{"contents":"sin","tag":"variable"}},{"anno":[],"span":"(2:23)-(2:25)","tag":"value","value":{"contents":"cos","tag":"variable"}}],"span":"(2:18)-(2:25)"}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+
+	self assert: stmt class equals: FASTFortranIntrinsicStatement.
+	self assert: stmt startPos equals: 29.
+	self assert: stmt endPos equals: 46.
+
+	self assert: stmt variables size equals: 2.
+
+	self assert: stmt variables first class equals: FASTFortranScalarVariable.
+	self assert: stmt variables first startPos equals: 39.
+	self assert: stmt variables first name equals: 'sin'.
+	self assert: stmt variables second class equals: FASTFortranScalarVariable.
+	self assert: stmt variables second startPos equals: 44.
+	self assert: stmt variables second name equals: 'cos'.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testLogicalIfEmpty [
+
+	| result conditional |
+	fortranCode := '      PROGRAM MYPROG
+       IF ( A .eq. 5 ) RETURN
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testLogicalIfEmpty.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "logical_if_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "expression": {
+                        "tag": "logical_expression",
+                        "expression": {
+                            "tag": "logical_factor",
+                            "negated": "false",
+                            "expression": {
+                                "tag": "logical_primary",
+                                "expression": {
+                                    "tag": "binary_expression",
+                                    "lhs": {
+                                        "tag": "symbolic_name",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "13"
+                                        },
+                                        "name": "A"
+                                    },
+                                    "operator": ".EQ.",
+                                    "expression": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "20"
+                                        },
+                                        "value": "5"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "statement": {
+                        "tag": "return_statement",
+                        "start_pos": {
+                            "line": "2",
+                            "column": "24"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"FastTmp/tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:29)","statement":{"anno":[],"condition":{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"a","tag":"variable"}},"op":{"tag":"eq"},"right":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"span":"(2:13)-(2:20)","tag":"binary"},"span":"(2:8)-(2:29)","statement":{"anno":[],"span":"(2:24)-(2:29)","tag":"return","target":null},"tag":"if_logical"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"FastTmp/tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:29)","statement":{"anno":[],"condition":{"anno":[],"left":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"a","tag":"variable"}},"op":{"tag":"eq"},"right":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["5",null],"tag":"integer"}},"span":"(2:13)-(2:20)","tag":"binary"},"span":"(2:8)-(2:29)","statement":{"anno":[],"span":"(2:24)-(2:29)","tag":"return","target":null},"tag":"if_logical"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+	
+	conditional := result first statementBlock statements first.
+	self assert: conditional class equals: FASTFortranIfLogicalStatement.
+
+	self assert: conditional condition class equals: FASTFortranBinaryExpression.
+	self assert: conditional condition startPos equals: 34.
+
+	self assert: conditional statement class equals: FASTFortranReturnStatement.
+	self assert: conditional statement startPos equals: 45.
+
+	self assert: conditional startPos equals: 29.
+	self assert: conditional endPos equals: 50.
+
+]
+
+{ #category : #'tests-programUnit' }
+SyntaxJsonToFASTTests >> testMainProgramAndSubroutine [
+
+	| result progUnit |
+	fortranCode := '      PROGRAM TESTALT
+      END 
+      
+      SUBROUTINE RANK
+      END
+'.
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testMainProgramAndSubroutine.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "TESTALT"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "2",
+                "column": "9"
+            },
+            "statement_list": []
+        },
+        {
+            "tag": "subroutine",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "4",
+                    "column": "18"
+                },
+                "name": "RANK"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "4",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "5",
+                "column": "9"
+            },
+            "statement_list": []
+        }
+    ]
+}
+'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[],"name":"testalt","span":"(1:7)-(2:9)","subprograms":null,"tag":"main"},{"anno":[],"arguments":null,"blocks":[],"name":"rank","options":[null,null],"span":"(4:7)-(5:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[],"name":"testalt","span":"(1:7)-(2:9)","subprograms":null,"tag":"main"},{"anno":[],"arguments":null,"blocks":[],"name":"rank","options":[null,null],"span":"(4:7)-(5:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result isCollection.
+	self assert: result size equals: 2.
+
+	progUnit := result first.
+	self assert: progUnit class equals: FASTFortranProgramMain.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: progUnit name equals: 'TESTALT'.
+
+	progUnit := result second.
+	self assert: progUnit class equals: FASTFortranSubroutine.
+	self assert: progUnit name equals: 'RANK'.
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	self assert: progUnit name equals: 'testalt'.
+
+	progUnit := result second.
+	self assert: progUnit class equals: FASTFortranSubroutine.
+	self assert: progUnit name equals: 'rank'.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-programUnit' }
+SyntaxJsonToFASTTests >> testMainProgramEmptyBody [
+	| result body |
+
+	fortranCode := '      program main
+      end
+'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/unit-tests/program-main.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "2",
+                "column": "9"
+            },
+            "statement_list": []
+        }
+    ]
+}
+'.
+	result := self visitJsonCode.
+	
+	self assert: result size equals: 1.
+	self assert: result first class equals: FASTFortranProgramMain.
+
+	body := result first statementBlock.
+	self assert: body statements isCollection.
+	self assert: body statements size equals: 0.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testOpenStatement [
+
+	| stmt result |
+	fortranCode := '      PROGRAM main
+      OPEN(8, FILE=''projectA/data.test'', ERR=99)
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testOpenStatement.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "open_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "open_parameters": [
+                        {
+                            "name": "UNIT",
+                            "parameter": {
+                                "tag": "unsigned_int_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "12"
+                                },
+                                "value": "8"
+                            }
+                        },
+                        {
+                            "name": "FILE",
+                            "parameter": {
+                                "tag": "character_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "20"
+                                },
+                                "value": "''projectA/data.test''"
+                            }
+                        },
+                        {
+                            "name": "ERR",
+                            "parameter": {
+                                "label_ref": "99"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:48)","statement":{"anno":[],"span":"(2:7)-(2:48)","specification":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":["8",null],"tag":"integer"}},"name":null,"span":"(2:12)-(2:12)"},{"anno":[],"expr":{"anno":[],"span":"(2:20)-(2:39)","tag":"value","value":{"contents":"projectA/data.test","tag":"string"}},"name":"file","span":"(2:15)-(2:39)"},{"anno":[],"expr":{"anno":[],"span":"(2:46)-(2:47)","tag":"value","value":{"contents":["99",null],"tag":"integer"}},"name":"err","span":"(2:42)-(2:47)"}],"span":"(2:11)-(2:48)"},"tag":"open"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:48)","statement":{"anno":[],"span":"(2:7)-(2:48)","specification":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":["8",null],"tag":"integer"}},"name":null,"span":"(2:12)-(2:12)"},{"anno":[],"expr":{"anno":[],"span":"(2:20)-(2:39)","tag":"value","value":{"contents":"projectA/data.test","tag":"string"}},"name":"file","span":"(2:15)-(2:39)"},{"anno":[],"expr":{"anno":[],"span":"(2:46)-(2:47)","tag":"value","value":{"contents":["99",null],"tag":"integer"}},"name":"err","span":"(2:42)-(2:47)"}],"span":"(2:11)-(2:48)"},"tag":"open"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranOpenStatement.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 67.
+
+	self assert: stmt ioParameters size equals: 3.
+
+	self assert: stmt ioParameters first class equals: FASTFortranIntegerLiteral.
+	self assert: stmt ioParameters first startPos equals: 31.
+	self assert: stmt ioParameters first primitiveValue equals: '8'.
+
+	self assert: stmt ioParameters second class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters second startPos equals: 34.
+	self assert: stmt ioParameters second variable name equals: 'file'.
+	self assert: stmt ioParameters second expression class equals: FASTFortranCharacterLiteral.
+	self assert: stmt ioParameters second expression primitiveValue equals: 'projectA/data.test'.
+
+	self assert: stmt ioParameters third class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters third startPos equals: 61.
+	self assert: stmt ioParameters third variable name equals: 'err'.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testParameterStatement [
+
+	| result stmt var |
+	fortranCode := '      program main
+      PARAMETER (PI=3.141593, TEXT=''Header'', T=.TRUE.)
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testParameterStatement.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "parameter_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "parameters": [
+                        {
+                            "name": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "18"
+                                },
+                                "name": "PI"
+                            },
+                            "expression": {
+                                "tag": "logical_const_expr",
+                                "expression": {
+                                    "tag": "unsigned_real_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "21"
+                                    },
+                                    "value": "3.141593"
+                                }
+                            }
+                        },
+                        {
+                            "name": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "31"
+                                },
+                                "name": "TEXT"
+                            },
+                            "expression": {
+                                "tag": "logical_const_expr",
+                                "expression": {
+                                    "tag": "character_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "36"
+                                    },
+                                    "value": "''Header''"
+                                }
+                            }
+                        },
+                        {
+                            "name": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "46"
+                                },
+                                "name": "T"
+                            },
+                            "expression": {
+                                "tag": "logical_const_expr",
+                                "expression": {
+                                    "tag": "logical_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "48"
+                                    },
+                                    "value": ".TRUE."
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:54)","statement":{"anno":[],"declarators":{"anno":[],"list":[{"anno":[],"initial":{"anno":[],"span":"(2:21)-(2:28)","tag":"value","value":{"contents":[{"exponent":{"letter":"e","num":"0"},"significand":"3.141593"},null],"tag":"real"}},"length":null,"span":"(2:18)-(2:28)","type":"scalar","variable":{"anno":[],"span":"(2:18)-(2:19)","tag":"value","value":{"contents":"pi","tag":"variable"}}},{"anno":[],"initial":{"anno":[],"span":"(2:36)-(2:43)","tag":"value","value":{"contents":"Header","tag":"string"}},"length":null,"span":"(2:31)-(2:43)","type":"scalar","variable":{"anno":[],"span":"(2:31)-(2:34)","tag":"value","value":{"contents":"text","tag":"variable"}}},{"anno":[],"initial":{"anno":[],"span":"(2:48)-(2:53)","tag":"value","value":{"contents":[true,null],"tag":"logical"}},"length":null,"span":"(2:46)-(2:53)","type":"scalar","variable":{"anno":[],"span":"(2:46)-(2:46)","tag":"value","value":{"contents":"t","tag":"variable"}}}],"span":"(2:18)-(2:53)"},"span":"(2:7)-(2:54)","tag":"parameter"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:54)","statement":{"anno":[],"declarators":{"anno":[],"list":[{"anno":[],"initial":{"anno":[],"span":"(2:21)-(2:28)","tag":"value","value":{"contents":[{"exponent":{"letter":"e","num":"0"},"significand":"3.141593"},null],"tag":"real"}},"length":null,"span":"(2:18)-(2:28)","type":"scalar","variable":{"anno":[],"span":"(2:18)-(2:19)","tag":"value","value":{"contents":"pi","tag":"variable"}}},{"anno":[],"initial":{"anno":[],"span":"(2:36)-(2:43)","tag":"value","value":{"contents":"Header","tag":"string"}},"length":null,"span":"(2:31)-(2:43)","type":"scalar","variable":{"anno":[],"span":"(2:31)-(2:34)","tag":"value","value":{"contents":"text","tag":"variable"}}},{"anno":[],"initial":{"anno":[],"span":"(2:48)-(2:53)","tag":"value","value":{"contents":[true,null],"tag":"logical"}},"length":null,"span":"(2:46)-(2:53)","type":"scalar","variable":{"anno":[],"span":"(2:46)-(2:46)","tag":"value","value":{"contents":"t","tag":"variable"}}}],"span":"(2:18)-(2:53)"},"span":"(2:7)-(2:54)","tag":"parameter"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranParameterStatement.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 73.
+	
+	self assert: stmt declarators size equals: 3.
+
+	var := stmt declarators first.
+	self assert: var class equals: FASTFortranVariableDeclarator.
+	self assert: var variable equals: 'pi'.
+	self assert: var expression class equals: FASTFortranRealLiteral.
+	self assert: var expression primitiveValue equals: '3.141593'.
+	self assert: var startPos equals: 37.
+
+	var := stmt declarators second.
+	self assert: var class equals: FASTFortranVariableDeclarator.
+	self assert: var variable equals: 'text'.
+	self assert: var expression class equals: FASTFortranCharacterLiteral.
+	self assert: var expression primitiveValue equals: 'Header'.
+	self assert: var startPos equals: 50.
+
+	var := stmt declarators third.
+	self assert: var class equals: FASTFortranVariableDeclarator.
+	self assert: var variable equals: 't'.
+	self assert: var expression class equals: FASTFortranBooleanLiteral.
+	self assert: var expression primitiveValue equals: '.true.'.
+	self assert: var startPos equals: 65.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testPauseStatementEmpty [
+
+	| stmt result |
+	fortranCode := '      PROGRAM MYPROG
+      pause
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testPauseStatementEmpty.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "pause_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:11)","statement":{"anno":[],"message":null,"span":"(2:7)-(2:11)","tag":"pause"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:11)","statement":{"anno":[],"message":null,"span":"(2:7)-(2:11)","tag":"pause"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranPauseStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 32."
+=======
+	self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 32.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 32.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	self assert: stmt displayArgument equals: nil
+
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testPauseStatementWithInteger [
+
+	| stmt result |
+	fortranCode := '      PROGRAM MYPROG
+      pause 1
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testPauseStatementWithInteger.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "pause_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "argument": {
+                        "tag": "unsigned_int_constant",
+                        "start_pos": {
+                            "line": "2",
+                            "column": "13"
+                        },
+                        "value": "1"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:13)","statement":{"anno":[],"message":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:7)-(2:13)","tag":"pause"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:13)","statement":{"anno":[],"message":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:7)-(2:13)","tag":"pause"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranPauseStatement.
+	self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 34.
+
+	self assert: stmt displayArgument equals: '1'
+
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testPauseStatementWithString [
+
+	| stmt result |
+	fortranCode := '      PROGRAM MYPROG
+      stop ''error''
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testPauseStatementWithString.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "stop_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "argument": {
+                        "tag": "character_constant",
+                        "start_pos": {
+                            "line": "2",
+                            "column": "12"
+                        },
+                        "value": "''error''"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:18)","statement":{"anno":[],"message":{"anno":[],"span":"(2:12)-(2:18)","tag":"value","value":{"contents":"error","tag":"string"}},"span":"(2:7)-(2:18)","tag":"stop"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:18)","statement":{"anno":[],"message":{"anno":[],"span":"(2:12)-(2:18)","tag":"value","value":{"contents":"error","tag":"string"}},"span":"(2:7)-(2:18)","tag":"stop"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranStopStatement.
+	self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 39.
+
+	self assert: stmt displayArgument equals: '''error'''
+
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testPrintMultipleVariables [
+
+	| stmt result  var arguments |
+	fortranCode := '      subroutine mysub (msg)
+      PRINT *, X, Y, Z
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testPrintMultipleVariables.FOR",
+    "program_units": [
+        {
+            "tag": "subroutine",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "18"
+                },
+                "name": "MYSUB"
+            },
+            "parameters": [
+                {
+                    "tag": "symbolic_name",
+                    "start_pos": {
+                        "line": "1",
+                        "column": "25"
+                    },
+                    "name": "MSG"
+                }
+            ],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "print_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "io_list": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "16"
+                            },
+                            "name": "X"
+                        },
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "19"
+                            },
+                            "name": "Y"
+                        },
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "22"
+                            },
+                            "name": "Z"
+                        }
+                    ],
+                    "format": [
+                        {
+                            "name": "FMT",
+                            "parameter": {
+                                "asterisk": "*"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(1:25)-(1:27)","tag":"value","value":{"contents":"msg","tag":"variable"}}],"span":"(1:25)-(1:27)"},"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:22)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":"x","tag":"variable"}},{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"contents":"y","tag":"variable"}},{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":"z","tag":"variable"}}],"span":"(2:16)-(2:22)"},"format":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"tag":"star"}},"span":"(2:7)-(2:22)","tag":"print"},"tag":"statement"}],"name":"mysub","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(1:25)-(1:27)","tag":"value","value":{"contents":"msg","tag":"variable"}}],"span":"(1:25)-(1:27)"},"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:22)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":"x","tag":"variable"}},{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"contents":"y","tag":"variable"}},{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":"z","tag":"variable"}}],"span":"(2:16)-(2:22)"},"format":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"tag":"star"}},"span":"(2:7)-(2:22)","tag":"print"},"tag":"statement"}],"name":"mysub","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranPrintStatement.
+	self assert: stmt format class equals: FASTFortranAsterisk.
+	self assert: stmt startPos equals: 36.
+	self assert: stmt endPos equals: 51.
+
+	
+	arguments := stmt arguments.
+	self assert: arguments size equals: 3.
+
+	var := arguments first.
+	self assert: var class equals: FASTFortranScalarVariable.
+	self assert: var name equals: 'x'.
+
+	var := arguments second.
+	self assert: var class equals: FASTFortranScalarVariable.
+	self assert: var name equals: 'y'.
+
+	var := arguments third.
+	self assert: var class equals: FASTFortranScalarVariable.
+	self assert: var name equals: 'z'
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testPrintOneVariable [
+
+	| stmt result arguments |
+	fortranCode := '      subroutine mysub (msg)
+      PRINT *, X
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testPrintOneVariable.FOR",
+    "program_units": [
+        {
+            "tag": "subroutine",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "18"
+                },
+                "name": "MYSUB"
+            },
+            "parameters": [
+                {
+                    "tag": "symbolic_name",
+                    "start_pos": {
+                        "line": "1",
+                        "column": "25"
+                    },
+                    "name": "MSG"
+                }
+            ],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "print_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "io_list": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "16"
+                            },
+                            "name": "X"
+                        }
+                    ],
+                    "format": [
+                        {
+                            "name": "FMT",
+                            "parameter": {
+                                "asterisk": "*"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(1:25)-(1:27)","tag":"value","value":{"contents":"msg","tag":"variable"}}],"span":"(1:25)-(1:27)"},"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:16)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":"x","tag":"variable"}}],"span":"(2:16)-(2:16)"},"format":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"tag":"star"}},"span":"(2:7)-(2:16)","tag":"print"},"tag":"statement"}],"name":"mysub","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(1:25)-(1:27)","tag":"value","value":{"contents":"msg","tag":"variable"}}],"span":"(1:25)-(1:27)"},"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:16)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":"x","tag":"variable"}}],"span":"(2:16)-(2:16)"},"format":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"tag":"star"}},"span":"(2:7)-(2:16)","tag":"print"},"tag":"statement"}],"name":"mysub","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranPrintStatement.
+	self assert: stmt startPos equals: 36.
+	self assert: stmt endPos equals: 45.
+
+	self assert: stmt format class equals: FASTFortranAsterisk.
+
+	arguments := stmt arguments.
+	self assert: arguments size equals: 1.
+	self assert: arguments first class equals: FASTFortranScalarVariable.
+	self assert: arguments first name equals: 'x'
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testReadWithFormat [
+
+	| stmt result |
+	fortranCode := '      subroutine mysub ()
+      READ( 3, ''(5F4.1)'') V
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testReadWithFormat.FOR",
+    "program_units": [
+        {
+            "tag": "subroutine",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "18"
+                },
+                "name": "MYSUB"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "read_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "control_info_list": [
+                        {
+                            "name": "UNIT",
+                            "parameter": {
+                                "tag": "unsigned_int_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "13"
+                                },
+                                "value": "3"
+                            }
+                        },
+                        {
+                            "name": "FMT",
+                            "parameter": {
+                                "tag": "character_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "16"
+                                },
+                                "value": "(5F4.1)"
+                            }
+                        }
+                    ],
+                    "io_list": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "27"
+                            },
+                            "name": "V"
+                        }
+                    ],
+                    "format": []
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:27)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:27)-(2:27)","tag":"value","value":{"contents":"v","tag":"variable"}}],"span":"(2:27)-(2:27)"},"format":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"name":null,"span":"(2:13)-(2:13)"},{"anno":[],"expr":{"anno":[],"span":"(2:16)-(2:24)","tag":"value","value":{"contents":"(5F4.1)","tag":"string"}},"name":null,"span":"(2:16)-(2:24)"}],"span":"(2:11)-(2:25)"},"span":"(2:7)-(2:27)","tag":"read"},"tag":"statement"}],"name":"mysub","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:27)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:27)-(2:27)","tag":"value","value":{"contents":"v","tag":"variable"}}],"span":"(2:27)-(2:27)"},"format":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"name":null,"span":"(2:13)-(2:13)"},{"anno":[],"expr":{"anno":[],"span":"(2:16)-(2:24)","tag":"value","value":{"contents":"(5F4.1)","tag":"string"}},"name":null,"span":"(2:16)-(2:24)"}],"span":"(2:11)-(2:25)"},"span":"(2:7)-(2:27)","tag":"read"},"tag":"statement"}],"name":"mysub","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranReadStatement.
+	self assert: stmt startPos equals: 33.
+	self assert: stmt endPos equals: 53.
+
+	self assert: stmt ioParameters size equals: 2.
+
+	self assert: stmt ioParameters first class equals: FASTFortranIntegerLiteral.
+	self assert: stmt ioParameters first startPos equals: 39.
+	self assert: stmt ioParameters second class equals: FASTFortranCharacterLiteral.
+	self assert: stmt ioParameters second startPos equals: 42.
+
+	self assert: stmt arguments size equals: 1.
+
+	self assert: stmt arguments first class equals: FASTFortranScalarVariable.
+	self assert: stmt arguments first startPos equals: 53.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testReturnStatementEmpty [
+
+	| stmt result |
+	fortranCode := '      PROGRAM MYPROG
+      return
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testReturnStatementEmpty.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "return_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:12)","statement":{"anno":[],"span":"(2:7)-(2:12)","tag":"return","target":null},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:12)","statement":{"anno":[],"span":"(2:7)-(2:12)","tag":"return","target":null},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranReturnStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 33."
+=======
+	self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 33.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 33.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testRewindStatementIOParameters [
+
+	| stmt result |
+	fortranCode := '      PROGRAM main
+      REWIND (UNIT=3, IOSTAT=CODE, ERR=100) 
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testRewindStatementIOParameters.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "rewind_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "parameters": [
+                        {
+                            "name": "UNIT",
+                            "parameter": {
+                                "tag": "unsigned_int_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "20"
+                                },
+                                "value": "3"
+                            }
+                        },
+                        {
+                            "name": "IOSTAT",
+                            "parameter": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "30"
+                                },
+                                "name": "CODE"
+                            }
+                        },
+                        {
+                            "name": "ERR",
+                            "parameter": {
+                                "label_ref": "100"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:43)","statement":{"anno":[],"span":"(2:7)-(2:43)","specification":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"name":"unit","span":"(2:15)-(2:20)"},{"anno":[],"expr":{"anno":[],"span":"(2:30)-(2:33)","tag":"value","value":{"contents":"code","tag":"variable"}},"name":"iostat","span":"(2:23)-(2:33)"},{"anno":[],"expr":{"anno":[],"span":"(2:40)-(2:42)","tag":"value","value":{"contents":["100",null],"tag":"integer"}},"name":"err","span":"(2:36)-(2:42)"}],"span":"(2:14)-(2:43)"},"tag":"rewind"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:43)","statement":{"anno":[],"span":"(2:7)-(2:43)","specification":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"name":"unit","span":"(2:15)-(2:20)"},{"anno":[],"expr":{"anno":[],"span":"(2:30)-(2:33)","tag":"value","value":{"contents":"code","tag":"variable"}},"name":"iostat","span":"(2:23)-(2:33)"},{"anno":[],"expr":{"anno":[],"span":"(2:40)-(2:42)","tag":"value","value":{"contents":["100",null],"tag":"integer"}},"name":"err","span":"(2:36)-(2:42)"}],"span":"(2:14)-(2:43)"},"tag":"rewind"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranRewindStatement.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 62.
+
+	self assert: stmt ioParameters size equals: 3.
+
+	self assert: stmt ioParameters first class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters first startPos equals: 34.
+	self assert: stmt ioParameters first variable name equals: 'unit'.
+	self assert: stmt ioParameters first expression primitiveValue equals: '3'.
+
+	self assert: stmt ioParameters second class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters second startPos equals: 42.
+	self assert: stmt ioParameters second variable name equals: 'iostat'.
+
+	self assert: stmt ioParameters third class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters third startPos equals: 55.
+	self assert: stmt ioParameters third variable name equals: 'err'.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testRewindStatementUnit [
+
+	| stmt result |
+	fortranCode := '      PROGRAM main
+      REWIND 3
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testRewindStatementUnit.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "rewind_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "parameters": [
+                        {
+                            "name": "UNIT",
+                            "parameter": {
+                                "tag": "unsigned_int_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "14"
+                                },
+                                "value": "3"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:14)","statement":{"anno":[],"span":"(2:7)-(2:14)","specification":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"tag":"rewind2"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:14)","statement":{"anno":[],"span":"(2:7)-(2:14)","specification":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"tag":"rewind2"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranRewindStatement.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 33.
+
+	self assert: stmt ioParameters size equals: 1.
+
+	self assert: stmt ioParameters first class equals: FASTFortranIntegerLiteral.
+	self assert: stmt ioParameters first startPos equals: 33.
+	self assert: stmt ioParameters first primitiveValue equals: '3'
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testStatementWithLabel [
+
+	| result stmt |
+	fortranCode := '      PROGRAM TESTALT
+10     STOP
+      END 
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testStatementWithLabel.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "TESTALT"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "label": "10",
+                    "tag": "stop_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":{"anno":[],"span":"(2:1)-(2:2)","tag":"value","value":{"contents":["10",null],"tag":"integer"}},"span":"(2:1)-(2:11)","statement":{"anno":[],"message":null,"span":"(2:8)-(2:11)","tag":"stop"},"tag":"statement"}],"name":"testalt","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":{"anno":[],"span":"(2:1)-(2:2)","tag":"value","value":{"contents":["10",null],"tag":"integer"}},"span":"(2:1)-(2:11)","statement":{"anno":[],"message":null,"span":"(2:8)-(2:11)","tag":"stop"},"tag":"statement"}],"name":"testalt","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranStopStatement.
+	self assert: stmt label equals: '10'.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testStopStatementEmpty [
+
+	| stmt result |
+	fortranCode := '      PROGRAM MYPROG
+      stop
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testStopStatementEmpty.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "stop_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:10)","statement":{"anno":[],"message":null,"span":"(2:7)-(2:10)","tag":"stop"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:10)","statement":{"anno":[],"message":null,"span":"(2:7)-(2:10)","tag":"stop"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranStopStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 31."
+=======
+	self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 31.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 31.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	self assert: stmt displayArgument equals: nil
+
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testStopStatementWithInteger [
+
+	| stmt result |
+	fortranCode := '      PROGRAM MYPROG
+      stop 1
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testStopStatementWithInteger.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "stop_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "argument": {
+                        "tag": "unsigned_int_constant",
+                        "start_pos": {
+                            "line": "2",
+                            "column": "12"
+                        },
+                        "value": "1"
+                    }
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:12)","statement":{"anno":[],"message":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:7)-(2:12)","tag":"stop"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:12)","statement":{"anno":[],"message":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:7)-(2:12)","tag":"stop"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranStopStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 33."
+=======
+	self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 33.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 33.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	self assert: stmt displayArgument equals: '1'
+
+
+]
+
+{ #category : #'tests-programUnit' }
+SyntaxJsonToFASTTests >> testSubroutineEmpty [
+
+	| result rtn |
+	fortranCode := '      SUBROUTINE RANK
+      end
+'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/unit-tests/subroutine.FOR",
+    "program_units": [
+        {
+            "tag": "subroutine",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "18"
+                },
+                "name": "RANK"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "2",
+                "column": "9"
+            },
+            "statement_list": []
+        }
+    ]
+}'.
+	result := self visitJsonCode.
+	
+	self assert: result isCollection.
+	self assert: result size equals: 1.
+
+	rtn := result first.
+	self assert: rtn class equals: FASTFortranSubroutine.
+	self assert: rtn parameters isEmpty.
+	self assert: rtn statementBlock statements isEmpty.
+	self assert: rtn startPos equals: 7.
+	self assert: rtn endPos equals: 30
+]
+
+{ #category : #'tests-programUnit' }
+SyntaxJsonToFASTTests >> testSubroutineWithParameters [
+
+	| result rtn param |
+	fortranCode := '      SUBROUTINE SIMPLESUBROUTINE( a, b)
+      END
+'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/unit-tests/subroutine-with-parameters.FOR",
+    "program_units": [
+        {
+            "tag": "subroutine",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "18"
+                },
+                "name": "SIMPLESUBROUTINE"
+            },
+            "parameters": [
+                {
+                    "tag": "symbolic_name",
+                    "start_pos": {
+                        "line": "1",
+                        "column": "36"
+                    },
+                    "name": "A"
+                },
+                {
+                    "tag": "symbolic_name",
+                    "start_pos": {
+                        "line": "1",
+                        "column": "39"
+                    },
+                    "name": "B"
+                }
+            ],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "2",
+                "column": "9"
+            },
+            "statement_list": []
+        }
+    ]
+}
+'.
+	result := self visitJsonCode.
+	
+	self assert: result isCollection.
+
+	rtn := result anyOne.
+	self assert: rtn class equals: FASTFortranSubroutine.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: rtn name primitiveValue equals: 'SIMPLESUBROUTINE'.
+=======
+	self assert: rtn name equals: 'SIMPLESUBROUTINE'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: rtn name equals: 'SIMPLESUBROUTINE'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	self assert: rtn statementBlock class equals: FASTFortranStatementBlock.
+	self assert: rtn statementBlock statements size equals: 0.
+	self assert: rtn statementBlock startPos equals: 42.
+
+	self assert: rtn startPos equals: 7.
+	"self assert: rtn endPos equals: 50."
+	
+	self assert: rtn parameters size equals: 2.
+
+	param := rtn parameters first.
+	self assert: param name equals: 'A'.
+	"self assert: param startPos equals: 36."
+
+	param := rtn parameters second.
+	self assert: param name equals: 'B'.
+	"self assert: param startPos equals: 39."
+
+]
+
+{ #category : #'tests-programUnit' }
+SyntaxJsonToFASTTests >> testSubroutineWithParametersOnTwoLines [
+
+	| result rtn |
+	fortranCode := '      SUBROUTINE SIMPLESUBROUTINE( a,
+     & b)
+      continue
+      END
+'.
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/unit-tests/subroutine-with-parameters-two-lines.FOR",
+    "program_units": [
+        {
+            "tag": "subroutine",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "18"
+                },
+                "name": "SIMPLESUBROUTINE"
+            },
+            "parameters": [
+                {
+                    "tag": "symbolic_name",
+                    "start_pos": {
+                        "line": "1",
+                        "column": "36"
+                    },
+                    "name": "A"
+                },
+                {
+                    "tag": "symbolic_name",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    },
+                    "name": "B"
+                }
+            ],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "4",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "continue_statement",
+                    "start_pos": {
+                        "line": "3",
+                        "column": "7"
+                    }
+                }
+            ]
+        }
+    ]
+}
+'.
+	result := self visitJsonCode.
+	
+	self assert: result isCollection.
+
+	rtn := result anyOne.
+	self assert: rtn class equals: FASTFortranSubroutine.
+	self assert: rtn name equals: 'SIMPLESUBROUTINE'.
+
+	self assert: rtn statementBlock class equals: FASTFortranStatementBlock.
+	self assert: rtn statementBlock statements size equals: 1.
+	"self assert: rtn statementBlock startPos equals: 55."
+
+	self assert: rtn parameters size equals: 2.
+	"self assert: rtn parameters first startPos equals: 36.
+	self assert: rtn parameters second startPos equals: 46."
+
+]
+
+{ #category : #tests }
+SyntaxJsonToFASTTests >> testTokenPosition [
+
+	| result stmnts stmt |
+	fortranCode := '      PROGRAM MYPROG
+       STOP
+100    CONTINUE
+       EXIT
+      END
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testTokenPosition.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MYPROG"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "5",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "stop_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "8"
+                    }
+                },
+                {
+                    "label": "100",
+                    "tag": "continue_statement",
+                    "start_pos": {
+                        "line": "3",
+                        "column": "8"
+                    }
+                },
+                {
+                    "tag": "assignment_statement",
+                    "start_pos": {
+                        "line": "4",
+                        "column": "8"
+                    },
+                    "left": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "4",
+                                "column": "8"
+                            },
+                            "name": "EXIT"
+                        }
+                    ],
+                    "right": [
+                        {
+                            "tag": "character_expression",
+                            "expression": {
+                                "tag": "character_constant",
+                                "start_pos": {
+                                    "line": "4",
+                                    "column": "12"
+                                },
+                                "value": ""
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:11)","statement":{"anno":[],"message":null,"span":"(2:8)-(2:11)","tag":"stop"},"tag":"statement"},{"anno":[],"label":{"anno":[],"span":"(3:1)-(3:3)","tag":"value","value":{"contents":["100",null],"tag":"integer"}},"span":"(3:1)-(3:15)","statement":{"anno":[],"span":"(3:8)-(3:15)","tag":"continue"},"tag":"statement"},{"anno":[],"label":null,"span":"(4:8)-(4:11)","statement":{"anno":[],"span":"(4:8)-(4:11)","tag":"exit","var":null},"tag":"statement"}],"name":"myprog","span":"(1:7)-(5:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:11)","statement":{"anno":[],"message":null,"span":"(2:8)-(2:11)","tag":"stop"},"tag":"statement"},{"anno":[],"label":{"anno":[],"span":"(3:1)-(3:3)","tag":"value","value":{"contents":["100",null],"tag":"integer"}},"span":"(3:1)-(3:15)","statement":{"anno":[],"span":"(3:8)-(3:15)","tag":"continue"},"tag":"statement"},{"anno":[],"label":null,"span":"(4:8)-(4:11)","statement":{"anno":[],"span":"(4:8)-(4:11)","tag":"exit","var":null},"tag":"statement"}],"name":"myprog","span":"(1:7)-(5:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+	
+	stmnts := result first statementBlock statements.
+	stmt := stmnts first.
+	self assert: stmt startPos equals: 29.
+	self assert: stmt endPos equals: 32.
+
+	stmt := stmnts second.
+	self assert: stmt startPos equals: 41.
+	self assert: stmt endPos equals: 48.
+
+	stmt := stmnts third.
+	self assert: stmt startPos equals: 57.
+	self assert: stmt endPos equals: 60.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testVariableDeclarationCharacter [
+
+	| result stmt var |
+	fortranCode := '      program main
+      character*40 aString
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testVariableDeclarationCharacter.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "CHARACTER",
+                        "len_specification": {
+                            "tag": "nonzero_unsigned_int_constant",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "17"
+                            },
+                            "value": "40"
+                        }
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "20"
+                                },
+                                "name": "ASTRING"
+                            },
+                            "dimension_declarators": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:26)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:20)-(2:26)","type":"scalar","variable":{"anno":[],"span":"(2:20)-(2:26)","tag":"value","value":{"contents":"astring","tag":"variable"}}}],"span":"(2:20)-(2:26)"},"span":"(2:7)-(2:26)","tag":"declaration","type":{"anno":[],"base_type":"character","selector":{"anno":[],"kind":null,"length":{"anno":[],"span":"(2:17)-(2:18)","tag":"value","value":{"contents":["40",null],"tag":"integer"}},"span":"(2:16)-(2:18)"},"span":"(2:7)-(2:18)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:26)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:20)-(2:26)","type":"scalar","variable":{"anno":[],"span":"(2:20)-(2:26)","tag":"value","value":{"contents":"astring","tag":"variable"}}}],"span":"(2:20)-(2:26)"},"span":"(2:7)-(2:26)","tag":"declaration","type":{"anno":[],"base_type":"character","selector":{"anno":[],"kind":null,"length":{"anno":[],"span":"(2:17)-(2:18)","tag":"value","value":{"contents":["40",null],"tag":"integer"}},"span":"(2:16)-(2:18)"},"span":"(2:7)-(2:18)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 45.
+
+	self assert: stmt type class equals: FASTFortranCharacterType.
+	self assert: stmt type size class equals: FASTFortranIntegerLiteral.
+
+	self assert: stmt declarators size equals: 1.
+	var := stmt declarators first.
+	self assert: var variable equals: 'astring'.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testVariableDeclarationInteger [
+
+	| result stmt var |
+	fortranCode := '      program main
+      integer i
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testVariableDeclarationInteger.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "INTEGER"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "name": "I"
+                            },
+                            "dimension_declarators": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:15)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:15)-(2:15)","type":"scalar","variable":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":"i","tag":"variable"}}}],"span":"(2:15)-(2:15)"},"span":"(2:7)-(2:15)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:15)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:15)-(2:15)","type":"scalar","variable":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":"i","tag":"variable"}}}],"span":"(2:15)-(2:15)"},"span":"(2:7)-(2:15)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 34."
+=======
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 34.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 34.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	self assert: stmt type class equals: FASTFortranIntegerType.
+	self assert: stmt declarators size equals: 1.
+	
+	var := stmt declarators first.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: var variable name equals: 'I'.
+=======
+	self assert: var variable equals: 'i'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: var variable equals: 'i'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testVariableDeclarationIntegerWithLength [
+
+	| result stmt |
+	fortranCode := '      program main
+      integer*8 i
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := ''.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:17)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:17)-(2:17)","type":"scalar","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"i","tag":"variable"}}}],"span":"(2:17)-(2:17)"},"span":"(2:7)-(2:17)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":{"anno":[],"kind":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":["8",null],"tag":"integer"}},"length":null,"span":"(2:14)-(2:15)"},"span":"(2:7)-(2:15)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:17)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:17)-(2:17)","type":"scalar","variable":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":"i","tag":"variable"}}}],"span":"(2:17)-(2:17)"},"span":"(2:7)-(2:17)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":{"anno":[],"kind":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":["8",null],"tag":"integer"}},"length":null,"span":"(2:14)-(2:15)"},"span":"(2:7)-(2:15)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
+	self assert: stmt startPos equals: 26.
+
+	self assert: stmt type class equals: FASTFortranIntegerType.
+	self assert: stmt type size class equals: FASTFortranIntegerLiteral.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testVariableDeclarationLogical [
+
+	| result stmt var |
+	fortranCode := '      program main
+      logical b
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testVariableDeclarationLogical.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "LOGICAL"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "15"
+                                },
+                                "name": "B"
+                            },
+                            "dimension_declarators": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:15)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:15)-(2:15)","type":"scalar","variable":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":"b","tag":"variable"}}}],"span":"(2:15)-(2:15)"},"span":"(2:7)-(2:15)","tag":"declaration","type":{"anno":[],"base_type":"logical","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:15)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:15)-(2:15)","type":"scalar","variable":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":"b","tag":"variable"}}}],"span":"(2:15)-(2:15)"},"span":"(2:7)-(2:15)","tag":"declaration","type":{"anno":[],"base_type":"logical","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+	stmt := result first statementBlock statements first.
+	self
+		assert: stmt class
+		equals: FASTFortranVariableDeclarationStatement.
+	"self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 34."
+
+	self assert: stmt type class equals: FASTFortranLogicalType.
+	self assert: stmt declarators size equals: 1.
+
+	var := stmt declarators first.
+	self assert: var variable name equals: 'B'
+=======
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 34.
+
+	self assert: stmt type class equals: FASTFortranLogicalType.
+	self assert: stmt declarators size equals: 1.
+	
+	var := stmt declarators first.
+	self assert: var variable equals: 'b'.
+<<<<<<< HEAD
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testVariableDeclarationReal [
+
+	| result stmt var |
+	fortranCode := '      program main
+      real c
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testVariableDeclarationReal.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "REAL"
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "12"
+                                },
+                                "name": "C"
+                            },
+                            "dimension_declarators": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:12)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:12)-(2:12)","type":"scalar","variable":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":"c","tag":"variable"}}}],"span":"(2:12)-(2:12)"},"span":"(2:7)-(2:12)","tag":"declaration","type":{"anno":[],"base_type":"real","selector":null,"span":"(2:7)-(2:10)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:12)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:12)-(2:12)","type":"scalar","variable":{"anno":[],"span":"(2:12)-(2:12)","tag":"value","value":{"contents":"c","tag":"variable"}}}],"span":"(2:12)-(2:12)"},"span":"(2:7)-(2:12)","tag":"declaration","type":{"anno":[],"base_type":"real","selector":null,"span":"(2:7)-(2:10)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	"self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 31."
+=======
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 31.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 31.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	self assert: stmt type class equals: FASTFortranRealType.
+	self assert: stmt declarators size equals: 1.
+	
+	var := stmt declarators first.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	self assert: var variable name equals: 'C'.
+=======
+	self assert: var variable equals: 'c'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	self assert: var variable equals: 'c'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testVariableDeclarationWithLength [
+
+	| result stmt var |
+	fortranCode := '      program main
+      character var*10, str*(n)
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testVariableDeclarationWithLength.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "CHARACTER"
+                    },
+                    "declarators": [
+                        {
+                            "len_specifier": {
+                                "tag": "nonzero_unsigned_int_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "21"
+                                },
+                                "value": "10"
+                            },
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "17"
+                                },
+                                "name": "VAR"
+                            },
+                            "dimension_declarators": []
+                        },
+                        {
+                            "len_specifier": {
+                                "tag": "variable_expression",
+                                "variable": {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "30"
+                                    },
+                                    "name": "N"
+                                }
+                            },
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "25"
+                                },
+                                "name": "STR"
+                            },
+                            "dimension_declarators": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:26)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:20)-(2:26)","type":"scalar","variable":{"anno":[],"span":"(2:20)-(2:26)","tag":"value","value":{"contents":"astring","tag":"variable"}}}],"span":"(2:20)-(2:26)"},"span":"(2:7)-(2:26)","tag":"declaration","type":{"anno":[],"base_type":"character","selector":{"anno":[],"kind":null,"length":{"anno":[],"span":"(2:17)-(2:18)","tag":"value","value":{"contents":["40",null],"tag":"integer"}},"span":"(2:16)-(2:18)"},"span":"(2:7)-(2:18)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:26)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:20)-(2:26)","type":"scalar","variable":{"anno":[],"span":"(2:20)-(2:26)","tag":"value","value":{"contents":"astring","tag":"variable"}}}],"span":"(2:20)-(2:26)"},"span":"(2:7)-(2:26)","tag":"declaration","type":{"anno":[],"base_type":"character","selector":{"anno":[],"kind":null,"length":{"anno":[],"span":"(2:17)-(2:18)","tag":"value","value":{"contents":["40",null],"tag":"integer"}},"span":"(2:16)-(2:18)"},"span":"(2:7)-(2:18)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 45.
+
+	self assert: stmt type class equals: FASTFortranCharacterType.
+	self assert: stmt type size class equals: FASTFortranIntegerLiteral.
+
+	self assert: stmt declarators size equals: 1.
+	var := stmt declarators first.
+	self assert: var variable equals: 'astring'.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testVariableDeclarationWithStarSize [
+
+	| result stmt |
+	fortranCode := '      program main
+      character*(*) str
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testVariableDeclarationWithStarSize.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "type_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "type": {
+                        "tag": "type_reference",
+                        "name": "CHARACTER",
+                        "len_specification": {
+                            "asterisk": "*"
+                        }
+                    },
+                    "declarators": [
+                        {
+                            "tag": "variable_declarator",
+                            "variable": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "21"
+                                },
+                                "name": "STR"
+                            },
+                            "dimension_declarators": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:23)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:21)-(2:23)","type":"scalar","variable":{"anno":[],"span":"(2:21)-(2:23)","tag":"value","value":{"contents":"str","tag":"variable"}}}],"span":"(2:21)-(2:23)"},"span":"(2:7)-(2:23)","tag":"declaration","type":{"anno":[],"base_type":"character","selector":{"anno":[],"kind":null,"length":{"anno":[],"span":"(2:18)-(2:18)","tag":"value","value":{"tag":"star"}},"span":"(2:16)-(2:19)"},"span":"(2:7)-(2:19)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:23)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:21)-(2:23)","type":"scalar","variable":{"anno":[],"span":"(2:21)-(2:23)","tag":"value","value":{"contents":"str","tag":"variable"}}}],"span":"(2:21)-(2:23)"},"span":"(2:7)-(2:23)","tag":"declaration","type":{"anno":[],"base_type":"character","selector":{"anno":[],"kind":null,"length":{"anno":[],"span":"(2:18)-(2:18)","tag":"value","value":{"tag":"star"}},"span":"(2:16)-(2:19)"},"span":"(2:7)-(2:19)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 42.
+
+	self assert: stmt type class equals: FASTFortranCharacterType.
+	self assert: stmt type size class equals: FASTFortranAsterisk.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testWriteArrayIOParameter [
+
+	| stmt result |
+	fortranCode := '      program main
+      WRITE(TEXTE(1:5),1) V
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testWriteArrayIOParameter.FOR",
+    "program_units": [
+        {
+            "tag": "main",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "15"
+                },
+                "name": "MAIN"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "write_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "control_info_list": [
+                        {
+                            "name": "UNIT",
+                            "parameter": {
+                                "tag": "substring",
+                                "variable": {
+                                    "tag": "symbolic_name",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "13"
+                                    },
+                                    "name": "TEXTE"
+                                },
+                                "lower_bound": {
+                                    "tag": "arithmetic_expression",
+                                    "expression": {
+                                        "tag": "unsigned_int_constant",
+                                        "start_pos": {
+                                            "line": "2",
+                                            "column": "19"
+                                        },
+                                        "value": "1"
+                                    }
+                                },
+                                "upper_bound": {
+                                    "tag": "unsigned_int_constant",
+                                    "start_pos": {
+                                        "line": "2",
+                                        "column": "21"
+                                    },
+                                    "value": "5"
+                                }
+                            }
+                        },
+                        {
+                            "name": "FMT",
+                            "parameter": {
+                                "label_ref": "1"
+                            }
+                        }
+                    ],
+                    "io_list": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "27"
+                            },
+                            "name": "V"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:27)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:27)-(2:27)","tag":"value","value":{"contents":"v","tag":"variable"}}],"span":"(2:27)-(2:27)"},"format":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"expression":{"anno":[],"span":"(2:13)-(2:17)","tag":"value","value":{"contents":"texte","tag":"variable"}},"indices":{"anno":[],"list":[{"anno":[],"lower":{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:19)-(2:21)","stride":null,"tag":"range","upper":{"anno":[],"span":"(2:21)-(2:21)","tag":"value","value":{"contents":["5",null],"tag":"integer"}}}],"span":"(2:19)-(2:21)"},"span":"(2:13)-(2:22)","tag":"subscript"},"name":null,"span":"(2:13)-(2:22)"},{"anno":[],"expr":{"anno":[],"span":"(2:24)-(2:24)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"name":null,"span":"(2:24)-(2:24)"}],"span":"(2:12)-(2:25)"},"span":"(2:7)-(2:27)","tag":"write"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:27)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:27)-(2:27)","tag":"value","value":{"contents":"v","tag":"variable"}}],"span":"(2:27)-(2:27)"},"format":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"expression":{"anno":[],"span":"(2:13)-(2:17)","tag":"value","value":{"contents":"texte","tag":"variable"}},"indices":{"anno":[],"list":[{"anno":[],"lower":{"anno":[],"span":"(2:19)-(2:19)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:19)-(2:21)","stride":null,"tag":"range","upper":{"anno":[],"span":"(2:21)-(2:21)","tag":"value","value":{"contents":["5",null],"tag":"integer"}}}],"span":"(2:19)-(2:21)"},"span":"(2:13)-(2:22)","tag":"subscript"},"name":null,"span":"(2:13)-(2:22)"},{"anno":[],"expr":{"anno":[],"span":"(2:24)-(2:24)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"name":null,"span":"(2:24)-(2:24)"}],"span":"(2:12)-(2:25)"},"span":"(2:7)-(2:27)","tag":"write"},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranWriteStatement.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 46.
+
+	self assert: stmt ioParameters size equals: 2.
+
+	self assert: stmt ioParameters first class equals: FASTFortranArrayVariable.
+	self assert: stmt ioParameters first startPos equals: 32.
+	self assert: stmt ioParameters first indices size equals: 1.
+	self assert: stmt ioParameters second class equals: FASTFortranIntegerLiteral .
+	self assert: stmt ioParameters second startPos equals: 43.
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testWriteComplexFormat [
+
+	| stmt result |
+	fortranCode := '      subroutine mysub ()
+      WRITE( 3, ''(5F4.1)'') V
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testWriteComplexFormat.FOR",
+    "program_units": [
+        {
+            "tag": "subroutine",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "18"
+                },
+                "name": "MYSUB"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "write_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "control_info_list": [
+                        {
+                            "name": "UNIT",
+                            "parameter": {
+                                "tag": "unsigned_int_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "14"
+                                },
+                                "value": "3"
+                            }
+                        },
+                        {
+                            "name": "FMT",
+                            "parameter": {
+                                "tag": "character_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "17"
+                                },
+                                "value": "(5F4.1)"
+                            }
+                        }
+                    ],
+                    "io_list": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "28"
+                            },
+                            "name": "V"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:28)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:28)-(2:28)","tag":"value","value":{"contents":"v","tag":"variable"}}],"span":"(2:28)-(2:28)"},"format":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"name":null,"span":"(2:14)-(2:14)"},{"anno":[],"expr":{"anno":[],"span":"(2:17)-(2:25)","tag":"value","value":{"contents":"(5F4.1)","tag":"string"}},"name":null,"span":"(2:17)-(2:25)"}],"span":"(2:12)-(2:26)"},"span":"(2:7)-(2:28)","tag":"write"},"tag":"statement"}],"name":"mysub","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:28)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:28)-(2:28)","tag":"value","value":{"contents":"v","tag":"variable"}}],"span":"(2:28)-(2:28)"},"format":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"name":null,"span":"(2:14)-(2:14)"},{"anno":[],"expr":{"anno":[],"span":"(2:17)-(2:25)","tag":"value","value":{"contents":"(5F4.1)","tag":"string"}},"name":null,"span":"(2:17)-(2:25)"}],"span":"(2:12)-(2:26)"},"span":"(2:7)-(2:28)","tag":"write"},"tag":"statement"}],"name":"mysub","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranWriteStatement.
+	self assert: stmt startPos equals: 33.
+	self assert: stmt endPos equals: 54.
+
+	self assert: stmt ioParameters size equals: 2.
+
+	self assert: stmt ioParameters first class equals: FASTFortranIntegerLiteral.
+	self assert: stmt ioParameters first startPos equals: 40.
+	self assert: stmt ioParameters second class equals: FASTFortranCharacterLiteral .
+	self assert: stmt ioParameters second startPos equals: 43.
+
+	self assert: stmt arguments size equals: 1.
+
+	self assert: stmt arguments first class equals: FASTFortranScalarVariable.
+	self assert: stmt arguments first startPos equals: 54.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testWriteFullIOParameters [
+
+	| stmt result |
+	fortranCode := '      subroutine mysub ()
+      WRITE( 1, 2, REC=3, IOSTAT=N, ERR=8 ) X, Y
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testWriteFullIOParameters.FOR",
+    "program_units": [
+        {
+            "tag": "subroutine",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "18"
+                },
+                "name": "MYSUB"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "write_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "control_info_list": [
+                        {
+                            "name": "UNIT",
+                            "parameter": {
+                                "tag": "unsigned_int_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "14"
+                                },
+                                "value": "1"
+                            }
+                        },
+                        {
+                            "name": "FMT",
+                            "parameter": {
+                                "label_ref": "2"
+                            }
+                        },
+                        {
+                            "name": "REC",
+                            "parameter": {
+                                "tag": "unsigned_int_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "24"
+                                },
+                                "value": "3"
+                            }
+                        },
+                        {
+                            "name": "END",
+                            "parameter": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "34"
+                                },
+                                "name": "N"
+                            }
+                        },
+                        {
+                            "name": "ERR",
+                            "parameter": "8"
+                        }
+                    ],
+                    "io_list": [
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "45"
+                            },
+                            "name": "X"
+                        },
+                        {
+                            "tag": "symbolic_name",
+                            "start_pos": {
+                                "line": "2",
+                                "column": "48"
+                            },
+                            "name": "Y"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:48)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:45)-(2:45)","tag":"value","value":{"contents":"x","tag":"variable"}},{"anno":[],"span":"(2:48)-(2:48)","tag":"value","value":{"contents":"y","tag":"variable"}}],"span":"(2:45)-(2:48)"},"format":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"name":null,"span":"(2:14)-(2:14)"},{"anno":[],"expr":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":["2",null],"tag":"integer"}},"name":null,"span":"(2:17)-(2:17)"},{"anno":[],"expr":{"anno":[],"span":"(2:24)-(2:24)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"name":"rec","span":"(2:20)-(2:24)"},{"anno":[],"expr":{"anno":[],"span":"(2:34)-(2:34)","tag":"value","value":{"contents":"n","tag":"variable"}},"name":"iostat","span":"(2:27)-(2:34)"},{"anno":[],"expr":{"anno":[],"span":"(2:41)-(2:41)","tag":"value","value":{"contents":["8",null],"tag":"integer"}},"name":"err","span":"(2:37)-(2:41)"}],"span":"(2:12)-(2:43)"},"span":"(2:7)-(2:48)","tag":"write"},"tag":"statement"}],"name":"mysub","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:48)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:45)-(2:45)","tag":"value","value":{"contents":"x","tag":"variable"}},{"anno":[],"span":"(2:48)-(2:48)","tag":"value","value":{"contents":"y","tag":"variable"}}],"span":"(2:45)-(2:48)"},"format":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"name":null,"span":"(2:14)-(2:14)"},{"anno":[],"expr":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"contents":["2",null],"tag":"integer"}},"name":null,"span":"(2:17)-(2:17)"},{"anno":[],"expr":{"anno":[],"span":"(2:24)-(2:24)","tag":"value","value":{"contents":["3",null],"tag":"integer"}},"name":"rec","span":"(2:20)-(2:24)"},{"anno":[],"expr":{"anno":[],"span":"(2:34)-(2:34)","tag":"value","value":{"contents":"n","tag":"variable"}},"name":"iostat","span":"(2:27)-(2:34)"},{"anno":[],"expr":{"anno":[],"span":"(2:41)-(2:41)","tag":"value","value":{"contents":["8",null],"tag":"integer"}},"name":"err","span":"(2:37)-(2:41)"}],"span":"(2:12)-(2:43)"},"span":"(2:7)-(2:48)","tag":"write"},"tag":"statement"}],"name":"mysub","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranWriteStatement.
+	self assert: stmt startPos equals: 33.
+	self assert: stmt endPos equals: 74.
+
+	self assert: stmt ioParameters size equals: 5.
+
+	self assert: stmt ioParameters first class equals: FASTFortranIntegerLiteral.
+	self assert: stmt ioParameters first startPos equals: 40.
+	self assert: stmt ioParameters second class equals: FASTFortranIntegerLiteral.
+	self assert: stmt ioParameters second startPos equals: 43.
+	self assert: stmt ioParameters third class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters third startPos equals: 46.
+	self assert: stmt ioParameters fourth class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters fourth startPos equals: 53.
+	self assert: stmt ioParameters fifth class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters fifth startPos equals: 63.
+
+	self assert: stmt arguments size equals: 2.
+
+	self assert: stmt arguments first class equals: FASTFortranScalarVariable.
+	self assert: stmt arguments first startPos equals: 71.
+	self assert: stmt arguments second class equals: FASTFortranScalarVariable.
+	self assert: stmt arguments second startPos equals: 74.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testWriteStarStarIOParameters [
+
+	| stmt result |
+	fortranCode := '      subroutine mysub ()
+      WRITE( *, * ) ''I/O error'' 
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testWriteStarStarIOParameters.FOR",
+    "program_units": [
+        {
+            "tag": "subroutine",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "18"
+                },
+                "name": "MYSUB"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "write_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "control_info_list": [
+                        {
+                            "name": "UNIT",
+                            "parameter": {
+                                "asterisk": "*"
+                            }
+                        },
+                        {
+                            "name": "FMT",
+                            "parameter": {
+                                "asterisk": "*"
+                            }
+                        }
+                    ],
+                    "io_list": [
+                        {
+                            "tag": "character_expression",
+                            "expression": {
+                                "tag": "character_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "21"
+                                },
+                                "value": "I/O error"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:31)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:21)-(2:31)","tag":"value","value":{"contents":"I/O error","tag":"string"}}],"span":"(2:21)-(2:31)"},"format":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"tag":"star"}},"name":null,"span":"(2:14)-(2:14)"},{"anno":[],"expr":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"tag":"star"}},"name":null,"span":"(2:17)-(2:17)"}],"span":"(2:12)-(2:19)"},"span":"(2:7)-(2:31)","tag":"write"},"tag":"statement"}],"name":"mysub","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:31)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:21)-(2:31)","tag":"value","value":{"contents":"I/O error","tag":"string"}}],"span":"(2:21)-(2:31)"},"format":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:14)-(2:14)","tag":"value","value":{"tag":"star"}},"name":null,"span":"(2:14)-(2:14)"},{"anno":[],"expr":{"anno":[],"span":"(2:17)-(2:17)","tag":"value","value":{"tag":"star"}},"name":null,"span":"(2:17)-(2:17)"}],"span":"(2:12)-(2:19)"},"span":"(2:7)-(2:31)","tag":"write"},"tag":"statement"}],"name":"mysub","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranWriteStatement.
+	self assert: stmt startPos equals: 33.
+	self assert: stmt endPos equals: 57.
+
+	self assert: stmt ioParameters size equals: 2.
+
+	self assert: stmt ioParameters first class equals: FASTFortranAsterisk.
+	self assert: stmt ioParameters first startPos equals: 40.
+	self assert: stmt ioParameters second class equals: FASTFortranAsterisk.
+	self assert: stmt ioParameters second startPos equals: 43.
+
+	self assert: stmt arguments size equals: 1.
+
+	self assert: stmt arguments first class equals: FASTFortranCharacterLiteral.
+	self assert: stmt arguments first startPos equals: 47.
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testWriteToInternalFile [
+	"Write Internal File seems to be just a String variable"
+
+	| stmt result |
+	fortranCode := '      subroutine mysub ()
+      WRITE( STRING, 1) ''A message''
+      end
+'.
+<<<<<<< HEAD
+<<<<<<< HEAD
+	jsonCode := '{
+    "tag": "fortran_file",
+    "comments": {},
+    "file": "test/pharo/testWriteToInternalFile.FOR",
+    "program_units": [
+        {
+            "tag": "subroutine",
+            "name": {
+                "tag": "symbolic_name",
+                "start_pos": {
+                    "line": "1",
+                    "column": "18"
+                },
+                "name": "MYSUB"
+            },
+            "parameters": [],
+            "start_pos": {
+                "line": "1",
+                "column": "7"
+            },
+            "end_pos": {
+                "line": "3",
+                "column": "9"
+            },
+            "statement_list": [
+                {
+                    "tag": "write_statement",
+                    "start_pos": {
+                        "line": "2",
+                        "column": "7"
+                    },
+                    "control_info_list": [
+                        {
+                            "name": "UNIT",
+                            "parameter": {
+                                "tag": "symbolic_name",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "14"
+                                },
+                                "name": "STRING"
+                            }
+                        },
+                        {
+                            "name": "FMT",
+                            "parameter": {
+                                "label_ref": "1"
+                            }
+                        }
+                    ],
+                    "io_list": [
+                        {
+                            "tag": "character_expression",
+                            "expression": {
+                                "tag": "character_constant",
+                                "start_pos": {
+                                    "line": "2",
+                                    "column": "25"
+                                },
+                                "value": "A message"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}'.
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:35)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:25)-(2:35)","tag":"value","value":{"contents":"A message","tag":"string"}}],"span":"(2:25)-(2:35)"},"format":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:14)-(2:19)","tag":"value","value":{"contents":"string","tag":"variable"}},"name":null,"span":"(2:14)-(2:19)"},{"anno":[],"expr":{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"name":null,"span":"(2:22)-(2:22)"}],"span":"(2:12)-(2:23)"},"span":"(2:7)-(2:35)","tag":"write"},"tag":"statement"}],"name":"mysub","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> bcadea2 (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+=======
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:35)","statement":{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(2:25)-(2:35)","tag":"value","value":{"contents":"A message","tag":"string"}}],"span":"(2:25)-(2:35)"},"format":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:14)-(2:19)","tag":"value","value":{"contents":"string","tag":"variable"}},"name":null,"span":"(2:14)-(2:19)"},{"anno":[],"expr":{"anno":[],"span":"(2:22)-(2:22)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"name":null,"span":"(2:22)-(2:22)"}],"span":"(2:12)-(2:23)"},"span":"(2:7)-(2:35)","tag":"write"},"tag":"statement"}],"name":"mysub","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+>>>>>>> 1a978fb (syntax json visitor abstract class and ast implementation - base methods, program units, support + tests)
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranWriteStatement.
+	self assert: stmt startPos equals: 33.
+	self assert: stmt endPos equals: 61.
+
+	self assert: stmt ioParameters size equals: 2.
+
+	self assert: stmt ioParameters first class equals: FASTFortranScalarVariable.
+	self assert: stmt ioParameters first startPos equals: 40.
+	self assert: stmt ioParameters second class equals: FASTFortranIntegerLiteral.
+	self assert: stmt ioParameters second startPos equals: 48.
+
+	self assert: stmt arguments size equals: 1.
+
+	self assert: stmt arguments first class equals: FASTFortranCharacterLiteral.
+	self assert: stmt arguments first startPos equals: 51.
+]
