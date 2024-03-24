@@ -1055,15 +1055,15 @@ FASTFortranSyntaxJsonVisitor >> visitSubroutine: aSubroutine [
 
 	| data subroutine position |
 	data := super visitSubroutine: aSubroutine.
-	position := self createPosition: data first end: data third.
+	position := self createPosition: (data at: #start_pos) end: (data at: #end_pos).
 	subroutine := (self
 		               newEntity: FASTFortranSubroutine
 		               atPosition: position)
-		              name: data fifth;
+		              name: (data at: #name);
 		              statementBlock: (FASTFortranStatementBlock new
-				               statements: data fourth;
+				               statements: (data at: #statement_list);
 				               yourself);
-		              parameters: data second;
+		              parameters: (data at: #parameters);
 		              yourself.
 
 	self setBodyPosition: subroutine fromProgramUnitPosition: position.
