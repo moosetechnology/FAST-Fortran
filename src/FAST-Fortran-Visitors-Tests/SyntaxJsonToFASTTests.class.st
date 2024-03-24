@@ -1122,9 +1122,8 @@ SyntaxJsonToFASTTests >> testAssignementBooleanLiteral [
     ]
 }
 '.
-	result := self visitJsonCode.
+	main := self visitJsonCode.
 	
-	main := result first.
 	self assert: main class equals: FASTFortranProgramMain.
 	self assert: main statementBlock class equals: FASTFortranStatementBlock.
 	
@@ -1206,9 +1205,8 @@ SyntaxJsonToFASTTests >> testAssignementFunctionCall [
     ]
 }
 '.
-	result := self visitJsonCode.
-	
-	main := result first.
+	main := self visitJsonCode.
+
 	self assert: main class equals: FASTFortranProgramMain.
 	self assert: main statementBlock class equals: FASTFortranStatementBlock.
 	
@@ -1290,9 +1288,8 @@ SyntaxJsonToFASTTests >> testAssignementIntegerLiteral [
     ]
 }
 '.
-	result := self visitJsonCode.
-	
-	main := result first.
+	main := self visitJsonCode.
+
 	self assert: main class equals: FASTFortranProgramMain.
 	self assert: main statementBlock class equals: FASTFortranStatementBlock.
 	
@@ -1380,7 +1377,7 @@ SyntaxJsonToFASTTests >> testAssignementNegativeIntegerLiteral [
 '.
 	result := self visitJsonCode.
 	
-	stmt := result first statementBlock statements first.
+	stmt := result statementBlock statements first.
 
 	self assert: stmt expression class equals: FASTFortranIntegerLiteral.
 	self assert: stmt expression primitiveValue equals: '-1'.
@@ -1462,7 +1459,7 @@ SyntaxJsonToFASTTests >> testAssignementNegativeRealLiteral [
 '.
 	result := self visitJsonCode.
 
-	stmt := result first statementBlock statements first.
+	stmt := result statementBlock statements first.
 
 	self assert: stmt expression class equals: FASTFortranRealLiteral.
 	self assert: stmt expression primitiveValue equals: '-2.12'
@@ -1539,7 +1536,7 @@ SyntaxJsonToFASTTests >> testAssignementRealLiteral [
 '.
 	result := self visitJsonCode.
 
-	stmt := result first statementBlock statements first.
+	stmt := result statementBlock statements first.
 	self assert: stmt class equals: FASTFortranAssignmentStatement.
 	"self assert: stmt startPos equals: 32."
 
@@ -1699,7 +1696,7 @@ SyntaxJsonToFASTTests >> testAssignementStringLiteral [
 '.
 	result := self visitJsonCode.
 
-	stmt := result first statementBlock statements first.
+	stmt := result statementBlock statements first.
 	self assert: stmt class equals: FASTFortranAssignmentStatement.
 	"self assert: stmt startPos equals: 32."
 
@@ -1899,7 +1896,7 @@ SyntaxJsonToFASTTests >> testBinaryExpressionDivision [
 }'.
 	result := self visitJsonCode.
 
-	asnmt := result first statementBlock statements first.
+	asnmt := result statementBlock statements first.
 	self assert: asnmt class equals: FASTFortranAssignmentStatement.
 
 	expr := asnmt expression.
@@ -1907,11 +1904,11 @@ SyntaxJsonToFASTTests >> testBinaryExpressionDivision [
 	self assert: expr operator equals: '/'.
 	"self assert: expr startPos equals: 33."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	"self assert: expr left startPos equals: 33."
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	"self assert: expr leftOperand startPos equals: 33."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	"self assert: expr right startPos equals: 37."
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	"self assert: expr rightOperand startPos equals: 37."
 ]
 
 { #category : #'tests-expression' }
@@ -1998,7 +1995,7 @@ SyntaxJsonToFASTTests >> testBinaryExpressionEqKeyword [
 }'.
 	result := self visitJsonCode.
 
-	asnmt := result first statementBlock statements first.
+	asnmt := result statementBlock statements first.
 	self assert: asnmt class equals: FASTFortranIfBlockStatement.
 
 	expr := asnmt condition.
@@ -2006,13 +2003,13 @@ SyntaxJsonToFASTTests >> testBinaryExpressionEqKeyword [
 	self assert: expr operator equals: '.EQ.'.
 	"self assert: expr startPos equals: 34."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	self assert: expr left primitiveValue equals: '5'.
-	"self assert: expr left startPos equals: 34."
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand primitiveValue equals: '5'.
+	"self assert: expr leftOperand startPos equals: 34."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	self assert: expr right primitiveValue equals: '6'.
-	"self assert: expr right startPos equals: 41."
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand primitiveValue equals: '6'.
+	"self assert: expr rightOperand startPos equals: 41."
 ]
 
 { #category : #'tests-expression' }
@@ -2096,7 +2093,7 @@ SyntaxJsonToFASTTests >> testBinaryExpressionExponentiation [
 }'.
 	result := self visitJsonCode.
 	
-	asnmt := result first statementBlock statements first.
+	asnmt := result statementBlock statements first.
 	self assert: asnmt class equals: FASTFortranAssignmentStatement.
 
 	expr := asnmt expression.
@@ -2104,11 +2101,11 @@ SyntaxJsonToFASTTests >> testBinaryExpressionExponentiation [
 	self assert: expr operator equals: '**'.
 	"self assert: expr startPos equals: 33."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	"self assert: expr left startPos equals: 33."
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	"self assert: expr leftOperand startPos equals: 33."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	"self assert: expr right startPos equals: 38."
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	"self assert: expr rightOperand startPos equals: 38."
 	
 ]
 
@@ -2196,7 +2193,7 @@ SyntaxJsonToFASTTests >> testBinaryExpressionGtKeyword [
 }'.
 	result := self visitJsonCode.
 
-	asnmt := result first statementBlock statements first.
+	asnmt := result statementBlock statements first.
 	self assert: asnmt class equals: FASTFortranIfBlockStatement.
 
 	expr := asnmt condition.
@@ -2204,13 +2201,13 @@ SyntaxJsonToFASTTests >> testBinaryExpressionGtKeyword [
 	self assert: expr operator equals: '.GT.'.
 	"self assert: expr startPos equals: 34."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	self assert: expr left primitiveValue equals: '5'.
-"	self assert: expr left startPos equals: 34."
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand primitiveValue equals: '5'.
+"	self assert: expr leftOperand startPos equals: 34."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	self assert: expr right primitiveValue equals: '6'.
-	"self assert: expr right startPos equals: 41."
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand primitiveValue equals: '6'.
+	"self assert: expr rightOperand startPos equals: 41."
 ]
 
 { #category : #'tests-expression' }
@@ -2279,7 +2276,7 @@ SyntaxJsonToFASTTests >> testBinaryExpressionGtSymbol [
 }'.
 	result := self visitJsonCode.
 
-	asnmt := result first statementBlock statements first.
+	asnmt := result statementBlock statements first.
 	self assert: asnmt class equals: FASTFortranIfBlockStatement.
 
 	expr := asnmt condition.
@@ -2287,13 +2284,13 @@ SyntaxJsonToFASTTests >> testBinaryExpressionGtSymbol [
 	self assert: expr operator equals: '.GT.'.
 	"self assert: expr startPos equals: 34."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	self assert: expr left primitiveValue equals: '5'.
-	"self assert: expr left startPos equals: 34."
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand primitiveValue equals: '5'.
+	"self assert: expr leftOperand startPos equals: 34."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	self assert: expr right primitiveValue equals: '6'.
-	"self assert: expr right startPos equals: 38."
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand primitiveValue equals: '6'.
+	"self assert: expr rightOperand startPos equals: 38."
 ]
 
 { #category : #'tests-expression' }
@@ -2380,7 +2377,7 @@ SyntaxJsonToFASTTests >> testBinaryExpressionGteKeyword [
 }'.
 	result := self visitJsonCode.
 
-	asnmt := result first statementBlock statements first.
+	asnmt := result statementBlock statements first.
 	self assert: asnmt class equals: FASTFortranIfBlockStatement.
 
 	expr := asnmt condition.
@@ -2388,13 +2385,13 @@ SyntaxJsonToFASTTests >> testBinaryExpressionGteKeyword [
 	self assert: expr operator equals: '.GE.'.
 	"self assert: expr startPos equals: 34."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	self assert: expr left primitiveValue equals: '5'.
-	"self assert: expr left startPos equals: 34."
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand primitiveValue equals: '5'.
+	"self assert: expr leftOperand startPos equals: 34."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	self assert: expr right primitiveValue equals: '6'.
-	"self assert: expr right startPos equals: 41."
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand primitiveValue equals: '6'.
+	"self assert: expr rightOperand startPos equals: 41."
 ]
 
 { #category : #'tests-expression' }
@@ -2481,7 +2478,7 @@ SyntaxJsonToFASTTests >> testBinaryExpressionLtKeyword [
 }'.
 	result := self visitJsonCode.
 
-	asnmt := result first statementBlock statements first.
+	asnmt := result statementBlock statements first.
 	self assert: asnmt class equals: FASTFortranIfBlockStatement.
 
 	expr := asnmt condition.
@@ -2489,13 +2486,13 @@ SyntaxJsonToFASTTests >> testBinaryExpressionLtKeyword [
 	self assert: expr operator equals: '.LT.'.
 	"self assert: expr startPos equals: 34."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	self assert: expr left primitiveValue equals: '5'.
-	"self assert: expr left startPos equals: 34."
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand primitiveValue equals: '5'.
+	"self assert: expr leftOperand startPos equals: 34."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	self assert: expr right primitiveValue equals: '6'.
-	"self assert: expr right startPos equals: 41."
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand primitiveValue equals: '6'.
+	"self assert: expr rightOperand startPos equals: 41."
 ]
 
 { #category : #'tests-expression' }
@@ -2564,7 +2561,7 @@ SyntaxJsonToFASTTests >> testBinaryExpressionLtSymbol [
 }'.
 	result := self visitJsonCode.
 
-	asnmt := result first statementBlock statements first.
+	asnmt := result statementBlock statements first.
 	self assert: asnmt class equals: FASTFortranIfBlockStatement.
 
 	expr := asnmt condition.
@@ -2572,13 +2569,13 @@ SyntaxJsonToFASTTests >> testBinaryExpressionLtSymbol [
 	self assert: expr operator equals: '.lt.'.
 	self assert: expr startPos equals: 34.
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	self assert: expr left primitiveValue equals: '5'.
-	self assert: expr left startPos equals: 34.
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand primitiveValue equals: '5'.
+	self assert: expr leftOperand startPos equals: 34.
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	self assert: expr right primitiveValue equals: '6'.
-	self assert: expr right startPos equals: 38
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand primitiveValue equals: '6'.
+	self assert: expr rightOperand startPos equals: 38
 ]
 
 { #category : #'tests-expression' }
@@ -2665,7 +2662,7 @@ SyntaxJsonToFASTTests >> testBinaryExpressionLteKeyword [
 }'.
 	result := self visitJsonCode.
 
-	asnmt := result first statementBlock statements first.
+	asnmt := result statementBlock statements first.
 	self assert: asnmt class equals: FASTFortranIfBlockStatement.
 
 	expr := asnmt condition.
@@ -2673,13 +2670,13 @@ SyntaxJsonToFASTTests >> testBinaryExpressionLteKeyword [
 	self assert: expr operator equals: '.LE.'.
 	"self assert: expr startPos equals: 34."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	self assert: expr left primitiveValue equals: '5'.
-	"self assert: expr left startPos equals: 34."
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand primitiveValue equals: '5'.
+	"self assert: expr leftOperand startPos equals: 34."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	self assert: expr right primitiveValue equals: '6'.
-	"self assert: expr right startPos equals: 41."
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand primitiveValue equals: '6'.
+	"self assert: expr rightOperand startPos equals: 41."
 ]
 
 { #category : #'tests-expression' }
@@ -2763,7 +2760,7 @@ SyntaxJsonToFASTTests >> testBinaryExpressionMultiplication [
 }'.
 	result := self visitJsonCode.
 
-	asnmt := result first statementBlock statements first.
+	asnmt := result statementBlock statements first.
 	self assert: asnmt class equals: FASTFortranAssignmentStatement.
 
 	expr := asnmt expression.
@@ -2771,11 +2768,11 @@ SyntaxJsonToFASTTests >> testBinaryExpressionMultiplication [
 	self assert: expr operator equals: '*'.
 	"self assert: expr startPos equals: 33."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	"self assert: expr left startPos equals: 33."
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	"self assert: expr leftOperand startPos equals: 33."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	"self assert: expr right startPos equals: 37."
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	"self assert: expr rightOperand startPos equals: 37."
 ]
 
 { #category : #'tests-expression' }
@@ -2862,7 +2859,7 @@ SyntaxJsonToFASTTests >> testBinaryExpressionNeKeyword [
 }'.
 	result := self visitJsonCode.
 
-	asnmt := result first statementBlock statements first.
+	asnmt := result statementBlock statements first.
 	self assert: asnmt class equals: FASTFortranIfBlockStatement.
 
 	expr := asnmt condition.
@@ -2870,13 +2867,13 @@ SyntaxJsonToFASTTests >> testBinaryExpressionNeKeyword [
 	self assert: expr operator equals: '.NE.'.
 	"self assert: expr startPos equals: 34."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	self assert: expr left primitiveValue equals: '5'.
-	"self assert: expr left startPos equals: 34."
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand primitiveValue equals: '5'.
+	"self assert: expr leftOperand startPos equals: 34."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	self assert: expr right primitiveValue equals: '6'.
-	"self assert: expr right startPos equals: 41."
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand primitiveValue equals: '6'.
+	"self assert: expr rightOperand startPos equals: 41."
 ]
 
 { #category : #'tests-expression' }
@@ -2960,19 +2957,19 @@ SyntaxJsonToFASTTests >> testBinaryExpressionSubstraction [
 }'.
 	result := self visitJsonCode.
 
-	expr := result first statementBlock statements first expression.
+	expr := result statementBlock statements first expression.
 
 	self assert: expr class equals: FASTFortranBinaryExpression.
 	self assert: expr operator equals: '-'.
 	"self assert: expr startPos equals: 33."
 
-	self assert: expr left class equals: FASTFortranScalarVariable.
-	self assert: expr left name equals: 'max'.
-	"self assert: expr left startPos equals: 33."
+	self assert: expr leftOperand class equals: FASTFortranScalarVariable.
+	self assert: expr leftOperand name equals: 'max'.
+	"self assert: expr leftOperand startPos equals: 33."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	self assert: expr right primitiveValue equals: '1'.
-	"self assert: expr right startPos equals: 37."
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand primitiveValue equals: '1'.
+	"self assert: expr rightOperand startPos equals: 37."
 
 ]
 
@@ -3049,7 +3046,7 @@ SyntaxJsonToFASTTests >> testBinaryExpressionUnaryMinus [
 }'.
 	result := self visitJsonCode.
 
-	asnmt := result first statementBlock statements first.
+	asnmt := result statementBlock statements first.
 	self assert: asnmt class equals: FASTFortranAssignmentStatement.	
 	
 	expr := asnmt expression.
@@ -3064,7 +3061,7 @@ SyntaxJsonToFASTTests >> testBinaryExpressionUnaryMinus [
 
 { #category : #'tests-programUnit' }
 SyntaxJsonToFASTTests >> testBlockData [
-	| result bd |
+	| bd |
 
 	fortranCode := '      block data myblck
       end
@@ -3097,9 +3094,8 @@ SyntaxJsonToFASTTests >> testBlockData [
         }
     ]
 }'.
-	result := self visitJsonCode.
+	bd := self visitJsonCode.
 
-	bd := result first.
 	self assert: bd class equals: FASTFortranBlockData.
 	self assert: bd name primitiveValue equals: 'MYBLCK'.
 	"self assert: bd startPos equals: 7."
@@ -3247,7 +3243,7 @@ C comment in a function''s body
 
 	result := self visitJsonCode.
 
-	cmt := result first statementBlock comments anyOne.
+	cmt := result statementBlock comments anyOne.
 	self assert: cmt content equals: 'C comment in a function''s body'.
 	self assert: cmt startPos equals: 31.
 	self assert: cmt endPos equals: 60.
@@ -6225,7 +6221,7 @@ SyntaxJsonToFASTTests >> testFormatStatement [
 { #category : #'tests-programUnit' }
 SyntaxJsonToFASTTests >> testFunctionNoParameter [
 
-	| result fct |
+	| fct |
 	fortranCode := '      integer function aFct()
       end
 '.
@@ -6261,10 +6257,7 @@ SyntaxJsonToFASTTests >> testFunctionNoParameter [
         }
     ]
 }'.
-	result := self visitJsonCode.
-
-	self assert: result isNotEmpty.
-	fct := result first.
+	fct := self visitJsonCode.
 
 	self assert: fct class equals: FASTFortranFunction.
 	self assert: fct name primitiveValue equals: 'AFCT'.
@@ -6398,7 +6391,7 @@ SyntaxJsonToFASTTests >> testFunctionStatement [
 { #category : #'tests-programUnit' }
 SyntaxJsonToFASTTests >> testFunctionWithParameter [
 
-	| result fct param |
+	| fct param |
 	fortranCode := '
       integer function aFct(i,j)
       end
@@ -6453,10 +6446,7 @@ SyntaxJsonToFASTTests >> testFunctionWithParameter [
     ]
 }'.
 
-	result := self visitJsonCode.
-
-	self assert: result isNotEmpty.
-	fct := result first.
+	fct := self visitJsonCode.
 
 	self assert: fct class equals: FASTFortranFunction.
 	self assert: fct parameters size equals: 2.
@@ -6479,7 +6469,7 @@ SyntaxJsonToFASTTests >> testFunctionWithStatement [
 
 "syntax does not have return expression"
 
-	| result fct |
+	| fct |
 	fortranCode := '      integer function aFct()
       return 1
       end
@@ -6524,10 +6514,7 @@ SyntaxJsonToFASTTests >> testFunctionWithStatement [
         }
     ]
 }'.
-	result := self visitJsonCode.
-
-	self assert: result isNotEmpty.
-	fct := result first.
+	fct := self visitJsonCode.
 
 	self assert: fct class equals: FASTFortranFunction.
 	self assert: fct name equals: 'afct'.
@@ -8700,7 +8687,7 @@ SyntaxJsonToFASTTests >> testMainProgramAndSubroutine [
 
 { #category : #'tests-programUnit' }
 SyntaxJsonToFASTTests >> testMainProgramEmptyBody [
-	| result body |
+	| main body |
 
 	fortranCode := '      program main
       end
@@ -8734,12 +8721,11 @@ SyntaxJsonToFASTTests >> testMainProgramEmptyBody [
     ]
 }
 '.
-	result := self visitJsonCode.
-	
-	self assert: result size equals: 1.
-	self assert: result first class equals: FASTFortranProgramMain.
+	main := self visitJsonCode.
 
-	body := result first statementBlock.
+	self assert: main class equals: FASTFortranProgramMain.
+
+	body := main statementBlock.
 	self assert: body statements isCollection.
 	self assert: body statements size equals: 0.
 ]
@@ -9867,7 +9853,7 @@ SyntaxJsonToFASTTests >> testStopStatementWithInteger [
 { #category : #'tests-programUnit' }
 SyntaxJsonToFASTTests >> testSubroutineEmpty [
 
-	| result rtn |
+	| rtn |
 	fortranCode := '      SUBROUTINE RANK
       end
 '.
@@ -9899,12 +9885,7 @@ SyntaxJsonToFASTTests >> testSubroutineEmpty [
         }
     ]
 }'.
-	result := self visitJsonCode.
-	
-	self assert: result isCollection.
-	self assert: result size equals: 1.
-
-	rtn := result first.
+	rtn := self visitJsonCode.
 	self assert: rtn class equals: FASTFortranSubroutine.
 	self assert: rtn parameters isEmpty.
 	self assert: rtn statementBlock statements isEmpty.
@@ -9915,67 +9896,15 @@ SyntaxJsonToFASTTests >> testSubroutineEmpty [
 { #category : #'tests-programUnit' }
 SyntaxJsonToFASTTests >> testSubroutineWithParameters [
 
-	| result rtn param |
+	| rtn param |
 	fortranCode := '      SUBROUTINE SIMPLESUBROUTINE( a, b)
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/unit-tests/subroutine-with-parameters.FOR",
-    "program_units": [
-        {
-            "tag": "subroutine",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "18"
-                },
-                "name": "SIMPLESUBROUTINE"
-            },
-            "parameters": [
-                {
-                    "tag": "symbolic_name",
-                    "start_pos": {
-                        "line": "1",
-                        "column": "36"
-                    },
-                    "name": "A"
-                },
-                {
-                    "tag": "symbolic_name",
-                    "start_pos": {
-                        "line": "1",
-                        "column": "39"
-                    },
-                    "name": "B"
-                }
-            ],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "2",
-                "column": "9"
-            },
-            "statement_list": []
-        }
-    ]
-}
-'.
-	result := self visitJsonCode.
-	
-	self assert: result isCollection.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"SIMPLESUBROUTINE"}, "parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"36"}, "name":"A"}, {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"39"}, "name":"B"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "2", "column":"9"}, "statement_list" : []}]}'.
 
-	rtn := result anyOne.
+	rtn := self visitJsonCode.
 	self assert: rtn class equals: FASTFortranSubroutine.
 	self assert: rtn name primitiveValue equals: 'SIMPLESUBROUTINE'.
-
-	self assert: rtn statementBlock class equals: FASTFortranStatementBlock.
-	self assert: rtn statementBlock statements size equals: 0.
-	self assert: rtn statementBlock startPos equals: 42.
 
 	self assert: rtn startPos equals: 7.
 	"self assert: rtn endPos equals: 50."
@@ -9995,7 +9924,7 @@ SyntaxJsonToFASTTests >> testSubroutineWithParameters [
 { #category : #'tests-programUnit' }
 SyntaxJsonToFASTTests >> testSubroutineWithParametersOnTwoLines [
 
-	| result rtn |
+	| rtn |
 	fortranCode := '      SUBROUTINE SIMPLESUBROUTINE( a,
      & b)
       continue
@@ -10055,11 +9984,8 @@ SyntaxJsonToFASTTests >> testSubroutineWithParametersOnTwoLines [
     ]
 }
 '.
-	result := self visitJsonCode.
+	rtn := self visitJsonCode.
 	
-	self assert: result isCollection.
-
-	rtn := result anyOne.
 	self assert: rtn class equals: FASTFortranSubroutine.
 	self assert: rtn name equals: 'SIMPLESUBROUTINE'.
 
@@ -10159,7 +10085,7 @@ SyntaxJsonToFASTTests >> testTokenPosition [
 }'.
 	result := self visitJsonCode.
 	
-	stmnts := result first statementBlock statements.
+	stmnts := result statementBlock statements.
 	stmt := stmnts first.
 	self assert: stmt startPos equals: 29.
 	self assert: stmt endPos equals: 32.
