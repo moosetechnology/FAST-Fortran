@@ -118,15 +118,6 @@ FASTFortranSyntaxJsonVisitor >> visitArguments: aNode [
 ]
 
 { #category : #'as yet unclassified' }
-FASTFortranSyntaxJsonVisitor >> visitArithmeticExpression: aNode [
-
-	| data |
-	data := super visitArithmeticExpression: aNode.
-
-	^ data first
-]
-
-{ #category : #'as yet unclassified' }
 FASTFortranSyntaxJsonVisitor >> visitArithmeticIfStatement: aNode [
 	"start_pos s1 s3 s2 expression tag"
 
