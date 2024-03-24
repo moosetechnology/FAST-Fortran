@@ -1042,9 +1042,10 @@ FASTFortranSyntaxJsonVisitor >> visitStopStatement: aNode [
 		  label: ((data keys includes: 'label')
 				   ifTrue: [ data at: 'label' ]
 				   ifFalse: [ nil ]);
+			"--- argument ?!? ---
 			argument: ((data keys includes: 'argument')
 				   ifTrue: [ data at: 'argument' ]
-				   ifFalse: [ nil ]);
+				   ifFalse: [ nil ]);"
 		  yourself
 ]
 
