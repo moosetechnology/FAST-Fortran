@@ -26,12 +26,6 @@ FASTFortranSyntaxJsonVisitor >> createPosition: start end: end [
 	^ { start . end }
 ]
 
-{ #category : #'as yet unclassified' }
-FASTFortranSyntaxJsonVisitor >> generateKeys: aNode [
-	
-	^ aNode keys reject: [ :e | e = 'tag' ]
-]
-
 { #category : #initialization }
 FASTFortranSyntaxJsonVisitor >> initLineSizes: fortranSource [
 
