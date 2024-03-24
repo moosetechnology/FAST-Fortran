@@ -336,6 +336,17 @@ FASTFortranSyntaxJsonVisitor >> visitControlInfoList: aNode [
 ]
 
 { #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitDataImplyDoList: aNode [
+			  		<generated>
+					"m3 dlist m1 m2 tag"
+					
+					| data |    
+					data := super visitDataImplyDoList:aNode.
+
+					^ data
+]
+
+{ #category : #'as yet unclassified' }
 FASTFortranSyntaxJsonVisitor >> visitDataStatement: aNode [
 			  		<generated>
 					"start_pos tag parameters"
@@ -380,6 +391,17 @@ FASTFortranSyntaxJsonVisitor >> visitDimensionStatement: aNode [
 					
 					| data |    
 					data := super visitDimensionStatement:aNode.
+
+					^ data
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitDlist: aNode [
+			  		<generated>
+					"no keys in data"
+					
+					| data |    
+					data := super visitDlist:aNode.
 
 					^ data
 ]
@@ -712,6 +734,39 @@ FASTFortranSyntaxJsonVisitor >> visitLowerBound: aNode [
 	^ super visitLowerBound: aNode
 ]
 
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitM1: aNode [
+			  		<generated>
+					"start_pos tag value"
+					
+					| data |    
+					data := super visitM1:aNode.
+
+					^ data
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitM2: aNode [
+			  		<generated>
+					"start_pos tag name"
+					
+					| data |    
+					data := super visitM2:aNode.
+
+					^ data
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitM3: aNode [
+			  		<generated>
+					""
+					
+					| data |    
+					data := super visitM3:aNode.
+
+					^ data
+]
+
 { #category : #'visit statement' }
 FASTFortranSyntaxJsonVisitor >> visitMain: aNode [
 	"start_pos parameters end_pos statement_list name tag"
@@ -740,6 +795,17 @@ FASTFortranSyntaxJsonVisitor >> visitNlist: aNode [
 	"no keys in data"
 
 	^ super visitNlist: aNode
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitNonrepeatableEditDescriptor: aNode [
+			  		<generated>
+					"tag descriptor"
+					
+					| data |    
+					data := super visitNonrepeatableEditDescriptor:aNode.
+
+					^ data
 ]
 
 { #category : #'as yet unclassified' }
@@ -855,6 +921,28 @@ FASTFortranSyntaxJsonVisitor >> visitReadStatement: aNode [
 FASTFortranSyntaxJsonVisitor >> visitRealType: aNode [
 
 	^ FASTFortranRealType new
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitRepeatableEditDescriptor: aNode [
+			  		<generated>
+					"tag repeated_descriptors"
+					
+					| data |    
+					data := super visitRepeatableEditDescriptor:aNode.
+
+					^ data
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitRepeatedDescriptors: aNode [
+			  		<generated>
+					"no keys in data"
+					
+					| data |    
+					data := super visitRepeatedDescriptors:aNode.
+
+					^ data
 ]
 
 { #category : #'as yet unclassified' }
