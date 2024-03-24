@@ -314,7 +314,7 @@ FASTFortranSyntaxJsonVisitor >> visitContinueStatement: aNode [
 
 	^ (self newEntity: FASTFortranContinueStatement)
 		  startPos: (data at: 'start_pos');
-		  label: (data at: 'label');
+		  "label: (data at: 'label');"
 		  yourself
 ]
 
