@@ -264,7 +264,7 @@ FASTFortranSyntaxJsonVisitor >> visitCharacterType: aNode [
 					
 					| data |    
 					data := super visitCharacterType:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -346,7 +346,7 @@ FASTFortranSyntaxJsonVisitor >> visitControlInfoList: aNode [
 					
 					| data |    
 					data := super visitControlInfoList:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -357,7 +357,7 @@ FASTFortranSyntaxJsonVisitor >> visitDataStatement: aNode [
 					
 					| data |    
 					data := super visitDataStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -395,7 +395,7 @@ FASTFortranSyntaxJsonVisitor >> visitDimensionStatement: aNode [
 					
 					| data |    
 					data := super visitDimensionStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -406,7 +406,7 @@ FASTFortranSyntaxJsonVisitor >> visitDoStatement: aNode [
 					
 					| data |    
 					data := super visitDoStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -461,7 +461,7 @@ FASTFortranSyntaxJsonVisitor >> visitEquivalenceStatement: aNode [
 					
 					| data |    
 					data := super visitEquivalenceStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -493,7 +493,7 @@ FASTFortranSyntaxJsonVisitor >> visitFormat: aNode [
 					
 					| data |    
 					data := super visitFormat:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -504,7 +504,7 @@ FASTFortranSyntaxJsonVisitor >> visitFormatStatement: aNode [
 					
 					| data |    
 					data := super visitFormatStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -539,7 +539,7 @@ FASTFortranSyntaxJsonVisitor >> visitGotoStatement: aNode [
 					
 					| data |    
 					data := super visitGotoStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -550,7 +550,7 @@ FASTFortranSyntaxJsonVisitor >> visitImplicitStatement: aNode [
 					
 					| data |    
 					data := super visitImplicitStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -561,7 +561,7 @@ FASTFortranSyntaxJsonVisitor >> visitIncrement: aNode [
 					
 					| data |    
 					data := super visitIncrement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -572,7 +572,7 @@ FASTFortranSyntaxJsonVisitor >> visitInquireStatement: aNode [
 					
 					| data |    
 					data := super visitInquireStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -590,7 +590,7 @@ FASTFortranSyntaxJsonVisitor >> visitIntrinsicStatement: aNode [
 					
 					| data |    
 					data := super visitIntrinsicStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -608,7 +608,7 @@ FASTFortranSyntaxJsonVisitor >> visitLabels: aNode [
 					
 					| data |    
 					data := super visitLabels:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -692,7 +692,7 @@ FASTFortranSyntaxJsonVisitor >> visitLogicalIfStatement: aNode [
 					
 					| data |    
 					data := super visitLogicalIfStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -716,7 +716,7 @@ FASTFortranSyntaxJsonVisitor >> visitLoopControl: aNode [
 					
 					| data |    
 					data := super visitLoopControl:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -764,7 +764,7 @@ FASTFortranSyntaxJsonVisitor >> visitOpenStatement: aNode [
 					
 					| data |    
 					data := super visitOpenStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -795,7 +795,7 @@ FASTFortranSyntaxJsonVisitor >> visitParameterStatement: aNode [
 					
 					| data |    
 					data := super visitParameterStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -816,7 +816,7 @@ FASTFortranSyntaxJsonVisitor >> visitPrintStatement: aNode [
 					
 					| data |    
 					data := super visitPrintStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -862,7 +862,7 @@ FASTFortranSyntaxJsonVisitor >> visitReadStatement: aNode [
 					
 					| data |    
 					data := super visitReadStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -900,7 +900,7 @@ FASTFortranSyntaxJsonVisitor >> visitRewindStatement: aNode [
 					
 					| data |    
 					data := super visitRewindStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -1004,7 +1004,7 @@ FASTFortranSyntaxJsonVisitor >> visitSubstring: aNode [
 					
 					| data |    
 					data := super visitSubstring:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -1023,7 +1023,7 @@ FASTFortranSyntaxJsonVisitor >> visitTag: aNode [
 					
 					| data |    
 					data := super visitTag:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -1116,7 +1116,7 @@ FASTFortranSyntaxJsonVisitor >> visitVar: aNode [
 					
 					| data |    
 					data := super visitVar:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -1168,7 +1168,7 @@ FASTFortranSyntaxJsonVisitor >> visitVariableName: aNode [
 					
 					| data |    
 					data := super visitVariableName:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -1179,6 +1179,6 @@ FASTFortranSyntaxJsonVisitor >> visitWriteStatement: aNode [
 					
 					| data |    
 					data := super visitWriteStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
