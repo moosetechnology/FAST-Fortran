@@ -841,7 +841,8 @@ FASTFortranSyntaxJsonVisitor >> visitProcList: aNode [
 FASTFortranSyntaxJsonVisitor >> visitProgramFile: aProgramFile [
 	
 	model := FASTFortranModel new.
-	^ (super visitProgramFile: aProgramFile) first.
+
+	^super visitProgramFile: aProgramFile
 	
 
 ]

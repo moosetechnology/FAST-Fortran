@@ -3061,13 +3061,15 @@ SyntaxJsonToFASTTests >> testBinaryExpressionUnaryMinus [
 
 { #category : #'tests-programUnit' }
 SyntaxJsonToFASTTests >> testBlockData [
-	| bd |
+	| bd result |
 
 	fortranCode := '      block data myblck
       end
 '.
 	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax-230325/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "block_data", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYBLCK"}, "parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "2", "column":"9"}, "statement_list" : []}] }'.
-	bd := self visitJsonCode.
+	result := self visitJsonCode.
+	
+	bd := result anyOne.
 
 	self assert: bd class equals: FASTFortranBlockData.
 	self assert: bd name equals: 'MYBLCK'.
@@ -6194,12 +6196,14 @@ SyntaxJsonToFASTTests >> testFormatStatement [
 { #category : #'tests-programUnit' }
 SyntaxJsonToFASTTests >> testFunctionNoParameter [
 
-	| fct |
+	| fct result |
 	fortranCode := '      integer function aFct()
       end
 '.
 	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax-230325/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "function", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"24"}, "name":"AFCT"}, "parameters" : [], "return_type" : {"tag" : "type_reference", "name":"INTEGER"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "2", "column":"9"}, "statement_list" : []}] }'.
-	fct := self visitJsonCode.
+	result := self visitJsonCode.
+	
+	fct := result anyOne.
 
 	self assert: fct class equals: FASTFortranFunction.
 	self assert: fct name equals: 'AFCT'.
@@ -6333,14 +6337,16 @@ SyntaxJsonToFASTTests >> testFunctionStatement [
 { #category : #'tests-programUnit' }
 SyntaxJsonToFASTTests >> testFunctionWithParameter [
 
-	| fct param |
+	| fct param result |
 	fortranCode := '
       integer function aFct(i,j)
       end
 '.
 	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax-230325/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "function", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"24"}, "name":"AFCT"}, "parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"29"}, "name":"I"}, {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"31"}, "name":"J"}], "return_type" : {"tag" : "type_reference", "name":"INTEGER"}, "start_pos" : {"line" : "2", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : []}] }'.
 
-	fct := self visitJsonCode.
+	result := self visitJsonCode.
+	
+	fct := result anyOne.
 
 	self assert: fct class equals: FASTFortranFunction.
 	self assert: fct parameters size equals: 2.
@@ -6363,13 +6369,16 @@ SyntaxJsonToFASTTests >> testFunctionWithStatement [
 
 "syntax does not have return expression"
 
-	| fct |
+	| fct result |
 	fortranCode := '      integer function aFct()
       return 1
       end
 '.
 	jsonCode := ' { "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax-230325/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "function", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"24"}, "name":"AFCT"}, "parameters" : [], "return_type" : {"tag" : "type_reference", "name":"INTEGER"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "return_statement", "start_pos" : {"line" : "2", "column":"7"}}]}] }'.
-	fct := self visitJsonCode.
+
+	result := self visitJsonCode.
+	
+	fct := result anyOne.
 
 	self assert: fct class equals: FASTFortranFunction.
 	self assert: fct name equals: 'AFCT'.
@@ -8478,8 +8487,11 @@ SyntaxJsonToFASTTests >> testMainProgramAndSubroutine [
 
 	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax-230325/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"TESTALT"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "2", "column":"9"}, "statement_list" : []}, {"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"18"}, "name":"RANK"}, "parameters" : [], "start_pos" : {"line" : "4", "column":"7"}, "end_pos" : {"line" : "5", "column":"9"}, "statement_list" : []}] }'.
 
-	progUnit := self visitJsonCode.
+	result := self visitJsonCode.
 
+	self assert: result size equals: 2.
+	
+	progUnit := result first.
 	self assert: progUnit class equals: FASTFortranProgramMain.
 	self assert: progUnit name equals: 'TESTALT'.
 
@@ -8490,7 +8502,7 @@ SyntaxJsonToFASTTests >> testMainProgramAndSubroutine [
 
 { #category : #'tests-programUnit' }
 SyntaxJsonToFASTTests >> testMainProgramEmptyBody [
-	| main body |
+	| main body result |
 
 	fortranCode := '      program main
       end
@@ -8524,7 +8536,10 @@ SyntaxJsonToFASTTests >> testMainProgramEmptyBody [
     ]
 }
 '.
-	main := self visitJsonCode.
+
+	result := self visitJsonCode.
+	
+	main := result anyOne.
 
 	self assert: main class equals: FASTFortranProgramMain.
 
@@ -9656,7 +9671,7 @@ SyntaxJsonToFASTTests >> testStopStatementWithInteger [
 { #category : #'tests-programUnit' }
 SyntaxJsonToFASTTests >> testSubroutineEmpty [
 
-	| rtn |
+	| rtn result |
 	fortranCode := '      SUBROUTINE RANK
       end
 '.
@@ -9688,7 +9703,11 @@ SyntaxJsonToFASTTests >> testSubroutineEmpty [
         }
     ]
 }'.
-	rtn := self visitJsonCode.
+
+	result := self visitJsonCode.
+	
+	rtn := result anyOne.
+
 	self assert: rtn class equals: FASTFortranSubroutine.
 	self assert: rtn parameters isEmpty.
 	self assert: rtn statementBlock statements isEmpty.
@@ -9699,13 +9718,16 @@ SyntaxJsonToFASTTests >> testSubroutineEmpty [
 { #category : #'tests-programUnit' }
 SyntaxJsonToFASTTests >> testSubroutineWithParameters [
 
-	| rtn param |
+	| rtn param result |
 	fortranCode := '      SUBROUTINE SIMPLESUBROUTINE( a, b)
       END
 '.
 	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"SIMPLESUBROUTINE"}, "parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"36"}, "name":"A"}, {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"39"}, "name":"B"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "2", "column":"9"}, "statement_list" : []}]}'.
 
-	rtn := self visitJsonCode.
+	result := self visitJsonCode.
+	
+	rtn := result anyOne.
+
 	self assert: rtn class equals: FASTFortranSubroutine.
 	self assert: rtn name equals: 'SIMPLESUBROUTINE'.
 
@@ -9727,7 +9749,7 @@ SyntaxJsonToFASTTests >> testSubroutineWithParameters [
 { #category : #'tests-programUnit' }
 SyntaxJsonToFASTTests >> testSubroutineWithParametersOnTwoLines [
 
-	| rtn |
+	| rtn result |
 	fortranCode := '      SUBROUTINE SIMPLESUBROUTINE( a,
      & b)
       continue
@@ -9787,7 +9809,10 @@ SyntaxJsonToFASTTests >> testSubroutineWithParametersOnTwoLines [
     ]
 }
 '.
-	rtn := self visitJsonCode.
+
+	result := self visitJsonCode.
+	
+	rtn := result anyOne.
 	
 	self assert: rtn class equals: FASTFortranSubroutine.
 	self assert: rtn name equals: 'SIMPLESUBROUTINE'.
