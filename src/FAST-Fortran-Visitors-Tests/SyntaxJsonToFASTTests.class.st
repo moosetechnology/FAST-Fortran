@@ -8477,12 +8477,9 @@ SyntaxJsonToFASTTests >> testMainProgramAndSubroutine [
 '.
 
 	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax-230325/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"TESTALT"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "2", "column":"9"}, "statement_list" : []}, {"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"18"}, "name":"RANK"}, "parameters" : [], "start_pos" : {"line" : "4", "column":"7"}, "end_pos" : {"line" : "5", "column":"9"}, "statement_list" : []}] }'.
-	result := self visitJsonCode.
 
-	self assert: result isCollection.
-	self assert: result size equals: 2.
+	progUnit := self visitJsonCode.
 
-	progUnit := result first.
 	self assert: progUnit class equals: FASTFortranProgramMain.
 	self assert: progUnit name equals: 'TESTALT'.
 
