@@ -3066,39 +3066,12 @@ SyntaxJsonToFASTTests >> testBlockData [
 	fortranCode := '      block data myblck
       end
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testBlockData.FOR",
-    "program_units": [
-        {
-            "tag": "block_data",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "18"
-                },
-                "name": "MYBLCK"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": []
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax-230325/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "block_data", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYBLCK"}, "parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "2", "column":"9"}, "statement_list" : []}] }'.
 	bd := self visitJsonCode.
 
 	self assert: bd class equals: FASTFortranBlockData.
-	self assert: bd name primitiveValue equals: 'MYBLCK'.
-	"self assert: bd startPos equals: 7."
+	self assert: bd name equals: 'MYBLCK'.
+	self assert: bd startPos equals: 7.
 
 ]
 
@@ -6443,50 +6416,11 @@ SyntaxJsonToFASTTests >> testFunctionWithStatement [
       return 1
       end
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testFunctionWithStatement.FOR",
-    "program_units": [
-        {
-            "tag": "function",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "24"
-                },
-                "name": "AFCT"
-            },
-            "parameters": [],
-            "return_type": {
-                "tag": "type_reference",
-                "name": "INTEGER"
-            },
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "return_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "7"
-                    }
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := ' { "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax-230325/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "function", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"24"}, "name":"AFCT"}, "parameters" : [], "return_type" : {"tag" : "type_reference", "name":"INTEGER"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "return_statement", "start_pos" : {"line" : "2", "column":"7"}}]}] }'.
 	fct := self visitJsonCode.
 
 	self assert: fct class equals: FASTFortranFunction.
-	self assert: fct name equals: 'afct'.
+	self assert: fct name equals: 'AFCT'.
 	self assert: fct parameters isEmpty.
 	self assert: fct startPos equals: 7.
 
@@ -8590,56 +8524,7 @@ SyntaxJsonToFASTTests >> testMainProgramAndSubroutine [
       END
 '.
 
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testMainProgramAndSubroutine.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "TESTALT"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "2",
-                "column": "9"
-            },
-            "statement_list": []
-        },
-        {
-            "tag": "subroutine",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "4",
-                    "column": "18"
-                },
-                "name": "RANK"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "4",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "5",
-                "column": "9"
-            },
-            "statement_list": []
-        }
-    ]
-}
-'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax-230325/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"TESTALT"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "2", "column":"9"}, "statement_list" : []}, {"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"18"}, "name":"RANK"}, "parameters" : [], "start_pos" : {"line" : "4", "column":"7"}, "end_pos" : {"line" : "5", "column":"9"}, "statement_list" : []}] }'.
 	result := self visitJsonCode.
 
 	self assert: result isCollection.
@@ -9873,7 +9758,7 @@ SyntaxJsonToFASTTests >> testSubroutineWithParameters [
 
 	rtn := self visitJsonCode.
 	self assert: rtn class equals: FASTFortranSubroutine.
-	self assert: rtn name primitiveValue equals: 'SIMPLESUBROUTINE'.
+	self assert: rtn name equals: 'SIMPLESUBROUTINE'.
 
 	self assert: rtn startPos equals: 7.
 	"self assert: rtn endPos equals: 50."
