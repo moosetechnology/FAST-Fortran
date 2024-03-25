@@ -6225,42 +6225,11 @@ SyntaxJsonToFASTTests >> testFunctionNoParameter [
 	fortranCode := '      integer function aFct()
       end
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testFunctionNoParameter.FOR",
-    "program_units": [
-        {
-            "tag": "function",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "24"
-                },
-                "name": "AFCT"
-            },
-            "parameters": [],
-            "return_type": {
-                "tag": "type_reference",
-                "name": "INTEGER"
-            },
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "2",
-                "column": "9"
-            },
-            "statement_list": []
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax-230325/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "function", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"24"}, "name":"AFCT"}, "parameters" : [], "return_type" : {"tag" : "type_reference", "name":"INTEGER"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "2", "column":"9"}, "statement_list" : []}] }'.
 	fct := self visitJsonCode.
 
 	self assert: fct class equals: FASTFortranFunction.
-	self assert: fct name primitiveValue equals: 'AFCT'.
+	self assert: fct name equals: 'AFCT'.
 	self assert: fct parameters isEmpty.
 	self assert: fct statementBlock statements isEmpty.
 	"self assert: fct startPos equals: 7."

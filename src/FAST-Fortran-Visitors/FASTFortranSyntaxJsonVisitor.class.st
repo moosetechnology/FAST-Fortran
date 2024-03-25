@@ -1087,14 +1087,6 @@ FASTFortranSyntaxJsonVisitor >> visitSubstring: aNode [
 ]
 
 { #category : #'as yet unclassified' }
-FASTFortranSyntaxJsonVisitor >> visitSymbolicName: aNode [
-
-	^ (self newEntity: FASTFortranCharacterLiteral)
-		  primitiveValue: (super visitSymbolicName: aNode);
-		  yourself
-]
-
-{ #category : #'as yet unclassified' }
 FASTFortranSyntaxJsonVisitor >> visitTag: aNode [
 			  		<generated>
 					"no keys in data"
