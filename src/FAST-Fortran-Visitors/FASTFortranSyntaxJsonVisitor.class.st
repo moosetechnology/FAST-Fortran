@@ -26,12 +26,6 @@ FASTFortranSyntaxJsonVisitor >> createPosition: start end: end [
 	^ { start . end }
 ]
 
-{ #category : #'as yet unclassified' }
-FASTFortranSyntaxJsonVisitor >> generateKeys: aNode [
-	
-	^ aNode keys reject: [ :e | e = 'tag' ]
-]
-
 { #category : #initialization }
 FASTFortranSyntaxJsonVisitor >> initLineSizes: fortranSource [
 
@@ -121,15 +115,6 @@ FASTFortranSyntaxJsonVisitor >> visitArguments: aNode [
 	"no keys in data"
 
 	^ super visitArguments: aNode
-]
-
-{ #category : #'as yet unclassified' }
-FASTFortranSyntaxJsonVisitor >> visitArithmeticExpression: aNode [
-
-	| data |
-	data := super visitArithmeticExpression: aNode.
-
-	^ data first
 ]
 
 { #category : #'as yet unclassified' }
@@ -261,7 +246,7 @@ FASTFortranSyntaxJsonVisitor >> visitCharacterType: aNode [
 					
 					| data |    
 					data := super visitCharacterType:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -326,7 +311,7 @@ FASTFortranSyntaxJsonVisitor >> visitContinueStatement: aNode [
 
 	^ (self newEntity: FASTFortranContinueStatement)
 		  startPos: (data at: 'start_pos');
-		  label: (data at: 'label');
+		  "label: (data at: 'label');"
 		  yourself
 ]
 
@@ -343,7 +328,18 @@ FASTFortranSyntaxJsonVisitor >> visitControlInfoList: aNode [
 					
 					| data |    
 					data := super visitControlInfoList:aNode.
-			      1 halt.
+
+					^ data
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitDataImplyDoList: aNode [
+			  		<generated>
+					"m3 dlist m1 m2 tag"
+					
+					| data |    
+					data := super visitDataImplyDoList:aNode.
+
 					^ data
 ]
 
@@ -354,7 +350,7 @@ FASTFortranSyntaxJsonVisitor >> visitDataStatement: aNode [
 					
 					| data |    
 					data := super visitDataStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -392,7 +388,18 @@ FASTFortranSyntaxJsonVisitor >> visitDimensionStatement: aNode [
 					
 					| data |    
 					data := super visitDimensionStatement:aNode.
-			      1 halt.
+
+					^ data
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitDlist: aNode [
+			  		<generated>
+					"no keys in data"
+					
+					| data |    
+					data := super visitDlist:aNode.
+
 					^ data
 ]
 
@@ -403,7 +410,7 @@ FASTFortranSyntaxJsonVisitor >> visitDoStatement: aNode [
 					
 					| data |    
 					data := super visitDoStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -458,7 +465,7 @@ FASTFortranSyntaxJsonVisitor >> visitEquivalenceStatement: aNode [
 					
 					| data |    
 					data := super visitEquivalenceStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -490,7 +497,7 @@ FASTFortranSyntaxJsonVisitor >> visitFormat: aNode [
 					
 					| data |    
 					data := super visitFormat:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -501,7 +508,7 @@ FASTFortranSyntaxJsonVisitor >> visitFormatStatement: aNode [
 					
 					| data |    
 					data := super visitFormatStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -536,7 +543,7 @@ FASTFortranSyntaxJsonVisitor >> visitGotoStatement: aNode [
 					
 					| data |    
 					data := super visitGotoStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -547,7 +554,7 @@ FASTFortranSyntaxJsonVisitor >> visitImplicitStatement: aNode [
 					
 					| data |    
 					data := super visitImplicitStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -558,7 +565,7 @@ FASTFortranSyntaxJsonVisitor >> visitIncrement: aNode [
 					
 					| data |    
 					data := super visitIncrement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -569,7 +576,7 @@ FASTFortranSyntaxJsonVisitor >> visitInquireStatement: aNode [
 					
 					| data |    
 					data := super visitInquireStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -587,7 +594,7 @@ FASTFortranSyntaxJsonVisitor >> visitIntrinsicStatement: aNode [
 					
 					| data |    
 					data := super visitIntrinsicStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -605,7 +612,7 @@ FASTFortranSyntaxJsonVisitor >> visitLabels: aNode [
 					
 					| data |    
 					data := super visitLabels:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -689,7 +696,7 @@ FASTFortranSyntaxJsonVisitor >> visitLogicalIfStatement: aNode [
 					
 					| data |    
 					data := super visitLogicalIfStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -713,7 +720,7 @@ FASTFortranSyntaxJsonVisitor >> visitLoopControl: aNode [
 					
 					| data |    
 					data := super visitLoopControl:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -722,6 +729,39 @@ FASTFortranSyntaxJsonVisitor >> visitLowerBound: aNode [
 	"literal tag"
 
 	^ super visitLowerBound: aNode
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitM1: aNode [
+			  		<generated>
+					"start_pos tag value"
+					
+					| data |    
+					data := super visitM1:aNode.
+
+					^ data
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitM2: aNode [
+			  		<generated>
+					"start_pos tag name"
+					
+					| data |    
+					data := super visitM2:aNode.
+
+					^ data
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitM3: aNode [
+			  		<generated>
+					""
+					
+					| data |    
+					data := super visitM3:aNode.
+
+					^ data
 ]
 
 { #category : #'visit statement' }
@@ -755,13 +795,24 @@ FASTFortranSyntaxJsonVisitor >> visitNlist: aNode [
 ]
 
 { #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitNonrepeatableEditDescriptor: aNode [
+			  		<generated>
+					"tag descriptor"
+					
+					| data |    
+					data := super visitNonrepeatableEditDescriptor:aNode.
+
+					^ data
+]
+
+{ #category : #'as yet unclassified' }
 FASTFortranSyntaxJsonVisitor >> visitOpenStatement: aNode [
 			  		<generated>
 					"start_pos tag parameters"
 					
 					| data |    
 					data := super visitOpenStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -792,7 +843,7 @@ FASTFortranSyntaxJsonVisitor >> visitParameterStatement: aNode [
 					
 					| data |    
 					data := super visitParameterStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -813,7 +864,7 @@ FASTFortranSyntaxJsonVisitor >> visitPrintStatement: aNode [
 					
 					| data |    
 					data := super visitPrintStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -859,7 +910,7 @@ FASTFortranSyntaxJsonVisitor >> visitReadStatement: aNode [
 					
 					| data |    
 					data := super visitReadStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -867,6 +918,28 @@ FASTFortranSyntaxJsonVisitor >> visitReadStatement: aNode [
 FASTFortranSyntaxJsonVisitor >> visitRealType: aNode [
 
 	^ FASTFortranRealType new
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitRepeatableEditDescriptor: aNode [
+			  		<generated>
+					"tag repeated_descriptors"
+					
+					| data |    
+					data := super visitRepeatableEditDescriptor:aNode.
+
+					^ data
+]
+
+{ #category : #'as yet unclassified' }
+FASTFortranSyntaxJsonVisitor >> visitRepeatedDescriptors: aNode [
+			  		<generated>
+					"no keys in data"
+					
+					| data |    
+					data := super visitRepeatedDescriptors:aNode.
+
+					^ data
 ]
 
 { #category : #'as yet unclassified' }
@@ -897,7 +970,7 @@ FASTFortranSyntaxJsonVisitor >> visitRewindStatement: aNode [
 					
 					| data |    
 					data := super visitRewindStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -966,9 +1039,10 @@ FASTFortranSyntaxJsonVisitor >> visitStopStatement: aNode [
 		  label: ((data keys includes: 'label')
 				   ifTrue: [ data at: 'label' ]
 				   ifFalse: [ nil ]);
+			"--- argument ?!? ---
 			argument: ((data keys includes: 'argument')
 				   ifTrue: [ data at: 'argument' ]
-				   ifFalse: [ nil ]);
+				   ifFalse: [ nil ]);"
 		  yourself
 ]
 
@@ -978,15 +1052,15 @@ FASTFortranSyntaxJsonVisitor >> visitSubroutine: aSubroutine [
 
 	| data subroutine position |
 	data := super visitSubroutine: aSubroutine.
-	position := self createPosition: data first end: data third.
+	position := self createPosition: (data at: #start_pos) end: (data at: #end_pos).
 	subroutine := (self
 		               newEntity: FASTFortranSubroutine
 		               atPosition: position)
-		              name: data fifth;
+		              name: (data at: #name);
 		              statementBlock: (FASTFortranStatementBlock new
-				               statements: data fourth;
+				               statements: (data at: #statement_list);
 				               yourself);
-		              parameters: data second;
+		              parameters: (data at: #parameters);
 		              yourself.
 
 	self setBodyPosition: subroutine fromProgramUnitPosition: position.
@@ -1027,7 +1101,7 @@ FASTFortranSyntaxJsonVisitor >> visitTag: aNode [
 					
 					| data |    
 					data := super visitTag:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -1120,7 +1194,7 @@ FASTFortranSyntaxJsonVisitor >> visitVar: aNode [
 					
 					| data |    
 					data := super visitVar:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -1172,7 +1246,7 @@ FASTFortranSyntaxJsonVisitor >> visitVariableName: aNode [
 					
 					| data |    
 					data := super visitVariableName:aNode.
-			      1 halt.
+
 					^ data
 ]
 
@@ -1183,6 +1257,6 @@ FASTFortranSyntaxJsonVisitor >> visitWriteStatement: aNode [
 					
 					| data |    
 					data := super visitWriteStatement:aNode.
-			      1 halt.
+
 					^ data
 ]
