@@ -71,7 +71,7 @@ FASTFortranSyntaxJsonVisitor >> set: aFASTFortranNode startEnd: aNode [
 	aFASTFortranNode endPos: (self pointToPosition: end) - 1
 ]
 
-{ #category : #'visiting prog-unit' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitArgumentWithReturnSpecifier: aNode [
 	"start_pos tag return_specifier argument"
 
@@ -154,9 +154,7 @@ FASTFortranSyntaxJsonVisitor >> visitBlockData: aNode [
 	^(self newEntity: FASTFortranBlockData withPosition: data)
 		name: (data at: 'name');
 		parameters: (data at: 'parameters');
-		statementBlock: ((self newEntity: FASTFortranStatementBlock)
-			statements: (data at: 'statement_list');
-			yourself);
+		statementBlock: (data at: 'statement_list');
 		yourself
 ]
 
@@ -487,8 +485,7 @@ FASTFortranSyntaxJsonVisitor >> visitFunction: aNode [
 	^(self newEntity: FASTFortranFunction withPosition: data)
 		name: (data at: 'name');
 		parameters: (data at: 'parameters');
-		statementBlock: (FASTFortranStatementBlock new
-			statements: (data at: 'statement_list'));
+		statementBlock: (data at: 'statement_list');
 		returnType: (data at: 'return_type');
 		yourself
 ]
@@ -734,15 +731,12 @@ FASTFortranSyntaxJsonVisitor >> visitM3: aNode [
 FASTFortranSyntaxJsonVisitor >> visitMain: aNode [
 	"start_pos parameters end_pos statement_list name tag"
 
-	<generated>
 	| data main |
 	data := super visitMain: aNode.
 
 	main := (self newEntity: FASTFortranProgramMain withPosition: data)
 		name: (data at: 'name');
-		statementBlock: (FASTFortranStatementBlock new
-			statements: (data at: 'statement_list');
-			yourself);
+		statementBlock: (data at: 'statement_list');
 	yourself.
 
 	^ main
@@ -913,13 +907,6 @@ FASTFortranSyntaxJsonVisitor >> visitReturnStatement: aNode [
 	^ self newEntity: FASTFortranReturnStatement
 ]
 
-{ #category : #'visiting prog-unit' }
-FASTFortranSyntaxJsonVisitor >> visitReturnType: aNode [
-	"name tag"
-
-	^ super visitReturnType: aNode
-]
-
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitRewindStatement: aNode [
 			  		<generated>
@@ -986,6 +973,27 @@ FASTFortranSyntaxJsonVisitor >> visitSign: aNode [
 ]
 
 { #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitStatementList: statementCollection [
+
+	| data block |
+	data := super visitStatementList: statementCollection.
+
+	block := self newEntity: FASTFortranStatementBlock.
+	block statements: data.
+	data
+		ifEmpty: [
+			block startPos: 0.
+			block endPos: 0
+		]
+		ifNotEmpty: [
+			block startPos: data first startPos.
+			block endPos: data last endPos
+		].
+
+	^block
+]
+
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitStopStatement: aNode [
 	"start_pos label tag"
 
@@ -1013,9 +1021,7 @@ FASTFortranSyntaxJsonVisitor >> visitSubroutine: aSubroutine [
 	subroutine := (self newEntity: FASTFortranSubroutine withPosition: data)
 		name: (data at: #name);
 		parameters: (data at: #parameters);
-		statementBlock: (FASTFortranStatementBlock new
-			statements: (data at: #statement_list);
-			yourself);
+		statementBlock: (data at: #statement_list);
 		yourself.
 
 	^ subroutine
