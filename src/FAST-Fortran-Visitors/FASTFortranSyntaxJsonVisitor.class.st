@@ -91,14 +91,14 @@ FASTFortranSyntaxJsonVisitor >> setBodyPosition: aProgramUnit fromProgramUnitPos
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitArgument: aNode [
 	"no keys in data"
 
 	^ super visitArgument: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitArgumentWithReturnSpecifier: aNode [
 	"start_pos tag return_specifier argument"
 
@@ -110,14 +110,14 @@ FASTFortranSyntaxJsonVisitor >> visitArgumentWithReturnSpecifier: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitArguments: aNode [
 	"no keys in data"
 
 	^ super visitArguments: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitArithmeticIfStatement: aNode [
 	"start_pos s1 s3 s2 expression tag"
 
@@ -132,7 +132,7 @@ FASTFortranSyntaxJsonVisitor >> visitArithmeticIfStatement: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitArrayElementName: aNode [
 	"name tag qualifiers_list"
 
@@ -145,7 +145,7 @@ FASTFortranSyntaxJsonVisitor >> visitArrayElementName: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitAssignmentStatement: aNode [
 	"start_pos right left"
 
@@ -158,13 +158,13 @@ FASTFortranSyntaxJsonVisitor >> visitAssignmentStatement: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitAsterisk: aNode [
 
 	^ FASTFortranAsterisk new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitBinaryExpression: aNode [
 	"rhs lhs operator"
 
@@ -178,7 +178,7 @@ FASTFortranSyntaxJsonVisitor >> visitBinaryExpression: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitBlockData: aNode [
 	"start_pos parameters end_pos statement_list name tag"
 
@@ -194,7 +194,7 @@ FASTFortranSyntaxJsonVisitor >> visitBlockData: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitBlockIfStatement: aNode [
 	"start_pos then_statements else_block expression tag"
 
@@ -208,7 +208,7 @@ FASTFortranSyntaxJsonVisitor >> visitBlockIfStatement: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitCallStatement: aNode [
 	"start_pos tag name arguments"
 
@@ -221,7 +221,7 @@ FASTFortranSyntaxJsonVisitor >> visitCallStatement: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitCharacterConstant: aNode [
 	"start_pos tag value"
 
@@ -232,14 +232,14 @@ FASTFortranSyntaxJsonVisitor >> visitCharacterConstant: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitCharacterExpression: aNode [
 	"tag expression"
 
 	^ (super visitCharacterExpression: aNode) at: 'expression'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitCharacterType: aNode [
 			  		<generated>
 					"name tag len_specification"
@@ -250,7 +250,7 @@ FASTFortranSyntaxJsonVisitor >> visitCharacterType: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitCommonParameters: aNode [
 	"data is an array of dict-s with keys name, nlist"
 
@@ -266,7 +266,7 @@ FASTFortranSyntaxJsonVisitor >> visitCommonParameters: aNode [
 	^ result
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitCommonStatement: aNode [
 	"start_pos tag common_parameters"
 
@@ -278,13 +278,13 @@ FASTFortranSyntaxJsonVisitor >> visitCommonStatement: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitConstant: aNode [
 
 	^ super visitConstant: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitConstantSigned: aNode [
 	"sign tag constant"
 
@@ -302,7 +302,7 @@ FASTFortranSyntaxJsonVisitor >> visitConstantSigned: aNode [
 	^ constant
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitContinueStatement: aNode [
 	"start_pos label tag"
 
@@ -315,13 +315,13 @@ FASTFortranSyntaxJsonVisitor >> visitContinueStatement: aNode [
 		  yourself
 ]
 
-{ #category : #'visit statement' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitContinue_statement: aContinueStatement [
 
 	^ self newEntity: FASTFortranContinueStatement
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitControlInfoList: aNode [
 			  		<generated>
 					"no keys in data"
@@ -332,7 +332,7 @@ FASTFortranSyntaxJsonVisitor >> visitControlInfoList: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitDataImplyDoList: aNode [
 			  		<generated>
 					"m3 dlist m1 m2 tag"
@@ -343,7 +343,7 @@ FASTFortranSyntaxJsonVisitor >> visitDataImplyDoList: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitDataStatement: aNode [
 			  		<generated>
 					"start_pos tag parameters"
@@ -354,14 +354,14 @@ FASTFortranSyntaxJsonVisitor >> visitDataStatement: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitDeclarators: aNode [
 	"no keys in data"
 
 	^ super visitDeclarators: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitDimensionDeclarators: aNode [
 	"no keys in data"
 
@@ -381,7 +381,7 @@ FASTFortranSyntaxJsonVisitor >> visitDimensionDeclarators: aNode [
 				  arrayRange ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitDimensionStatement: aNode [
 			  		<generated>
 					"start_pos tag array_declarators"
@@ -392,7 +392,7 @@ FASTFortranSyntaxJsonVisitor >> visitDimensionStatement: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitDlist: aNode [
 			  		<generated>
 					"no keys in data"
@@ -403,7 +403,7 @@ FASTFortranSyntaxJsonVisitor >> visitDlist: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitDoStatement: aNode [
 			  		<generated>
 					"start_pos tag statements_list loop_control statement_number"
@@ -414,7 +414,7 @@ FASTFortranSyntaxJsonVisitor >> visitDoStatement: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitElseBlock: aNode [
 	"else_statements end_if
 	TODO: should return a dictionary containing results for both else_statements and end_if"
@@ -422,14 +422,14 @@ FASTFortranSyntaxJsonVisitor >> visitElseBlock: aNode [
 	^ super visitElseBlock: aNode.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitElseLabel: aNode [
 	"no keys in data"
 
 	^ super visitElseLabel: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitElseStatements: aNode [
 	"no keys in data"
 
@@ -438,14 +438,14 @@ FASTFortranSyntaxJsonVisitor >> visitElseStatements: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitEndIf: aNode [
 	"label"
 
 	^ super visitEndIf: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitEntryStatement: aNode [
 	"name tag start_pos parameters"
 
@@ -458,7 +458,7 @@ FASTFortranSyntaxJsonVisitor >> visitEntryStatement: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitEquivalenceStatement: aNode [
 			  		<generated>
 					"start_pos tag parameters"
@@ -469,7 +469,7 @@ FASTFortranSyntaxJsonVisitor >> visitEquivalenceStatement: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitExpression: aNode [
 
 	| data |
@@ -478,7 +478,7 @@ FASTFortranSyntaxJsonVisitor >> visitExpression: aNode [
 	^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitExternalStatement: aNode [
 	"proc_list start_pos tag"
 
@@ -490,7 +490,7 @@ FASTFortranSyntaxJsonVisitor >> visitExternalStatement: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitFormat: aNode [
 			  		<generated>
 					"no keys in data"
@@ -501,7 +501,7 @@ FASTFortranSyntaxJsonVisitor >> visitFormat: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitFormatStatement: aNode [
 			  		<generated>
 					"label tag specification"
@@ -512,7 +512,7 @@ FASTFortranSyntaxJsonVisitor >> visitFormatStatement: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitFunction: aNode [
 	"start_pos parameters end_pos statement_list return_type name tag"
 
@@ -527,7 +527,7 @@ FASTFortranSyntaxJsonVisitor >> visitFunction: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitFunctionReference: aNode [
 	"name tag"
 
@@ -536,7 +536,7 @@ FASTFortranSyntaxJsonVisitor >> visitFunctionReference: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitGotoStatement: aNode [
 			  		<generated>
 					"var start_pos labels type tag"
@@ -547,7 +547,7 @@ FASTFortranSyntaxJsonVisitor >> visitGotoStatement: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitImplicitStatement: aNode [
 			  		<generated>
 					"start_pos tag parameters"
@@ -558,7 +558,7 @@ FASTFortranSyntaxJsonVisitor >> visitImplicitStatement: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitIncrement: aNode [
 			  		<generated>
 					"no keys in data"
@@ -569,7 +569,7 @@ FASTFortranSyntaxJsonVisitor >> visitIncrement: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitInquireStatement: aNode [
 			  		<generated>
 					"start_pos tag parameters"
@@ -580,14 +580,14 @@ FASTFortranSyntaxJsonVisitor >> visitInquireStatement: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitIntegerType: aNode [
 	"comment"
 
 	^ FASTFortranIntegerType new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitIntrinsicStatement: aNode [
 			  		<generated>
 					"start_pos tag fun_list"
@@ -598,14 +598,14 @@ FASTFortranSyntaxJsonVisitor >> visitIntrinsicStatement: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitLabel: aNode [
 	"no keys in data"
 
 	^ super visitLabel: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitLabels: aNode [
 			  		<generated>
 					"no keys in data"
@@ -616,7 +616,7 @@ FASTFortranSyntaxJsonVisitor >> visitLabels: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitLeft: aNode [
 
 	| data |
@@ -625,13 +625,13 @@ FASTFortranSyntaxJsonVisitor >> visitLeft: aNode [
 	^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitLenSpecification: aNode [
 
 	^ super visitLenSpecification: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitLhs: aNode [
 	"start_pos tag value"
 
@@ -642,19 +642,19 @@ FASTFortranSyntaxJsonVisitor >> visitLhs: aNode [
 	^ self checkAndwrapToScalarVariable: data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitLiteral: aNode [
 
 	^ super visitLiteral: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitLiteralExpression: aNode [
 
 	^ (super visitLiteralExpression: aNode) first
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitLogicalConstant: aNode [
 
 	| data |
@@ -671,7 +671,7 @@ FASTFortranSyntaxJsonVisitor >> visitLogicalConstant: aNode [
 				  yourself ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitLogicalExpression: aNode [
 
 	| data |
@@ -680,7 +680,7 @@ FASTFortranSyntaxJsonVisitor >> visitLogicalExpression: aNode [
 	^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitLogicalFactor: aNode [
 
 	| data |
@@ -689,7 +689,7 @@ FASTFortranSyntaxJsonVisitor >> visitLogicalFactor: aNode [
 	^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitLogicalIfStatement: aNode [
 			  		<generated>
 					"statement start_pos tag expression"
@@ -700,20 +700,20 @@ FASTFortranSyntaxJsonVisitor >> visitLogicalIfStatement: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitLogicalPrimary: aNode [
 
 	^ super visitLogicalPrimary: aNode.
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitLogicalType: aNode [
 
 	^ FASTFortranLogicalType new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitLoopControl: aNode [
 			  		<generated>
 					"variable_name init increment"
@@ -724,14 +724,14 @@ FASTFortranSyntaxJsonVisitor >> visitLoopControl: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitLowerBound: aNode [
 	"literal tag"
 
 	^ super visitLowerBound: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitM1: aNode [
 			  		<generated>
 					"start_pos tag value"
@@ -742,7 +742,7 @@ FASTFortranSyntaxJsonVisitor >> visitM1: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitM2: aNode [
 			  		<generated>
 					"start_pos tag name"
@@ -753,7 +753,7 @@ FASTFortranSyntaxJsonVisitor >> visitM2: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitM3: aNode [
 			  		<generated>
 					""
@@ -764,7 +764,7 @@ FASTFortranSyntaxJsonVisitor >> visitM3: aNode [
 					^ data
 ]
 
-{ #category : #'visit statement' }
+{ #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitMain: aNode [
 	"start_pos parameters end_pos statement_list name tag"
 
@@ -787,14 +787,14 @@ FASTFortranSyntaxJsonVisitor >> visitMain: aNode [
 	^ main
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitNlist: aNode [
 	"no keys in data"
 
 	^ super visitNlist: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitNonrepeatableEditDescriptor: aNode [
 			  		<generated>
 					"tag descriptor"
@@ -805,7 +805,7 @@ FASTFortranSyntaxJsonVisitor >> visitNonrepeatableEditDescriptor: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitOpenStatement: aNode [
 			  		<generated>
 					"start_pos tag parameters"
@@ -816,14 +816,14 @@ FASTFortranSyntaxJsonVisitor >> visitOpenStatement: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitOperator: aNode [
 	"no keys in data"
 
 	^ super visitOperator: aNode
 ]
 
-{ #category : #'visit statement' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitParameter: aNode [
 
 	| data |
@@ -836,7 +836,7 @@ FASTFortranSyntaxJsonVisitor >> visitParameter: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitParameterStatement: aNode [
 			  		<generated>
 					"start_pos tag parameters"
@@ -847,7 +847,7 @@ FASTFortranSyntaxJsonVisitor >> visitParameterStatement: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitPauseStatement: aNode [
 	"start_pos tag"
 
@@ -857,7 +857,7 @@ FASTFortranSyntaxJsonVisitor >> visitPauseStatement: aNode [
 	^ self newEntity: FASTFortranPauseStatement
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitPrintStatement: aNode [
 			  		<generated>
 					"format start_pos io_list label tag"
@@ -868,14 +868,14 @@ FASTFortranSyntaxJsonVisitor >> visitPrintStatement: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitProcList: aNode [
 	"no keys in data"
 
 	^ super visitProcList: aNode
 ]
 
-{ #category : #'visit statement' }
+{ #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitProgramFile: aProgramFile [
 	
 	model := FASTFortranModel new.
@@ -884,13 +884,13 @@ FASTFortranSyntaxJsonVisitor >> visitProgramFile: aProgramFile [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitProgramUnits: aNode [
 
 	^ super visitProgramUnits: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitQualifiersList: aNode [
 	"we wrap all character literals into a scalar variable since we know that they can represent only an integer expression and not an array variable"
 
@@ -903,7 +903,7 @@ FASTFortranSyntaxJsonVisitor >> visitQualifiersList: aNode [
 			  ifFalse: [ each ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitReadStatement: aNode [
 			  		<generated>
 					"format start_pos io_list control_info_list tag"
@@ -914,13 +914,13 @@ FASTFortranSyntaxJsonVisitor >> visitReadStatement: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitRealType: aNode [
 
 	^ FASTFortranRealType new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitRepeatableEditDescriptor: aNode [
 			  		<generated>
 					"tag repeated_descriptors"
@@ -931,7 +931,7 @@ FASTFortranSyntaxJsonVisitor >> visitRepeatableEditDescriptor: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitRepeatedDescriptors: aNode [
 			  		<generated>
 					"no keys in data"
@@ -942,28 +942,28 @@ FASTFortranSyntaxJsonVisitor >> visitRepeatedDescriptors: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitReturnSpecifier: aNode [
 	"no keys in data"
 
 	^ super visitReturnSpecifier: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitReturnStatement: aNode [
 	"start_pos tag"
 
 	^ self newEntity: FASTFortranReturnStatement
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitReturnType: aNode [
 	"name tag"
 
 	^ super visitReturnType: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitRewindStatement: aNode [
 			  		<generated>
 					"start_pos tag parameters"
@@ -974,7 +974,7 @@ FASTFortranSyntaxJsonVisitor >> visitRewindStatement: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitRhs: aNode [
 	"start_pos value"
 
@@ -985,7 +985,7 @@ FASTFortranSyntaxJsonVisitor >> visitRhs: aNode [
 	^ self checkAndwrapToScalarVariable: data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitRight: aNode [
 
 	| data |
@@ -994,7 +994,7 @@ FASTFortranSyntaxJsonVisitor >> visitRight: aNode [
 	^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitS1: aNode [
 	"no keys in data"
 
@@ -1003,7 +1003,7 @@ FASTFortranSyntaxJsonVisitor >> visitS1: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitS2: aNode [
 	"no keys in data"
 
@@ -1012,7 +1012,7 @@ FASTFortranSyntaxJsonVisitor >> visitS2: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitS3: aNode [
 	"no keys in data"
 
@@ -1021,14 +1021,14 @@ FASTFortranSyntaxJsonVisitor >> visitS3: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitSign: aNode [
 	"no keys in data"
 
 	^ super visitSign: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitStopStatement: aNode [
 	"start_pos label tag"
 
@@ -1046,7 +1046,7 @@ FASTFortranSyntaxJsonVisitor >> visitStopStatement: aNode [
 		  yourself
 ]
 
-{ #category : #'visit statement' }
+{ #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitSubroutine: aSubroutine [
 	"#(start_pos parameters end_pos statement_list name)"
 
@@ -1068,7 +1068,7 @@ FASTFortranSyntaxJsonVisitor >> visitSubroutine: aSubroutine [
 	^ subroutine
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitSubstring: aNode [
 	"lower_bound tag variable upper_bound"
 
@@ -1105,7 +1105,7 @@ FASTFortranSyntaxJsonVisitor >> visitTag: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitThenStatements: aNode [
 	"no keys in data"
 
@@ -1114,20 +1114,20 @@ FASTFortranSyntaxJsonVisitor >> visitThenStatements: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitType: aNode [
 	"name tag"
 
 	^ super visitType: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitTypeReference: aNode [
 
 	^ super visitTypeReference: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitTypeStatement: aNode [
 	"start_pos tag declarators type"
 
@@ -1140,7 +1140,7 @@ FASTFortranSyntaxJsonVisitor >> visitTypeStatement: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitUnaryExpression: aNode [
 	"tag expression operator"
 
@@ -1153,7 +1153,7 @@ FASTFortranSyntaxJsonVisitor >> visitUnaryExpression: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitUnsignedIntConstant: aNode [
 	
 	^ (self newEntity: FASTFortranIntegerLiteral)
@@ -1162,7 +1162,7 @@ FASTFortranSyntaxJsonVisitor >> visitUnsignedIntConstant: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitUnsignedRealConstant: aNode [
 	"start_pos tag value"
 
@@ -1173,21 +1173,21 @@ FASTFortranSyntaxJsonVisitor >> visitUnsignedRealConstant: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitUpperBound: aNode [
 	"rhs tag lhs operator"
 
 	^ super visitUpperBound: aNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitValue: aNode [
 	"comment"
 
 	^ super visitValue: aNode 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitVar: aNode [
 			  		<generated>
 					"no keys in data"
@@ -1198,7 +1198,7 @@ FASTFortranSyntaxJsonVisitor >> visitVar: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitVariable: aNode [
 	"start_pos tag name"
 
@@ -1207,7 +1207,7 @@ FASTFortranSyntaxJsonVisitor >> visitVariable: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitVariableDeclarationStatement: aNode [
 	"start_pos tag declarators type"
 
@@ -1220,7 +1220,7 @@ FASTFortranSyntaxJsonVisitor >> visitVariableDeclarationStatement: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitVariableDeclarator: aNode [
 	"tag variable dimension_declarators"
 
@@ -1233,13 +1233,13 @@ FASTFortranSyntaxJsonVisitor >> visitVariableDeclarator: aNode [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitVariableExpression: aNode [
 
 	^ (super visitVariableExpression: aNode) at: 'variable'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitVariableName: aNode [
 			  		<generated>
 					"start_pos tag name"
@@ -1250,7 +1250,7 @@ FASTFortranSyntaxJsonVisitor >> visitVariableName: aNode [
 					^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitWriteStatement: aNode [
 			  		<generated>
 					"start_pos tag control_info_list io_list"
