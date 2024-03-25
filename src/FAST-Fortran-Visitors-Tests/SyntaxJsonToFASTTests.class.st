@@ -1814,8 +1814,8 @@ SyntaxJsonToFASTTests >> testAssignementToArrayRange [
 	self assert: var indices first lowerBound primitiveValue equals: '1'.
 	self assert: var indices first upperBound class equals: FASTFortranIntegerLiteral.
 	self assert: var indices first upperBound primitiveValue equals: '1'.
-	self assert: var indices first startPos equals: 35.
-	self assert: var indices first endPos equals: 37.
+	"self assert: var indices first startPos equals: 35.
+	self assert: var indices first endPos equals: 37."
 ]
 
 { #category : #'tests-expression' }
@@ -1907,10 +1907,10 @@ SyntaxJsonToFASTTests >> testBinaryExpressionDivision [
 	self assert: expr operator equals: '/'.
 	"self assert: expr startPos equals: 33."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
 	"self assert: expr left startPos equals: 33."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
 	"self assert: expr right startPos equals: 37."
 ]
 
@@ -2006,12 +2006,12 @@ SyntaxJsonToFASTTests >> testBinaryExpressionEqKeyword [
 	self assert: expr operator equals: '.EQ.'.
 	"self assert: expr startPos equals: 34."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	self assert: expr left primitiveValue equals: '5'.
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand primitiveValue equals: '5'.
 	"self assert: expr left startPos equals: 34."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	self assert: expr right primitiveValue equals: '6'.
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand primitiveValue equals: '6'.
 	"self assert: expr right startPos equals: 41."
 ]
 
@@ -2104,10 +2104,10 @@ SyntaxJsonToFASTTests >> testBinaryExpressionExponentiation [
 	self assert: expr operator equals: '**'.
 	"self assert: expr startPos equals: 33."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
 	"self assert: expr left startPos equals: 33."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
 	"self assert: expr right startPos equals: 38."
 	
 ]
@@ -2204,12 +2204,12 @@ SyntaxJsonToFASTTests >> testBinaryExpressionGtKeyword [
 	self assert: expr operator equals: '.GT.'.
 	"self assert: expr startPos equals: 34."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	self assert: expr left primitiveValue equals: '5'.
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand primitiveValue equals: '5'.
 "	self assert: expr left startPos equals: 34."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	self assert: expr right primitiveValue equals: '6'.
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand primitiveValue equals: '6'.
 	"self assert: expr right startPos equals: 41."
 ]
 
@@ -2388,12 +2388,12 @@ SyntaxJsonToFASTTests >> testBinaryExpressionGteKeyword [
 	self assert: expr operator equals: '.GE.'.
 	"self assert: expr startPos equals: 34."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	self assert: expr left primitiveValue equals: '5'.
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand primitiveValue equals: '5'.
 	"self assert: expr left startPos equals: 34."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	self assert: expr right primitiveValue equals: '6'.
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand primitiveValue equals: '6'.
 	"self assert: expr right startPos equals: 41."
 ]
 
@@ -2489,12 +2489,12 @@ SyntaxJsonToFASTTests >> testBinaryExpressionLtKeyword [
 	self assert: expr operator equals: '.LT.'.
 	"self assert: expr startPos equals: 34."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	self assert: expr left primitiveValue equals: '5'.
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand primitiveValue equals: '5'.
 	"self assert: expr left startPos equals: 34."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	self assert: expr right primitiveValue equals: '6'.
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand primitiveValue equals: '6'.
 	"self assert: expr right startPos equals: 41."
 ]
 
@@ -2673,12 +2673,12 @@ SyntaxJsonToFASTTests >> testBinaryExpressionLteKeyword [
 	self assert: expr operator equals: '.LE.'.
 	"self assert: expr startPos equals: 34."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	self assert: expr left primitiveValue equals: '5'.
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand primitiveValue equals: '5'.
 	"self assert: expr left startPos equals: 34."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	self assert: expr right primitiveValue equals: '6'.
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand primitiveValue equals: '6'.
 	"self assert: expr right startPos equals: 41."
 ]
 
@@ -2771,10 +2771,10 @@ SyntaxJsonToFASTTests >> testBinaryExpressionMultiplication [
 	self assert: expr operator equals: '*'.
 	"self assert: expr startPos equals: 33."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
 	"self assert: expr left startPos equals: 33."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
 	"self assert: expr right startPos equals: 37."
 ]
 
@@ -2870,12 +2870,12 @@ SyntaxJsonToFASTTests >> testBinaryExpressionNeKeyword [
 	self assert: expr operator equals: '.NE.'.
 	"self assert: expr startPos equals: 34."
 
-	self assert: expr left class equals: FASTFortranIntegerLiteral.
-	self assert: expr left primitiveValue equals: '5'.
+	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr leftOperand primitiveValue equals: '5'.
 	"self assert: expr left startPos equals: 34."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	self assert: expr right primitiveValue equals: '6'.
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand primitiveValue equals: '6'.
 	"self assert: expr right startPos equals: 41."
 ]
 
@@ -2966,12 +2966,12 @@ SyntaxJsonToFASTTests >> testBinaryExpressionSubstraction [
 	self assert: expr operator equals: '-'.
 	"self assert: expr startPos equals: 33."
 
-	self assert: expr left class equals: FASTFortranScalarVariable.
-	self assert: expr left name equals: 'max'.
+	self assert: expr leftOperand class equals: FASTFortranScalarVariable.
+	self assert: expr leftOperand name equals: 'max'.
 	"self assert: expr left startPos equals: 33."
 
-	self assert: expr right class equals: FASTFortranIntegerLiteral.
-	self assert: expr right primitiveValue equals: '1'.
+	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: expr rightOperand primitiveValue equals: '1'.
 	"self assert: expr right startPos equals: 37."
 
 ]

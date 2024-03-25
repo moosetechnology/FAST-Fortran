@@ -167,12 +167,9 @@ FASTFortranSyntaxJsonVisitor >> visitAssignmentStatement: aNode [
 	| data variable |
 	data := super visitAssignmentStatement: aNode.
 
-	variable := (self newEntity: FASTFortranScalarVariable) name:
-		            (data at: 'left').
-
 	^ (self newEntity: FASTFortranAssignmentStatement)
 		  expression: (data at: 'right');
-		  variable: variable;
+		  variable: (data at: 'left');
 		  yourself
 ]
 
@@ -190,8 +187,8 @@ FASTFortranSyntaxJsonVisitor >> visitBinaryExpression: aNode [
 
 	data := super visitBinaryExpression: aNode.
 	^ (self newEntity: FASTFortranBinaryExpression)
-		  left: (data at: 'lhs');
-		  right: (data at: 'rhs');
+		  leftOperand: (data at: 'lhs');
+		  rightOperand: (data at: 'rhs');
 		  operator: (data at: 'operator');
 		  yourself
 ]
@@ -999,13 +996,20 @@ FASTFortranSyntaxJsonVisitor >> visitSubroutine: aSubroutine [
 
 { #category : #'as yet unclassified' }
 FASTFortranSyntaxJsonVisitor >> visitSubstring: aNode [
-			  		<generated>
-					"lower_bound tag variable upper_bound"
-					
-					| data |    
-					data := super visitSubstring:aNode.
-			      1 halt.
-					^ data
+	"lower_bound tag variable upper_bound"
+
+	<generated>
+	| data array |
+	data := super visitSubstring: aNode.
+
+	array := (self newEntity: FASTFortranArrayVariable) name:
+		         (data at: 'variable') name.
+
+	array indices add: ((self newEntity: FASTFortranArrayRange)
+			 lowerBound: (data at: 'lower_bound');
+			 upperBound: (data at: 'upper_bound')).
+			
+	^ array
 ]
 
 { #category : #'as yet unclassified' }
@@ -1124,7 +1128,7 @@ FASTFortranSyntaxJsonVisitor >> visitVar: aNode [
 FASTFortranSyntaxJsonVisitor >> visitVariable: aNode [
 	"start_pos tag name"
 
-	^ (self newEntity: FASTFortranVariable)
+	^ (self newEntity: FASTFortranScalarVariable)
 		  name: ((super visitVariable: aNode) at: 'name');
 		  yourself
 ]
@@ -1149,7 +1153,7 @@ FASTFortranSyntaxJsonVisitor >> visitVariableDeclarator: aNode [
 	| data |
 	data := super visitVariableDeclarator: aNode.
 
-	^ (self newEntity: FASTFortranVariableDeclarator)
+	^ (self newEntity: FASTFortranVariableDeclarationStatement)
 		  dimensions: (data at: 'dimension_declarators');
 		  variable: (data at: 'variable');
 		  yourself
