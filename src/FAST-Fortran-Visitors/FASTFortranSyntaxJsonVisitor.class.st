@@ -480,7 +480,7 @@ FASTFortranSyntaxJsonVisitor >> visitFormatStatement: aNode [
 
 { #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitFunction: aNode [
-	"start_pos parameters end_pos statement_list return_type name tag"
+	" name parameters return_type start_pos end_pos statement_list "
 
 	| data |
 	data := super visitFunction: aNode.
@@ -1007,15 +1007,15 @@ FASTFortranSyntaxJsonVisitor >> visitStopStatement: aNode [
 FASTFortranSyntaxJsonVisitor >> visitSubroutine: aSubroutine [
 	"#(start_pos parameters end_pos statement_list name)"
 
-	| data subroutine position |
+	| data subroutine |
 	data := super visitSubroutine: aSubroutine.
-	position := self createPosition: (data at: #start_pos) end: (data at: #end_pos).
+
 	subroutine := (self newEntity: FASTFortranSubroutine withPosition: data)
 		name: (data at: #name);
+		parameters: (data at: #parameters);
 		statementBlock: (FASTFortranStatementBlock new
 			statements: (data at: #statement_list);
 			yourself);
-		"parameters: (data at: #parameters);"
 		yourself.
 
 	^ subroutine
