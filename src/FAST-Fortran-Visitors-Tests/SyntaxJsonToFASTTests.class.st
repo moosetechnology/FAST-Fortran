@@ -6205,7 +6205,7 @@ SyntaxJsonToFASTTests >> testFunctionNoParameter [
 	self assert: fct name equals: 'AFCT'.
 	self assert: fct parameters isEmpty.
 	self assert: fct statementBlock statements isEmpty.
-	"self assert: fct startPos equals: 7."
+	self assert: fct startPos equals: 7.
 
 	self assert: fct returnType class equals: FASTFortranIntegerType.
 	"self assert: fct returnType startPos equals: 7."
@@ -6338,55 +6338,7 @@ SyntaxJsonToFASTTests >> testFunctionWithParameter [
       integer function aFct(i,j)
       end
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testFunctionWithParameter.FOR",
-    "program_units": [
-        {
-            "tag": "function",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "2",
-                    "column": "24"
-                },
-                "name": "AFCT"
-            },
-            "parameters": [
-                {
-                    "tag": "symbolic_name",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "29"
-                    },
-                    "name": "I"
-                },
-                {
-                    "tag": "symbolic_name",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "31"
-                    },
-                    "name": "J"
-                }
-            ],
-            "return_type": {
-                "tag": "type_reference",
-                "name": "INTEGER"
-            },
-            "start_pos": {
-                "line": "2",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": []
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax-230325/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "function", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"24"}, "name":"AFCT"}, "parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"29"}, "name":"I"}, {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"31"}, "name":"J"}], "return_type" : {"tag" : "type_reference", "name":"INTEGER"}, "start_pos" : {"line" : "2", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : []}] }'.
 
 	fct := self visitJsonCode.
 
@@ -6397,7 +6349,7 @@ SyntaxJsonToFASTTests >> testFunctionWithParameter [
 	param := fct parameters first.
 	self assert: param class equals: FASTFortranScalarVariable.
 	self assert: param name equals: 'I'.
-	"self assert: param startPos equals: 30."
+	self assert: param startPos equals: 30.
 
 	param := fct parameters second.
 	self assert: param class equals: FASTFortranScalarVariable.

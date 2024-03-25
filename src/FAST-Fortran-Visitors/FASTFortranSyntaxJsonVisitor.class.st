@@ -43,12 +43,12 @@ FASTFortranSyntaxJsonVisitor >> newEntity: aFASTFortranClass [
 ]
 
 { #category : #helpers }
-FASTFortranSyntaxJsonVisitor >> newEntity: aFASTFortranClass atPosition: aPoint [
+FASTFortranSyntaxJsonVisitor >> newEntity: aFASTFortranClass withPosition: aNode [
 
 	| node |
 	node := aFASTFortranClass new.
 	node mooseModel: model.
-	self set: node startEnd: aPoint.
+	self set: node startEnd: aNode.
 	^ node
 ]
 
@@ -63,32 +63,11 @@ FASTFortranSyntaxJsonVisitor >> pointToPosition: lineColumn [
 ]
 
 { #category : #helpers }
-FASTFortranSyntaxJsonVisitor >> set: aFASTFortranNode startEnd: startEndPoints [
+FASTFortranSyntaxJsonVisitor >> set: aFASTFortranNode startEnd: aNode [
 
 	aFASTFortranNode
-		startPos: (self pointToPosition: startEndPoints first);
-		endPos: (self pointToPosition: startEndPoints second) - 1
-]
-
-{ #category : #helpers }
-FASTFortranSyntaxJsonVisitor >> setBodyPosition: aProgramUnit fromProgramUnitPosition: startEndPoints [
-
-	"sets a reasonnable start/end position for a statementBlock:
-	 - startPos = first character of parent node second line (first line + 1)
-	 - endPos = first character of parent node last line
-	(note: set:startEnd: substract 1 to end position so we give it the 2nd character of this line)"
-
-	| body bodyStartEnd |
-	body := aProgramUnit statementBlock.
-	
-	body ifNil: [ ^nil ].
-	
-	bodyStartEnd := {
-		startEndPoints first x +1 @ 1 .
-		startEndPoints second x @ 2
-	}.
-	self set: body startEnd: bodyStartEnd
-
+		startPos: (self pointToPosition: (aNode at: #start_pos));
+		endPos: (self pointToPosition: (aNode at: #end_pos)) - 1
 ]
 
 { #category : #'visiting prog-unit' }
@@ -185,13 +164,13 @@ FASTFortranSyntaxJsonVisitor >> visitBlockData: aNode [
 	| data |
 	data := super visitBlockData: aNode.
 
-	^ (self newEntity: FASTFortranBlockData)
-		  name: (data at: 'name');
-		  parameters: (data at: 'parameters');
-		  statementBlock: ((self newEntity: FASTFortranStatementBlock)
-				   statements: (data at: 'statement_list');
-				   yourself);
-		  yourself
+	^(self newEntity: FASTFortranBlockData withPosition: data)
+		name: (data at: 'name');
+		parameters: (data at: 'parameters');
+		statementBlock: ((self newEntity: FASTFortranStatementBlock)
+			statements: (data at: 'statement_list');
+			yourself);
+		yourself
 ]
 
 { #category : #'visiting statement' }
@@ -518,7 +497,7 @@ FASTFortranSyntaxJsonVisitor >> visitFunction: aNode [
 
 	| data |
 	data := super visitFunction: aNode.
-	^ (self newEntity: FASTFortranFunction)
+	^ (self newEntity: FASTFortranFunction withPosition: data)
 		  name: (data at: 'name');
 		  parameters: (data at: 'parameters');
 		  statementBlock: (FASTFortranStatementBlock new
@@ -769,20 +748,15 @@ FASTFortranSyntaxJsonVisitor >> visitMain: aNode [
 	"start_pos parameters end_pos statement_list name tag"
 
 	<generated>
-	| data main position |
+	| data main |
 	data := super visitMain: aNode.
 
-	position := self
-		            createPosition: (data at: 'start_pos')
-		            end: (data at: 'end_pos').
-	main := (self newEntity: FASTFortranProgramMain)
-		        name: (data at: 'name');
-		        statementBlock: (FASTFortranStatementBlock new
-				         statements: (data at: 'statement_list');
-				         yourself);
-		        yourself.
-
-	self setBodyPosition: main fromProgramUnitPosition: position.
+	main := (self newEntity: FASTFortranProgramMain withPosition: data)
+		name: (data at: 'name');
+		statementBlock: (FASTFortranStatementBlock new
+			statements: (data at: 'statement_list');
+			yourself);
+	yourself.
 
 	^ main
 ]
@@ -882,12 +856,6 @@ FASTFortranSyntaxJsonVisitor >> visitProgramFile: aProgramFile [
 	^ (super visitProgramFile: aProgramFile) first.
 	
 
-]
-
-{ #category : #'visiting prog-unit' }
-FASTFortranSyntaxJsonVisitor >> visitProgramUnits: aNode [
-
-	^ super visitProgramUnits: aNode
 ]
 
 { #category : #visiting }
@@ -1053,17 +1021,13 @@ FASTFortranSyntaxJsonVisitor >> visitSubroutine: aSubroutine [
 	| data subroutine position |
 	data := super visitSubroutine: aSubroutine.
 	position := self createPosition: (data at: #start_pos) end: (data at: #end_pos).
-	subroutine := (self
-		               newEntity: FASTFortranSubroutine
-		               atPosition: position)
-		              name: (data at: #name);
-		              statementBlock: (FASTFortranStatementBlock new
-				               statements: (data at: #statement_list);
-				               yourself);
-		              parameters: (data at: #parameters);
-		              yourself.
-
-	self setBodyPosition: subroutine fromProgramUnitPosition: position.
+	subroutine := (self newEntity: FASTFortranSubroutine withPosition: data)
+		name: (data at: #name);
+		statementBlock: (FASTFortranStatementBlock new
+			statements: (data at: #statement_list);
+			yourself);
+		"parameters: (data at: #parameters);"
+		yourself.
 
 	^ subroutine
 ]
