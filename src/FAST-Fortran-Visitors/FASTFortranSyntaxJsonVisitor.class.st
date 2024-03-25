@@ -1086,17 +1086,6 @@ FASTFortranSyntaxJsonVisitor >> visitSubstring: aNode [
 	^ array
 ]
 
-{ #category : #'as yet unclassified' }
-FASTFortranSyntaxJsonVisitor >> visitTag: aNode [
-			  		<generated>
-					"no keys in data"
-					
-					| data |    
-					data := super visitTag:aNode.
-
-					^ data
-]
-
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitThenStatements: aNode [
 	"no keys in data"
