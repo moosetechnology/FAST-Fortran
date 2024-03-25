@@ -65,9 +65,10 @@ FASTFortranSyntaxJsonVisitor >> pointToPosition: lineColumn [
 { #category : #helpers }
 FASTFortranSyntaxJsonVisitor >> set: aFASTFortranNode startEnd: aNode [
 
-	aFASTFortranNode
-		startPos: (self pointToPosition: (aNode at: #start_pos));
-		endPos: (self pointToPosition: (aNode at: #end_pos)) - 1
+	| end |
+	aFASTFortranNode startPos: (self pointToPosition: (aNode at: #start_pos)).
+	end := aNode at: #end_pos ifAbsent: [ (aNode at: #start_pos) + 2 ].
+	aFASTFortranNode endPos: (self pointToPosition: end) - 1
 ]
 
 { #category : #'visiting prog-unit' }
@@ -497,13 +498,13 @@ FASTFortranSyntaxJsonVisitor >> visitFunction: aNode [
 
 	| data |
 	data := super visitFunction: aNode.
-	^ (self newEntity: FASTFortranFunction withPosition: data)
-		  name: (data at: 'name');
-		  parameters: (data at: 'parameters');
-		  statementBlock: (FASTFortranStatementBlock new
-				         statements: (data at: 'statement_list'));
-		  returnType: (data at: 'return_type');
-		  yourself
+	^(self newEntity: FASTFortranFunction withPosition: data)
+		name: (data at: 'name');
+		parameters: (data at: 'parameters');
+		statementBlock: (FASTFortranStatementBlock new
+			statements: (data at: 'statement_list'));
+		returnType: (data at: 'return_type');
+		yourself
 ]
 
 { #category : #'visiting expression' }
@@ -797,15 +798,16 @@ FASTFortranSyntaxJsonVisitor >> visitOperator: aNode [
 	^ super visitOperator: aNode
 ]
 
-{ #category : #'visiting statement' }
+{ #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitParameter: aNode [
-
+	"start_pos name"
+   
 	| data |
 	data := super visitParameter: aNode.
 
 	data = '*' ifTrue: [ ^ self newEntity: FASTFortranAsterisk ].
 
-	^ (self newEntity: FASTFortranScalarVariable)
+	^ (self newEntity: FASTFortranScalarVariable withPosition: data)
 		  name: (aNode at: 'name');
 		  yourself
 ]
@@ -1147,8 +1149,11 @@ FASTFortranSyntaxJsonVisitor >> visitVar: aNode [
 FASTFortranSyntaxJsonVisitor >> visitVariable: aNode [
 	"start_pos tag name"
 
-	^ (self newEntity: FASTFortranScalarVariable)
-		  name: ((super visitVariable: aNode) at: 'name');
+	| data |
+	data := super visitVariable: aNode.
+
+	^ (self newEntity: FASTFortranScalarVariable withPosition: data)
+		  name: (data at: 'name');
 		  yourself
 ]
 
