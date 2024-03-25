@@ -72,13 +72,6 @@ FASTFortranSyntaxJsonVisitor >> set: aFASTFortranNode startEnd: aNode [
 ]
 
 { #category : #'visiting prog-unit' }
-FASTFortranSyntaxJsonVisitor >> visitArgument: aNode [
-	"no keys in data"
-
-	^ super visitArgument: aNode
-]
-
-{ #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitArgumentWithReturnSpecifier: aNode [
 	"start_pos tag return_specifier argument"
 
@@ -88,13 +81,6 @@ FASTFortranSyntaxJsonVisitor >> visitArgumentWithReturnSpecifier: aNode [
 	^ (self newEntity: FASTFortranCharacterLiteral)
 		  primitiveValue: ((data at: 'return_specifier') , (data at: 'argument'));
 		  yourself
-]
-
-{ #category : #'visiting prog-unit' }
-FASTFortranSyntaxJsonVisitor >> visitArguments: aNode [
-	"no keys in data"
-
-	^ super visitArguments: aNode
 ]
 
 { #category : #'visiting statement' }
