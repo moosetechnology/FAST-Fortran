@@ -124,12 +124,16 @@ FASTFortranSyntaxJsonVisitor >> visitArrayElementName: aNode [
 FASTFortranSyntaxJsonVisitor >> visitAssignmentStatement: aNode [
 	"start_pos right left"
 
-	| data variable |
+	| data lhs |
 	data := super visitAssignmentStatement: aNode.
 
+	lhs := data at: #left.
+
 	^ (self newEntity: FASTFortranAssignmentStatement)
-		  expression: (data at: 'right');
-		  variable: (data at: 'left');
+		  expression: (data at: 'right') ;
+		  variable: (lhs isString
+			ifTrue: [ (self newEntity: FASTFortranScalarVariable) name: lhs ]
+			ifFalse: [ lhs ]) ;
 		  yourself
 ]
 

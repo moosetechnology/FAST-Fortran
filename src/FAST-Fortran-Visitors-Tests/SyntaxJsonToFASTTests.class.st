@@ -66,7 +66,7 @@ SyntaxJsonToFASTTests >> jsonVisitor [
 	^ FASTFortranSyntaxJsonVisitor 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : #'tests-expression' }
 SyntaxJsonToFASTTests >> testArrayAccess [
 	
 	| result stmt arrayAccess |
@@ -975,66 +975,7 @@ SyntaxJsonToFASTTests >> testAssignement [
           c = 1
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/unit-tests/assignment.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "assignment_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "left": [
-                        {
-                            "tag": "symbolic_name",
-                            "start_pos": {
-                                "line": "2",
-                                "column": "8"
-                            },
-                            "name": "C"
-                        }
-                    ],
-                    "right": [
-                        {
-                            "tag": "arithmetic_expression",
-                            "expression": {
-                                "tag": "unsigned_int_constant",
-                                "start_pos": {
-                                    "line": "2",
-                                    "column": "12"
-                                },
-                                "value": "1"
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}
-'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"11"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"11"}, "name":"C"}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"15"}, "value":"1"}}]}]}] }'.
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
@@ -1043,8 +984,7 @@ SyntaxJsonToFASTTests >> testAssignement [
 	"self assert: stmt endPos equals: 36".
 
 	self assert: stmt variable class equals: FASTFortranScalarVariable.
-	self assert: stmt variable name class equals: FASTFortranCharacterLiteral. 
-	self assert: stmt variable name primitiveValue equals: 'C'.
+	self assert: stmt variable name equals: 'C'.
 ]
 
 { #category : #'tests-expression' }
@@ -1554,73 +1494,13 @@ SyntaxJsonToFASTTests >> testAssignementScientificNotation [
           c = 1.0E-30
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testAssignementScientificNotation.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "assignment_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "11"
-                    },
-                    "left": [
-                        {
-                            "tag": "symbolic_name",
-                            "start_pos": {
-                                "line": "2",
-                                "column": "11"
-                            },
-                            "name": "C"
-                        }
-                    ],
-                    "right": [
-                        {
-                            "tag": "arithmetic_expression",
-                            "expression": {
-                                "tag": "unsigned_real_constant",
-                                "start_pos": {
-                                    "line": "2",
-                                    "column": "15"
-                                },
-                                "value": "1.0E-30"
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}
-'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"11"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"11"}, "name":"C"}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_real_constant", "start_pos" : {"line" : "2", "column":"15"}, "value":"1.0E-30"}}]}]}] }'.
 
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranAssignmentStatement.
 	"self assert: stmt startPos equals: 32."
-
 
 	self assert: stmt expression class equals: FASTFortranRealLiteral.
 	self assert: stmt expression primitiveValue equals: '1.0E-30'.
@@ -1707,6 +1587,31 @@ SyntaxJsonToFASTTests >> testAssignementStringLiteral [
 ]
 
 { #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testAssignementToArray [
+
+	| result stmt var |
+	fortranCode := '      PROGRAM MYPROG
+      NOMARC(1) = 42
+      END
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"7"}, "left" : [{"tag" : "array_element_name", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"7"}, "name":"NOMARC"}, "qualifiers_list" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"14"}, "value":"1"}}]}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"19"}, "value":"42"}}]}]}] }''c''"}}]}]}] }'.
+
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranAssignmentStatement.
+
+	var := stmt variable.
+	self assert: var class equals: FASTFortranArrayVariable.
+	self assert: var indices size equals: 1.
+	self assert: var indices first class equals: FASTFortranIntegerLiteral.
+
+	self assert: var indices first primitiveValue equals: '1'.
+	"self assert: var indices first startPos equals: 35.
+	self assert: var indices first endPos equals: 37."
+]
+
+{ #category : #'tests-statement' }
 SyntaxJsonToFASTTests >> testAssignementToArrayRange [
 
 	| result stmt var |
@@ -1714,15 +1619,7 @@ SyntaxJsonToFASTTests >> testAssignementToArrayRange [
       NOMARC(1:1) = ''c''
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"7"}, "left" : [{"tag" : "substring", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"7"}, "name":"NOMARC"}, "lower_bound" : {"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"14"}, "value":"1"}}, "upper_bound" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"16"}, "value":"1"}}], "right" : [{"tag" : "character_expression", "expression" : {"tag" : "character_constant", "start_pos" : {"line" : "2", "column":"21"}, "value":"''c''"}}]}]}] }''c''"}}]}...''c''"
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"7"}, "left" : [{"tag" : "substring", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"7"}, "name":"NOMARC"}, "lower_bound" : {"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"14"}, "value":"1"}}, "upper_bound" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"16"}, "value":"1"}}], "right" : [{"tag" : "character_expression", "expression" : {"tag" : "character_constant", "start_pos" : {"line" : "2", "column":"21"}, "value":"''c''"}}]}]}] }'.
 
 	result := self visitJsonCode.
 
