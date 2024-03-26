@@ -80,6 +80,15 @@ FASTFortranSyntaxJsonVisitor >> set: aFASTFortranNode startEnd: aNode [
 	aFASTFortranNode endPos: (self pointToPosition: end) - 1
 ]
 
+{ #category : #helpers }
+FASTFortranSyntaxJsonVisitor >> variableNameOrExpression: anObject [
+	"Scalar variables appear as String, otherwise, don't do anything"
+
+	^anObject isString
+		ifTrue: [ (self newEntity: FASTFortranScalarVariable) name: anObject ]
+		ifFalse: [ anObject ]
+]
+
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitArgumentWithReturnSpecifier: aNode [
 	"start_pos tag return_specifier argument"
@@ -90,6 +99,15 @@ FASTFortranSyntaxJsonVisitor >> visitArgumentWithReturnSpecifier: aNode [
 	^ (self newEntity: FASTFortranCharacterLiteral)
 		  primitiveValue: ((data at: 'return_specifier') , (data at: 'argument'));
 		  yourself
+]
+
+{ #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitArguments: aNode [
+
+	| data |
+	data := super visitArguments: aNode.
+	^data collect: [ :each | self variableNameOrExpression: each ]
+
 ]
 
 { #category : #'visiting statement' }
@@ -122,18 +140,16 @@ FASTFortranSyntaxJsonVisitor >> visitArrayElementName: aNode [
 
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitAssignmentStatement: aNode [
-	"start_pos right left"
+	"start_pos right left
+	note: left-hand-side is not an expression, it's a variable, but #convertToFASTExpression:
+	  does what we need here"
 
-	| data lhs |
+	| data |
 	data := super visitAssignmentStatement: aNode.
-
-	lhs := data at: #left.
 
 	^ (self newEntity: FASTFortranAssignmentStatement)
 		  expression: (data at: 'right') ;
-		  variable: (lhs isString
-			ifTrue: [ (self newEntity: FASTFortranScalarVariable) name: lhs ]
-			ifFalse: [ lhs ]) ;
+		  variable: (self variableNameOrExpression: (data at: #left)) ;
 		  yourself
 ]
 

@@ -2910,69 +2910,7 @@ SyntaxJsonToFASTTests >> testCallSubroutine [
        CALL RANK ( N, *8 )
       END 
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testCallSubroutine.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "TESTALT"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "call_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "name": {
-                        "tag": "symbolic_name",
-                        "start_pos": {
-                            "line": "2",
-                            "column": "13"
-                        },
-                        "name": "RANK"
-                    },
-                    "arguments": [
-                        {
-                            "tag": "symbolic_name",
-                            "start_pos": {
-                                "line": "2",
-                                "column": "20"
-                            },
-                            "name": "N"
-                        },
-                        {
-                            "tag": "argument_with_return_specifier",
-                            "start_pos": {
-                                "line": "2",
-                                "column": "23"
-                            },
-                            "return_specifier": "*",
-                            "argument": "8"
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"TESTALT"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "call_statement", "start_pos" : {"line" : "2", "column":"8"}, "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"RANK"}, "arguments" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"20"}, "name":"N"}, {"tag" : "argument_with_return_specifier", "start_pos" : {"line" : "2", "column":"23"}, "return_specifier" : "*", "argument":"8"}]}]}] }'.
 	result := self visitJsonCode.
 
 	self assert: result first class equals: FASTFortranProgramMain.
@@ -2981,7 +2919,7 @@ SyntaxJsonToFASTTests >> testCallSubroutine [
 
 	call := result first statementBlock statements anyOne.
 	self assert: call class equals: FASTFortranCallStatement.
-	self assert: call name primitiveValue equals: 'RANK'.
+	self assert: call name equals: 'RANK'.
 	self assert: call arguments size equals: 2.
 	"self assert: call startPos equals: 30.
 	self assert: call endPos equals: 48."
