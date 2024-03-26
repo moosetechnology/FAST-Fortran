@@ -3520,49 +3520,13 @@ SyntaxJsonToFASTTests >> testContinueStatement [
 110   CONTINUE
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testContinueStatement.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "label": "110",
-                    "tag": "continue_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "7"
-                    }
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"label" : "110", "tag" : "continue_statement", "start_pos" : {"line" : "2", "column":"7"}}]}] }'.
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranContinueStatement.
-	"self assert: stmt startPos equals: 28.
-	self assert: stmt endPos equals: 35."
+	self assert: stmt startPos equals: 28.
+	"self assert: stmt endPos equals: 35."
 
 	self assert: stmt label equals: '110'.
 
@@ -9681,60 +9645,7 @@ SyntaxJsonToFASTTests >> testSubroutineWithParametersOnTwoLines [
       continue
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/unit-tests/subroutine-with-parameters-two-lines.FOR",
-    "program_units": [
-        {
-            "tag": "subroutine",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "18"
-                },
-                "name": "SIMPLESUBROUTINE"
-            },
-            "parameters": [
-                {
-                    "tag": "symbolic_name",
-                    "start_pos": {
-                        "line": "1",
-                        "column": "36"
-                    },
-                    "name": "A"
-                },
-                {
-                    "tag": "symbolic_name",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "name": "B"
-                }
-            ],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "4",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "continue_statement",
-                    "start_pos": {
-                        "line": "3",
-                        "column": "7"
-                    }
-                }
-            ]
-        }
-    ]
-}
-'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"SIMPLESUBROUTINE"}, "parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"36"}, "name":"A"}, {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"8"}, "name":"B"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "continue_statement", "start_pos" : {"line" : "3", "column":"7"}}]}] }'.
 
 	result := self visitJsonCode.
 	

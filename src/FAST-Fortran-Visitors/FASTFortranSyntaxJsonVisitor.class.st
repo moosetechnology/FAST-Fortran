@@ -53,6 +53,15 @@ FASTFortranSyntaxJsonVisitor >> newEntity: aFASTFortranClass withPosition: aNode
 ]
 
 { #category : #helpers }
+FASTFortranSyntaxJsonVisitor >> newLabeledStatement: aFASTStatementClass withPosition: data [
+
+	| fastStatement |
+	fastStatement := self newEntity: aFASTStatementClass withPosition: data.
+	data at: #label ifPresent: [ :label | fastStatement label: label ].
+	^fastStatement
+]
+
+{ #category : #helpers }
 FASTFortranSyntaxJsonVisitor >> pointToPosition: lineColumn [
 
 	| position |
@@ -268,21 +277,12 @@ FASTFortranSyntaxJsonVisitor >> visitConstantSigned: aNode [
 
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitContinueStatement: aNode [
-	"start_pos label tag"
+	"start_pos label"
 
 	| data |
 	data := super visitContinueStatement: aNode.
 
-	^ (self newEntity: FASTFortranContinueStatement)
-		  startPos: (data at: 'start_pos');
-		  "label: (data at: 'label');"
-		  yourself
-]
-
-{ #category : #'visiting statement' }
-FASTFortranSyntaxJsonVisitor >> visitContinue_statement: aContinueStatement [
-
-	^ self newEntity: FASTFortranContinueStatement
+	^self newLabeledStatement: FASTFortranContinueStatement withPosition: data
 ]
 
 { #category : #visiting }
@@ -559,13 +559,6 @@ FASTFortranSyntaxJsonVisitor >> visitIntrinsicStatement: aNode [
 					data := super visitIntrinsicStatement:aNode.
 
 					^ data
-]
-
-{ #category : #'visiting statement' }
-FASTFortranSyntaxJsonVisitor >> visitLabel: aNode [
-	"no keys in data"
-
-	^ super visitLabel: aNode
 ]
 
 { #category : #'visiting statement' }
