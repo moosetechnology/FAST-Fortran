@@ -233,6 +233,12 @@ FASTFortranSyntaxJsonVisitor >> visitCharacterExpression: aNode [
 	^ (super visitCharacterExpression: aNode) at: 'expression'
 ]
 
+{ #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitCharacterType: aNode [
+
+	^self newEntity: FASTFortranCharacterType
+]
+
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitCommonParameters: aNode [
 	"data is an array of dict-s with keys name, nlist"
@@ -259,6 +265,12 @@ FASTFortranSyntaxJsonVisitor >> visitCommonStatement: aNode [
 	^ (self newEntity: FASTFortranCommonStatement)
 		  groups: (data at: 'common_parameters');
 		  yourself
+]
+
+{ #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitComplexType: aNode [
+
+	^self newEntity: FASTFortranComplexType
 ]
 
 { #category : #'visiting statement' }
@@ -388,6 +400,61 @@ FASTFortranSyntaxJsonVisitor >> visitFunctionReference: aNode [
 		  yourself
 ]
 
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitImplicitNoneStatement: aNode [
+
+	| data |
+	data := super visitImplicitNoneStatement: aNode.
+
+	^(self newEntity: FASTFortranImplicitStatement withPosition: data)
+		typingRules: #() ;
+		yourself
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitImplicitParameter: anImplicitParameter [
+	"type implicit_elements"
+
+	| data |
+	data := super visitImplicitParameter: anImplicitParameter.
+
+	^(self newEntity: FASTFortranImplicitTypingRule "withPosition: data")
+		type: (data at: #type) ;
+		ranges: (data at: #implicit_elements) ;
+		yourself
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitImplicitRange: aNode [
+	"implicit_range_lower implicit_range_upper"
+
+	| data |
+	data := super visitImplicitRange: aNode.
+
+	^(self newEntity: FASTFortranImplicitRange "withPosition: data")
+		from: (data at: #implicit_range_lower) ;
+		to: (data at: #implicit_range_upper) ;
+		yourself
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitImplicitRangeUpper: aString [
+	
+	^aString ifEmpty: [ nil ] 
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitImplicitStatement: aNode [
+	"start_pos implicit_parameters"
+
+	| data |
+	data := super visitImplicitStatement: aNode.
+
+	^(self newEntity: FASTFortranImplicitStatement withPosition: data)
+		typingRules: (data at: #implicit_parameters) ;
+		yourself
+]
+
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitIntegerType: aNode [
 	"comment"
@@ -401,6 +468,21 @@ FASTFortranSyntaxJsonVisitor >> visitLabelReference: label [
 	^(self newEntity: FASTFortranLabelReference)
 		label: label ;
 		yourself
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitLenSpecification: aNode [
+	"#asterisk or #value"
+
+	| data |
+	data := super visitLenSpecification: aNode.
+
+	^data at: #value
+		ifPresent: [ :size |
+			(self newEntity: FASTFortranIntegerLiteral)
+				primitiveValue: size
+		]
+		ifAbsent: [ 	self newEntity: FASTFortranAsterisk ]
 ]
 
 { #category : #visiting }
@@ -639,6 +721,17 @@ FASTFortranSyntaxJsonVisitor >> visitThenStatements: aNode [
 	^ (self newEntity: FASTFortranStatementBlock)
 		  statements: data;
 		  yourself
+]
+
+{ #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitTypeReference: aNode [
+
+	| data return |
+	data := super visitTypeReference: aNode.
+
+	return := data at: #name.
+	data at: #len_specification ifPresent: [ :size | return size: size ].
+	^return
 ]
 
 { #category : #'visiting statement' }
