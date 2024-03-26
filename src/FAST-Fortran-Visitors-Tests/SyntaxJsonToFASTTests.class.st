@@ -5709,55 +5709,8 @@ SyntaxJsonToFASTTests >> testIfArithmetic [
          IF ( A ) 10, 20, 30
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testIfArithmetic.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "arithmetic_if_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "10"
-                    },
-                    "expression": [
-                        {
-                            "tag": "symbolic_name",
-                            "start_pos": {
-                                "line": "2",
-                                "column": "15"
-                            },
-                            "name": "A"
-                        }
-                    ],
-                    "s1": "10",
-                    "s2": "20",
-                    "s3": "30"
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "arithmetic_if_statement", "start_pos" : {"line" : "2", "column":"10"}, "expression" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"15"}, "name":"A"}], "s1" : "10", "s2" : "20", "s3":"30"}]}] }'.
+
 	result := self visitJsonCode.
 
 	conditional := result first statementBlock statements first.

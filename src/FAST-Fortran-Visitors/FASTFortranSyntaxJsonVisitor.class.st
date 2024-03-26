@@ -118,7 +118,7 @@ FASTFortranSyntaxJsonVisitor >> visitArithmeticIfStatement: aNode [
 	data := super visitArithmeticIfStatement: aNode.
 
 	^ (self newEntity: FASTFortranIfArithmeticStatement)
-		  condition: (data at: 'expression') first;
+		  condition: (data at: 'expression');
 		  lessLabel: (data at: 's1');
 		  equalLabel: (data at: 's2');
 		  greaterLabel: (data at: 's3');
@@ -341,6 +341,15 @@ FASTFortranSyntaxJsonVisitor >> visitEntryStatement: aNode [
 		  name: (data at: 'name');
 		  entryArguments: (data at: 'parameters');
 		  yourself
+]
+
+{ #category : #'visiting expression' }
+FASTFortranSyntaxJsonVisitor >> visitExpression: aNode [
+
+	| data |
+	data := super visitExpression: aNode.
+
+	^self variableNameOrExpression: data
 ]
 
 { #category : #'visiting statement' }
