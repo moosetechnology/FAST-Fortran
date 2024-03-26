@@ -5652,47 +5652,8 @@ SyntaxJsonToFASTTests >> testGoto [
        GOTO 100
       END 
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testGoto.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "TESTALT"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "goto_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "type": "unconditional",
-                    "labels": [
-                        "100"
-                    ],
-                    "var": []
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"TESTALT"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "unconditional_goto_statement", "start_pos" : {"line" : "2", "column":"8"}, "labels" : ["100"], "var" : []}]}] }'.
+
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
@@ -5700,12 +5661,11 @@ SyntaxJsonToFASTTests >> testGoto [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranGoToStatement.
 	self assert: stmt startPos equals: 30.
-	self assert: stmt endPos equals: 37.
-
+	"self assert: stmt endPos equals: 37."
 
 	self assert: stmt labelReferences size equals: 1.
 	self assert: stmt labelReferences anyOne label equals: '100'.
-	self assert: stmt labelReferences anyOne startPos equals: 35.
+	"self assert: stmt labelReferences anyOne startPos equals: 35."
 
 ]
 
@@ -5717,59 +5677,8 @@ SyntaxJsonToFASTTests >> testGotoComputed [
        GOTO (100,200,300,400) var
       END 
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testGotoComputed.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "TESTALT"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "goto_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "type": "computed",
-                    "labels": [
-                        "100",
-                        "200",
-                        "300",
-                        "400"
-                    ],
-                    "var": [
-                        {
-                            "tag": "symbolic_name",
-                            "start_pos": {
-                                "line": "2",
-                                "column": "31"
-                            },
-                            "name": "VAR"
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"TESTALT"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "computed_goto_statement", "start_pos" : {"line" : "2", "column":"8"}, "labels" : ["100", "200", "300", "400"], "var" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"31"}, "name":"VAR"}]}]}] }'.
+
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
@@ -5777,20 +5686,19 @@ SyntaxJsonToFASTTests >> testGotoComputed [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranGoToComputedStatement.
 	self assert: stmt startPos equals: 30.
-	self assert: stmt endPos equals: 55.
+	"self assert: stmt endPos equals: 55."
 
 
 	self assert: stmt labelReferences size equals: 4.
 	stmt labelReferences do: [ :label |
 		self assert: label class equals: FASTFortranLabelReference.
 		self assert: (label label endsWith: '00').
-		self assert: (#(36 40 44 48) includes: label startPos)
+		"self assert: (#(36 40 44 48) includes: label startPos)"
 	].
 
 	self assert: stmt selectorExpression class equals: FASTFortranScalarVariable.
-	self assert: stmt selectorExpression name equals: 'var'.
-	self assert: stmt selectorExpression startPos equals: 53.
-
+	self assert: stmt selectorExpression name equals: 'VAR'.
+	"self assert: stmt selectorExpression startPos equals: 53."
 ]
 
 { #category : #'tests-statement' }

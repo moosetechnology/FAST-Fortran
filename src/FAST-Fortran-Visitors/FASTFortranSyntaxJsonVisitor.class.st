@@ -260,6 +260,19 @@ FASTFortranSyntaxJsonVisitor >> visitCommonStatement: aNode [
 		  yourself
 ]
 
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitComputedGotoStatement: aNode [
+	"var start_pos labels"
+
+	| data |
+	data := super visitComputedGotoStatement: aNode.
+
+	^(self newEntity: FASTFortranGoToComputedStatement withPosition: data)
+		selectorExpression: (data at: #var) ;
+		labelReferences: (data at: #labels) ;
+		yourself
+]
+
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitConstantSigned: aNode [
 	"sign tag constant"
@@ -373,6 +386,14 @@ FASTFortranSyntaxJsonVisitor >> visitIntegerType: aNode [
 ]
 
 { #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitLabelReference: label [
+
+	^(self newEntity: FASTFortranLabelReference)
+		label: label ;
+		yourself
+]
+
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitLhs: aNode [
 	"start_pos tag value"
 
@@ -386,7 +407,7 @@ FASTFortranSyntaxJsonVisitor >> visitLhs: aNode [
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitLiteralExpression: aNode [
 
-	^ (super visitLiteralExpression: aNode) first
+	^super visitLiteralExpression: aNode
 ]
 
 { #category : #'visiting expression' }
@@ -633,6 +654,19 @@ FASTFortranSyntaxJsonVisitor >> visitUnaryExpression: aNode [
 		  yourself
 ]
 
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitUnconditionalGotoStatement: aNode [
+	"start_pos labels
+	contrary to what it seems, there is only one label possible"
+
+	| data |
+	data := super visitUnconditionalGotoStatement: aNode.
+
+	^(self newEntity: FASTFortranGoToStatement withPosition: data)
+		labelReferences: (data at: #labels) ;
+		yourself
+]
+
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitUnsignedIntConstant: aNode [
 	
@@ -651,6 +685,14 @@ FASTFortranSyntaxJsonVisitor >> visitUnsignedRealConstant: aNode [
 	^ (self newEntity: FASTFortranRealLiteral)
 		  primitiveValue: (data at: 'value');
 		  yourself
+]
+
+{ #category : #'visiting expression' }
+FASTFortranSyntaxJsonVisitor >> visitVar: aNode [
+
+  | data |
+	data := super visitVar: aNode.
+	^self variableNameOrExpression: data
 ]
 
 { #category : #'visiting expression' }
