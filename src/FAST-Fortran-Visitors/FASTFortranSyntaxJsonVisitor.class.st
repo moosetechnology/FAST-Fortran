@@ -161,16 +161,17 @@ FASTFortranSyntaxJsonVisitor >> visitAsterisk: aNode [
 
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitBinaryExpression: aNode [
-	"rhs lhs operator"
+	"expression lhs operator"
 
 	| data |
 
 	data := super visitBinaryExpression: aNode.
-	^ (self newEntity: FASTFortranBinaryExpression)
-		  leftOperand: (data at: 'lhs');
-		  rightOperand: (data at: 'rhs');
-		  operator: (data at: 'operator');
-		  yourself
+
+	^(self newEntity: FASTFortranBinaryExpression)
+		leftOperand: (self variableNameOrExpression: (data at: 'lhs')) ;
+		rightOperand: (self variableNameOrExpression: (data at: 'expression')) ;
+		operator: (data at: 'operator') ;
+		yourself
 ]
 
 { #category : #'visiting prog-unit' }
@@ -195,9 +196,9 @@ FASTFortranSyntaxJsonVisitor >> visitBlockIfStatement: aNode [
 	data := super visitBlockIfStatement: aNode.
 
 	^ (self newEntity: FASTFortranIfBlockStatement)
-		  elseStatementBlock: (data at: 'else_block' at: 'else_statements');
-		  thenStatementBlock: (data at: 'then_statements');
-		  condition: (data at: 'expression');
+		  condition: (data at: 'expression') ;
+		  thenStatementBlock: (data at: 'then_statements') ;
+		  elseStatementBlock: (data at: 'else_block') ;
 		  yourself
 ]
 
@@ -632,8 +633,11 @@ FASTFortranSyntaxJsonVisitor >> visitSubstring: aNode [
 FASTFortranSyntaxJsonVisitor >> visitThenStatements: aNode [
 	"no keys in data"
 
+	| data |
+	data := super visitThenStatements: aNode.
+
 	^ (self newEntity: FASTFortranStatementBlock)
-		  statements: (super visitThenStatements: aNode);
+		  statements: data;
 		  yourself
 ]
 

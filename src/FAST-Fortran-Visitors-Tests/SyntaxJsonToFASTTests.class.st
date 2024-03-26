@@ -6231,9 +6231,9 @@ SyntaxJsonToFASTTests >> testIfEmpty [
 	conditional := result first statementBlock statements first.
 	self assert: conditional class equals: FASTFortranIfBlockStatement.
 	self assert: conditional condition class equals: FASTFortranScalarVariable.
-	self assert: conditional condition name equals: 'a'.
+	self assert: conditional condition name equals: 'A'.
 	self assert: conditional thenStatementBlock statements size equals: 0.
-	self assert: conditional elseStatementBlock equals: nil.
+	self assert: conditional elseStatementBlock statements size equals: 0.
 
 "	self assert: conditional startPos equals: 29.
 	self assert: conditional endPos equals: 55."
