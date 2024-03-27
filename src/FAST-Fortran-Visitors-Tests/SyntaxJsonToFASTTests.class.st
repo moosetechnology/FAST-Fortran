@@ -8267,48 +8267,14 @@ SyntaxJsonToFASTTests >> testStopStatementEmpty [
       stop
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testStopStatementEmpty.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "stop_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "7"
-                    }
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "stop_statement", "start_pos" : {"line" : "2", "column":"8"}}]}] }'.
+
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranStopStatement.
-	"self assert: stmt startPos equals: 28.
-	self assert: stmt endPos equals: 31."
+	self assert: stmt startPos equals: 29.
+	"self assert: stmt endPos equals: 31."
 
 	self assert: stmt displayArgument equals: nil
 
@@ -8323,58 +8289,39 @@ SyntaxJsonToFASTTests >> testStopStatementWithInteger [
       stop 1
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testStopStatementWithInteger.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "stop_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "7"
-                    },
-                    "argument": {
-                        "tag": "unsigned_int_constant",
-                        "start_pos": {
-                            "line": "2",
-                            "column": "12"
-                        },
-                        "value": "1"
-                    }
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "stop_statement", "start_pos" : {"line" : "2", "column":"8"}, "argument" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"13"}, "value":"1"}}]}] }'.
+
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranStopStatement.
-	"self assert: stmt startPos equals: 28.
-	self assert: stmt endPos equals: 33."
+	self assert: stmt startPos equals: 29.
+	"self assert: stmt endPos equals: 33."
 
-	self assert: stmt displayArgument equals: '1'
+	self assert: stmt displayArgument class equals: FASTFortranIntegerLiteral.
+	self assert: stmt displayArgument primitiveValue equals: '1'
+
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testStopStatementWithString [
+
+	| stmt result |
+	fortranCode := '      PROGRAM MYPROG
+      stop ''error''
+      END
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "stop_statement", "start_pos" : {"line" : "2", "column":"8"}, "argument" : {"tag" : "character_constant", "start_pos" : {"line" : "2", "column":"13"}, "value":"''error''"}}]}] }'.
+
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranStopStatement.
+	self assert: stmt startPos equals: 29.
+	"self assert: stmt endPos equals: 39."
+
+	self assert: stmt displayArgument class equals: FASTFortranCharacterLiteral.
+	self assert: stmt displayArgument primitiveValue equals: '''error'''
 
 
 ]

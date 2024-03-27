@@ -663,20 +663,15 @@ FASTFortranSyntaxJsonVisitor >> visitStatementList: statementCollection [
 
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitStopStatement: aNode [
-	"start_pos label tag"
+	"start_pos OPTIONAL(argument)"
 
-	| data |
+	| data return |
 
 	data := super visitStopStatement: aNode.
-	^ (self newEntity: FASTFortranStopStatement)
-		  label: ((data keys includes: 'label')
-				   ifTrue: [ data at: 'label' ]
-				   ifFalse: [ nil ]);
-			"--- argument ?!? ---
-			argument: ((data keys includes: 'argument')
-				   ifTrue: [ data at: 'argument' ]
-				   ifFalse: [ nil ]);"
-		  yourself
+
+	return := self newEntity: FASTFortranStopStatement withPosition: data.
+	data at: #argument ifPresent: [ :arg | return displayArgument: arg ].
+	^return
 ]
 
 { #category : #'visiting prog-unit' }
