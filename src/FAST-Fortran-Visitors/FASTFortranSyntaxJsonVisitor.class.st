@@ -62,7 +62,7 @@ FASTFortranSyntaxJsonVisitor >> newLabeledStatement: aFASTStatementClass withPos
 	^ statement
 ]
 
-{ #category : #'visiting prog-unit' }
+{ #category : #running }
 FASTFortranSyntaxJsonVisitor >> onFile: aProgramFile [
 	
 	model := FASTFortranModel new.
@@ -398,6 +398,16 @@ FASTFortranSyntaxJsonVisitor >> visitExternalStatement: aNode [
 	^ (self newLabeledStatement: FASTFortranExternalStatement withPosition: data)
 		  procedures: (data at: 'proc_list');
 		  yourself
+]
+
+{ #category : #'visiting prog-unit' }
+FASTFortranSyntaxJsonVisitor >> visitFortranFile: aProgramFile [
+	"comments program_units file"
+
+	| data |
+	data := super visitFortranFile: aProgramFile.
+
+	^data at: #program_units
 ]
 
 { #category : #visiting }
