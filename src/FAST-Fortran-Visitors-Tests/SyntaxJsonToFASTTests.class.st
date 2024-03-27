@@ -8213,43 +8213,8 @@ SyntaxJsonToFASTTests >> testStatementWithLabel [
 10     STOP
       END 
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testStatementWithLabel.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "TESTALT"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "label": "10",
-                    "tag": "stop_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    }
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"TESTALT"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"label" : "10", "tag" : "stop_statement", "start_pos" : {"line" : "2", "column":"8"}}]}] }'.
+
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.

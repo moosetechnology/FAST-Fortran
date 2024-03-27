@@ -53,12 +53,13 @@ FASTFortranSyntaxJsonVisitor >> newEntity: aFASTFortranClass withPosition: aNode
 ]
 
 { #category : #helpers }
-FASTFortranSyntaxJsonVisitor >> newLabeledStatement: aFASTStatementClass withPosition: data [
+FASTFortranSyntaxJsonVisitor >> newLabeledStatement: aFASTStatementClass withPosition: aNode [
 
-	| fastStatement |
-	fastStatement := self newEntity: aFASTStatementClass withPosition: data.
-	data at: #label ifPresent: [ :label | fastStatement label: label ].
-	^fastStatement
+	| statement |
+	statement := self newEntity: aFASTStatementClass withPosition: aNode.
+	aNode at: #label ifPresent: [ :label | statement label: label ].
+
+	^ statement
 ]
 
 { #category : #helpers }
@@ -117,7 +118,7 @@ FASTFortranSyntaxJsonVisitor >> visitArithmeticIfStatement: aNode [
 	| data |
 	data := super visitArithmeticIfStatement: aNode.
 
-	^ (self newEntity: FASTFortranIfArithmeticStatement)
+	^ (self newLabeledStatement: FASTFortranIfArithmeticStatement withPosition: data)
 		  condition: (data at: 'expression');
 		  lessLabel: (data at: 's1');
 		  equalLabel: (data at: 's2');
@@ -147,7 +148,7 @@ FASTFortranSyntaxJsonVisitor >> visitAssignmentStatement: aNode [
 	| data |
 	data := super visitAssignmentStatement: aNode.
 
-	^ (self newEntity: FASTFortranAssignmentStatement)
+	^ (self newLabeledStatement: FASTFortranAssignmentStatement withPosition: data)
 		  expression: (data at: 'right') ;
 		  variable: (self variableNameOrExpression: (data at: #left)) ;
 		  yourself
@@ -195,7 +196,7 @@ FASTFortranSyntaxJsonVisitor >> visitBlockIfStatement: aNode [
 	| data |
 	data := super visitBlockIfStatement: aNode.
 
-	^ (self newEntity: FASTFortranIfBlockStatement)
+	^ (self newLabeledStatement: FASTFortranIfBlockStatement withPosition: data)
 		  condition: (data at: 'expression') ;
 		  thenStatementBlock: (data at: 'then_statements') ;
 		  elseStatementBlock: (data at: 'else_block') ;
@@ -209,7 +210,7 @@ FASTFortranSyntaxJsonVisitor >> visitCallStatement: aNode [
 	| data |
 	data := super visitCallStatement: aNode.
 
-	^ (self newEntity: FASTFortranCallStatement)
+	^ (self newLabeledStatement: FASTFortranCallStatement withPosition: data)
 		  name: (data at: 'name');
 		  arguments: (data at: 'arguments');
 		  yourself
@@ -262,7 +263,7 @@ FASTFortranSyntaxJsonVisitor >> visitCommonStatement: aNode [
 	| data |
 	data := super visitCommonStatement: aNode.
 
-	^ (self newEntity: FASTFortranCommonStatement)
+	^ (self newLabeledStatement: FASTFortranCommonStatement withPosition: data)
 		  groups: (data at: 'common_parameters');
 		  yourself
 ]
@@ -280,7 +281,7 @@ FASTFortranSyntaxJsonVisitor >> visitComputedGotoStatement: aNode [
 	| data |
 	data := super visitComputedGotoStatement: aNode.
 
-	^(self newEntity: FASTFortranGoToComputedStatement withPosition: data)
+	^(self newLabeledStatement: FASTFortranGoToComputedStatement withPosition: data)
 		selectorExpression: (data at: #var) ;
 		labelReferences: (data at: #labels) ;
 		yourself
@@ -350,7 +351,7 @@ FASTFortranSyntaxJsonVisitor >> visitEntryStatement: aNode [
 	| data |
 	data := super visitEntryStatement: aNode.
 
-	^ (self newEntity: FASTFortranEntryStatement)
+	^ (self newLabeledStatement: FASTFortranEntryStatement withPosition: data)
 		  name: (data at: 'name');
 		  entryArguments: (data at: 'parameters');
 		  yourself
@@ -372,7 +373,7 @@ FASTFortranSyntaxJsonVisitor >> visitExternalStatement: aNode [
 	| data |
 	data := super visitExternalStatement: aNode.
 
-	^ (self newEntity: FASTFortranExternalStatement)
+	^ (self newLabeledStatement: FASTFortranExternalStatement withPosition: data)
 		  procedures: (data at: 'proc_list');
 		  yourself
 ]
@@ -406,7 +407,7 @@ FASTFortranSyntaxJsonVisitor >> visitImplicitNoneStatement: aNode [
 	| data |
 	data := super visitImplicitNoneStatement: aNode.
 
-	^(self newEntity: FASTFortranImplicitStatement withPosition: data)
+	^(self newLabeledStatement: FASTFortranImplicitStatement withPosition: data)
 		typingRules: #() ;
 		yourself
 ]
@@ -450,7 +451,7 @@ FASTFortranSyntaxJsonVisitor >> visitImplicitStatement: aNode [
 	| data |
 	data := super visitImplicitStatement: aNode.
 
-	^(self newEntity: FASTFortranImplicitStatement withPosition: data)
+	^(self newLabeledStatement: FASTFortranImplicitStatement withPosition: data)
 		typingRules: (data at: #implicit_parameters) ;
 		yourself
 ]
@@ -561,7 +562,7 @@ FASTFortranSyntaxJsonVisitor >> visitPauseStatement: aNode [
 	| data return |
 	data := super visitPauseStatement: aNode.
 
-	return := self newEntity: FASTFortranPauseStatement withPosition: data.
+	return := self newLabeledStatement: FASTFortranPauseStatement withPosition: data.
 	data at: #argument ifPresent: [ :arg | return displayArgument: arg ].
 	^return
 ]
@@ -599,7 +600,7 @@ FASTFortranSyntaxJsonVisitor >> visitRealType: aNode [
 FASTFortranSyntaxJsonVisitor >> visitReturnStatement: aNode [
 	"start_pos tag"
 
-	^ self newEntity: FASTFortranReturnStatement
+	^ self newLabeledStatement: FASTFortranReturnStatement withPosition: (super visitReturnStatement: aNode)
 ]
 
 { #category : #visiting }
@@ -669,7 +670,7 @@ FASTFortranSyntaxJsonVisitor >> visitStopStatement: aNode [
 
 	data := super visitStopStatement: aNode.
 
-	return := self newEntity: FASTFortranStopStatement withPosition: data.
+	return := self newLabeledStatement: FASTFortranStopStatement withPosition: data.
 	data at: #argument ifPresent: [ :arg | return displayArgument: arg ].
 	^return
 ]
@@ -738,7 +739,7 @@ FASTFortranSyntaxJsonVisitor >> visitTypeStatement: aNode [
 	| data |
 	data := super visitTypeStatement: aNode.
 
-	^ (self newEntity: FASTFortranVariableDeclarationStatement)
+	^ (self newLabeledStatement: FASTFortranVariableDeclarationStatement withPosition: data)
 		  type: (data at: 'type');
 		  declarators: (data at: 'declarators');
 		  yourself
@@ -765,7 +766,7 @@ FASTFortranSyntaxJsonVisitor >> visitUnconditionalGotoStatement: aNode [
 	| data |
 	data := super visitUnconditionalGotoStatement: aNode.
 
-	^(self newEntity: FASTFortranGoToStatement withPosition: data)
+	^(self newLabeledStatement: FASTFortranGoToStatement withPosition: data)
 		labelReferences: (data at: #labels) ;
 		yourself
 ]
@@ -817,7 +818,7 @@ FASTFortranSyntaxJsonVisitor >> visitVariableDeclarationStatement: aNode [
 	| data |
 	data := super visitVariableDeclarationStatement: aNode.
 
-	^ (self newEntity: FASTFortranVariableDeclarationStatement)
+	^ (self newLabeledStatement: FASTFortranVariableDeclarationStatement withPosition: data)
 		  type: (data at: 'type');
 		  declarators: (data at: 'declarators');
 		  yourself
