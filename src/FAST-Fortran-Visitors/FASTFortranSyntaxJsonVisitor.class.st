@@ -390,6 +390,16 @@ FASTFortranSyntaxJsonVisitor >> visitExternalStatement: aNode [
 		  yourself
 ]
 
+{ #category : #'visiting prog-unit' }
+FASTFortranSyntaxJsonVisitor >> visitFortranFile: aProgramFile [
+	
+	model := FASTFortranModel new.
+
+	^super visitFortranFile: aProgramFile
+	
+
+]
+
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitFunList: aCollection [
  
@@ -599,16 +609,6 @@ FASTFortranSyntaxJsonVisitor >> visitPauseStatement: aNode [
 	return := self newLabeledStatement: FASTFortranPauseStatement withPosition: data.
 	data at: #argument ifPresent: [ :arg | return displayArgument: arg ].
 	^return
-]
-
-{ #category : #'visiting prog-unit' }
-FASTFortranSyntaxJsonVisitor >> visitProgramFile: aProgramFile [
-	
-	model := FASTFortranModel new.
-
-	^super visitProgramFile: aProgramFile
-	
-
 ]
 
 { #category : #visiting }

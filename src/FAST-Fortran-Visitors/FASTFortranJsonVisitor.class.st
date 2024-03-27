@@ -635,6 +635,12 @@ FASTFortranJsonVisitor >> visitFortranComment: aCommentNode [
 		yourself
 ]
 
+{ #category : #'visiting prog-unit' }
+FASTFortranJsonVisitor >> visitFortranFile: aProgramFileNode [
+	model := FASTFortranModel new.
+	^ (super visitFortranFile: aProgramFileNode) second
+]
+
 { #category : #'visiting expression' }
 FASTFortranJsonVisitor >> visitFunctionAsValue: aFunctionNode [
 
@@ -1027,12 +1033,6 @@ FASTFortranJsonVisitor >> visitPrintStatement: aPrintStatementNode [
 		format: data second;
 		arguments: data third;
 		yourself
-]
-
-{ #category : #'visiting prog-unit' }
-FASTFortranJsonVisitor >> visitProgramFile: aProgramFileNode [
-	model := FASTFortranModel new.
-	^ (super visitProgramFile: aProgramFileNode) second
 ]
 
 { #category : #visiting }

@@ -19,7 +19,7 @@ AbstractJsonToFASTTests >> visitJsonCode [
 	| visitor |
 	visitor := self jsonVisitor new.
 	visitor initLineSizes: fortranCode.
-	^ visitor visitProgramFile: (NeoJSONReader fromString: jsonCode)
+	^ visitor visitFortranFile: (NeoJSONReader fromString: jsonCode)
 ]
 
 { #category : #running }
@@ -27,5 +27,5 @@ AbstractJsonToFASTTests >> visitSyntaxJsonCode [
 
 	| visitor |
 	visitor := self jsonVisitor new.
-	^ visitor visitProgramFile: (NeoJSONReader fromString: jsonCode)
+	^ visitor visitFortranFile: (NeoJSONReader fromString: jsonCode)
 ]
