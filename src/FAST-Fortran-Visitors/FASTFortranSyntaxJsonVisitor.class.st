@@ -288,30 +288,33 @@ FASTFortranSyntaxJsonVisitor >> visitComputedGotoStatement: aNode [
 ]
 
 { #category : #'visiting expression' }
-FASTFortranSyntaxJsonVisitor >> visitConstant: aNode [
-		
-	| data |
-	data := super visitConstant: aNode.
-
-	^data isMooseEntity
-		ifTrue: [ data ]
-		ifFalse: [ (self newEntity: FASTFortranScalarVariable)
-			 name: data ;
-			yourself
-		]
-]
-
-{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitConstantSigned: aNode [
-	"sign tag constant"
+	"sign tag constant
+	 if #constant is a literal (ie. isMooseEntity), then add the sign to its primitive value
+	 and return it
+	 otherwise, its the name of a variable, so create a UnaryExpression and inside a ScalarVariable
+	Humm, could it be an ArrayVariable ?
+	"
 
-	| data |
+	| data constant return |
 	data := super visitConstantSigned: aNode.
 
-	^(self newEntity: FASTFortranUnaryExpression)
-		operator: (data at: 'sign') ;
-		expression: (data at: 'constant') ;
-		yourself
+	constant := data at: #constant.
+
+	constant isMooseEntity
+		ifTrue: [
+			constant primitiveValue: ((data at: #sign) , constant primitiveValue).
+			return := constant
+		]
+		ifFalse: [
+			return := self newEntity: FASTFortranUnaryExpression.
+			return operator: (data at: 'sign').
+			return expression: ((self newEntity: FASTFortranScalarVariable)
+			 		name: constant)
+		].
+
+	^return
+
 ]
 
 { #category : #'visiting statement' }
@@ -862,9 +865,9 @@ FASTFortranSyntaxJsonVisitor >> visitVariableDeclarator: aNode [
 	| data |
 	data := super visitVariableDeclarator: aNode.
 
-	^ (self newEntity: FASTFortranVariableDeclarationStatement)
+	^ (self newEntity: FASTFortranVariableDeclarator)
 		  dimensions: (data at: 'dimension_declarators');
-		  variable: (data at: 'variable');
+		  name: (data at: 'variable');
 		  yourself
 ]
 

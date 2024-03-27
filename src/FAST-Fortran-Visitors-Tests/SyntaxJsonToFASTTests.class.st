@@ -7163,12 +7163,9 @@ SyntaxJsonToFASTTests >> testUnaryMinusConstant [
 	self assert: asnmt class equals: FASTFortranAssignmentStatement.	
 	
 	expr := asnmt expression.
-	self assert: expr class equals: FASTFortranUnaryExpression.
-	self assert: expr operator equals: '-'.
+	self assert: expr class equals: FASTFortranIntegerLiteral.
+	self assert: expr primitiveValue equals: '-1'.
 	"self assert: expr startPos equals: 33."
-
-	self assert: expr expression class equals: FASTFortranIntegerLiteral.
-	self assert: expr expression primitiveValue equals: '1'.
 
 ]
 
