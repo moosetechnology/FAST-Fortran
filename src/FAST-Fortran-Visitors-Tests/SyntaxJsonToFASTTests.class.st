@@ -6604,7 +6604,7 @@ SyntaxJsonToFASTTests >> testImplicitStatement [
        IMPLICIT LOGICAL (A-Z)
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "implicit_statement", "start_pos" : {"line" : "2", "column":"8"}, "implicit_parameters" : [{"type" : {"tag" : "type_reference", "name":"LOGICAL"}, "implicit_elements" : [{"tag" : "implicit_range", "implicit_range_lower" : "A", "implicit_range_upper":"A"}]}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "implicit_statement", "start_pos" : {"line" : "2", "column":"8"}, "implicit_parameters" : [{"type" : {"tag" : "type_reference", "name":"LOGICAL"}, "implicit_elements" : [{"tag" : "implicit_range", "implicit_range_lower" : "A", "implicit_range_upper":"Z"}]}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -6622,7 +6622,7 @@ SyntaxJsonToFASTTests >> testImplicitStatement [
 	self assert: rule ranges size equals: 1.
 	self assert: rule ranges anyOne class equals: FASTFortranImplicitRange.
 	self assert: rule ranges anyOne from equals: 'A'.
-	self assert: rule ranges anyOne to   equals: 'A'.
+	self assert: rule ranges anyOne to   equals: 'Z'.
 
 ]
 
@@ -6692,7 +6692,7 @@ SyntaxJsonToFASTTests >> testImplicitStatementSeveralItems [
        IMPLICIT LOGICAL (l-N), INTEGER (C,S) 
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "implicit_statement", "start_pos" : {"line" : "2", "column":"8"}, "implicit_parameters" : [{"type" : {"tag" : "type_reference", "name":"LOGICAL"}, "implicit_elements" : [{"tag" : "implicit_range", "implicit_range_lower" : "l", "implicit_range_upper":"l"}]},{"type" : {"tag" : "type_reference", "name":"INTEGER"}, "implicit_elements" : [{"tag" : "implicit_range", "implicit_range_lower" : "C", "implicit_range_upper":""},{"tag" : "implicit_range", "implicit_range_lower" : "S", "implicit_range_upper":""}]}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "implicit_statement", "start_pos" : {"line" : "2", "column":"8"}, "implicit_parameters" : [{"type" : {"tag" : "type_reference", "name":"LOGICAL"}, "implicit_elements" : [{"tag" : "implicit_range", "implicit_range_lower" : "l", "implicit_range_upper":"N"}]},{"type" : {"tag" : "type_reference", "name":"INTEGER"}, "implicit_elements" : [{"tag" : "implicit_range", "implicit_range_lower" : "C", "implicit_range_upper":""},{"tag" : "implicit_range", "implicit_range_lower" : "S", "implicit_range_upper":""}]}]}]}] }'.
 
 	result := self visitJsonCode.
 
