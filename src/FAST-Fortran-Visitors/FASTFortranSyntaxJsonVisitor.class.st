@@ -558,10 +558,12 @@ FASTFortranSyntaxJsonVisitor >> visitParameter: aNode [
 FASTFortranSyntaxJsonVisitor >> visitPauseStatement: aNode [
 	"start_pos tag"
 
-	| data |
+	| data return |
 	data := super visitPauseStatement: aNode.
 
-	^ self newEntity: FASTFortranPauseStatement
+	return := self newEntity: FASTFortranPauseStatement withPosition: data.
+	data at: #argument ifPresent: [ :arg | return displayArgument: arg ].
+	^return
 ]
 
 { #category : #'visiting prog-unit' }
