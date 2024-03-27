@@ -168,9 +168,9 @@ FASTFortranSyntaxJsonVisitor >> visitBinaryExpression: aNode [
 
 	data := super visitBinaryExpression: aNode.
 
-	^(self newEntity: FASTFortranBinaryExpression)
+	^(self newEntity: FASTFortranBinaryExpression" withPosition: data")
 		leftOperand: (self variableNameOrExpression: (data at: 'lhs')) ;
-		rightOperand: (self variableNameOrExpression: (data at: 'expression')) ;
+		rightOperand: (self variableNameOrExpression: (data at: 'rhs')) ;
 		operator: (data at: 'operator') ;
 		yourself
 ]
