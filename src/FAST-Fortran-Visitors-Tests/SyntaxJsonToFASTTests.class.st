@@ -1231,77 +1231,8 @@ SyntaxJsonToFASTTests >> testBinaryExpressionDivision [
        i = 5 / 6
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testBinaryExpressionDivision.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "assignment_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "left": [
-                        {
-                            "tag": "symbolic_name",
-                            "start_pos": {
-                                "line": "2",
-                                "column": "8"
-                            },
-                            "name": "I"
-                        }
-                    ],
-                    "right": [
-                        {
-                            "tag": "arithmetic_expression",
-                            "expression": {
-                                "tag": "binary_expression",
-                                "lhs": {
-                                    "tag": "unsigned_int_constant",
-                                    "start_pos": {
-                                        "line": "2",
-                                        "column": "12"
-                                    },
-                                    "value": "5"
-                                },
-                                "operator": "/",
-                                "rhs": {
-                                    "tag": "unsigned_int_constant",
-                                    "start_pos": {
-                                        "line": "2",
-                                        "column": "16"
-                                    },
-                                    "value": "6"
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"8"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"8"}, "name":"I"}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "binary_expression", "lhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"12"}, "value":"5"}, "operator" : "/", "rhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"16"}, "value":"6"}}}]}]}] }'.
+
 	result := self visitJsonCode.
 
 	asnmt := result first statementBlock statements first.
@@ -1328,79 +1259,8 @@ SyntaxJsonToFASTTests >> testBinaryExpressionEqKeyword [
        END IF
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testBinaryExpressionEqKeyword.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "4",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "block_if_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "expression": {
-                        "tag": "logical_expression",
-                        "expression": {
-                            "tag": "logical_factor",
-                            "negated": "false",
-                            "expression": {
-                                "tag": "logical_primary",
-                                "expression": {
-                                    "tag": "binary_expression",
-                                    "lhs": {
-                                        "tag": "unsigned_int_constant",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "13"
-                                        },
-                                        "value": "5"
-                                    },
-                                    "operator": ".EQ.",
-                                    "rhs": {
-                                        "tag": "unsigned_int_constant",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "20"
-                                        },
-                                        "value": "6"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "then_statements": [],
-                    "else_block": {
-                        "else_statements": [],
-                        "end_if": {
-                            "label": ""
-                        }
-                    }
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "block_if_statement", "start_pos" : {"line" : "2", "column":"8"}, "expression" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "binary_expression", "lhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"13"}, "value":"5"}, "operator" : ".EQ.", "rhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"20"}, "value":"6"}}}}}, "then_statements" : [], "else_block" : {"else_statements" : [], "end_if" : {"label":""}}}]}] }'.
+
 	result := self visitJsonCode.
 
 	asnmt := result first statementBlock statements first.
@@ -1428,77 +1288,8 @@ SyntaxJsonToFASTTests >> testBinaryExpressionExponentiation [
        i = 5 ** 6
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testBinaryExpressionExponentiation.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "assignment_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "left": [
-                        {
-                            "tag": "symbolic_name",
-                            "start_pos": {
-                                "line": "2",
-                                "column": "8"
-                            },
-                            "name": "I"
-                        }
-                    ],
-                    "right": [
-                        {
-                            "tag": "arithmetic_expression",
-                            "expression": {
-                                "tag": "binary_expression",
-                                "lhs": {
-                                    "tag": "unsigned_int_constant",
-                                    "start_pos": {
-                                        "line": "2",
-                                        "column": "12"
-                                    },
-                                    "value": "5"
-                                },
-                                "operator": "**",
-                                "rhs": {
-                                    "tag": "unsigned_int_constant",
-                                    "start_pos": {
-                                        "line": "2",
-                                        "column": "17"
-                                    },
-                                    "value": "6"
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"8"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"8"}, "name":"I"}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "binary_expression", "lhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"12"}, "value":"5"}, "operator" : "**", "rhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"17"}, "value":"6"}}}]}]}] }'.
+
 	result := self visitJsonCode.
 	
 	asnmt := result first statementBlock statements first.
@@ -1526,79 +1317,8 @@ SyntaxJsonToFASTTests >> testBinaryExpressionGtKeyword [
        END IF
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testBinaryExpressionGtKeyword.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "4",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "block_if_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "expression": {
-                        "tag": "logical_expression",
-                        "expression": {
-                            "tag": "logical_factor",
-                            "negated": "false",
-                            "expression": {
-                                "tag": "logical_primary",
-                                "expression": {
-                                    "tag": "binary_expression",
-                                    "lhs": {
-                                        "tag": "unsigned_int_constant",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "13"
-                                        },
-                                        "value": "5"
-                                    },
-                                    "operator": ".GT.",
-                                    "rhs": {
-                                        "tag": "unsigned_int_constant",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "20"
-                                        },
-                                        "value": "6"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "then_statements": [],
-                    "else_block": {
-                        "else_statements": [],
-                        "end_if": {
-                            "label": ""
-                        }
-                    }
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "block_if_statement", "start_pos" : {"line" : "2", "column":"8"}, "expression" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "binary_expression", "lhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"13"}, "value":"5"}, "operator" : ".GT.", "rhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"20"}, "value":"6"}}}}}, "then_statements" : [], "else_block" : {"else_statements" : [], "end_if" : {"label":""}}}]}] }'.
+
 	result := self visitJsonCode.
 
 	asnmt := result first statementBlock statements first.
@@ -1627,79 +1347,8 @@ SyntaxJsonToFASTTests >> testBinaryExpressionGteKeyword [
        END IF
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testBinaryExpressionGteKeyword.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "4",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "block_if_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "expression": {
-                        "tag": "logical_expression",
-                        "expression": {
-                            "tag": "logical_factor",
-                            "negated": "false",
-                            "expression": {
-                                "tag": "logical_primary",
-                                "expression": {
-                                    "tag": "binary_expression",
-                                    "lhs": {
-                                        "tag": "unsigned_int_constant",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "13"
-                                        },
-                                        "value": "5"
-                                    },
-                                    "operator": ".GE.",
-                                    "rhs": {
-                                        "tag": "unsigned_int_constant",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "20"
-                                        },
-                                        "value": "6"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "then_statements": [],
-                    "else_block": {
-                        "else_statements": [],
-                        "end_if": {
-                            "label": ""
-                        }
-                    }
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "block_if_statement", "start_pos" : {"line" : "2", "column":"8"}, "expression" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "binary_expression", "lhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"13"}, "value":"5"}, "operator" : ".GE.", "rhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"20"}, "value":"6"}}}}}, "then_statements" : [], "else_block" : {"else_statements" : [], "end_if" : {"label":""}}}]}] }'.
+
 	result := self visitJsonCode.
 
 	asnmt := result first statementBlock statements first.
@@ -1728,79 +1377,8 @@ SyntaxJsonToFASTTests >> testBinaryExpressionLtKeyword [
        END IF
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testBinaryExpressionLtKeyword.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "4",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "block_if_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "expression": {
-                        "tag": "logical_expression",
-                        "expression": {
-                            "tag": "logical_factor",
-                            "negated": "false",
-                            "expression": {
-                                "tag": "logical_primary",
-                                "expression": {
-                                    "tag": "binary_expression",
-                                    "lhs": {
-                                        "tag": "unsigned_int_constant",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "13"
-                                        },
-                                        "value": "5"
-                                    },
-                                    "operator": ".LT.",
-                                    "rhs": {
-                                        "tag": "unsigned_int_constant",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "20"
-                                        },
-                                        "value": "6"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "then_statements": [],
-                    "else_block": {
-                        "else_statements": [],
-                        "end_if": {
-                            "label": ""
-                        }
-                    }
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "block_if_statement", "start_pos" : {"line" : "2", "column":"8"}, "expression" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "binary_expression", "lhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"13"}, "value":"5"}, "operator" : ".LT.", "rhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"20"}, "value":"6"}}}}}, "then_statements" : [], "else_block" : {"else_statements" : [], "end_if" : {"label":""}}}]}] }'.
+
 	result := self visitJsonCode.
 
 	asnmt := result first statementBlock statements first.
@@ -1829,79 +1407,8 @@ SyntaxJsonToFASTTests >> testBinaryExpressionLteKeyword [
        END IF
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testBinaryExpressionLteKeyword.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "4",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "block_if_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "expression": {
-                        "tag": "logical_expression",
-                        "expression": {
-                            "tag": "logical_factor",
-                            "negated": "false",
-                            "expression": {
-                                "tag": "logical_primary",
-                                "expression": {
-                                    "tag": "binary_expression",
-                                    "lhs": {
-                                        "tag": "unsigned_int_constant",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "13"
-                                        },
-                                        "value": "5"
-                                    },
-                                    "operator": ".LE.",
-                                    "rhs": {
-                                        "tag": "unsigned_int_constant",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "20"
-                                        },
-                                        "value": "6"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "then_statements": [],
-                    "else_block": {
-                        "else_statements": [],
-                        "end_if": {
-                            "label": ""
-                        }
-                    }
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "block_if_statement", "start_pos" : {"line" : "2", "column":"8"}, "expression" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "binary_expression", "lhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"13"}, "value":"5"}, "operator" : ".LE.", "rhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"20"}, "value":"6"}}}}}, "then_statements" : [], "else_block" : {"else_statements" : [], "end_if" : {"label":""}}}]}] }'.
+
 	result := self visitJsonCode.
 
 	asnmt := result first statementBlock statements first.
@@ -1929,77 +1436,8 @@ SyntaxJsonToFASTTests >> testBinaryExpressionMultiplication [
        i = 5 * 6
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testBinaryExpressionMultiplication.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "assignment_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "left": [
-                        {
-                            "tag": "symbolic_name",
-                            "start_pos": {
-                                "line": "2",
-                                "column": "8"
-                            },
-                            "name": "I"
-                        }
-                    ],
-                    "right": [
-                        {
-                            "tag": "arithmetic_expression",
-                            "expression": {
-                                "tag": "binary_expression",
-                                "lhs": {
-                                    "tag": "unsigned_int_constant",
-                                    "start_pos": {
-                                        "line": "2",
-                                        "column": "12"
-                                    },
-                                    "value": "5"
-                                },
-                                "operator": "*",
-                                "rhs": {
-                                    "tag": "unsigned_int_constant",
-                                    "start_pos": {
-                                        "line": "2",
-                                        "column": "16"
-                                    },
-                                    "value": "6"
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"8"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"8"}, "name":"I"}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "binary_expression", "lhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"12"}, "value":"5"}, "operator" : "*", "rhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"16"}, "value":"6"}}}]}]}] }'.
+
 	result := self visitJsonCode.
 
 	asnmt := result first statementBlock statements first.
@@ -2026,79 +1464,8 @@ SyntaxJsonToFASTTests >> testBinaryExpressionNeKeyword [
        END IF
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testBinaryExpressionNeKeyword.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "4",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "block_if_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "expression": {
-                        "tag": "logical_expression",
-                        "expression": {
-                            "tag": "logical_factor",
-                            "negated": "false",
-                            "expression": {
-                                "tag": "logical_primary",
-                                "expression": {
-                                    "tag": "binary_expression",
-                                    "lhs": {
-                                        "tag": "unsigned_int_constant",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "13"
-                                        },
-                                        "value": "5"
-                                    },
-                                    "operator": ".NE.",
-                                    "rhs": {
-                                        "tag": "unsigned_int_constant",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "20"
-                                        },
-                                        "value": "6"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "then_statements": [],
-                    "else_block": {
-                        "else_statements": [],
-                        "end_if": {
-                            "label": ""
-                        }
-                    }
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "block_if_statement", "start_pos" : {"line" : "2", "column":"8"}, "expression" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "binary_expression", "lhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"13"}, "value":"5"}, "operator" : ".NE.", "rhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"20"}, "value":"6"}}}}}, "then_statements" : [], "else_block" : {"else_statements" : [], "end_if" : {"label":""}}}]}] }'.
+
 	result := self visitJsonCode.
 
 	asnmt := result first statementBlock statements first.
@@ -2126,77 +1493,8 @@ SyntaxJsonToFASTTests >> testBinaryExpressionSubstraction [
        i = max-1
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testBinaryExpressionSubstraction.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "assignment_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "left": [
-                        {
-                            "tag": "symbolic_name",
-                            "start_pos": {
-                                "line": "2",
-                                "column": "8"
-                            },
-                            "name": "I"
-                        }
-                    ],
-                    "right": [
-                        {
-                            "tag": "arithmetic_expression",
-                            "expression": {
-                                "tag": "binary_expression",
-                                "lhs": {
-                                    "tag": "symbolic_name",
-                                    "start_pos": {
-                                        "line": "2",
-                                        "column": "12"
-                                    },
-                                    "name": "MAX"
-                                },
-                                "operator": "-",
-                                "rhs": {
-                                    "tag": "unsigned_int_constant",
-                                    "start_pos": {
-                                        "line": "2",
-                                        "column": "16"
-                                    },
-                                    "value": "1"
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"8"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"8"}, "name":"I"}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "binary_expression", "lhs" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"12"}, "name":"MAX"}, "operator" : "-", "rhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"16"}, "value":"1"}}}]}]}] }'.
+
 	result := self visitJsonCode.
 
 	expr := result first statementBlock statements first expression.
@@ -2206,98 +1504,12 @@ SyntaxJsonToFASTTests >> testBinaryExpressionSubstraction [
 	"self assert: expr startPos equals: 33."
 
 	self assert: expr leftOperand class equals: FASTFortranScalarVariable.
-	self assert: expr leftOperand name equals: 'max'.
+	self assert: expr leftOperand name equals: 'MAX'.
 	"self assert: expr left startPos equals: 33."
 
 	self assert: expr rightOperand class equals: FASTFortranIntegerLiteral.
 	self assert: expr rightOperand primitiveValue equals: '1'.
 	"self assert: expr right startPos equals: 37."
-
-]
-
-{ #category : #'tests-expression' }
-SyntaxJsonToFASTTests >> testBinaryExpressionUnaryMinus [
-	
-	| result asnmt expr |
-	fortranCode := '      PROGRAM MYPROG
-       i = -i
-      END
-'.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testBinaryExpressionUnaryMinus.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "assignment_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "left": [
-                        {
-                            "tag": "symbolic_name",
-                            "start_pos": {
-                                "line": "2",
-                                "column": "8"
-                            },
-                            "name": "I"
-                        }
-                    ],
-                    "right": [
-                        {
-                            "tag": "arithmetic_expression",
-                            "expression": {
-                                "tag": "constant_signed",
-                                "sign": "-",
-                                "constant": {
-                                    "tag": "symbolic_name",
-                                    "start_pos": {
-                                        "line": "2",
-                                        "column": "13"
-                                    },
-                                    "name": "I"
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}'.
-	result := self visitJsonCode.
-
-	asnmt := result statementBlock statements first.
-	self assert: asnmt class equals: FASTFortranAssignmentStatement.	
-	
-	expr := asnmt expression.
-	self assert: expr class equals: FASTFortranUnaryExpression.
-	self assert: expr operator equals: '-'.
-	"self assert: expr startPos equals: 33."
-
-	self assert: expr expression class equals: FASTFortranScalarVariable.
-	self assert: expr expression name equals: 'i'.
 
 ]
 
@@ -2973,95 +2185,8 @@ SyntaxJsonToFASTTests >> testDimensionStatementAsterisk [
       DIMENSION A(*), B(N,*)
       end
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testDimensionStatementAsterisk.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "SIMPLEMAIN"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "dimension_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "7"
-                    },
-                    "array_declarators": [
-                        {
-                            "tag": "variable_declarator",
-                            "variable": {
-                                "tag": "symbolic_name",
-                                "start_pos": {
-                                    "line": "2",
-                                    "column": "17"
-                                },
-                                "name": "A"
-                            },
-                            "dimension_declarators": [
-                                {
-                                    "tag": "literal_expression",
-                                    "literal": {
-                                        "asterisk": "*"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "tag": "variable_declarator",
-                            "variable": {
-                                "tag": "symbolic_name",
-                                "start_pos": {
-                                    "line": "2",
-                                    "column": "23"
-                                },
-                                "name": "B"
-                            },
-                            "dimension_declarators": [
-                                {
-                                    "lower_bound": {
-                                        "tag": "variable_expression",
-                                        "variable": {
-                                            "tag": "symbolic_name",
-                                            "start_pos": {
-                                                "line": "2",
-                                                "column": "25"
-                                            },
-                                            "name": "N"
-                                        }
-                                    }
-                                },
-                                {
-                                    "tag": "literal_expression",
-                                    "literal": {
-                                        "asterisk": "*"
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"SIMPLEMAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "dimension_statement", "start_pos" : {"line" : "2", "column":"7"}, "array_declarators" : [{"tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"17"}, "name":"A"}, "dimension_declarators" : [{"tag" : "literal_expression", "literal" : {"asterisk":"*"}}]}, {"tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"23"}, "name":"B"}, "dimension_declarators" : [{"lower_bound" : {"tag" : "variable_expression", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"25"}, "name":"N"}}}, {"tag" : "literal_expression", "literal" : {"asterisk":"*"}}]}]}]}] }'.
+
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
@@ -5831,61 +4956,8 @@ C comment in else part
        END IF
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {
-        "4": "C comment in else part\n"
-    },
-    "file": "test/pharo/testIfElseWithComment.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "6",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "block_if_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "expression": {
-                        "tag": "symbolic_name",
-                        "start_pos": {
-                            "line": "2",
-                            "column": "13"
-                        },
-                        "name": "A"
-                    },
-                    "then_statements": [],
-                    "else_block": {
-                        "tag": "else_statement",
-                        "else_label": "",
-                        "else_statements": [],
-                        "end_if": {
-                            "label": ""
-                        }
-                    }
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { "4":"C comment in else part\n" }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "6", "column":"9"}, "statement_list" : [{"tag" : "block_if_statement", "start_pos" : {"line" : "2", "column":"8"}, "expression" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"A"}, "then_statements" : [], "else_block" : {"tag" : "else_statement", "else_statements" : [], "end_if" : {"label":""}}}]}] }'.
+
 	result := self visitJsonCode.
 
 	conditional := result first statementBlock statements first.
@@ -6261,140 +5333,8 @@ SyntaxJsonToFASTTests >> testIfThenWithTwoStatements [
       end if 
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testIfThenWithTwoStatements.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "6",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "block_if_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "7"
-                    },
-                    "expression": {
-                        "tag": "logical_expression",
-                        "expression": {
-                            "tag": "logical_factor",
-                            "negated": "false",
-                            "expression": {
-                                "tag": "logical_primary",
-                                "expression": {
-                                    "tag": "binary_expression",
-                                    "lhs": {
-                                        "tag": "symbolic_name",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "11"
-                                        },
-                                        "name": "IUR"
-                                    },
-                                    "operator": ".EQ.",
-                                    "expression": {
-                                        "tag": "unsigned_int_constant",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "20"
-                                        },
-                                        "value": "0"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "then_statements": [
-                        {
-                            "tag": "write_statement",
-                            "start_pos": {
-                                "line": "3",
-                                "column": "10"
-                            },
-                            "control_info_list": [
-                                {
-                                    "name": "UNIT",
-                                    "parameter": {
-                                        "asterisk": "*"
-                                    }
-                                },
-                                {
-                                    "name": "FMT",
-                                    "parameter": {
-                                        "asterisk": "*"
-                                    }
-                                }
-                            ],
-                            "io_list": [
-                                {
-                                    "tag": "character_expression",
-                                    "expression": {
-                                        "tag": "character_constant",
-                                        "start_pos": {
-                                            "line": "3",
-                                            "column": "21"
-                                        },
-                                        "value": "user "
-                                    }
-                                },
-                                {
-                                    "tag": "symbolic_name",
-                                    "start_pos": {
-                                        "line": "3",
-                                        "column": "29"
-                                    },
-                                    "name": "NAME"
-                                },
-                                {
-                                    "tag": "character_expression",
-                                    "expression": {
-                                        "tag": "character_constant",
-                                        "start_pos": {
-                                            "line": "3",
-                                            "column": "34"
-                                        },
-                                        "value": " does not exist"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "tag": "return_statement",
-                            "start_pos": {
-                                "line": "4",
-                                "column": "10"
-                            }
-                        }
-                    ],
-                    "else_block": {
-                        "else_statements": [],
-                        "end_if": {
-                            "label": ""
-                        }
-                    }
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "6", "column":"9"}, "statement_list" : [{"tag" : "block_if_statement", "start_pos" : {"line" : "2", "column":"7"}, "expression" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "binary_expression", "lhs" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"11"}, "name":"IUR"}, "operator" : ".EQ.", "rhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"20"}, "value":"0"}}}}}, "then_statements" : [{"tag" : "write_statement", "start_pos" : {"line" : "3", "column":"10"}, "control_info_list" : [{"name" : "UNIT", "parameter" : {"asterisk":"*"}},{"name" : "FMT", "parameter" : {"asterisk":"*"}}], "io_list" : [{"tag" : "character_expression", "expression" : {"tag" : "character_constant", "start_pos" : {"line" : "3", "column":"21"}, "value":"'' user''"}},{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"29"}, "name":"NAME"},{"tag" : "character_expression", "expression" : {"tag" : "character_constant", "start_pos" : {"line" : "3", "column":"34"}, "value":"'' does not exist''"}}]}, {"tag" : "return_statement", "start_pos" : {"line" : "4", "column":"10"}}], "else_block" : {"else_statements" : [], "end_if" : {"label":""}}}]}] }'.
+
 	result := self visitJsonCode.
 
 	conditional := result first statementBlock statements first.
@@ -6994,79 +5934,8 @@ SyntaxJsonToFASTTests >> testLogicalIfEmpty [
        IF ( A .eq. 5 ) RETURN
       END
 '.
-	jsonCode := '{
-    "tag": "fortran_file",
-    "comments": {},
-    "file": "test/pharo/testLogicalIfEmpty.FOR",
-    "program_units": [
-        {
-            "tag": "main",
-            "name": {
-                "tag": "symbolic_name",
-                "start_pos": {
-                    "line": "1",
-                    "column": "15"
-                },
-                "name": "MYPROG"
-            },
-            "parameters": [],
-            "start_pos": {
-                "line": "1",
-                "column": "7"
-            },
-            "end_pos": {
-                "line": "3",
-                "column": "9"
-            },
-            "statement_list": [
-                {
-                    "tag": "logical_if_statement",
-                    "start_pos": {
-                        "line": "2",
-                        "column": "8"
-                    },
-                    "expression": {
-                        "tag": "logical_expression",
-                        "expression": {
-                            "tag": "logical_factor",
-                            "negated": "false",
-                            "expression": {
-                                "tag": "logical_primary",
-                                "expression": {
-                                    "tag": "binary_expression",
-                                    "lhs": {
-                                        "tag": "symbolic_name",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "13"
-                                        },
-                                        "name": "A"
-                                    },
-                                    "operator": ".EQ.",
-                                    "expression": {
-                                        "tag": "unsigned_int_constant",
-                                        "start_pos": {
-                                            "line": "2",
-                                            "column": "20"
-                                        },
-                                        "value": "5"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "statement": {
-                        "tag": "return_statement",
-                        "start_pos": {
-                            "line": "2",
-                            "column": "24"
-                        }
-                    }
-                }
-            ]
-        }
-    ]
-}'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "logical_if_statement", "start_pos" : {"line" : "2", "column":"8"}, "expression" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "binary_expression", "lhs" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"A"}, "operator" : ".EQ.", "rhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"20"}, "value":"5"}}}}}, "statement" : {"tag" : "return_statement", "start_pos" : {"line" : "2", "column":"24"}}}]}] }'.
+
 	result := self visitJsonCode.
 	
 	conditional := result first statementBlock statements first.
@@ -8276,6 +7145,56 @@ SyntaxJsonToFASTTests >> testTokenPosition [
 	stmt := stmnts third.
 	self assert: stmt startPos equals: 57.
 	self assert: stmt endPos equals: 60.
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testUnaryMinusConstant [
+
+	| result asnmt expr |
+	fortranCode := '      PROGRAM MYPROG
+       i = -1
+      END
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"8"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"8"}, "name":"I"}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "constant_signed", "sign" : "-", "constant" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"13"}, "value":"1"}}}]}]}] }'.
+
+	result := self visitJsonCode.
+
+	asnmt := result first statementBlock statements first.
+	self assert: asnmt class equals: FASTFortranAssignmentStatement.	
+	
+	expr := asnmt expression.
+	self assert: expr class equals: FASTFortranUnaryExpression.
+	self assert: expr operator equals: '-'.
+	"self assert: expr startPos equals: 33."
+
+	self assert: expr expression class equals: FASTFortranIntegerLiteral.
+	self assert: expr expression primitiveValue equals: '1'.
+
+]
+
+{ #category : #'tests-expression' }
+SyntaxJsonToFASTTests >> testUnaryMinusVariable [
+	
+	| result asnmt expr |
+	fortranCode := '      PROGRAM MYPROG
+       i = -i
+      END
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"8"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"8"}, "name":"I"}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "constant_signed", "sign" : "-", "constant" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"I"}}}]}]}] }'.
+
+	result := self visitJsonCode.
+
+	asnmt := result first statementBlock statements first.
+	self assert: asnmt class equals: FASTFortranAssignmentStatement.	
+	
+	expr := asnmt expression.
+	self assert: expr class equals: FASTFortranUnaryExpression.
+	self assert: expr operator equals: '-'.
+	"self assert: expr startPos equals: 33."
+
+	self assert: expr expression class equals: FASTFortranScalarVariable.
+	self assert: expr expression name equals: 'I'.
+
 ]
 
 { #category : #'tests-statement' }

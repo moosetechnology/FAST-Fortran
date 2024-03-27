@@ -288,21 +288,30 @@ FASTFortranSyntaxJsonVisitor >> visitComputedGotoStatement: aNode [
 ]
 
 { #category : #'visiting expression' }
+FASTFortranSyntaxJsonVisitor >> visitConstant: aNode [
+		
+	| data |
+	data := super visitConstant: aNode.
+
+	^data isMooseEntity
+		ifTrue: [ data ]
+		ifFalse: [ (self newEntity: FASTFortranScalarVariable)
+			 name: data ;
+			yourself
+		]
+]
+
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitConstantSigned: aNode [
 	"sign tag constant"
 
-	| data constant sign |
+	| data |
 	data := super visitConstantSigned: aNode.
 
-	sign := data at: 'sign'.
-	constant := data at: 'constant'.
-	sign = '-'
-		ifTrue: [
-			| value |
-			value := constant primitiveValue.
-			constant primitiveValue: sign , value ]
-		ifFalse: [ 1 halt ].
-	^ constant
+	^(self newEntity: FASTFortranUnaryExpression)
+		operator: (data at: 'sign') ;
+		expression: (data at: 'constant') ;
+		yourself
 ]
 
 { #category : #'visiting statement' }
