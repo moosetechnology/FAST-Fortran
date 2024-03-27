@@ -62,6 +62,16 @@ FASTFortranSyntaxJsonVisitor >> newLabeledStatement: aFASTStatementClass withPos
 	^ statement
 ]
 
+{ #category : #'visiting prog-unit' }
+FASTFortranSyntaxJsonVisitor >> onFile: aProgramFile [
+	
+	model := FASTFortranModel new.
+
+	^super onFile: aProgramFile
+	
+
+]
+
 { #category : #helpers }
 FASTFortranSyntaxJsonVisitor >> pointToPosition: lineColumn [
 
@@ -388,16 +398,6 @@ FASTFortranSyntaxJsonVisitor >> visitExternalStatement: aNode [
 	^ (self newLabeledStatement: FASTFortranExternalStatement withPosition: data)
 		  procedures: (data at: 'proc_list');
 		  yourself
-]
-
-{ #category : #'visiting prog-unit' }
-FASTFortranSyntaxJsonVisitor >> visitFortranFile: aProgramFile [
-	
-	model := FASTFortranModel new.
-
-	^super visitFortranFile: aProgramFile
-	
-
 ]
 
 { #category : #visiting }

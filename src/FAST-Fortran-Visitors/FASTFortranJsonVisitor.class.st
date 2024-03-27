@@ -98,6 +98,12 @@ FASTFortranJsonVisitor >> newEntity: aFASTFortranClass atPosition: aPoint [
 	^ node
 ]
 
+{ #category : #'visiting prog-unit' }
+FASTFortranJsonVisitor >> onFile: aProgramFileNode [
+	model := FASTFortranModel new.
+	^ (super onFile: aProgramFileNode) second
+]
+
 { #category : #private }
 FASTFortranJsonVisitor >> pointToPosition: lineColumn [
 
@@ -633,12 +639,6 @@ FASTFortranJsonVisitor >> visitFortranComment: aCommentNode [
 	^(self newEntity: FASTFortranComment atPosition: data first)
 		content: 'C' , data second ;
 		yourself
-]
-
-{ #category : #'visiting prog-unit' }
-FASTFortranJsonVisitor >> visitFortranFile: aProgramFileNode [
-	model := FASTFortranModel new.
-	^ (super visitFortranFile: aProgramFileNode) second
 ]
 
 { #category : #'visiting expression' }
