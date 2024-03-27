@@ -378,6 +378,16 @@ FASTFortranSyntaxJsonVisitor >> visitExternalStatement: aNode [
 		  yourself
 ]
 
+{ #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitFunList: aCollection [
+ 
+   ^(super visitFunList: aCollection) collect: [ :functionName |
+		(self newEntity: FASTFortranScalarVariable)
+			name: functionName ;
+			yourself
+	]
+]
+
 { #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitFunction: aNode [
 	" name parameters return_type start_pos end_pos statement_list "
@@ -461,6 +471,18 @@ FASTFortranSyntaxJsonVisitor >> visitIntegerType: aNode [
 	"comment"
 
 	^ FASTFortranIntegerType new
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitIntrinsicStatement: aNode [
+	"start_pos fun_list"
+
+	| data |
+	data := super visitIntrinsicStatement: aNode.
+
+	^(self newLabeledStatement: FASTFortranIntrinsicStatement withPosition: data)
+		variables: (data at: #fun_list) ;
+		yourself
 ]
 
 { #category : #visiting }
