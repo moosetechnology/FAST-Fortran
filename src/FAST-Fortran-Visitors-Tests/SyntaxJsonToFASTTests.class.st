@@ -3027,7 +3027,7 @@ SyntaxJsonToFASTTests >> testStopStatementEmpty [
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranStopStatement.
-	self assert: stmt startPos equals: 29.
+	self assert: stmt startPos equals: 28.
 	"self assert: stmt endPos equals: 31."
 
 	self assert: stmt displayArgument equals: nil
@@ -3047,7 +3047,7 @@ SyntaxJsonToFASTTests >> testStopStatementWithInteger [
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranStopStatement.
-	self assert: stmt startPos equals: 29.
+	self assert: stmt startPos equals: 28.
 	"self assert: stmt endPos equals: 33."
 
 	self
@@ -3070,7 +3070,7 @@ SyntaxJsonToFASTTests >> testStopStatementWithString [
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranStopStatement.
-	self assert: stmt startPos equals: 29.
+	self assert: stmt startPos equals: 28.
 	"self assert: stmt endPos equals: 39."
 
 	self
