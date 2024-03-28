@@ -2767,7 +2767,7 @@ SyntaxJsonToFASTTests >> testPauseStatementEmpty [
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranPauseStatement.
-	self assert: stmt startPos equals: 29.
+	self assert: stmt startPos equals: 28.
 	"self assert: stmt endPos equals: 32."
 
 	self assert: stmt displayArgument equals: nil
@@ -2787,7 +2787,7 @@ SyntaxJsonToFASTTests >> testPauseStatementWithInteger [
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranPauseStatement.
-	self assert: stmt startPos equals: 29.
+	self assert: stmt startPos equals: 28.
 	"self assert: stmt endPos equals: 34."
 
 	self
@@ -2809,7 +2809,7 @@ SyntaxJsonToFASTTests >> testPauseStatementWithString [
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranPauseStatement.
-	self assert: stmt startPos equals: 29.
+	self assert: stmt startPos equals: 28.
 	"self assert: stmt endPos equals: 39."
 
 	self
