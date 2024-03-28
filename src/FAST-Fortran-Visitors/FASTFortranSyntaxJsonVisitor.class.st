@@ -574,6 +574,19 @@ FASTFortranSyntaxJsonVisitor >> visitLogicalConstant: aNode [
 				  yourself ]
 ]
 
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitLogicalIfStatement: aNode [
+	"start_pos expression statement"
+
+	| data |
+	data := super visitLogicalIfStatement: aNode.
+
+	^(self newLabeledStatement: FASTFortranIfLogicalStatement withPosition: data)
+		condition: (data at:#expression) ;
+		statement: (data at: #statement) ;
+		yourself
+]
+
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitLogicalType: aNode [
 
