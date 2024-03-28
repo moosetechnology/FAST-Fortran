@@ -123,16 +123,16 @@ FASTFortranSyntaxJsonVisitor >> visitArguments: aNode [
 
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitArithmeticIfStatement: aNode [
-	"start_pos s1 s3 s2 expression tag"
+	"start_pos labels expression"
 
 	| data |
 	data := super visitArithmeticIfStatement: aNode.
 
 	^ (self newLabeledStatement: FASTFortranIfArithmeticStatement withPosition: data)
-		  condition: (data at: 'expression');
-		  lessLabel: (data at: 's1');
-		  equalLabel: (data at: 's2');
-		  greaterLabel: (data at: 's3');
+		  condition: (data at: #expression);
+		  lessLabel: (data at: #labels) first ;
+		  equalLabel: (data at: #labels) second ;
+		  greaterLabel: (data at: #labels) third ;
 		  yourself
 ]
 
@@ -518,10 +518,10 @@ FASTFortranSyntaxJsonVisitor >> visitIntrinsicStatement: aNode [
 ]
 
 { #category : #visiting }
-FASTFortranSyntaxJsonVisitor >> visitLabelReference: label [
+FASTFortranSyntaxJsonVisitor >> visitLabelReference: labelRefNode [
 
 	^(self newEntity: FASTFortranLabelReference)
-		label: label ;
+		label: (labelRefNode at: #label_ref) ;
 		yourself
 ]
 
@@ -656,33 +656,6 @@ FASTFortranSyntaxJsonVisitor >> visitRhs: aNode [
 	data isArray ifTrue: [
 		^ self checkAndwrapToScalarVariable: data first ].
 	^ self checkAndwrapToScalarVariable: data
-]
-
-{ #category : #visiting }
-FASTFortranSyntaxJsonVisitor >> visitS1: aNode [
-	"no keys in data"
-
-	^ (self newEntity: FASTFortranLabelReference )
-		  label: (super visitS1: aNode);
-		  yourself
-]
-
-{ #category : #visiting }
-FASTFortranSyntaxJsonVisitor >> visitS2: aNode [
-	"no keys in data"
-
-	^ (self newEntity: FASTFortranLabelReference )
-		  label: (super visitS2: aNode);
-		  yourself
-]
-
-{ #category : #visiting }
-FASTFortranSyntaxJsonVisitor >> visitS3: aNode [
-	"no keys in data"
-
-	^ (self newEntity: FASTFortranLabelReference )
-		  label: (super visitS3: aNode);
-		  yourself
 ]
 
 { #category : #'visiting statement' }
