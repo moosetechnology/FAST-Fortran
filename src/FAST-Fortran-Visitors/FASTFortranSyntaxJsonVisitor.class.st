@@ -856,15 +856,21 @@ FASTFortranSyntaxJsonVisitor >> visitVariableDeclarationStatement: aNode [
 
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitVariableDeclarator: aNode [
-	"tag variable dimension_declarators"
+	"variable dimension_declarators expression"
 
-	| data |
+	| data return |
 	data := super visitVariableDeclarator: aNode.
 
-	^ (self newEntity: FASTFortranVariableDeclarator)
-		  dimensions: (data at: 'dimension_declarators');
-		  name: (data at: 'variable');
-		  yourself
+	return := self newEntity: FASTFortranVariableDeclarator.
+	return name: (data at: #variable) name.
+	data
+		at: #dimension_declarators
+		ifPresent: [ :dimensions | return dimensions: dimensions ].
+	data
+		at: #expression
+		ifPresent: [ :initial_value | return expression: initial_value ].
+
+	^return
 ]
 
 { #category : #'visiting expression' }
