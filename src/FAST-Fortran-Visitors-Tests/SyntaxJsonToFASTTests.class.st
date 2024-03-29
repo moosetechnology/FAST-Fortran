@@ -1913,7 +1913,7 @@ SyntaxJsonToFASTTests >> testFunctionWithStatement [
       return 1
       end
 '.
-	jsonCode := ' return 1 |^ ./fortranCode.F, line 2: column 14: Error:	An alternate return is not allowed in a function subprogram, this expression is erased. { "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "function", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"24"}, "name":"AFCT"}, "parameters" : [], "return_type" : {"tag" : "type_reference", "name":"INTEGER"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "return_statement", "start_pos" : {"line" : "2", "column":"7"}}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "function", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"24"}, "name":"AFCT"}, "parameters" : [], "return_type" : {"tag" : "type_reference", "name":"INTEGER"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "return_statement", "start_pos" : {"line" : "2", "column":"7"}}]}] }'.
 
 	result := self visitJsonCode.
 
