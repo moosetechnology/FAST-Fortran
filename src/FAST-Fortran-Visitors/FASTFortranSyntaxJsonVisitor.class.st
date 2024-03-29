@@ -678,6 +678,18 @@ FASTFortranSyntaxJsonVisitor >> visitMain: aNode [
 	^ main
 ]
 
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitOpenStatement: aNode [
+    "start_pos control_info_list"
+
+	| data |
+	data := super visitOpenStatement: aNode.
+
+	^(self newLabeledStatement: FASTFortranOpenStatement withPosition: data)
+		ioParameters: (data at: #control_info_list) ;
+		yourself
+]
+
 { #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitParameter: aNode [
 	"start_pos name"
