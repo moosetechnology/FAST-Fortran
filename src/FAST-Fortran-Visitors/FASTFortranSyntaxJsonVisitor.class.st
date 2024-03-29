@@ -730,6 +730,18 @@ FASTFortranSyntaxJsonVisitor >> visitReturnStatement: aNode [
 	^ self newLabeledStatement: FASTFortranReturnStatement withPosition: (super visitReturnStatement: aNode)
 ]
 
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitRewindStatement: aNode [
+    "start_pos control_info_list"
+
+	| data |
+	data := super visitRewindStatement: aNode.
+
+	^(self newLabeledStatement: FASTFortranRewindStatement withPosition: data)
+		ioParameters: (data at: #control_info_list) ;
+		yourself
+]
+
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitRhs: aNode [
 	"start_pos value"
