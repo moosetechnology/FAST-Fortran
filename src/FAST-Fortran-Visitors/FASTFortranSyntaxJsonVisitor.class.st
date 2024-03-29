@@ -149,19 +149,6 @@ FASTFortranSyntaxJsonVisitor >> visitArrayElementName: aNode [
 		  yourself
 ]
 
-{ #category : #'visiting expression' }
-FASTFortranSyntaxJsonVisitor >> visitAssignmentExpression: aNode [
-	"left right"
-
-	| data |
-	data := super visitAssignmentExpression: aNode.
-
-	^ (self newEntity: FASTFortranAssignmentExpression)
-		  expression: (data at: 'right') ;
-		  variable: (self variableNameOrExpression: (data at: #left)) ;
-		  yourself
-]
-
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitAssignmentStatement: aNode [
 	"start_pos right left
@@ -348,6 +335,26 @@ FASTFortranSyntaxJsonVisitor >> visitContinueStatement: aNode [
 	data := super visitContinueStatement: aNode.
 
 	^self newLabeledStatement: FASTFortranContinueStatement withPosition: data
+]
+
+{ #category : #'visiting expression' }
+FASTFortranSyntaxJsonVisitor >> visitControlInfoOption: aNode [
+	"symbolic_name right
+	right can be a symbolic_name, a literal, or an array with a label_ref.
+	The later needs to be converted (to unsigned_int for now)"
+
+	| data expression |
+	data := super visitControlInfoOption: aNode.
+	
+	expression := (data at: #right) isArray
+		ifTrue: [(self newEntity: FASTFortranIntegerLiteral)
+			primitiveValue: ((data at: #right) first) ]
+		ifFalse: [ self variableNameOrExpression: (data at: #right) ].
+
+	^ (self newEntity: FASTFortranAssignmentExpression)
+		  expression: expression ;
+		  variable: (self variableNameOrExpression: (data at: #symbolic_name)) ;
+		  yourself
 ]
 
 { #category : #visiting }
