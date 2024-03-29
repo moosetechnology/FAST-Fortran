@@ -149,6 +149,19 @@ FASTFortranSyntaxJsonVisitor >> visitArrayElementName: aNode [
 		  yourself
 ]
 
+{ #category : #'visiting expression' }
+FASTFortranSyntaxJsonVisitor >> visitAssignmentExpression: aNode [
+	"left right"
+
+	| data |
+	data := super visitAssignmentExpression: aNode.
+
+	^ (self newEntity: FASTFortranAssignmentExpression)
+		  expression: (data at: 'right') ;
+		  variable: (self variableNameOrExpression: (data at: #left)) ;
+		  yourself
+]
+
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitAssignmentStatement: aNode [
 	"start_pos right left
@@ -517,6 +530,44 @@ FASTFortranSyntaxJsonVisitor >> visitIntrinsicStatement: aNode [
 		yourself
 ]
 
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitIoList: aCollection [
+ 
+   | data |
+	data := super visitIoList: aCollection.
+
+	^data collect: [ :each |
+		each isString 
+			ifTrue: [ (self newEntity: FASTFortranScalarVariable)
+				name: each ;
+				yourself
+			]
+			ifFalse: [ each ]
+	]
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitIoParameter: aNode [
+	"many different forms of IO_Parameters:
+	 - a variable name which appears as a string (symbolic name)
+	 - a label_ref which appears as an array containing only a string (the label)
+	 - an asterisk which appears as an array containing only a FASTFortranAsterisk
+	 - the rest should be FASTFortran objects, so there is no difficulties with them"
+
+   | data |
+	data := super visitIoParameter: aNode.
+
+	data isString
+		ifTrue: [ ^(self newEntity: FASTFortranScalarVariable) name: data ].
+
+	(data isCollection and: [ data size = 1 ])
+		ifTrue: [ data first isString
+			ifTrue: [ ^(self newEntity: FASTFortranIntegerLiteral) primitiveValue: data first ]
+			ifFalse: [ ^data first ] ].
+
+	^data
+]
+
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitLabelReference: labelRefNode [
 
@@ -877,4 +928,17 @@ FASTFortranSyntaxJsonVisitor >> visitVariableDeclarator: aNode [
 FASTFortranSyntaxJsonVisitor >> visitVariableExpression: aNode [
 
 	^ (super visitVariableExpression: aNode) at: 'variable'
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitWriteStatement: aNode [
+    "start_pos control_info_list io_list"
+
+	| data |
+	data := super visitWriteStatement: aNode.
+
+	^(self newLabeledStatement: FASTFortranWriteStatement withPosition: data)
+		ioParameters: (data at: #control_info_list) ;
+		arguments: (data at: #io_list) ;
+		yourself
 ]
