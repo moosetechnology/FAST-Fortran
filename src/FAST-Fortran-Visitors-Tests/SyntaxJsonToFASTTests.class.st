@@ -2912,7 +2912,7 @@ SyntaxJsonToFASTTests >> testReturnStatementEmpty [
       return
       END
 '.
-	jsonCode := ' return |^ ./fortranCode.F, line 2: column 7: Error:	This RETURN statement is illegal in a MAIN program, it is changed into a CONTINUE statement. { "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "return_statement", "start_pos" : {"line" : "2", "column":"7"}}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "return_statement", "start_pos" : {"line" : "2", "column":"7"}}]}] }'.
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
