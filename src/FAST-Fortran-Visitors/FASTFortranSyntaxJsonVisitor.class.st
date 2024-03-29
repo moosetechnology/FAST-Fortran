@@ -101,6 +101,17 @@ FASTFortranSyntaxJsonVisitor >> variableNameOrExpression: anObject [
 ]
 
 { #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitAlternateReturnSpecifier: aNode [
+	"start_pos return_specifier label"
+
+	| data |
+	data := super visitAlternateReturnSpecifier: aNode.
+
+	^(self newEntity: FASTFortranCharacterLiteral)
+		primitiveValue: ('*' , ((data at: #label) at: #label_ref))
+]
+
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitArgumentWithReturnSpecifier: aNode [
 	"start_pos tag return_specifier argument"
 

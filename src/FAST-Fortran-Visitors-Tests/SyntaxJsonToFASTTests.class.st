@@ -906,9 +906,9 @@ SyntaxJsonToFASTTests >> testCallSubroutine [
 	| result call arg |
 	fortranCode := '      PROGRAM TESTALT
        CALL RANK ( N, *8 )
-      END 
+      END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"TESTALT"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "call_statement", "start_pos" : {"line" : "2", "column":"8"}, "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"RANK"}, "arguments" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"20"}, "name":"N"}, {"tag" : "alternate_return_specifier", "start_pos" : {"line" : "2", "column":"23"}, "return_specifier" : "*", "label" : {"label_ref":"8"}}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"TESTALT"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "call_statement", "start_pos" : {"line" : "2", "column":"8"}, "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"RANK"}, "arguments" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"20"}, "name":"N"}, {"tag" : "alternate_return_specifier", "start_pos" : {"line" : "2", "column":"23"}, "return_specifier" : "*", "label" : {"label_ref":"8"}}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -931,8 +931,6 @@ SyntaxJsonToFASTTests >> testCallSubroutine [
 	arg := call arguments second.
 	self assert: arg class equals: FASTFortranCharacterLiteral.
 	self assert: arg primitiveValue equals: '*8'.
-	self flag:
-		'return specifier type was erased, represented as integer *8'
 ]
 
 { #category : #tests }
