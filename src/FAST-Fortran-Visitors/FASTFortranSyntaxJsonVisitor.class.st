@@ -518,6 +518,18 @@ FASTFortranSyntaxJsonVisitor >> visitImplicitStatement: aNode [
 		yourself
 ]
 
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitInquireStatement: aNode [
+    "start_pos control_info_list"
+
+	| data |
+	data := super visitInquireStatement: aNode.
+
+	^(self newLabeledStatement: FASTFortranInquireStatement withPosition: data)
+		ioParameters: (data at: #control_info_list) ;
+		yourself
+]
+
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitIntegerType: aNode [
 	"comment"
