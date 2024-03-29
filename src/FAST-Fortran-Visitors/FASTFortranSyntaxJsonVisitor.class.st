@@ -717,6 +717,19 @@ FASTFortranSyntaxJsonVisitor >> visitQualifiersList: aNode [
 			  ifFalse: [ each ] ]
 ]
 
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitReadStatement: aNode [
+    "start_pos format control_info_list io_list"
+
+	| data |
+	data := super visitReadStatement: aNode.
+
+	^(self newLabeledStatement: FASTFortranReadStatement withPosition: data)
+		ioParameters: (data at: #control_info_list) ;
+		arguments: (data at: #io_list) ;
+		yourself
+]
+
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitRealType: aNode [
 
