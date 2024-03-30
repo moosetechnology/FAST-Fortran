@@ -198,14 +198,14 @@ FASTFortranSyntaxJsonVisitor >> visitBinaryExpression: aNode [
 
 { #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitBlockData: aNode [
-	"start_pos parameters end_pos statement_list name tag"
+	"start_pos prog_unit_parameters end_pos statement_list name tag"
 
 	| data |
 	data := super visitBlockData: aNode.
 
 	^(self newEntity: FASTFortranBlockData withPosition: data)
 		name: (data at: 'name');
-		parameters: (data at: 'parameters');
+		parameters: (data at: 'prog_unit_parameters');
 		statementBlock: (data at: 'statement_list');
 		yourself
 ]
@@ -453,13 +453,13 @@ FASTFortranSyntaxJsonVisitor >> visitFunList: aCollection [
 
 { #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitFunction: aNode [
-	" name parameters return_type start_pos end_pos statement_list "
+	" name prog_unit_parameters return_type start_pos end_pos statement_list "
 
 	| data |
 	data := super visitFunction: aNode.
 	^(self newEntity: FASTFortranFunction withPosition: data)
 		name: (data at: 'name');
-		parameters: (data at: 'parameters');
+		parameters: (data at: 'prog_unit_parameters');
 		statementBlock: (data at: 'statement_list');
 		returnType: (data at: 'return_type');
 		yourself
@@ -676,7 +676,7 @@ FASTFortranSyntaxJsonVisitor >> visitLogicalType: aNode [
 
 { #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitMain: aNode [
-	"start_pos parameters end_pos statement_list name tag"
+	"name start_pos end_pos statement_list"
 
 	| data main |
 	data := super visitMain: aNode.
@@ -716,6 +716,31 @@ FASTFortranSyntaxJsonVisitor >> visitParameter: aNode [
 ]
 
 { #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitParameterAssign: aNode [
+	"symbolic_name expression"
+
+    | data |
+	data := super visitParameterAssign: aNode.
+
+	^(self newEntity: FASTFortranVariableDeclarator)
+		name: (data at: #symbolic_name) ;
+		expression: (data at: #expression) ;
+		yourself
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitParameterStatement: aNode [
+	" start_pos constant_declarations"
+
+	| data |
+	data := super visitParameterStatement: aNode.
+
+	^(self newLabeledStatement: FASTFortranParameterStatement withPosition: data)
+		declarators: (data at: #constant_declarations) ;
+		yourself
+]
+
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitPauseStatement: aNode [
 	"start_pos tag"
 
@@ -725,6 +750,19 @@ FASTFortranSyntaxJsonVisitor >> visitPauseStatement: aNode [
 	return := self newLabeledStatement: FASTFortranPauseStatement withPosition: data.
 	data at: #argument ifPresent: [ :arg | return displayArgument: arg ].
 	^return
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitProgUnitParameters: aCollection [ 
+
+	| data |
+	data := super visitProgUnitParameters: aCollection.
+
+	^data collect: [ :each |
+		(self newEntity: FASTFortranScalarVariable)
+		  name: each ;
+		  yourself
+	]
 ]
 
 { #category : #visiting }
@@ -825,14 +863,14 @@ FASTFortranSyntaxJsonVisitor >> visitStopStatement: aNode [
 
 { #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitSubroutine: aSubroutine [
-	"#(start_pos parameters end_pos statement_list name)"
+	"#(start_pos prog_unit_parameters end_pos statement_list name)"
 
 	| data subroutine |
 	data := super visitSubroutine: aSubroutine.
 
 	subroutine := (self newEntity: FASTFortranSubroutine withPosition: data)
 		name: (data at: #name);
-		parameters: (data at: #parameters);
+		parameters: (data at: #prog_unit_parameters);
 		statementBlock: (data at: #statement_list);
 		yourself.
 
