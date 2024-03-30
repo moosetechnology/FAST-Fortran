@@ -701,7 +701,7 @@ FASTFortranSyntaxJsonVisitor >> visitOpenStatement: aNode [
 		yourself
 ]
 
-{ #category : #'visiting prog-unit' }
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitParameter: aNode [
 	"start_pos name"
    
