@@ -468,6 +468,29 @@ FASTFortranSyntaxJsonVisitor >> visitEntryStatement: aNode [
 		  yourself
 ]
 
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitEquivGroup: aCollection [
+
+	| data |
+	data := super visitEquivGroup: aCollection.
+
+	^(self newEntity: FASTFortranEquivalenceGroup)
+		variables: (data collect: [:each | self variableNameOrExpression: each]) ;
+		yourself
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitEquivalenceStatement: aNode [
+	"start_pos equivalence_groups"
+
+	| data |
+	data := super visitEquivalenceStatement: aNode.
+
+	^(self newLabeledStatement: FASTFortranEquivalenceStatement withPosition: data)
+		variableGroups: (data at: #equivalence_groups) ;
+		yourself
+]
+
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitExpression: aNode [
 
