@@ -489,6 +489,18 @@ FASTFortranSyntaxJsonVisitor >> visitExternalStatement: aNode [
 		  yourself
 ]
 
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitFormatStatement: aNode [
+	"specification"
+
+	| data |
+	data := super visitFormatStatement: aNode.
+
+	^(self newLabeledStatement: FASTFortranFormatStatement withPosition: data)
+		formatDescription: (data at: #specification) ;
+		yourself.
+]
+
 { #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitFortranFile: aProgramFile [
 	"comments program_units file"

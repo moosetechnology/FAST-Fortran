@@ -1812,17 +1812,17 @@ SyntaxJsonToFASTTests >> testFormatStatement [
 110   FORMAT( A8, 2X, I4, F8.2, F8.2 ) 
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"label" : "110", "tag" : "format_statement", "specification" : [{"tag" : "format_specification", "descriptor" : {"tag" : "repeatable_edit_descriptor", "repeated_descriptors" : ["A8"]}},{"tag" : "format_specification", "descriptor" : {"tag" : "nonrepeatable_edit_descriptor", "descriptor" : "2X"}},{"tag" : "format_specification", "descriptor" : {"tag" : "repeatable_edit_descriptor", "repeated_descriptors" : ["I4"]}},{"tag" : "format_specification", "descriptor" : {"tag" : "repeatable_edit_descriptor", "repeated_descriptors" : ["F8.2"]}},{"tag" : "format_specification", "descriptor" : {"tag" : "repeatable_edit_descriptor", "repeated_descriptors" : ["F8.2"]}}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"label" : "110", "tag" : "format_statement", "start_pos" : {"line" : "2", "column":"7"}, "specification":"A8,2X,I4,F8.2,F8.2"}]}] }'.
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranFormatStatement.
 	self assert: stmt startPos equals: 28.
-	self assert: stmt endPos equals: 59.
+	self assert: stmt endPos equals: 60.
 
 	self assert: stmt label equals: '110'.
 
-	self assert: stmt formatDescription equals: '(a8,2x,i4,f8.2,f8.2)'
+	self assert: stmt formatDescription equals: 'A8,2X,I4,F8.2,F8.2'
 ]
 
 { #category : #'tests-programUnit' }
