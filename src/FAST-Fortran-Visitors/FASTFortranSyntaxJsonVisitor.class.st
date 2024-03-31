@@ -435,6 +435,18 @@ FASTFortranSyntaxJsonVisitor >> visitDimensionDeclarators: aNode [
 ]
 
 { #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitDimensionStatement: aNode [
+	"start_pos array_declarators"
+
+	| data |
+	data := super visitDimensionStatement: aNode.
+
+	^(self newLabeledStatement: FASTFortranDimensionStatement withPosition: data)
+		declarators: (data at: #array_declarators) ;
+		yourself
+]
+
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitElseStatements: aNode [
 	"no keys in data"
 

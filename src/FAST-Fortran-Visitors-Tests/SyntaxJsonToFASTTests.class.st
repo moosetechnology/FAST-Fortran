@@ -1182,7 +1182,7 @@ SyntaxJsonToFASTTests >> testDimensionStatementAsterisk [
 	self assert: stmt declarators size equals: 2.
 
 	decl := stmt declarators first.
-	self assert: decl variable equals: 'a'.
+	self assert: decl name equals: 'A'.
 	self assert: decl dimensions size equals: 1.
 	self assert: decl dimensions anyOne lowerBound equals: nil.
 	self
@@ -1190,7 +1190,7 @@ SyntaxJsonToFASTTests >> testDimensionStatementAsterisk [
 		equals: FASTFortranAsterisk.
 
 	decl := stmt declarators second.
-	self assert: decl variable equals: 'b'.
+	self assert: decl name equals: 'B'.
 	self assert: decl dimensions size equals: 2.
 	self assert: decl dimensions first lowerBound equals: nil.
 	self
@@ -1223,7 +1223,7 @@ SyntaxJsonToFASTTests >> testDimensionStatementExpression [
 	self assert: stmt declarators size equals: 1.
 	decl := stmt declarators anyOne.
 
-	self assert: decl variable equals: 'm'.
+	self assert: decl name equals: 'M'.
 	self assert: decl dimensions size equals: 2.
 	self assert: decl dimensions first lowerBound equals: nil.
 	self
@@ -1251,12 +1251,12 @@ SyntaxJsonToFASTTests >> testDimensionStatementMultipleDim [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranDimensionStatement.
 	self assert: stmt startPos equals: 32.
-	self assert: stmt endPos equals: 47.
+	self assert: stmt endPos equals: 48.
 
 	self assert: stmt declarators size equals: 1.
 	decl := stmt declarators anyOne.
 
-	self assert: decl variable equals: 'v'.
+	self assert: decl name equals: 'V'.
 	self assert: decl dimensions size equals: 2.
 	self assert: decl dimensions first lowerBound equals: nil.
 	self
@@ -1289,11 +1289,11 @@ SyntaxJsonToFASTTests >> testDimensionStatementMultipleVariables [
 	self assert: stmt declarators size equals: 2.
 
 	decl := stmt declarators first.
-	self assert: decl variable equals: 'm'.
+	self assert: decl name equals: 'M'.
 	self assert: decl dimensions size equals: 2.
 
 	decl := stmt declarators second.
-	self assert: decl variable equals: 'v'.
+	self assert: decl name equals: 'V'.
 	self assert: decl dimensions size equals: 1
 ]
 
@@ -1318,7 +1318,7 @@ SyntaxJsonToFASTTests >> testDimensionStatementRange [
 	self assert: stmt declarators size equals: 1.
 	decl := stmt declarators anyOne.
 
-	self assert: decl variable equals: 'm'.
+	self assert: decl name equals: 'M'.
 	self assert: decl dimensions size equals: 3.
 
 	self
@@ -1357,12 +1357,12 @@ SyntaxJsonToFASTTests >> testDimensionStatementSimple [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranDimensionStatement.
 	self assert: stmt startPos equals: 32.
-	self assert: stmt endPos equals: 48.
+	self assert: stmt endPos equals: 49.
 
 	self assert: stmt declarators size equals: 1.
 	decl := stmt declarators anyOne.
 
-	self assert: decl variable equals: 'v'.
+	self assert: decl name equals: 'V'.
 	self assert: decl dimensions size equals: 1.
 	self assert: decl dimensions anyOne lowerBound equals: nil.
 	self
@@ -1394,16 +1394,16 @@ SyntaxJsonToFASTTests >> testDimensionStatementVarDims [
 	self assert: stmt declarators size equals: 1.
 	decl := stmt declarators anyOne.
 
-	self assert: decl variable equals: 'm'.
+	self assert: decl name equals: 'M'.
 	self assert: decl dimensions size equals: 2.
 	self
 		assert: decl dimensions first upperBound class
 		equals: FASTFortranScalarVariable.
-	self assert: decl dimensions first upperBound name equals: 'n'.
+	self assert: decl dimensions first upperBound name equals: 'N'.
 	self
 		assert: decl dimensions second upperBound class
 		equals: FASTFortranScalarVariable.
-	self assert: decl dimensions second upperBound name equals: 'n'
+	self assert: decl dimensions second upperBound name equals: 'N'
 ]
 
 { #category : #'tests-statement' }
