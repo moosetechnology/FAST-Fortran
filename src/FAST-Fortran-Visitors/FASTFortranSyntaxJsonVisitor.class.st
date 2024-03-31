@@ -34,6 +34,32 @@ FASTFortranSyntaxJsonVisitor >> endOfLine: aNode [
 	^self pointToPosition: (line @ (lineSizes at: line))
 ]
 
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> groupCommonSequences: aCollection [ 
+	"a flat sequence of: #common_name, #variable_declarator, #variable_declarator, #common_name, #variable_declarator, ...
+	- mut be grouped by: #common_name, #variable_declarators
+	- #common_name is optional (and there is only one group in this case)
+	
+	a #common_name is stored in an array of 1 element. This is how we recognized them"
+
+	| groups current_group |
+	groups := OrderedCollection new.
+	aCollection do: [ :each |
+		(each isArray and: [each size = 1])
+			ifTrue: [
+				current_group ifNotNil: [ groups add: current_group ].
+				current_group := each first.
+			]
+			ifFalse: [
+				current_group ifNil: [ current_group := self newEntity: FASTFortranCommonGroup ].
+				current_group addDeclarator: each
+			]
+	].
+	groups add: current_group.
+
+	^groups
+]
+
 { #category : #initialization }
 FASTFortranSyntaxJsonVisitor >> initLineSizes: fortranSource [
 
@@ -275,19 +301,26 @@ FASTFortranSyntaxJsonVisitor >> visitCharacterType: aNode [
 ]
 
 { #category : #'visiting statement' }
-FASTFortranSyntaxJsonVisitor >> visitCommonParameters: aNode [
-	"data is an array of dict-s with keys name, nlist"
+FASTFortranSyntaxJsonVisitor >> visitCommonBody: aCollection [
+	"a flat sequence of: #common_name, #variable_declarator, #variable_declarator, #common_name, #variable_declarator, ...
+	- mut be grouped by: #common_name, #variable_declarators
+	- #common_name is optional (and there is only one group in this case)"
 
-	| data result |
-	data := super visitCommonParameters: aNode.
-	result := OrderedCollection new.
-	
-	data do: [ :common |
-		result add: ((self newEntity: FASTFortranCommonGroup)
-				 name: (common at: 'name');
-				 declarators: (common at: 'nlist');
-				 yourself) ].
-	^ result
+	| data |
+	data := super visitCommonBody: aCollection.
+
+	^self groupCommonSequences: data
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitCommonName: aCollection [ 
+
+	| data |
+	data := super visitCommonName: aCollection.
+
+	^(self newEntity: FASTFortranCommonGroup)
+		name: data ;
+		yourself
 ]
 
 { #category : #'visiting statement' }
@@ -298,7 +331,7 @@ FASTFortranSyntaxJsonVisitor >> visitCommonStatement: aNode [
 	data := super visitCommonStatement: aNode.
 
 	^ (self newLabeledStatement: FASTFortranCommonStatement withPosition: data)
-		  groups: (data at: 'common_parameters');
+		  groups: (data at: 'common_body');
 		  yourself
 ]
 
