@@ -323,8 +323,8 @@ SyntaxJsonToFASTTests >> testAssignement [
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranAssignmentStatement.
-	"self assert: stmt startPos equals: 32."
-	"self assert: stmt endPos equals: 36"
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 36.
 
 	self assert: stmt variable class equals: FASTFortranScalarVariable.
 	self assert: stmt variable name equals: 'C'
@@ -350,7 +350,7 @@ SyntaxJsonToFASTTests >> testAssignementBooleanLiteral [
 
 	stmt := main statementBlock statements first.
 	self assert: stmt class equals: FASTFortranAssignmentStatement.
-	"self assert: stmt startPos equals: 32."
+	self assert: stmt startPos equals: 32.
 
 	self assert: stmt expression class equals: FASTFortranBooleanLiteral.
 	self assert: stmt expression primitiveValue equals: true
@@ -377,7 +377,8 @@ SyntaxJsonToFASTTests >> testAssignementFunctionCall [
 
 	stmt := main statementBlock statements first.
 	self assert: stmt class equals: FASTFortranAssignmentStatement.
-	"self assert: stmt startPos equals: 32."
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 40.
 
 	self assert: stmt expression class equals: FASTFortranFunctionCall.
 	self assert: stmt expression name equals: 'FCT'
@@ -404,7 +405,8 @@ SyntaxJsonToFASTTests >> testAssignementIntegerLiteral [
 
 	stmt := main statementBlock statements first.
 	self assert: stmt class equals: FASTFortranAssignmentStatement.
-	"self assert: stmt startPos equals: 32."
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 36.
 
 	self assert: stmt expression class equals: FASTFortranIntegerLiteral.
 	self assert: stmt expression primitiveValue equals: '1'
@@ -426,7 +428,9 @@ SyntaxJsonToFASTTests >> testAssignementNegativeIntegerLiteral [
 	stmt := result first statementBlock statements first.
 
 	self assert: stmt expression class equals: FASTFortranIntegerLiteral.
-	self assert: stmt expression primitiveValue equals: '-1'
+	self assert: stmt expression primitiveValue equals: '-1'.
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 37.
 ]
 
 { #category : #'tests-statement' }
@@ -445,7 +449,9 @@ SyntaxJsonToFASTTests >> testAssignementNegativeRealLiteral [
 	stmt := result first statementBlock statements first.
 
 	self assert: stmt expression class equals: FASTFortranRealLiteral.
-	self assert: stmt expression primitiveValue equals: '-2.12'
+	self assert: stmt expression primitiveValue equals: '-2.12'.
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 40.
 ]
 
 { #category : #'tests-statement' }
@@ -463,7 +469,8 @@ SyntaxJsonToFASTTests >> testAssignementRealLiteral [
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranAssignmentStatement.
-	"self assert: stmt startPos equals: 32."
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 39.
 
 	self assert: stmt expression class equals: FASTFortranRealLiteral.
 	self assert: stmt expression primitiveValue equals: '2.12'
@@ -484,7 +491,8 @@ SyntaxJsonToFASTTests >> testAssignementScientificNotation [
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranAssignmentStatement.
-	"self assert: stmt startPos equals: 32."
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 42.
 
 	self assert: stmt expression class equals: FASTFortranRealLiteral.
 	self assert: stmt expression primitiveValue equals: '1.0E-30'
@@ -504,7 +512,8 @@ SyntaxJsonToFASTTests >> testAssignementStringLiteral [
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranAssignmentStatement.
-	"self assert: stmt startPos equals: 32."
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 77.
 
 	self
 		assert: stmt expression class
@@ -1058,7 +1067,7 @@ SyntaxJsonToFASTTests >> testContinueStatement [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranContinueStatement.
 	self assert: stmt startPos equals: 28.
-	"self assert: stmt endPos equals: 35."
+	self assert: stmt endPos equals: 35.
 
 	self assert: stmt label equals: '110'
 ]
@@ -1772,18 +1781,6 @@ SyntaxJsonToFASTTests >> testEquivalenceStatementSeveralGroups [
 ]
 
 { #category : #'tests-statement' }
-SyntaxJsonToFASTTests >> testExit [
-	"NOT FORTRAN-77"
-
-	| result stmt |
-	fortranCode := '      PROGRAM TESTALT
-       exit
-      END 
-'.
-	jsonCode := ' exit |^ ./fortranCode.F, line 2: column 12: Warning:	"= .FALSE." is inserted before "%EOL". { "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"TESTALT"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"8"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"8"}, "name":"EXIT"}], "right" : [{"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "logical_constant", "start_pos" : {"line" : "2", "column":"12"}, "value":".FALSE."}}}}]}]}] }'
-]
-
-{ #category : #'tests-statement' }
 SyntaxJsonToFASTTests >> testExternalStatement [
 
 	| result stmt |
@@ -1947,7 +1944,7 @@ SyntaxJsonToFASTTests >> testGoto [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranGoToStatement.
 	self assert: stmt startPos equals: 30.
-	"self assert: stmt endPos equals: 37."
+	self assert: stmt endPos equals: 37.
 
 	self assert: stmt labelReferences size equals: 1.
 	self assert: stmt labelReferences anyOne label equals: '100'
@@ -1971,7 +1968,7 @@ SyntaxJsonToFASTTests >> testGotoComputed [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranGoToComputedStatement.
 	self assert: stmt startPos equals: 30.
-	"self assert: stmt endPos equals: 55."
+	self assert: stmt endPos equals: 55.
 
 
 	self assert: stmt labelReferences size equals: 4.
@@ -2003,8 +2000,8 @@ SyntaxJsonToFASTTests >> testIfArithmetic [
 	self
 		assert: conditional class
 		equals: FASTFortranIfArithmeticStatement.
-	"self assert: conditional startPos equals: 31.
-	self assert: conditional endPos equals: 49."
+	self assert: conditional startPos equals: 31.
+	self assert: conditional endPos equals: 49.
 
 	self
 		assert: conditional condition class
@@ -2112,6 +2109,7 @@ SyntaxJsonToFASTTests >> testIfElseWithStatement [
       END
 '.
 	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "6", "column":"9"}, "statement_list" : [{"tag" : "block_if_statement", "start_pos" : {"line" : "2", "column":"8"}, "expression" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"A"}, "then_statements" : [], "else_block" : {"tag" : "else_statement", "else_statements" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "4", "column":"9"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"9"}, "name":"I"}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "4", "column":"13"}, "value":"1"}}]}], "end_if" : {"label":""}}}]}] }'.
+
 	result := self visitJsonCode.
 
 	conditional := result first statementBlock statements first.
@@ -2133,6 +2131,7 @@ SyntaxJsonToFASTTests >> testIfEmpty [
       END
 '.
 	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "block_if_statement", "start_pos" : {"line" : "2", "column":"8"}, "expression" : {"tag" : "array_element_name", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"A"}, "qualifiers_list" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"15"}, "value":"1"}}]}, "then_statements" : [], "else_block" : {"else_statements" : [], "end_if" : {"label":""}}}]}] }'.
+
 	result := self visitJsonCode.
 
 	conditional := result first statementBlock statements first.
@@ -3575,7 +3574,7 @@ SyntaxJsonToFASTTests >> testWriteToInternalFile [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranWriteStatement.
 	self assert: stmt startPos equals: 33.
-	"self assert: stmt endPos equals: 61."
+	self assert: stmt endPos equals: 61.
 
 	self assert: stmt ioParameters size equals: 2.
 

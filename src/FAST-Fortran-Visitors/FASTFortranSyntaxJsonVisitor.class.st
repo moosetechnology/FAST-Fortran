@@ -26,6 +26,14 @@ FASTFortranSyntaxJsonVisitor >> createPosition: start end: end [
 	^ { start . end }
 ]
 
+{ #category : #helpers }
+FASTFortranSyntaxJsonVisitor >> endOfLine: aNode [
+
+	| line |
+	line := (aNode at:#start_pos) x.
+	^self pointToPosition: (line @ (lineSizes at: line))
+]
+
 { #category : #initialization }
 FASTFortranSyntaxJsonVisitor >> initLineSizes: fortranSource [
 
@@ -54,9 +62,13 @@ FASTFortranSyntaxJsonVisitor >> newEntity: aFASTFortranClass withPosition: aNode
 
 { #category : #helpers }
 FASTFortranSyntaxJsonVisitor >> newLabeledStatement: aFASTStatementClass withPosition: aNode [
+	"creates aFASTStatementClass, sets a label if there is
+	heuristic: endpos is the end of the line"
 
 	| statement |
 	statement := self newEntity: aFASTStatementClass withPosition: aNode.
+	(statement startPos = statement endPos)
+		ifTrue: [ statement endPos: (self endOfLine: aNode) ].
 	aNode at: #label ifPresent: [ :label | statement label: label ].
 
 	^ statement
@@ -85,10 +97,11 @@ FASTFortranSyntaxJsonVisitor >> pointToPosition: lineColumn [
 { #category : #helpers }
 FASTFortranSyntaxJsonVisitor >> set: aFASTFortranNode startEnd: aNode [
 
-	| end |
 	aFASTFortranNode startPos: (self pointToPosition: (aNode at: #start_pos)).
-	end := aNode at: #end_pos ifAbsent: [ (aNode at: #start_pos) + 2 ].
-	aFASTFortranNode endPos: (self pointToPosition: end) - 1
+	aFASTFortranNode endPos: (aNode
+		at: #end_pos
+		ifPresent: [ :end | self pointToPosition: end ]
+		ifAbsent: [ aFASTFortranNode startPos ]).
 ]
 
 { #category : #helpers }
