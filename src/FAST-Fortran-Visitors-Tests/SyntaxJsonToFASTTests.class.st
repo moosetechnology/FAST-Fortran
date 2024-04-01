@@ -6,58 +6,36 @@ Class {
 
 { #category : #'as yet unclassified' }
 SyntaxJsonToFASTTests class >> generateFortranSourcesFromTests [
+	"regenerate #jsonCode for all test methods from the #sourceCode in these methods"
 
-	| fileName filePath |
-	filePath := (FileLocator workingDirectory / 'tests')
-		            ensureCreateDirectory pathString.
-	self methods do: [ :method | "if the methos is a test"
-		(method selector includesSubstring: 'test') ifTrue: [
-			fileName := (filePath , '/' , method selector , '.FOR')
-				            asFileReference.
-			fileName writeStreamDo: [ :stream |
-				stream nextPutAll: (method ast body statements detect: [ :stmt |
-						 stmt class = RBAssignmentNode and: [
-							 stmt variable name = 'fortranCode' ] ]) value value ] ] ]
-]
+	| fortranFilename |
+	fortranFilename := 'FastTmp/tmpFASTSource.f'.
 
-{ #category : #'as yet unclassified' }
-SyntaxJsonToFASTTests class >> generateTestsFortranSources [
+	SyntaxJsonToFASTTests methods do: [ :mth|
+		(mth selector beginsWith: 'test')
+			ifTrue: [ | i fortran json |
+				((mth ast body statements first class = RBAssignmentNode) and: [
+					mth ast body statements first variable name = #fortranCode ])
+				ifTrue: [
+					fortran := mth ast body statements first value value.
+					json := FortranProjectSyntaxImporter new getJsonFor: fortran.
+					i := json indexOfSubCollection: fortranFilename.
+					json := (json copyFrom: 1 to: i-1) ,
+						'./fortranCode.F' ,
+						(json copyFrom: i + fortranFilename size to: json size).
+				]
+				ifFalse: [ json := nil ].
 
-	| directory method stream |
-	directory := FileLocator workingDirectory / 'pharo'.
+				((mth ast body statements second class = RBAssignmentNode) and: [
+					mth ast body statements second variable name = #jsonCode and: [
+					json isNotNil ] ])
+				ifTrue: [
+					mth ast body statements second value: (RBLiteralValueNode value: json).
+					SyntaxJsonToFASTTests compile: mth ast formattedCode.
+				]
+			]
+].
 
-	directory files do: [ :file |
-		| selector |
-		selector := file basenameWithoutExtension asSymbol.
-
-		(SyntaxJsonToFASTTests includesSelector: selector) ifTrue: [
-			| fortranCode jsonCode |
-			
-			fortranCode := (((SyntaxJsonToFASTTests compiledMethodAt: selector)
-				                method ast body statements detect: [ :stmt |
-				                stmt class = RBAssignmentNode and: [
-					                stmt variable name = 'fortranCode' ] ]) value
-				               value) copyReplaceAll: '''' with: ''''''.
-
-			jsonCode := file contents copyReplaceAll: '''' with: ''''''.
-
-			stream := WriteStream on: String new.
-			stream
-				nextPutAll: selector;
-				nextPutAll: '
-		| result |
-	
-	fortranCode := ''';
-				nextPutAll: fortranCode;
-				nextPutAll: ' ''.
-	jsonCode := ''';
-				nextPutAll: jsonCode;
-				nextPutAll: '''.
-	result := self visitJsonCode.	
-		'.
-
-			method := stream contents.
-			self compile: method ] ]
 ]
 
 { #category : #running }
