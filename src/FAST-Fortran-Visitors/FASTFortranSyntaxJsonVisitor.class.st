@@ -251,15 +251,15 @@ FASTFortranSyntaxJsonVisitor >> visitBlockData: aNode [
 
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitBlockIfStatement: aNode [
-	"start_pos then_statements else_block expression tag"
+	"start_pos condition then_statements else_block"
 
 	| data |
 	data := super visitBlockIfStatement: aNode.
 
 	^ (self newLabeledStatement: FASTFortranIfBlockStatement withPosition: data)
-		  condition: (data at: 'expression') ;
-		  thenStatementBlock: (data at: 'then_statements') ;
-		  elseStatementBlock: (data at: 'else_block') ;
+		  condition: (self variableNameOrExpression: (data at: #condition)) ;
+		  thenStatementBlock: (data at: #then_statements) ;
+		  elseStatementBlock: (data at: #else_block) ;
 		  yourself
 ]
 
@@ -457,6 +457,18 @@ FASTFortranSyntaxJsonVisitor >> visitDoStatement: aNode [
 		loopControl: (data at: #loop_control) ;
 		statementBlock: (data at: #statement_list) ;
 		yourself
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitElseBlock: aNode [
+	"statements_list end_if"
+
+	| data |
+	data := super visitElseBlock: aNode.
+
+	^data
+		at: #statement_list
+		ifAbsent: [ self newEntity: FASTFortranStatementBlock ]
 ]
 
 { #category : #'visiting statement' }
