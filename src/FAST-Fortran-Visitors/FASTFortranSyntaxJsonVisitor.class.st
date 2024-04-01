@@ -447,6 +447,19 @@ FASTFortranSyntaxJsonVisitor >> visitDimensionStatement: aNode [
 ]
 
 { #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitDoStatement: aNode [
+	"start_pos statement_list loop_control"
+
+	| data |
+	data := super visitDoStatement: aNode.
+
+	^(self newLabeledStatement: FASTFortranDoStatement withPosition: data)
+		loopControl: (data at: #loop_control) ;
+		statementBlock: (data at: #statement_list) ;
+		yourself
+]
+
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitElseStatements: aNode [
 	"no keys in data"
 
@@ -767,6 +780,25 @@ FASTFortranSyntaxJsonVisitor >> visitLogicalType: aNode [
 	^ FASTFortranLogicalType new
 ]
 
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitLoopControl: aNode [
+	"variable_name init increment"
+
+	| data init |
+	data := super visitLoopControl: aNode.
+
+	init := (self newEntity: FASTFortranAssignmentExpression)
+		variable: (self variableNameOrExpression: (data at: #variable_name)) ;
+		expression: (data at: #init) ;
+		yourself.
+
+	^(self newEntity: FASTFortranLoopControlExpression)
+		init: init ;
+		limit: (data at: #limit) ;
+		increment: (data at: #increment ifAbsent: [nil] ) ;
+		yourself
+]
+
 { #category : #'visiting prog-unit' }
 FASTFortranSyntaxJsonVisitor >> visitMain: aNode [
 	"name start_pos end_pos statement_list"
@@ -860,15 +892,11 @@ FASTFortranSyntaxJsonVisitor >> visitProgUnitParameters: aCollection [
 
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitQualifiersList: aNode [
-	"we wrap all character literals into a scalar variable since we know that they can represent only an integer expression and not an array variable"
 
-	^ (super visitQualifiersList: aNode) collect: [ :each |
-		  each class = FASTFortranCharacterLiteral
-			  ifTrue: [
-				  (self newEntity: FASTFortranScalarVariable)
-					  name: each primitiveValue;
-					  yourself ]
-			  ifFalse: [ each ] ]
+	| data |
+	data := (super visitQualifiersList: aNode).
+	^data collect: [ :each |
+		  self variableNameOrExpression: each ]
 ]
 
 { #category : #'visiting statement' }
