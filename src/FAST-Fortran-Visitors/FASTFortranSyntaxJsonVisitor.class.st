@@ -27,7 +27,7 @@ FASTFortranSyntaxJsonVisitor >> createPosition: start end: end [
 ]
 
 { #category : #helpers }
-FASTFortranSyntaxJsonVisitor >> endOfLine: aNode [
+FASTFortranSyntaxJsonVisitor >> endOfLinePosition: aNode [
 
 	| line |
 	line := (aNode at:#start_pos) x.
@@ -94,7 +94,7 @@ FASTFortranSyntaxJsonVisitor >> newLabeledStatement: aFASTStatementClass withPos
 	| statement |
 	statement := self newEntity: aFASTStatementClass withPosition: aNode.
 	(statement startPos = statement endPos)
-		ifTrue: [ statement endPos: (self endOfLine: aNode) ].
+		ifTrue: [ statement endPos: (self endOfLinePosition: aNode) ].
 	aNode at: #label ifPresent: [ :label | statement label: label ].
 
 	^ statement
@@ -274,11 +274,12 @@ FASTFortranSyntaxJsonVisitor >> visitBlockIfStatement: aNode [
 	| data |
 	data := super visitBlockIfStatement: aNode.
 
-	^ (self newLabeledStatement: FASTFortranIfBlockStatement withPosition: data)
-		  condition: (self variableNameOrExpression: (data at: #condition)) ;
-		  thenStatementBlock: (data at: #then_statements) ;
-		  elseStatementBlock: (data at: #else_block) ;
-		  yourself
+	^(self newLabeledStatement: FASTFortranIfBlockStatement withPosition: data)
+		condition: (self variableNameOrExpression: (data at: #condition)) ;
+		thenStatementBlock: (data at: #then_statements) ;
+		elseStatementBlock: (data at: #else_block) ;
+		endPos: ((data at: #else_block) endPos) ;
+		yourself
 ]
 
 { #category : #'visiting statement' }
@@ -503,7 +504,11 @@ FASTFortranSyntaxJsonVisitor >> visitElseBlock: aNode [
 	data := super visitElseBlock: aNode.
 
 	^data isArray
-		ifTrue: [ data first ]
+		ifTrue: [
+			data first
+				endPos: (self endOfLinePosition: data second) ;
+				yourself
+		]
 		ifFalse: [ data ]
 ]
 
