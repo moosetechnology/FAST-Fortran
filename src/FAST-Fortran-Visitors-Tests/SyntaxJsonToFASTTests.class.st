@@ -2047,14 +2047,14 @@ SyntaxJsonToFASTTests >> testIfElseIf [
 	self assert: conditional thenStatementBlock statements size equals: 1.
 	self assert: conditional elseStatementBlock statements size equals: 1.
 	self assert: conditional thenStatementBlock startPos equals: 55.
-	self assert: conditional elseStatementBlock startPos equals: 77.
+	self assert: conditional elseStatementBlock startPos equals: 75.
 
 	conditional := conditional elseStatementBlock statements first.
 	self assert: conditional class equals: FASTFortranIfBlockStatement.
 	self assert: conditional thenStatementBlock statements size equals: 1.
 	self assert: conditional elseStatementBlock statements size equals: 1.
 	self assert: conditional thenStatementBlock startPos equals: 99.
-	self assert: conditional elseStatementBlock startPos equals: 121.
+	self assert: conditional elseStatementBlock startPos equals: 119.
 
 	conditional := conditional elseStatementBlock statements first.
 	self assert: conditional class equals: FASTFortranIfBlockStatement.
@@ -2179,9 +2179,9 @@ SyntaxJsonToFASTTests >> testIfThenWithStatement [
 	self
 		assert: conditional thenStatementBlock class
 		equals: FASTFortranStatementBlock.
-	self assert: conditional thenStatementBlock statements size equals: 1
-	"self assert: conditional thenStatementBlock startPos equals: 51.
-	self assert: conditional thenStatementBlock endPos equals: 55."
+	self assert: conditional thenStatementBlock statements size equals: 1.
+	self assert: conditional thenStatementBlock startPos equals: 51.
+	self assert: conditional thenStatementBlock endPos equals: 55.
 ]
 
 { #category : #'tests-statement' }
