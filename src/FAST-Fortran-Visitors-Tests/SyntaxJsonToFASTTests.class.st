@@ -41,7 +41,7 @@ SyntaxJsonToFASTTests class >> generateFortranSourcesFromTests [
 { #category : #running }
 SyntaxJsonToFASTTests >> jsonVisitor [
 
-	^ FASTFortranSyntaxJsonVisitor 
+	^ FASTFortranSyntaxJsonVisitor
 ]
 
 { #category : #'tests-expression' }
@@ -2044,24 +2044,35 @@ SyntaxJsonToFASTTests >> testIfElseIf [
 
 	conditional := result first statementBlock statements first.
 	self assert: conditional class equals: FASTFortranIfBlockStatement.
+
 	self assert: conditional thenStatementBlock statements size equals: 1.
-	self assert: conditional elseStatementBlock statements size equals: 1.
 	self assert: conditional thenStatementBlock startPos equals: 55.
+	self assert: conditional thenStatementBlock endPos equals: 59.
+
+	self assert: conditional elseStatementBlock statements size equals: 1.
 	self assert: conditional elseStatementBlock startPos equals: 75.
+	self assert: conditional elseStatementBlock endPos equals: 193.
 
 	conditional := conditional elseStatementBlock statements first.
 	self assert: conditional class equals: FASTFortranIfBlockStatement.
+
 	self assert: conditional thenStatementBlock statements size equals: 1.
-	self assert: conditional elseStatementBlock statements size equals: 1.
 	self assert: conditional thenStatementBlock startPos equals: 99.
+	self assert: conditional thenStatementBlock endPos equals: 103.
+
+	self assert: conditional elseStatementBlock statements size equals: 1.
 	self assert: conditional elseStatementBlock startPos equals: 119.
+	self assert: conditional elseStatementBlock endPos equals: 193.
 
 	conditional := conditional elseStatementBlock statements first.
 	self assert: conditional class equals: FASTFortranIfBlockStatement.
 	self assert: conditional thenStatementBlock statements size equals: 1.
-	self assert: conditional elseStatementBlock statements size equals: 1.
 	self assert: conditional thenStatementBlock startPos equals: 143.
+	self assert: conditional thenStatementBlock endPos equals: 147.
+
+	self assert: conditional elseStatementBlock statements size equals: 1.
 	self assert: conditional elseStatementBlock startPos equals: 173.
+	self assert: conditional elseStatementBlock endPos equals: 193.
 
 	conditional := conditional elseStatementBlock statements first.
 	self assert: conditional class equals: FASTFortranAssignmentStatement
@@ -2078,7 +2089,7 @@ C comment in else part
        END IF
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { "4":"C comment in else part\n" }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "6", "column":"9"}, "statement_list" : [{"tag" : "block_if_statement", "start_pos" : {"line" : "2", "column":"8"}, "condition" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"A"}, "then_statements" : [], "else_block" : {"tag" : "else", "start_pos" : {"line" : "3", "column":"8"}, "statement_list" : [], "end_if" : {"tag" : "end_if", "start_pos" : {"line" : "5", "column":"8"}}}}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { "4":"C comment in else part\n" }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "6", "column":"9"}, "statement_list" : [{"tag" : "block_if_statement", "start_pos" : {"line" : "2", "column":"8"}, "condition" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"A"}, "then_statements" : [], "else_block" : {"tag" : "else", "start_pos" : {"line" : "3", "column":"8"}, "statement_list" : [], "end_if" : {"tag" : "end_if", "start_pos" : {"line" : "5", "column":"8"}}}}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -2086,7 +2097,9 @@ C comment in else part
 	self assert: conditional class equals: FASTFortranIfBlockStatement.
 	self assert: conditional thenStatementBlock statements isEmpty.
 	self assert: conditional elseStatementBlock statements isEmpty.
-	self assert: conditional elseStatementBlock comments size equals: 1
+	self assert: conditional elseStatementBlock comments size equals: 1.
+	self assert: conditional elseStatementBlock startPos equals: 51.
+	self assert: conditional elseStatementBlock endPos equals: 91.
 ]
 
 { #category : #'tests-statement' }
@@ -2108,6 +2121,8 @@ SyntaxJsonToFASTTests >> testIfElseWithStatement [
 	self assert: conditional class equals: FASTFortranIfBlockStatement.
 	self assert: conditional thenStatementBlock statements size equals: 0.
 	self assert: conditional elseStatementBlock statements size equals: 1.
+	self assert: conditional elseStatementBlock startPos equals: 51.
+	self assert: conditional elseStatementBlock endPos equals: 83.
 	self
 		assert: conditional elseStatementBlock statements first class
 		equals: FASTFortranAssignmentStatement
@@ -2116,7 +2131,7 @@ SyntaxJsonToFASTTests >> testIfElseWithStatement [
 { #category : #'tests-statement' }
 SyntaxJsonToFASTTests >> testIfEmpty [
 
-	| result conditional |
+	| result ifStatement |
 	fortranCode := '      PROGRAM MYPROG
        IF ( A(1) ) THEN
        END IF
@@ -2126,17 +2141,19 @@ SyntaxJsonToFASTTests >> testIfEmpty [
 
 	result := self visitJsonCode.
 
-	conditional := result first statementBlock statements first.
-	self assert: conditional class equals: FASTFortranIfBlockStatement.
-	self
-		assert: conditional condition class
-		equals: FASTFortranArrayVariable.
-	self assert: conditional condition name equals: 'A'.
-	self assert: conditional thenStatementBlock statements size equals: 0.
-	self assert: conditional elseStatementBlock statements size equals: 0.
+	ifStatement := result first statementBlock statements first.
+	self assert: ifStatement class equals: FASTFortranIfBlockStatement.
 
-	self assert: conditional startPos equals: 29.
-	self assert: conditional endPos equals: 58.
+	self assert: ifStatement startPos equals: 29.
+	self assert: ifStatement endPos equals: 58.
+
+	self
+		assert: ifStatement condition class
+		equals: FASTFortranArrayVariable.
+	self assert: ifStatement condition name equals: 'A'.
+	self assert: ifStatement thenStatementBlock statements size equals: 0.
+	self assert: ifStatement elseStatementBlock equals: nil.
+
 ]
 
 { #category : #'tests-statement' }
@@ -2156,14 +2173,14 @@ C comment in then part
 	self assert: conditional class equals: FASTFortranIfBlockStatement.
 	self assert: conditional thenStatementBlock statements isEmpty.
 	self assert: conditional thenStatementBlock comments size equals: 1.
-	self assert: conditional thenStatementBlock startPos equals: 43.
+	self assert: conditional thenStatementBlock startPos equals: 41.
 	self assert: conditional thenStatementBlock endPos equals: 64
 ]
 
 { #category : #'tests-statement' }
 SyntaxJsonToFASTTests >> testIfThenWithStatement [
 
-	| result conditional |
+	| result ifStatement |
 	fortranCode := '      PROGRAM MYPROG
        IF ( A ) THEN
         I = 1
@@ -2174,24 +2191,25 @@ SyntaxJsonToFASTTests >> testIfThenWithStatement [
 
 	result := self visitJsonCode.
 
-	conditional := result first statementBlock statements first.
-	self assert: conditional class equals: FASTFortranIfBlockStatement.
-	self assert: conditional thenStatementBlock statements size equals: 1.
-	self assert: conditional startPos equals: 29.
-	self assert: conditional endPos equals: 69.
+	ifStatement := result first statementBlock statements first.
+	self assert: ifStatement class equals: FASTFortranIfBlockStatement.
+	self assert: ifStatement startPos equals: 29.
+	self assert: ifStatement endPos equals: 69.
 
 	self
-		assert: conditional thenStatementBlock class
+		assert: ifStatement thenStatementBlock class
 		equals: FASTFortranStatementBlock.
-	self assert: conditional thenStatementBlock statements size equals: 1.
-	self assert: conditional thenStatementBlock startPos equals: 51.
-	self assert: conditional thenStatementBlock endPos equals: 55.
+	self assert: ifStatement thenStatementBlock statements size equals: 1.
+	self assert: ifStatement thenStatementBlock startPos equals: 51.
+	self assert: ifStatement thenStatementBlock endPos equals: 55.
+
+	self assert: ifStatement elseStatementBlock equals: nil
 ]
 
 { #category : #'tests-statement' }
 SyntaxJsonToFASTTests >> testIfThenWithTwoStatements [
 
-	| result conditional thenStatements |
+	| result ifStatement thenStatements |
 	fortranCode := '      PROGRAM MYPROG
       if (iur .eq. 0) then 
          write(*,*) '' user'',name,'' does not exist''
@@ -2203,17 +2221,19 @@ SyntaxJsonToFASTTests >> testIfThenWithTwoStatements [
 
 	result := self visitJsonCode.
 
-	conditional := result first statementBlock statements first.
-	self assert: conditional class equals: FASTFortranIfBlockStatement.
+	ifStatement := result first statementBlock statements first.
+	self assert: ifStatement class equals: FASTFortranIfBlockStatement.
+	self assert: ifStatement thenStatementBlock startPos equals: 59.
+	self assert: ifStatement thenStatementBlock endPos equals: 115.
 
-	thenStatements := conditional thenStatementBlock statements.
+	thenStatements := ifStatement thenStatementBlock statements.
 	self assert: thenStatements size equals: 2.
 	self
 		assert: thenStatements first class
 		equals: FASTFortranWriteStatement.
 	self
 		assert: thenStatements second class
-		equals: FASTFortranReturnStatement
+		equals: FASTFortranReturnStatement.
 ]
 
 { #category : #'tests-statement' }

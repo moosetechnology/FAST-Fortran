@@ -78,6 +78,12 @@ FASTFortranTStatementBlock >> fastBehaviouralParentGroup [
 	^ MooseSpecializedGroup with: self fastBehaviouralParent
 ]
 
+{ #category : #testing }
+FASTFortranTStatementBlock >> isEmpty [
+
+	^statements isEmpty
+]
+
 { #category : #accessing }
 FASTFortranTStatementBlock >> statements [
 	"Relation named: #statements type: #FASTFortranTStatement opposite: #statementContainer"

@@ -4,7 +4,9 @@ Class {
 	#instVars : [
 		'lineSizes',
 		'model',
-		'nestedDoEndLabel'
+		'nestedDoEndLabel',
+		'commentList',
+		'currentComment'
 	],
 	#category : #'FAST-Fortran-Visitors-Importer'
 }
@@ -21,17 +23,43 @@ FASTFortranSyntaxJsonVisitor >> checkAndwrapToScalarVariable: aNode [
 ]
 
 { #category : #helpers }
-FASTFortranSyntaxJsonVisitor >> createPosition: start end: end [ 
+FASTFortranSyntaxJsonVisitor >> checkEmptyElse: blockIf [
+	"if a ELSE (of a IfBlockStatement) contains no statement and no commentsButton
+	 then we just remove it from the FASTFortranIfBlockStatement"
 
-	^ { start . end }
+	blockIf elseStatementBlock statements ifNotEmpty: [ ^self ].
+	blockIf elseStatementBlock comments ifNotEmpty: [ ^self ].
+
+	blockIf elseStatementBlock: nil
 ]
 
-{ #category : #helpers }
-FASTFortranSyntaxJsonVisitor >> endOfLinePosition: aNode [
+{ #category : #'helpers - comments' }
+FASTFortranSyntaxJsonVisitor >> checkForComments: aStatementBlock [
 
-	| line |
-	line := (aNode at:#start_pos) x.
-	^self pointToPosition: (line @ (lineSizes at: line))
+	currentComment ifNil: [ ^self ].
+
+	[ (aStatementBlock startPos x to: aStatementBlock endPos x) includes: currentComment startPos x ]
+	whileTrue: [
+		aStatementBlock addComment: currentComment.
+		self nextComment.
+		
+		currentComment ifNil: [ ^self ]
+	]
+]
+
+{ #category : #running }
+FASTFortranSyntaxJsonVisitor >> convertLineColumnToPositions [
+
+		(model allWithSubTypesOf: FASTFortranEntity) do: [ :entity |
+		entity startPos ifNotNil: [ :pos | entity startPos: (self pointToPosition: pos) ].
+		entity endPos ifNotNil: [ :pos | entity endPos: (self pointToPosition: pos) ]
+	].
+]
+
+{ #category : #'helpers - positions' }
+FASTFortranSyntaxJsonVisitor >> endOfLinePosition: aPosition [
+
+	^(aPosition x) @ (lineSizes at: aPosition x)
 ]
 
 { #category : #helpers }
@@ -80,8 +108,7 @@ FASTFortranSyntaxJsonVisitor >> newEntity: aFASTFortranClass [
 FASTFortranSyntaxJsonVisitor >> newEntity: aFASTFortranClass withPosition: aNode [
 
 	| node |
-	node := aFASTFortranClass new.
-	node mooseModel: model.
+	node := self newEntity: aFASTFortranClass.
 	self set: node startEnd: aNode.
 	^ node
 ]
@@ -94,23 +121,47 @@ FASTFortranSyntaxJsonVisitor >> newLabeledStatement: aFASTStatementClass withPos
 	| statement |
 	statement := self newEntity: aFASTStatementClass withPosition: aNode.
 	(statement startPos = statement endPos)
-		ifTrue: [ statement endPos: (self endOfLinePosition: aNode) ].
+		ifTrue: [ statement endPos: (self endOfLinePosition: (aNode at: #start_pos)) ].
 	aNode at: #label ifPresent: [ :label | statement label: label ].
 
 	^ statement
 ]
 
-{ #category : #running }
-FASTFortranSyntaxJsonVisitor >> onFile: aProgramFile [
-	
-	model := FASTFortranModel new.
+{ #category : #'helpers - comments' }
+FASTFortranSyntaxJsonVisitor >> nextComment [
+	"if there are still comments in #commentList, put the next one (they are ordered by line number)
+	 in #currentComment
+	 If there are no more comments, we create a false one that is past the last line of the file"
 
-	^super onFile: aProgramFile
-	
+	| lineComment line |
+
+	commentList ifEmpty:[ ^currentComment := nil ].
+
+	lineComment := commentList removeFirst.
+	line := lineComment key asInteger.
+
+	^currentComment := 	(self newEntity: FASTFortranComment)
+		content: lineComment value ;
+		startPos: line @ 0 ;
+		endPos: line @ (lineSizes at: line) ;
+		yourself
 
 ]
 
-{ #category : #helpers }
+{ #category : #running }
+FASTFortranSyntaxJsonVisitor >> onFile: aProgramFile [
+	
+	| ast |
+	model := FASTFortranModel new.
+
+	ast := super onFile: aProgramFile.
+
+	self convertLineColumnToPositions.
+
+	^ast
+]
+
+{ #category : #'helpers - positions' }
 FASTFortranSyntaxJsonVisitor >> pointToPosition: lineColumn [
 
 	| position |
@@ -120,14 +171,33 @@ FASTFortranSyntaxJsonVisitor >> pointToPosition: lineColumn [
 	^ position + lineColumn y
 ]
 
-{ #category : #helpers }
+{ #category : #'helpers - positions' }
 FASTFortranSyntaxJsonVisitor >> set: aFASTFortranNode startEnd: aNode [
 
-	aFASTFortranNode startPos: (self pointToPosition: (aNode at: #start_pos)).
+	aFASTFortranNode startPos: (aNode at: #start_pos).
 	aFASTFortranNode endPos: (aNode
 		at: #end_pos
-		ifPresent: [ :end | self pointToPosition: end ]
 		ifAbsent: [ aFASTFortranNode startPos ]).
+]
+
+{ #category : #'helpers - positions' }
+FASTFortranSyntaxJsonVisitor >> setBlockIfStartEnd: blockIf [
+	| thenBlock elseBlock |
+	
+	elseBlock := blockIf elseStatementBlock.
+	blockIf endPos: elseBlock endPos.
+
+	elseBlock startPos ifNil: [
+		elseBlock startPos: (elseBlock endPos x @ 1)
+	].
+	
+	thenBlock := blockIf thenStatementBlock.
+	thenBlock statements ifEmpty: [
+		self assert: (thenBlock startPos isNil).
+		self assert: (thenBlock endPos isNil).
+		thenBlock startPos: (self endOfLinePosition: (blockIf startPos)).
+		thenBlock endPos: (self endOfLinePosition: (elseBlock startPos - 1)).
+	]
 ]
 
 { #category : #helpers }
@@ -138,9 +208,6 @@ FASTFortranSyntaxJsonVisitor >> statementBlockFromStatementList: statementList [
 	block statements: statementList.
 
 	statementList
-		ifEmpty: [
-			block startPos: 0.
-			block endPos: 0 ]
 		ifNotEmpty: [
 			block startPos: statementList first startPos.
 			block endPos: statementList last endPos ].
@@ -271,15 +338,24 @@ FASTFortranSyntaxJsonVisitor >> visitBlockData: aNode [
 FASTFortranSyntaxJsonVisitor >> visitBlockIfStatement: aNode [
 	"start_pos condition then_statements else_block"
 
-	| data |
+	| data blockIf |
 	data := super visitBlockIfStatement: aNode.
 
-	^(self newLabeledStatement: FASTFortranIfBlockStatement withPosition: data)
+	blockIf := (self newLabeledStatement: FASTFortranIfBlockStatement withPosition: data)
 		condition: (self variableNameOrExpression: (data at: #condition)) ;
 		thenStatementBlock: (data at: #then_statements) ;
 		elseStatementBlock: (data at: #else_block) ;
-		endPos: ((data at: #else_block) endPos) ;
-		yourself
+		yourself.
+
+	self setBlockIfStartEnd: blockIf.
+
+	self checkForComments: blockIf thenStatementBlock.
+	self checkForComments: blockIf elseStatementBlock.
+
+	self checkEmptyElse: blockIf.	
+
+	^blockIf
+
 ]
 
 { #category : #'visiting statement' }
@@ -317,6 +393,16 @@ FASTFortranSyntaxJsonVisitor >> visitCharacterExpression: aNode [
 FASTFortranSyntaxJsonVisitor >> visitCharacterType: aNode [
 
 	^self newEntity: FASTFortranCharacterType
+]
+
+{ #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitComments: aCollection [
+
+	commentList := OrderedCollection withAll: aCollection associations.
+	commentList sort: [ :a :b | a key < b key ].
+
+	self nextComment
+	
 ]
 
 { #category : #'visiting statement' }
@@ -480,25 +566,28 @@ FASTFortranSyntaxJsonVisitor >> visitDoStatement: aNode [
 
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitElse: aNode [
-	"statements_list end_if"
+	"start_pos statement_list end_if
+	we send the #endPos of the ElseBlock to after #end_if"
 
-	| data |
+	| data statementBlock |
 	data := super visitElse: aNode.
 
-	^data
+	statementBlock := data
 		at: #statement_list
-		ifAbsent: [ (self newEntity: FASTFortranStatementBlock)
-			startPos: 0 ;
-			endPos: 0 ;
-			yourself
-		]
+		ifAbsent: [ self newEntity: FASTFortranStatementBlock ].
+
+	statementBlock startPos: (data at: #start_pos).
+	statementBlock endPos: ( self endOfLinePosition: ((data at: #end_if) at: #start_pos) ).
+
+	^statementBlock
 ]
 
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitElseBlock: aNode [
-	"if this is an empty ELSE (no statements inside), data will contain an array with 2 elements:
+	"if ELSE is empty, data will contain an array with 2 elements:
 	 - empty StatementBlock
-	 - #end_if"
+	 - #end_if
+	we return this StatementBlock and set its endPos after #end_if"
 
 	| data |
 	data := super visitElseBlock: aNode.
@@ -506,7 +595,7 @@ FASTFortranSyntaxJsonVisitor >> visitElseBlock: aNode [
 	^data isArray
 		ifTrue: [
 			data first
-				endPos: (self endOfLinePosition: data second) ;
+				endPos: (self endOfLinePosition: (data second at: #start_pos)) ;
 				yourself
 		]
 		ifFalse: [ data ]
@@ -515,15 +604,19 @@ FASTFortranSyntaxJsonVisitor >> visitElseBlock: aNode [
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitElseIf: aNode [
 	"contains a new block_if inside the ELSE
-	 startPos should be the start of IF but is the start of ELSE IF
-	 so as a heuristic,  we add 5 to it (length of 'ELSE ') to it"
+	 Note: calls #visitBlockIfStatement: in super-class and the resulting
+	   IfBlockStatement goes in #data
+	 #start_pos is the start of ELSE
+	 for #startPos of inner IF we add 5  (=length of 'ELSE ') to this"
 
 	| data |
 	data := super visitElseIf: aNode.
 
-	data startPos: (data startPos + 5).
+	data startPos: (data startPos x @ (data startPos y+ 5)).
 
-	^self statementBlockFromStatementList: { data }
+	^(self statementBlockFromStatementList: { data })
+		startPos: (data at: #start_pos) ;
+		yourself
 ]
 
 { #category : #'visiting statement' }
@@ -571,10 +664,7 @@ FASTFortranSyntaxJsonVisitor >> visitEquivalenceStatement: aNode [
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitExpression: aNode [
 
-	| data |
-	data := super visitExpression: aNode.
-
-	^self variableNameOrExpression: data
+	^self variableNameOrExpression: (super visitExpression: aNode)
 ]
 
 { #category : #'visiting statement' }
@@ -1004,8 +1094,8 @@ FASTFortranSyntaxJsonVisitor >> visitRewindStatement: aNode [
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitRhs: aNode [
 	"start_pos value"
+| data |
 
-	| data |
 	data := super visitRhs: aNode.
 	data isArray ifTrue: [
 		^ self checkAndwrapToScalarVariable: data first ].
@@ -1070,12 +1160,8 @@ FASTFortranSyntaxJsonVisitor >> visitSubstring: aNode [
 
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitThenStatements: aNode [
-	"no keys in data"
 
-	| data |
-	data := super visitThenStatements: aNode.
-
-	^ self statementBlockFromStatementList: data
+	^self statementBlockFromStatementList: (super visitThenStatements: aNode)
 ]
 
 { #category : #visiting }
