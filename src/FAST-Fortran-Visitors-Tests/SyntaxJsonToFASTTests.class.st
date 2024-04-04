@@ -477,14 +477,14 @@ SyntaxJsonToFASTTests >> testAssignementScientificNotation [
 ]
 
 { #category : #'tests-statement' }
-SyntaxJsonToFASTTests >> testAssignementStringLiteral [
+SyntaxJsonToFASTTests >> testAssignementStringLiteralDoubleQuotes [
 
 	| result stmt |
 	fortranCode := '      PROGRAM MYPROG
-          c = ''once upon a time there were ''''quotes''''! ''
+          c = "once upon a time there were ''''quotes''''! "
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"11"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"11"}, "name":"C"}], "right" : [{"tag" : "character_expression", "expression" : {"tag" : "character_constant", "start_pos" : {"line" : "2", "column":"15"}, "value":"''once upon a time there were ''''quotes''''! ''"}}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"11"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"11"}, "name":"C"}], "right" : [{"tag" : "character_expression", "expression" : {"tag" : "character_constant", "start_pos" : {"line" : "2", "column":"15"}, "value":"\"once upon a time there were ''''quotes''''! \""}}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -498,7 +498,33 @@ SyntaxJsonToFASTTests >> testAssignementStringLiteral [
 		equals: FASTFortranCharacterLiteral.
 	self
 		assert: stmt expression primitiveValue
-		equals: '''once upon a time there were ''''quotes''''! '''
+		equals: '"once upon a time there were ''''quotes''''! "'
+	"self assert: stmt expression startPos equals: 36."
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testAssignementStringLiteralSingleQuotes [
+
+	| result stmt |
+	fortranCode := '      PROGRAM MYPROG
+          c = ''once upon a time there were "quotes"! ''
+      END
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"11"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"11"}, "name":"C"}], "right" : [{"tag" : "character_expression", "expression" : {"tag" : "character_constant", "start_pos" : {"line" : "2", "column":"15"}, "value":"''once upon a time there were \"quotes\"! ''"}}]}]}] }'.
+
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranAssignmentStatement.
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 75.
+
+	self
+		assert: stmt expression class
+		equals: FASTFortranCharacterLiteral.
+	self
+		assert: stmt expression primitiveValue
+		equals: '''once upon a time there were "quotes"! '''
 	"self assert: stmt expression startPos equals: 36."
 ]
 
