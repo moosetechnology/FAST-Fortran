@@ -109,20 +109,23 @@ FASTFortranSyntaxJsonVisitor >> newEntity: aFASTFortranClass withPosition: aNode
 
 	| node |
 	node := self newEntity: aFASTFortranClass.
+
 	self set: node startEnd: aNode.
+	
 	^ node
 ]
 
 { #category : #helpers }
 FASTFortranSyntaxJsonVisitor >> newLabeledStatement: aFASTStatementClass withPosition: aNode [
-	"creates aFASTStatementClass, sets a label if there is
+	"creates aFASTStatementClass, sets a label if there is one.
 	heuristic: endpos is the end of the line"
 
 	| statement |
 	statement := self newEntity: aFASTStatementClass withPosition: aNode.
+	aNode at: #label ifPresent: [ :label | statement label: label ].
+
 	(statement startPos = statement endPos)
 		ifTrue: [ statement endPos: (self endOfLinePosition: (aNode at: #start_pos)) ].
-	aNode at: #label ifPresent: [ :label | statement label: label ].
 
 	^ statement
 ]
@@ -175,6 +178,7 @@ FASTFortranSyntaxJsonVisitor >> pointToPosition: lineColumn [
 FASTFortranSyntaxJsonVisitor >> set: aFASTFortranNode startEnd: aNode [
 
 	aFASTFortranNode startPos: (aNode at: #start_pos).
+
 	aFASTFortranNode endPos: (aNode
 		at: #end_pos
 		ifAbsent: [ aFASTFortranNode startPos ]).
@@ -324,14 +328,18 @@ FASTFortranSyntaxJsonVisitor >> visitBinaryExpression: aNode [
 FASTFortranSyntaxJsonVisitor >> visitBlockData: aNode [
 	"start_pos prog_unit_parameters end_pos statement_list name tag"
 
-	| data |
+	| data progUnit |
 	data := super visitBlockData: aNode.
 
-	^(self newEntity: FASTFortranBlockData withPosition: data)
+	progUnit := (self newEntity: FASTFortranBlockData withPosition: data)
 		name: (data at: 'name');
 		parameters: (data at: 'prog_unit_parameters');
 		statementBlock: (data at: 'statement_list');
-		yourself
+		yourself.
+
+	self checkForComments: progUnit.
+
+	^progUnit
 ]
 
 { #category : #'visiting statement' }
@@ -695,10 +703,12 @@ FASTFortranSyntaxJsonVisitor >> visitFormatStatement: aNode [
 FASTFortranSyntaxJsonVisitor >> visitFortranFile: aProgramFile [
 	"comments program_units file"
 
-	| data |
-	data := super visitFortranFile: aProgramFile.
+	| progUnit |
+	progUnit := (super visitFortranFile: aProgramFile) at: #program_units.
 
-	^data at: #program_units
+	self checkForComments: progUnit.
+
+	^progUnit
 ]
 
 { #category : #visiting }
@@ -715,14 +725,19 @@ FASTFortranSyntaxJsonVisitor >> visitFunList: aCollection [
 FASTFortranSyntaxJsonVisitor >> visitFunction: aNode [
 	" name prog_unit_parameters return_type start_pos end_pos statement_list "
 
-	| data |
+	| data progUnit |
 	data := super visitFunction: aNode.
-	^(self newEntity: FASTFortranFunction withPosition: data)
+
+	progUnit := (self newEntity: FASTFortranFunction withPosition: data)
 		name: (data at: 'name');
 		parameters: (data at: 'prog_unit_parameters');
 		statementBlock: (data at: 'statement_list');
 		returnType: (data at: 'return_type');
-		yourself
+		yourself.
+
+	self checkForComments: progUnit.
+
+	^progUnit
 ]
 
 { #category : #'visiting expression' }
@@ -957,15 +972,17 @@ FASTFortranSyntaxJsonVisitor >> visitLoopControl: aNode [
 FASTFortranSyntaxJsonVisitor >> visitMain: aNode [
 	"name start_pos end_pos statement_list"
 
-	| data main |
+	| data progUnit |
 	data := super visitMain: aNode.
 
-	main := (self newEntity: FASTFortranProgramMain withPosition: data)
+	progUnit := (self newEntity: FASTFortranProgramMain withPosition: data)
 		name: (data at: 'name');
 		statementBlock: (data at: 'statement_list');
 	yourself.
 
-	^ main
+	self checkForComments: progUnit.
+
+	^progUnit
 ]
 
 { #category : #'visiting statement' }
@@ -1128,16 +1145,18 @@ FASTFortranSyntaxJsonVisitor >> visitStopStatement: aNode [
 FASTFortranSyntaxJsonVisitor >> visitSubroutine: aSubroutine [
 	"#(start_pos prog_unit_parameters end_pos statement_list name)"
 
-	| data subroutine |
+	| data progUnit |
 	data := super visitSubroutine: aSubroutine.
 
-	subroutine := (self newEntity: FASTFortranSubroutine withPosition: data)
+	progUnit := (self newEntity: FASTFortranSubroutine withPosition: data)
 		name: (data at: #name);
 		parameters: (data at: #prog_unit_parameters);
 		statementBlock: (data at: #statement_list);
 		yourself.
 
-	^ subroutine
+	self checkForComments: progUnit.
+
+	^progUnit
 ]
 
 { #category : #'visiting expression' }

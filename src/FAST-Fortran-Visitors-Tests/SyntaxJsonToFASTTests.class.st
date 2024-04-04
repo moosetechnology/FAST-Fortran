@@ -884,7 +884,8 @@ SyntaxJsonToFASTTests >> testBlockData [
 
 	self assert: bd class equals: FASTFortranBlockData.
 	self assert: bd name equals: 'MYBLCK'.
-	self assert: bd startPos equals: 7
+	self assert: bd startPos equals: 7.
+	self assert: bd endPos equals: 33.
 ]
 
 { #category : #'tests-statement' }
@@ -1829,9 +1830,9 @@ SyntaxJsonToFASTTests >> testFunctionNoParameter [
 	self assert: fct parameters isEmpty.
 	self assert: fct statementBlock statements isEmpty.
 	self assert: fct startPos equals: 7.
+	self assert: fct endPos equals: 39.
 
-	self assert: fct returnType class equals: FASTFortranIntegerType
-	"self assert: fct returnType startPos equals: 7."
+	self assert: fct returnType class equals: FASTFortranIntegerType.
 ]
 
 { #category : #'tests-statement' }
@@ -1877,6 +1878,8 @@ SyntaxJsonToFASTTests >> testFunctionWithParameter [
 
 	self assert: fct class equals: FASTFortranFunction.
 	self assert: fct parameters size equals: 2.
+	self assert: fct startPos equals: 8.
+	self assert: fct endPos equals: 43.
 
 	self flag:
 		'should be a FASTFortranParameter, not a FASTFortranVariableExpression ?'.
@@ -1887,7 +1890,7 @@ SyntaxJsonToFASTTests >> testFunctionWithParameter [
 
 	param := fct parameters second.
 	self assert: param class equals: FASTFortranScalarVariable.
-	self assert: param name equals: 'J'
+	self assert: param name equals: 'J'.
 	"self assert: param startPos equals: 32."
 ]
 
@@ -1911,8 +1914,8 @@ SyntaxJsonToFASTTests >> testFunctionWithStatement [
 	self assert: fct startPos equals: 7.
 
 	self assert: fct statementBlock statements size equals: 1.
-	"self assert: fct statementBlock startPos equals: 37.
-	self assert: fct statementBlock endPos equals: 44."
+	self assert: fct statementBlock startPos equals: 37.
+	self assert: fct statementBlock endPos equals: 44.
 
 	self assert: fct returnType class equals: FASTFortranIntegerType
 ]
@@ -2647,10 +2650,14 @@ SyntaxJsonToFASTTests >> testMainProgramAndSubroutine [
 	progUnit := result first.
 	self assert: progUnit class equals: FASTFortranProgramMain.
 	self assert: progUnit name equals: 'TESTALT'.
+	self assert: progUnit startPos equals: 7.
+	self assert: progUnit endPos equals: 31.
 
 	progUnit := result second.
 	self assert: progUnit class equals: FASTFortranSubroutine.
-	self assert: progUnit name equals: 'RANK'
+	self assert: progUnit name equals: 'RANK'.
+	self assert: progUnit startPos equals: 47.
+	self assert: progUnit endPos equals: 71.
 ]
 
 { #category : #'tests-programUnit' }
@@ -2667,6 +2674,8 @@ SyntaxJsonToFASTTests >> testMainProgramEmptyBody [
 	main := result anyOne.
 
 	self assert: main class equals: FASTFortranProgramMain.
+	self assert: main startPos equals: 7.
+	self assert: main endPos equals: 28.
 
 	body := main statementBlock.
 	self assert: body statements isCollection.
@@ -3103,8 +3112,35 @@ SyntaxJsonToFASTTests >> testSubroutineEmpty [
 	self assert: rtn class equals: FASTFortranSubroutine.
 	self assert: rtn parameters isEmpty.
 	self assert: rtn statementBlock statements isEmpty.
-	self assert: rtn startPos equals: 7
-	"self assert: rtn endPos equals: 30"
+	self assert: rtn startPos equals: 7.
+	self assert: rtn endPos equals: 31.
+]
+
+{ #category : #'tests-programUnit' }
+SyntaxJsonToFASTTests >> testSubroutineWithComment [
+
+	| rtn result |
+	fortranCode := '      SUBROUTINE RANK
+C This is a comment
+      end
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { "2":"C This is a comment\n" }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"RANK"}, "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : []}] }'.
+
+	result := self visitJsonCode.
+
+	rtn := result anyOne.
+
+	self assert: rtn class equals: FASTFortranSubroutine.
+	self assert: rtn startPos equals: 7.
+	self assert: rtn endPos equals: 51.
+
+	self assert: rtn statementBlock statements size equals: 0.
+	self assert: rtn statementBlock comments size equals: 0.
+
+	self assert: rtn comments size equals: 1.
+	self assert: rtn comments first startPos equals: 22.
+	self assert: rtn comments first endPos equals: 41.
+	
 ]
 
 { #category : #'tests-programUnit' }
@@ -3124,7 +3160,7 @@ SyntaxJsonToFASTTests >> testSubroutineWithParameters [
 	self assert: rtn name equals: 'SIMPLESUBROUTINE'.
 
 	self assert: rtn startPos equals: 7.
-	"self assert: rtn endPos equals: 50."
+	self assert: rtn endPos equals: 50.
 
 	self assert: rtn parameters size equals: 2.
 
@@ -3133,7 +3169,7 @@ SyntaxJsonToFASTTests >> testSubroutineWithParameters [
 	"self assert: param startPos equals: 36."
 
 	param := rtn parameters second.
-	self assert: param name equals: 'B'
+	self assert: param name equals: 'B'.
 	"self assert: param startPos equals: 39."
 ]
 
@@ -3154,12 +3190,15 @@ SyntaxJsonToFASTTests >> testSubroutineWithParametersOnTwoLines [
 
 	self assert: rtn class equals: FASTFortranSubroutine.
 	self assert: rtn name equals: 'SIMPLESUBROUTINE'.
+	self assert: rtn startPos equals: 7.
+	self assert: rtn endPos equals: 72.
 
 	self
 		assert: rtn statementBlock class
 		equals: FASTFortranStatementBlock.
 	self assert: rtn statementBlock statements size equals: 1.
-	"self assert: rtn statementBlock startPos equals: 55."
+	self assert: rtn statementBlock startPos equals: 55.
+	self assert: rtn statementBlock endPos equals: 62.
 
 	self assert: rtn parameters size equals: 2
 	"self assert: rtn parameters first startPos equals: 36.
