@@ -7,12 +7,12 @@ a Fortran Return Statement
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `statementContainer` | `FASTFortranTStatement` | `statements` | `FASTFortranTStatementBlock` | Block containing this statement.|
+| `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `expression` | `FASTFortranTReturnStatement` | `returnOwner` | `FASTFortranTExpression` | The expression returned|
+| `expression` | `FASTTReturnStatement` | `returnOwner` | `FASTTExpression` | The expression returned|
 
 
 ## Properties
@@ -22,16 +22,14 @@ a Fortran Return Statement
 |---|
 | `alternateReturnLabel` | `String` | nil | Optional. Expression of type INTEGER or REAL|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : #FASTFortranReturnStatement,
 	#superclass : #FASTFortranAbstractStatement,
-	#traits : 'FASTFortranTReturnStatement',
-	#classTraits : 'FASTFortranTReturnStatement classTrait',
+	#traits : 'FASTTReturnStatement',
+	#classTraits : 'FASTTReturnStatement classTrait',
 	#instVars : [
 		'#alternateReturnLabel => FMProperty'
 	],

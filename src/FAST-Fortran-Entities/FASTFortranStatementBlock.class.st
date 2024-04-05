@@ -7,17 +7,17 @@ Contains the block of Fortran statements
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `fastBehaviouralParent` | `FASTFortranTStatementBlock` | `statementBlock` | `FASTFortranTBehaviouralEntity` | Behavioural entity containing the statement block.|
+| `fastBehaviouralParent` | `FASTTStatementBlock` | `statementBlock` | `FASTTBehaviouralEntity` | Behavioural entity containing the statement block.|
 | `parentDoStatement` | `FASTFortranStatementBlock` | `statementBlock` | `FASTFortranDoStatement` | Parent do statement|
-| `parentIfBlock` | `FASTFortranStatementBlock` | `elseStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
 | `parentIfBlock` | `FASTFortranStatementBlock` | `thenStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
-| `statementContainer` | `FASTFortranTStatement` | `statements` | `FASTFortranTStatementBlock` | Block containing this statement.|
+| `parentIfBlock` | `FASTFortranStatementBlock` | `elseStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
+| `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `comments` | `FASTFortranTWithComments` | `container` | `FASTFortranTComment` | list of comments defined in the entity|
-| `statements` | `FASTFortranTStatementBlock` | `statementContainer` | `FASTFortranTStatement` | Statements enclosed in this block|
+| `comments` | `FASTTWithComments` | `container` | `FASTTComment` | list of comments defined in the entity|
+| `statements` | `FASTTStatementBlock` | `statementContainer` | `FASTTStatement` | Statements enclosed in this block|
 
 
 ## Properties
@@ -26,16 +26,14 @@ Contains the block of Fortran statements
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : #FASTFortranStatementBlock,
 	#superclass : #FASTFortranEntity,
-	#traits : 'FASTFortranTStatementBlock + FASTFortranTWithComments',
-	#classTraits : 'FASTFortranTStatementBlock classTrait + FASTFortranTWithComments classTrait',
+	#traits : 'FASTTStatementBlock + FASTTWithComments',
+	#classTraits : 'FASTTStatementBlock classTrait + FASTTWithComments classTrait',
 	#instVars : [
 		'#parentDoStatement => FMOne type: #FASTFortranDoStatement opposite: #statementBlock',
 		'#parentIfBlock => FMOne type: #FASTFortranIfBlockStatement opposite: #thenStatementBlock'

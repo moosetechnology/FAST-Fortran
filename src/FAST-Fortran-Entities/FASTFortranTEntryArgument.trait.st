@@ -7,13 +7,13 @@ I represent an argument in an entry statement: it can be a variable name, array 
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `entryStatement` | `FASTFortranTEntryStatement` | `entryArguments` | `FASTFortranEntryStatement` | |
+| `entryStatement` | `FASTFortranTEntryArgument` | `entryArguments` | `FASTFortranEntryStatement` | |
 
 
 
 "
 Trait {
-	#name : #FASTFortranTEntryStatement,
+	#name : #FASTFortranTEntryArgument,
 	#instVars : [
 		'#entryStatement => FMOne type: #FASTFortranEntryStatement opposite: #entryArguments'
 	],
@@ -21,16 +21,16 @@ Trait {
 }
 
 { #category : #meta }
-FASTFortranTEntryStatement classSide >> annotation [
+FASTFortranTEntryArgument classSide >> annotation [
 
-	<FMClass: #TEntryStatement super: #Object>
+	<FMClass: #TEntryArgument super: #Object>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
 ]
 
 { #category : #accessing }
-FASTFortranTEntryStatement >> entryStatement [
+FASTFortranTEntryArgument >> entryStatement [
 	"Relation named: #entryStatement type: #FASTFortranEntryStatement opposite: #entryArguments"
 
 	<generated>
@@ -39,14 +39,14 @@ FASTFortranTEntryStatement >> entryStatement [
 ]
 
 { #category : #accessing }
-FASTFortranTEntryStatement >> entryStatement: anObject [
+FASTFortranTEntryArgument >> entryStatement: anObject [
 
 	<generated>
 	entryStatement := anObject
 ]
 
 { #category : #navigation }
-FASTFortranTEntryStatement >> entryStatementGroup [
+FASTFortranTEntryArgument >> entryStatementGroup [
 	<generated>
 	<navigation: 'EntryStatement'>
 	^ MooseSpecializedGroup with: self entryStatement

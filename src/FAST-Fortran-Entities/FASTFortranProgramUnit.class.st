@@ -7,15 +7,15 @@ A fortran program unit is a sequence of statements, terminated by an END stateme
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
+| `invokedIn` | `FASTTNamedEntity` | `invoked` | `FASTTInvocation` | Optional invocation where this name is used|
 | `parentProgramFile` | `FASTFortranProgramUnit` | `programUnit` | `FASTFortranProgramFile` | Parent program file|
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `comments` | `FASTFortranTWithComments` | `container` | `FASTFortranTComment` | list of comments defined in the entity|
-| `parameters` | `FASTFortranTWithParameters` | `parameterOwner` | `FASTFortranTVariableEntity` | My parameters|
-| `statementBlock` | `FASTFortranTBehaviouralEntity` | `fastBehaviouralParent` | `FASTFortranTStatementBlock` | Statements block of the behavioural entity|
+| `comments` | `FASTTWithComments` | `container` | `FASTTComment` | list of comments defined in the entity|
+| `parameters` | `FASTTWithParameters` | `parameterOwner` | `FASTTVariableEntity` | My parameters|
+| `statementBlock` | `FASTTBehaviouralEntity` | `fastBehaviouralParent` | `FASTTStatementBlock` | Statements block of the behavioural entity|
 
 
 ## Properties
@@ -24,17 +24,15 @@ A fortran program unit is a sequence of statements, terminated by an END stateme
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
 | `name` | `String` | nil | |
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : #FASTFortranProgramUnit,
 	#superclass : #FASTFortranEntity,
-	#traits : 'FASTFortranTBehaviouralEntity + FASTFortranTEntity + FASTFortranTNamedEntity + FASTFortranTWithComments',
-	#classTraits : 'FASTFortranTBehaviouralEntity classTrait + FASTFortranTEntity classTrait + FASTFortranTNamedEntity classTrait + FASTFortranTWithComments classTrait',
+	#traits : 'FASTTBehaviouralEntity + FASTTEntity + FASTTNamedEntity + FASTTWithComments',
+	#classTraits : 'FASTTBehaviouralEntity classTrait + FASTTEntity classTrait + FASTTNamedEntity classTrait + FASTTWithComments classTrait',
 	#instVars : [
 		'#parentProgramFile => FMOne type: #FASTFortranProgramFile opposite: #programUnit'
 	],
