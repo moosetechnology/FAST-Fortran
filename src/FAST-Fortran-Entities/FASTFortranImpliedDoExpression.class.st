@@ -14,7 +14,7 @@ I represent a Fortran ""implied do"" expression
 |---|
 | `loopControl` | `FASTFortranTWithLoopControl` | `parentLoop` | `FASTFortranLoopControlExpression` | loop control|
 | `variables` | `FASTFortranTVariableGroup` | `parentVariableGroup` | `FASTFortranVariable` | |
-| `variables` | `FASTFortranImpliedDoExpression` | `parentImpliedExpression` | `FASTFortranTVariableEntity` | |
+| `variables` | `FASTFortranImpliedDoExpression` | `parentImpliedExpression` | `FASTTVariableEntity` | |
 
 
 
@@ -24,9 +24,6 @@ Class {
 	#superclass : #FASTFortranAbstractExpression,
 	#traits : 'FASTFortranTVariableGroup + FASTFortranTWithLoopControl',
 	#classTraits : 'FASTFortranTVariableGroup classTrait + FASTFortranTWithLoopControl classTrait',
-	#instVars : [
-		'#variables => FMMany type: #FASTFortranTVariableEntity opposite: #parentImpliedExpression'
-	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
@@ -47,18 +44,19 @@ FASTFortranImpliedDoExpression >> addVariable: anObject [
 
 { #category : #accessing }
 FASTFortranImpliedDoExpression >> variables [
-	"Relation named: #variables type: #FASTFortranTVariableEntity opposite: #parentImpliedExpression"
+	"Relation named: #variables type: #FASTTVariableEntity opposite: #parentImpliedExpression"
 
 	<generated>
 	<derived>
-	^ variables
+	<FMProperty: #variables type: #FASTTVariableEntity opposite: #parentImpliedExpression>
+	^ self attributeAt: #variables ifAbsentPut: [ FMMultivalueLink on: self opposite: #parentImpliedExpression: ]
 ]
 
 { #category : #accessing }
 FASTFortranImpliedDoExpression >> variables: anObject [
 
 	<generated>
-	variables value: anObject
+	self variables value: anObject
 ]
 
 { #category : #navigation }

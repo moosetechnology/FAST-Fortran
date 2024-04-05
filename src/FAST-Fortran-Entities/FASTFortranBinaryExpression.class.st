@@ -7,19 +7,19 @@ a Fortran Binary Expression (arithmetic, logical)
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `argumentOwner` | `FASTFortranTExpression` | `arguments` | `FASTFortranTWithArguments` | my owner|
-| `assignedIn` | `FASTFortranTExpression` | `expression` | `FASTFortranTAssignment` | Optional assignment where this expression is used|
-| `expressionStatementOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTExpressionStatement` | The expression statement that own me (if it's the case|
-| `parentExpression` | `FASTFortranTExpression` | `expression` | `FASTFortranTUnaryExpression` | Parent (unary) expression|
-| `parentExpressionLeft` | `FASTFortranTExpression` | `leftOperand` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am left side|
-| `parentExpressionRight` | `FASTFortranTExpression` | `rightOperand` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am right side|
-| `returnOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTReturnStatement` | The return statement that own the expression (if it's the case)|
+| `argumentOwner` | `FASTTExpression` | `arguments` | `FASTTWithArguments` | my owner|
+| `assignedIn` | `FASTTExpression` | `expression` | `FASTTAssignment` | Optional assignment where this expression is used|
+| `expressionStatementOwner` | `FASTTExpression` | `expression` | `FASTTExpressionStatement` | The expression statement that own me (if it's the case|
+| `parentExpression` | `FASTTExpression` | `expression` | `FASTTUnaryExpression` | Parent (unary) expression|
+| `parentExpressionLeft` | `FASTTExpression` | `leftOperand` | `FASTTBinaryExpression` | Parent (binary) expression of which I am left side|
+| `parentExpressionRight` | `FASTTExpression` | `rightOperand` | `FASTTBinaryExpression` | Parent (binary) expression of which I am right side|
+| `returnOwner` | `FASTTExpression` | `expression` | `FASTTReturnStatement` | The return statement that own the expression (if it's the case)|
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `leftOperand` | `FASTFortranTBinaryExpression` | `parentExpressionLeft` | `FASTFortranTExpression` | left part of a binary expression|
-| `rightOperand` | `FASTFortranTBinaryExpression` | `parentExpressionRight` | `FASTFortranTExpression` | left part of the expression|
+| `leftOperand` | `FASTTBinaryExpression` | `parentExpressionLeft` | `FASTTExpression` | left part of a binary expression|
+| `rightOperand` | `FASTTBinaryExpression` | `parentExpressionRight` | `FASTTExpression` | left part of the expression|
 
 
 ## Properties
@@ -28,18 +28,16 @@ a Fortran Binary Expression (arithmetic, logical)
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
 | `operator` | `String` | nil | Binary expression operator|
 | `operator` | `String` | nil | Binary expression operator|
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : #FASTFortranBinaryExpression,
 	#superclass : #FASTFortranAbstractExpression,
-	#traits : 'FASTFortranTBinaryExpression',
-	#classTraits : 'FASTFortranTBinaryExpression classTrait',
+	#traits : 'FASTTBinaryExpression',
+	#classTraits : 'FASTTBinaryExpression classTrait',
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 

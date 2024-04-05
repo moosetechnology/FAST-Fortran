@@ -7,7 +7,7 @@ I represent Fortran Print statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `arguments` | `FASTFortranTWithArguments` | `argumentOwner` | `FASTFortranTExpression` | My arguments|
+| `arguments` | `FASTTWithArguments` | `argumentOwner` | `FASTTExpression` | My arguments|
 | `format` | `FASTFortranTWithFormat` | `parentFormatedStatement` | `FASTFortranTFormat` | The description of the format|
 
 
@@ -16,8 +16,8 @@ I represent Fortran Print statement
 Class {
 	#name : #FASTFortranPrintStatement,
 	#superclass : #FASTFortranAbstractStatement,
-	#traits : 'FASTFortranTWithArguments + FASTFortranTWithFormat',
-	#classTraits : 'FASTFortranTWithArguments classTrait + FASTFortranTWithFormat classTrait',
+	#traits : 'FASTFortranTWithFormat + FASTTWithArguments',
+	#classTraits : 'FASTFortranTWithFormat classTrait + FASTTWithArguments classTrait',
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 

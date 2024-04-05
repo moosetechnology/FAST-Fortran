@@ -7,7 +7,7 @@ I represent Fortran Write statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `arguments` | `FASTFortranTWithArguments` | `argumentOwner` | `FASTFortranTExpression` | My arguments|
+| `arguments` | `FASTTWithArguments` | `argumentOwner` | `FASTTExpression` | My arguments|
 
 
 
@@ -15,8 +15,8 @@ I represent Fortran Write statement
 Class {
 	#name : #FASTFortranWriteStatement,
 	#superclass : #FASTFortranAbstractIOStatement,
-	#traits : 'FASTFortranTWithArguments',
-	#classTraits : 'FASTFortranTWithArguments classTrait',
+	#traits : 'FASTTWithArguments',
+	#classTraits : 'FASTTWithArguments classTrait',
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 

@@ -7,23 +7,23 @@ I am the super class of all Fortran expressions
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `argumentOwner` | `FASTFortranTExpression` | `arguments` | `FASTFortranTWithArguments` | my owner|
-| `assignedIn` | `FASTFortranTExpression` | `expression` | `FASTFortranTAssignment` | Optional assignment where this expression is used|
+| `argumentOwner` | `FASTTExpression` | `arguments` | `FASTTWithArguments` | my owner|
+| `assignedIn` | `FASTTExpression` | `expression` | `FASTTAssignment` | Optional assignment where this expression is used|
 | `assignementExpressionOwner` | `FASTFortranAbstractExpression` | `expression` | `FASTFortranFunctionStatement` | The AssignementExpression owner (if possible)|
-| `expressionStatementOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTExpressionStatement` | The expression statement that own me (if it's the case|
-| `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `lowerBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
+| `expressionStatementOwner` | `FASTTExpression` | `expression` | `FASTTExpressionStatement` | The expression statement that own me (if it's the case|
 | `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `upperBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
+| `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `lowerBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
 | `parentArrayExpression` | `FASTFortranAbstractExpression` | `indices` | `FASTFortranArrayVariable` | an ArrayVariable expression of which I am an indice|
 | `parentConditionalStatement` | `FASTFortranAbstractExpression` | `condition` | `FASTFortranConditionalStatement` | Parent conditional statement (if-block, if-logical, ...)|
 | `parentDataStatement` | `FASTFortranAbstractExpression` | `dataConstants` | `FASTFortranDataGroup` | |
-| `parentExpression` | `FASTFortranTExpression` | `expression` | `FASTFortranTUnaryExpression` | Parent (unary) expression|
-| `parentExpressionLeft` | `FASTFortranTExpression` | `leftOperand` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am left side|
-| `parentExpressionRight` | `FASTFortranTExpression` | `rightOperand` | `FASTFortranTBinaryExpression` | Parent (binary) expression of which I am right side|
+| `parentExpression` | `FASTTExpression` | `expression` | `FASTTUnaryExpression` | Parent (unary) expression|
+| `parentExpressionLeft` | `FASTTExpression` | `leftOperand` | `FASTTBinaryExpression` | Parent (binary) expression of which I am left side|
+| `parentExpressionRight` | `FASTTExpression` | `rightOperand` | `FASTTBinaryExpression` | Parent (binary) expression of which I am right side|
 | `parentGotoAssignedStatement` | `FASTFortranAbstractExpression` | `selectorExpression` | `FASTFortranGoToAssignedStatement` | |
 | `parentGotoComputedStatement` | `FASTFortranAbstractExpression` | `selectorExpression` | `FASTFortranGoToComputedStatement` | |
 | `parentLoopControlIncrement` | `FASTFortranAbstractExpression` | `increment` | `FASTFortranLoopControlExpression` | |
 | `parentLoopControlLimit` | `FASTFortranAbstractExpression` | `limit` | `FASTFortranLoopControlExpression` | |
-| `returnOwner` | `FASTFortranTExpression` | `expression` | `FASTFortranTReturnStatement` | The return statement that own the expression (if it's the case)|
+| `returnOwner` | `FASTTExpression` | `expression` | `FASTTReturnStatement` | The return statement that own the expression (if it's the case)|
 | `variableDeclaratorOwner` | `FASTFortranAbstractExpression` | `expression` | `FASTFortranVariableDeclarator` | |
 
 
@@ -33,27 +33,25 @@ I am the super class of all Fortran expressions
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : #FASTFortranAbstractExpression,
 	#superclass : #FASTFortranEntity,
-	#traits : 'FASTFortranTExpression',
-	#classTraits : 'FASTFortranTExpression classTrait',
+	#traits : 'FASTTExpression',
+	#classTraits : 'FASTTExpression classTrait',
 	#instVars : [
-		'#assignementExpressionOwner => FMOne type: #FASTFortranFunctionStatement opposite: #expression',
 		'#parentArrayDimensionDeclarator => FMOne type: #FASTFortranArrayRange opposite: #upperBound',
 		'#parentArrayExpression => FMOne type: #FASTFortranArrayVariable opposite: #indices',
-		'#parentConditionalStatement => FMOne type: #FASTFortranConditionalStatement opposite: #condition',
 		'#parentDataStatement => FMOne type: #FASTFortranDataGroup opposite: #dataConstants',
-		'#parentGotoAssignedStatement => FMOne type: #FASTFortranGoToAssignedStatement opposite: #selectorExpression',
+		'#variableDeclaratorOwner => FMOne type: #FASTFortranVariableDeclarator opposite: #expression',
+		'#assignementExpressionOwner => FMOne type: #FASTFortranFunctionStatement opposite: #expression',
 		'#parentGotoComputedStatement => FMOne type: #FASTFortranGoToComputedStatement opposite: #selectorExpression',
+		'#parentGotoAssignedStatement => FMOne type: #FASTFortranGoToAssignedStatement opposite: #selectorExpression',
+		'#parentConditionalStatement => FMOne type: #FASTFortranConditionalStatement opposite: #condition',
 		'#parentLoopControlIncrement => FMOne type: #FASTFortranLoopControlExpression opposite: #increment',
-		'#parentLoopControlLimit => FMOne type: #FASTFortranLoopControlExpression opposite: #limit',
-		'#variableDeclaratorOwner => FMOne type: #FASTFortranVariableDeclarator opposite: #expression'
+		'#parentLoopControlLimit => FMOne type: #FASTFortranLoopControlExpression opposite: #limit'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
