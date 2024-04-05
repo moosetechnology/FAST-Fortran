@@ -46,20 +46,20 @@ FASTFortranLocalResolverVisitor >> visitFASTFortranScalarVariable: aFASTFortranS
 
 { #category : #'visiting - statements' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBlock [
+
 	scoper pushScope.
 
 	"visit order is important to ensure declarations are visited before statements"
-	(aFASTFortranStatementBlock statements sorted: [:a :b | a startPos < b startPos])
-		do: [ :node | node accept: self ].
+	(aFASTFortranStatementBlock statements sorted: [ :a :b |
+		 a startPos < b startPos ]) do: [ :node | node accept: self ].
 
-	^scoper popScope
+	^ scoper popScope
 ]
 
 { #category : #'visiting - traits' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranTBehaviouralEntity: aFASTFortranTBehaviouralEntity [
 
 	aFASTFortranTBehaviouralEntity statementBlock accept: self
-
 ]
 
 { #category : #'visiting - expressions' }
@@ -72,7 +72,8 @@ FASTFortranLocalResolverVisitor >> visitFASTFortranVariable: aFASTFortranVariabl
 { #category : #'visiting - statements' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFortranVariableDeclarationStatement [
 
-	aFASTFortranVariableDeclarationStatement declarators do: [:decl | decl accept: self]
+	aFASTFortranVariableDeclarationStatement declarators do: [ :decl |
+		decl accept: self ]
 ]
 
 { #category : #visiting }
@@ -83,8 +84,7 @@ FASTFortranLocalResolverVisitor >> visitFASTFortranVariableDeclarator: aFASTVari
 		scopeAdd: aFASTVariableDeclaration name
 		declaration: aFASTVariableDeclaration.
 
-	aFASTVariableDeclaration localDeclaration: aFASTVariableDeclaration.
-
+	aFASTVariableDeclaration localDeclaration: aFASTVariableDeclaration
 ]
 
 { #category : #'visiting - expressions' }
@@ -96,5 +96,4 @@ FASTFortranLocalResolverVisitor >> visitFASTIdentifierExpression: aFASTIdentifie
 	 - binds this reference to the declaration"
 
 	scoper bind: aFASTIdentifier toLocalDeclaration: aFASTIdentifier name
-
 ]
