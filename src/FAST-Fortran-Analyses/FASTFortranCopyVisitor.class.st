@@ -22,1247 +22,1305 @@ FASTFortranCopyVisitor >> copy: aNode [
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAbstractExpression: aFASTFortranAbstractExpression [
-	<generated>
-	^FASTFortranAbstractExpression new
-		startPos: (self copy: aFASTFortranAbstractExpression startPos) ;
-		endPos: (self copy: aFASTFortranAbstractExpression endPos) ;
-		yourself
 
+	<generated>
+	1 halt.
+	^ FASTFortranAbstractExpression new
+		  startPos: (self copy: aFASTFortranAbstractExpression startPos);
+		  endPos: (self copy: aFASTFortranAbstractExpression endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAbstractIOStatement: aFASTFortranAbstractIOStatement [
-	<generated>
-	^FASTFortranAbstractIOStatement new
-		ioParameters: (self copy: aFASTFortranAbstractIOStatement ioParameters) ;
-		label: (self copy: aFASTFortranAbstractIOStatement label) ;
-		startPos: (self copy: aFASTFortranAbstractIOStatement startPos) ;
-		endPos: (self copy: aFASTFortranAbstractIOStatement endPos) ;
-		yourself
 
+	<generated>
+	1 halt.
+	^ FASTFortranAbstractIOStatement new
+		  ioParameters:
+			  (self copy: aFASTFortranAbstractIOStatement ioParameters);
+		  label: (self copy: aFASTFortranAbstractIOStatement label);
+		  startPos: (self copy: aFASTFortranAbstractIOStatement startPos);
+		  endPos: (self copy: aFASTFortranAbstractIOStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAbstractLiteral: aFASTFortranAbstractLiteral [
-	<generated>
-	^FASTFortranAbstractLiteral new
-		startPos: (self copy: aFASTFortranAbstractLiteral startPos) ;
-		endPos: (self copy: aFASTFortranAbstractLiteral endPos) ;
-		yourself
 
+	<generated>
+	1 halt.
+	^ FASTFortranAbstractLiteral new
+		  startPos: (self copy: aFASTFortranAbstractLiteral startPos);
+		  endPos: (self copy: aFASTFortranAbstractLiteral endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAbstractStatement: aFASTFortranAbstractStatement [
-	<generated>
-	^FASTFortranAbstractStatement new
-		label: (self copy: aFASTFortranAbstractStatement label) ;
-		startPos: (self copy: aFASTFortranAbstractStatement startPos) ;
-		endPos: (self copy: aFASTFortranAbstractStatement endPos) ;
-		yourself
 
+	<generated>
+	1 halt.
+	^ FASTFortranAbstractStatement new
+		  label: (self copy: aFASTFortranAbstractStatement label);
+		  startPos: (self copy: aFASTFortranAbstractStatement startPos);
+		  endPos: (self copy: aFASTFortranAbstractStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAcceptStatement: aFASTFortranAcceptStatement [
-	<generated>
-	^FASTFortranAcceptStatement new
-		label: (self copy: aFASTFortranAcceptStatement label) ;
-		startPos: (self copy: aFASTFortranAcceptStatement startPos) ;
-		endPos: (self copy: aFASTFortranAcceptStatement endPos) ;
-		yourself
 
+	<generated>
+	1 halt.
+	^ FASTFortranAcceptStatement new
+		  label: (self copy: aFASTFortranAcceptStatement label);
+		  startPos: (self copy: aFASTFortranAcceptStatement startPos);
+		  endPos: (self copy: aFASTFortranAcceptStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAmpersand: aFASTFortranAmpersand [
-	<generated>
-	^FASTFortranAmpersand new
-		primitiveValue: (self copy: aFASTFortranAmpersand primitiveValue) ;
-		startPos: (self copy: aFASTFortranAmpersand startPos) ;
-		endPos: (self copy: aFASTFortranAmpersand endPos) ;
-		yourself
 
+	<generated>
+	1 halt.
+	^ FASTFortranAmpersand new
+		  primitiveValue: (self copy: aFASTFortranAmpersand primitiveValue);
+		  startPos: (self copy: aFASTFortranAmpersand startPos);
+		  endPos: (self copy: aFASTFortranAmpersand endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranArrayRange: aFASTFortranArrayRange [
-	<generated>
-	^FASTFortranArrayRange new
-		lowerBound: (self copy: aFASTFortranArrayRange lowerBound) ;
-		upperBound: (self copy: aFASTFortranArrayRange upperBound) ;
-		startPos: (self copy: aFASTFortranArrayRange startPos) ;
-		endPos: (self copy: aFASTFortranArrayRange endPos) ;
-		yourself
 
+	<generated>
+	1 halt.
+	^ FASTFortranArrayRange new
+		  lowerBound: (self copy: aFASTFortranArrayRange lowerBound);
+		  upperBound: (self copy: aFASTFortranArrayRange upperBound);
+		  startPos: (self copy: aFASTFortranArrayRange startPos);
+		  endPos: (self copy: aFASTFortranArrayRange endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariable [
 	<generated>
-	^FASTFortranArrayVariable new
-		name: (self copy: aFASTFortranArrayVariable name) ;
-		indices: (self copy: aFASTFortranArrayVariable indices) ;
-		startPos: (self copy: aFASTFortranArrayVariable startPos) ;
-		endPos: (self copy: aFASTFortranArrayVariable endPos) ;
-		yourself
 
+	^ FASTFortranArrayVariable new
+		  name: (self copy: aFASTFortranArrayVariable name);
+		  indices: (self copy: aFASTFortranArrayVariable indices);
+		  startPos: (self copy: aFASTFortranArrayVariable startPos);
+		  endPos: (self copy: aFASTFortranArrayVariable endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAssignmentExpression: aFASTFortranAssignmentExpression [
-	<generated>
-	^FASTFortranAssignmentExpression new
-		variable: (self copy: aFASTFortranAssignmentExpression variable) ;
-		expression: (self copy: aFASTFortranAssignmentExpression expression) ;
-		startPos: (self copy: aFASTFortranAssignmentExpression startPos) ;
-		endPos: (self copy: aFASTFortranAssignmentExpression endPos) ;
-		yourself
 
+	<generated>
+	^ FASTFortranAssignmentExpression new
+		  variable: (self copy: aFASTFortranAssignmentExpression variable);
+		  expression:
+			  (self copy: aFASTFortranAssignmentExpression expression);
+		  startPos: (self copy: aFASTFortranAssignmentExpression startPos);
+		  endPos: (self copy: aFASTFortranAssignmentExpression endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAssignmentStatement: aFASTFortranAssignmentStatement [
 	<generated>
-	^FASTFortranAssignmentStatement new
-		variable: (self copy: aFASTFortranAssignmentStatement variable) ;
-		label: (self copy: aFASTFortranAssignmentStatement label) ;
-		expression: (self copy: aFASTFortranAssignmentStatement expression) ;
-		startPos: (self copy: aFASTFortranAssignmentStatement startPos) ;
-		endPos: (self copy: aFASTFortranAssignmentStatement endPos) ;
-		yourself
 
+	^ FASTFortranAssignmentStatement new
+		  variable: (self copy: aFASTFortranAssignmentStatement variable);
+		  label: (self copy: aFASTFortranAssignmentStatement label);
+		  expression:
+			  (self copy: aFASTFortranAssignmentStatement expression);
+		  startPos: (self copy: aFASTFortranAssignmentStatement startPos);
+		  endPos: (self copy: aFASTFortranAssignmentStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAsterisk: aFASTFortranAsterisk [
 	<generated>
-	^FASTFortranAsterisk new
-		primitiveValue: (self copy: aFASTFortranAsterisk primitiveValue) ;
-		startPos: (self copy: aFASTFortranAsterisk startPos) ;
-		endPos: (self copy: aFASTFortranAsterisk endPos) ;
-		yourself
 
+	^ FASTFortranAsterisk new
+		  primitiveValue: (self copy: aFASTFortranAsterisk primitiveValue);
+		  startPos: (self copy: aFASTFortranAsterisk startPos);
+		  endPos: (self copy: aFASTFortranAsterisk endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranAutomaticStatement: aFASTFortranAutomaticStatement [
-	<generated>
-	^FASTFortranAutomaticStatement new
-		label: (self copy: aFASTFortranAutomaticStatement label) ;
-		startPos: (self copy: aFASTFortranAutomaticStatement startPos) ;
-		endPos: (self copy: aFASTFortranAutomaticStatement endPos) ;
-		yourself
 
+	<generated>
+	1 halt.
+	^ FASTFortranAutomaticStatement new
+		  label: (self copy: aFASTFortranAutomaticStatement label);
+		  startPos: (self copy: aFASTFortranAutomaticStatement startPos);
+		  endPos: (self copy: aFASTFortranAutomaticStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranBackspaceStatement: aFASTFortranBackspaceStatement [
-	<generated>
-	^FASTFortranBackspaceStatement new
-		ioParameters: (self copy: aFASTFortranBackspaceStatement ioParameters) ;
-		label: (self copy: aFASTFortranBackspaceStatement label) ;
-		startPos: (self copy: aFASTFortranBackspaceStatement startPos) ;
-		endPos: (self copy: aFASTFortranBackspaceStatement endPos) ;
-		yourself
 
+	<generated>
+	1 halt.
+	^ FASTFortranBackspaceStatement new
+		  ioParameters:
+			  (self copy: aFASTFortranBackspaceStatement ioParameters);
+		  label: (self copy: aFASTFortranBackspaceStatement label);
+		  startPos: (self copy: aFASTFortranBackspaceStatement startPos);
+		  endPos: (self copy: aFASTFortranBackspaceStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranBinaryExpression: aFASTFortranBinaryExpression [
 	<generated>
-	^FASTFortranBinaryExpression new
-		leftOperand: (self copy: aFASTFortranBinaryExpression leftOperand) ;
-		rightOperand: (self copy: aFASTFortranBinaryExpression rightOperand) ;
-		startPos: (self copy: aFASTFortranBinaryExpression startPos) ;
-		endPos: (self copy: aFASTFortranBinaryExpression endPos) ;
-		operator: (self copy: aFASTFortranBinaryExpression operator) ;
-		yourself
 
+	^ FASTFortranBinaryExpression new
+		  leftOperand: (self copy: aFASTFortranBinaryExpression leftOperand);
+		  rightOperand:
+			  (self copy: aFASTFortranBinaryExpression rightOperand);
+		  startPos: (self copy: aFASTFortranBinaryExpression startPos);
+		  endPos: (self copy: aFASTFortranBinaryExpression endPos);
+		  operator: (self copy: aFASTFortranBinaryExpression operator);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranBlockData: aFASTFortranBlockData [
-	<generated>
-	^FASTFortranBlockData new
-		comments: (self copy: aFASTFortranBlockData comments) ;
-		name: (self copy: aFASTFortranBlockData name) ;
-		parameters: (self copy: aFASTFortranBlockData parameters) ;
-		statementBlock: (self copy: aFASTFortranBlockData statementBlock) ;
-		startPos: (self copy: aFASTFortranBlockData startPos) ;
-		endPos: (self copy: aFASTFortranBlockData endPos) ;
-		yourself
 
+	<generated>
+	1 halt.
+	^ FASTFortranBlockData new
+		  comments: (self copy: aFASTFortranBlockData comments);
+		  name: (self copy: aFASTFortranBlockData name);
+		  parameters: (self copy: aFASTFortranBlockData parameters);
+		  statementBlock: (self copy: aFASTFortranBlockData statementBlock);
+		  startPos: (self copy: aFASTFortranBlockData startPos);
+		  endPos: (self copy: aFASTFortranBlockData endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranBooleanLiteral: aFASTFortranBooleanLiteral [
 	<generated>
-	^FASTFortranBooleanLiteral new
-		primitiveValue: (self copy: aFASTFortranBooleanLiteral primitiveValue) ;
-		startPos: (self copy: aFASTFortranBooleanLiteral startPos) ;
-		endPos: (self copy: aFASTFortranBooleanLiteral endPos) ;
-		yourself
 
+	^ FASTFortranBooleanLiteral new
+		  primitiveValue:
+			  (self copy: aFASTFortranBooleanLiteral primitiveValue);
+		  startPos: (self copy: aFASTFortranBooleanLiteral startPos);
+		  endPos: (self copy: aFASTFortranBooleanLiteral endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranByteType: aFASTFortranByteType [
-	<generated>
-	^FASTFortranByteType new
-		size: (self copy: aFASTFortranByteType size) ;
-		startPos: (self copy: aFASTFortranByteType startPos) ;
-		endPos: (self copy: aFASTFortranByteType endPos) ;
-		yourself
 
+	<generated>
+	1 halt.
+	^ FASTFortranByteType new
+		  size: (self copy: aFASTFortranByteType size);
+		  startPos: (self copy: aFASTFortranByteType startPos);
+		  endPos: (self copy: aFASTFortranByteType endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranCallStatement: aFASTFortranCallStatement [
 	<generated>
-	^FASTFortranCallStatement new
-		name: (self copy: aFASTFortranCallStatement name) ;
-		arguments: (self copy: aFASTFortranCallStatement arguments) ;
-		label: (self copy: aFASTFortranCallStatement label) ;
-		startPos: (self copy: aFASTFortranCallStatement startPos) ;
-		endPos: (self copy: aFASTFortranCallStatement endPos) ;
-		yourself
 
+	^ FASTFortranCallStatement new
+		  name: (self copy: aFASTFortranCallStatement name);
+		  arguments: (self copy: aFASTFortranCallStatement arguments);
+		  label: (self copy: aFASTFortranCallStatement label);
+		  startPos: (self copy: aFASTFortranCallStatement startPos);
+		  endPos: (self copy: aFASTFortranCallStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranCharacterLiteral: aFASTFortranCharacterLiteral [
 	<generated>
-	^FASTFortranCharacterLiteral new
-		primitiveValue: (self copy: aFASTFortranCharacterLiteral primitiveValue) ;
-		startPos: (self copy: aFASTFortranCharacterLiteral startPos) ;
-		endPos: (self copy: aFASTFortranCharacterLiteral endPos) ;
-		yourself
 
+	^ FASTFortranCharacterLiteral new
+		  primitiveValue:
+			  (self copy: aFASTFortranCharacterLiteral primitiveValue);
+		  startPos: (self copy: aFASTFortranCharacterLiteral startPos);
+		  endPos: (self copy: aFASTFortranCharacterLiteral endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranCharacterType: aFASTFortranCharacterType [
 	<generated>
-	^FASTFortranCharacterType new
-		size: (self copy: aFASTFortranCharacterType size) ;
-		startPos: (self copy: aFASTFortranCharacterType startPos) ;
-		endPos: (self copy: aFASTFortranCharacterType endPos) ;
-		yourself
 
+	^ FASTFortranCharacterType new
+		  size: (self copy: aFASTFortranCharacterType size);
+		  startPos: (self copy: aFASTFortranCharacterType startPos);
+		  endPos: (self copy: aFASTFortranCharacterType endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranCloseStatement: aFASTFortranCloseStatement [
 	<generated>
-	^FASTFortranCloseStatement new
-		ioParameters: (self copy: aFASTFortranCloseStatement ioParameters) ;
-		label: (self copy: aFASTFortranCloseStatement label) ;
-		startPos: (self copy: aFASTFortranCloseStatement startPos) ;
-		endPos: (self copy: aFASTFortranCloseStatement endPos) ;
-		yourself
 
+	^ FASTFortranCloseStatement new
+		  ioParameters: (self copy: aFASTFortranCloseStatement ioParameters);
+		  label: (self copy: aFASTFortranCloseStatement label);
+		  startPos: (self copy: aFASTFortranCloseStatement startPos);
+		  endPos: (self copy: aFASTFortranCloseStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranComment: aFASTFortranComment [
 	<generated>
-	^FASTFortranComment new
-		content: (self copy: aFASTFortranComment content) ;
-		startPos: (self copy: aFASTFortranComment startPos) ;
-		endPos: (self copy: aFASTFortranComment endPos) ;
-		yourself
 
+	^ FASTFortranComment new
+		  content: (self copy: aFASTFortranComment content);
+		  startPos: (self copy: aFASTFortranComment startPos);
+		  endPos: (self copy: aFASTFortranComment endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranCommonGroup: aFASTFortranCommonGroup [
 	<generated>
-	^FASTFortranCommonGroup new
-		name: (self copy: aFASTFortranCommonGroup name) ;
-		declarators: (self copy: aFASTFortranCommonGroup declarators) ;
-		startPos: (self copy: aFASTFortranCommonGroup startPos) ;
-		endPos: (self copy: aFASTFortranCommonGroup endPos) ;
-		yourself
 
+	^ FASTFortranCommonGroup new
+		  name: (self copy: aFASTFortranCommonGroup name);
+		  declarators: (self copy: aFASTFortranCommonGroup declarators);
+		  startPos: (self copy: aFASTFortranCommonGroup startPos);
+		  endPos: (self copy: aFASTFortranCommonGroup endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranCommonStatement: aFASTFortranCommonStatement [
 	<generated>
-	^FASTFortranCommonStatement new
-		groups: (self copy: aFASTFortranCommonStatement groups) ;
-		label: (self copy: aFASTFortranCommonStatement label) ;
-		startPos: (self copy: aFASTFortranCommonStatement startPos) ;
-		endPos: (self copy: aFASTFortranCommonStatement endPos) ;
-		yourself
 
+	^ FASTFortranCommonStatement new
+		  groups: (self copy: aFASTFortranCommonStatement groups);
+		  label: (self copy: aFASTFortranCommonStatement label);
+		  startPos: (self copy: aFASTFortranCommonStatement startPos);
+		  endPos: (self copy: aFASTFortranCommonStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranComplexLiteral: aFASTFortranComplexLiteral [
 	<generated>
-	^FASTFortranComplexLiteral new
-		primitiveValue: (self copy: aFASTFortranComplexLiteral primitiveValue) ;
-		startPos: (self copy: aFASTFortranComplexLiteral startPos) ;
-		endPos: (self copy: aFASTFortranComplexLiteral endPos) ;
-		yourself
 
+	^ FASTFortranComplexLiteral new
+		  primitiveValue:
+			  (self copy: aFASTFortranComplexLiteral primitiveValue);
+		  startPos: (self copy: aFASTFortranComplexLiteral startPos);
+		  endPos: (self copy: aFASTFortranComplexLiteral endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranComplexType: aFASTFortranComplexType [
 	<generated>
-	^FASTFortranComplexType new
-		size: (self copy: aFASTFortranComplexType size) ;
-		startPos: (self copy: aFASTFortranComplexType startPos) ;
-		endPos: (self copy: aFASTFortranComplexType endPos) ;
-		yourself
 
+	^ FASTFortranComplexType new
+		  size: (self copy: aFASTFortranComplexType size);
+		  startPos: (self copy: aFASTFortranComplexType startPos);
+		  endPos: (self copy: aFASTFortranComplexType endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranConditionalStatement: aFASTFortranConditionalStatement [
 	<generated>
-	^FASTFortranConditionalStatement new
-		condition: (self copy: aFASTFortranConditionalStatement condition) ;
-		label: (self copy: aFASTFortranConditionalStatement label) ;
-		startPos: (self copy: aFASTFortranConditionalStatement startPos) ;
-		endPos: (self copy: aFASTFortranConditionalStatement endPos) ;
-		yourself
 
+	^ FASTFortranConditionalStatement new
+		  condition: (self copy: aFASTFortranConditionalStatement condition);
+		  label: (self copy: aFASTFortranConditionalStatement label);
+		  startPos: (self copy: aFASTFortranConditionalStatement startPos);
+		  endPos: (self copy: aFASTFortranConditionalStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranContinueStatement: aFASTFortranContinueStatement [
 	<generated>
-	^FASTFortranContinueStatement new
-		label: (self copy: aFASTFortranContinueStatement label) ;
-		startPos: (self copy: aFASTFortranContinueStatement startPos) ;
-		endPos: (self copy: aFASTFortranContinueStatement endPos) ;
-		yourself
 
+	^ FASTFortranContinueStatement new
+		  label: (self copy: aFASTFortranContinueStatement label);
+		  startPos: (self copy: aFASTFortranContinueStatement startPos);
+		  endPos: (self copy: aFASTFortranContinueStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDataGroup: aFASTFortranDataGroup [
 	<generated>
-	^FASTFortranDataGroup new
-		dataConstants: (self copy: aFASTFortranDataGroup dataConstants) ;
-		variables: (self copy: aFASTFortranDataGroup variables) ;
-		startPos: (self copy: aFASTFortranDataGroup startPos) ;
-		endPos: (self copy: aFASTFortranDataGroup endPos) ;
-		yourself
 
+	^ FASTFortranDataGroup new
+		  dataConstants: (self copy: aFASTFortranDataGroup dataConstants);
+		  variables: (self copy: aFASTFortranDataGroup variables);
+		  startPos: (self copy: aFASTFortranDataGroup startPos);
+		  endPos: (self copy: aFASTFortranDataGroup endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDataStatement: aFASTFortranDataStatement [
 	<generated>
-	^FASTFortranDataStatement new
-		variableGroups: (self copy: aFASTFortranDataStatement variableGroups) ;
-		label: (self copy: aFASTFortranDataStatement label) ;
-		startPos: (self copy: aFASTFortranDataStatement startPos) ;
-		endPos: (self copy: aFASTFortranDataStatement endPos) ;
-		yourself
 
+	^ FASTFortranDataStatement new
+		  variableGroups:
+			  (self copy: aFASTFortranDataStatement variableGroups);
+		  label: (self copy: aFASTFortranDataStatement label);
+		  startPos: (self copy: aFASTFortranDataStatement startPos);
+		  endPos: (self copy: aFASTFortranDataStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDecodeStatement: aFASTFortranDecodeStatement [
 	<generated>
-	^FASTFortranDecodeStatement new
-		ioParameters: (self copy: aFASTFortranDecodeStatement ioParameters) ;
-		label: (self copy: aFASTFortranDecodeStatement label) ;
-		startPos: (self copy: aFASTFortranDecodeStatement startPos) ;
-		endPos: (self copy: aFASTFortranDecodeStatement endPos) ;
-		yourself
 
+	^ FASTFortranDecodeStatement new
+		  ioParameters:
+			  (self copy: aFASTFortranDecodeStatement ioParameters);
+		  label: (self copy: aFASTFortranDecodeStatement label);
+		  startPos: (self copy: aFASTFortranDecodeStatement startPos);
+		  endPos: (self copy: aFASTFortranDecodeStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDimensionStatement: aFASTFortranDimensionStatement [
 	<generated>
-	^FASTFortranDimensionStatement new
-		label: (self copy: aFASTFortranDimensionStatement label) ;
-		declarators: (self copy: aFASTFortranDimensionStatement declarators) ;
-		startPos: (self copy: aFASTFortranDimensionStatement startPos) ;
-		endPos: (self copy: aFASTFortranDimensionStatement endPos) ;
-		yourself
 
+	^ FASTFortranDimensionStatement new
+		  label: (self copy: aFASTFortranDimensionStatement label);
+		  declarators:
+			  (self copy: aFASTFortranDimensionStatement declarators);
+		  startPos: (self copy: aFASTFortranDimensionStatement startPos);
+		  endPos: (self copy: aFASTFortranDimensionStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
-	<generated>
-	^FASTFortranDoStatement new
-		labelReferences: (self copy: aFASTFortranDoStatement labelReferences) ;
-		loopControl: (self copy: aFASTFortranDoStatement loopControl) ;
-		label: (self copy: aFASTFortranDoStatement label) ;
-		statementBlock: (self copy: aFASTFortranDoStatement statementBlock) ;
-		startPos: (self copy: aFASTFortranDoStatement startPos) ;
-		endPos: (self copy: aFASTFortranDoStatement endPos) ;
-		yourself
 
+	<generated>
+	^ FASTFortranDoStatement new
+		  labelReferences:
+			  (self copy: aFASTFortranDoStatement labelReferences);
+		  loopControl: (self copy: aFASTFortranDoStatement loopControl);
+		  label: (self copy: aFASTFortranDoStatement label);
+		  statementBlock:
+			  (self copy: aFASTFortranDoStatement statementBlock);
+		  startPos: (self copy: aFASTFortranDoStatement startPos);
+		  endPos: (self copy: aFASTFortranDoStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDoWhileStatement: aFASTFortranDoWhileStatement [
 	<generated>
-	^FASTFortranDoWhileStatement new
-		condition: (self copy: aFASTFortranDoWhileStatement condition) ;
-		label: (self copy: aFASTFortranDoWhileStatement label) ;
-		startPos: (self copy: aFASTFortranDoWhileStatement startPos) ;
-		endPos: (self copy: aFASTFortranDoWhileStatement endPos) ;
-		yourself
 
+	^ FASTFortranDoWhileStatement new
+		  condition: (self copy: aFASTFortranDoWhileStatement condition);
+		  label: (self copy: aFASTFortranDoWhileStatement label);
+		  startPos: (self copy: aFASTFortranDoWhileStatement startPos);
+		  endPos: (self copy: aFASTFortranDoWhileStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDoubleComplexLiteral: aFASTFortranDoubleComplexLiteral [
 	<generated>
-	^FASTFortranDoubleComplexLiteral new
-		primitiveValue: (self copy: aFASTFortranDoubleComplexLiteral primitiveValue) ;
-		startPos: (self copy: aFASTFortranDoubleComplexLiteral startPos) ;
-		endPos: (self copy: aFASTFortranDoubleComplexLiteral endPos) ;
-		yourself
 
+	^ FASTFortranDoubleComplexLiteral new
+		  primitiveValue:
+			  (self copy: aFASTFortranDoubleComplexLiteral primitiveValue);
+		  startPos: (self copy: aFASTFortranDoubleComplexLiteral startPos);
+		  endPos: (self copy: aFASTFortranDoubleComplexLiteral endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDoubleComplexType: aFASTFortranDoubleComplexType [
 	<generated>
-	^FASTFortranDoubleComplexType new
-		size: (self copy: aFASTFortranDoubleComplexType size) ;
-		startPos: (self copy: aFASTFortranDoubleComplexType startPos) ;
-		endPos: (self copy: aFASTFortranDoubleComplexType endPos) ;
-		yourself
 
+	^ FASTFortranDoubleComplexType new
+		  size: (self copy: aFASTFortranDoubleComplexType size);
+		  startPos: (self copy: aFASTFortranDoubleComplexType startPos);
+		  endPos: (self copy: aFASTFortranDoubleComplexType endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDoublePrecisionLiteral: aFASTFortranDoublePrecisionLiteral [
 	<generated>
-	^FASTFortranDoublePrecisionLiteral new
-		primitiveValue: (self copy: aFASTFortranDoublePrecisionLiteral primitiveValue) ;
-		startPos: (self copy: aFASTFortranDoublePrecisionLiteral startPos) ;
-		endPos: (self copy: aFASTFortranDoublePrecisionLiteral endPos) ;
-		yourself
 
+	^ FASTFortranDoublePrecisionLiteral new
+		  primitiveValue:
+			  (self copy: aFASTFortranDoublePrecisionLiteral primitiveValue);
+		  startPos: (self copy: aFASTFortranDoublePrecisionLiteral startPos);
+		  endPos: (self copy: aFASTFortranDoublePrecisionLiteral endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranDoublePrecisionType: aFASTFortranDoublePrecisionType [
 	<generated>
-	^FASTFortranDoublePrecisionType new
-		size: (self copy: aFASTFortranDoublePrecisionType size) ;
-		startPos: (self copy: aFASTFortranDoublePrecisionType startPos) ;
-		endPos: (self copy: aFASTFortranDoublePrecisionType endPos) ;
-		yourself
 
+	^ FASTFortranDoublePrecisionType new
+		  size: (self copy: aFASTFortranDoublePrecisionType size);
+		  startPos: (self copy: aFASTFortranDoublePrecisionType startPos);
+		  endPos: (self copy: aFASTFortranDoublePrecisionType endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranElseStatement: aFASTFortranElseStatement [
 	<generated>
-	^FASTFortranElseStatement new
-		label: (self copy: aFASTFortranElseStatement label) ;
-		startPos: (self copy: aFASTFortranElseStatement startPos) ;
-		endPos: (self copy: aFASTFortranElseStatement endPos) ;
-		yourself
 
+	^ FASTFortranElseStatement new
+		  label: (self copy: aFASTFortranElseStatement label);
+		  startPos: (self copy: aFASTFortranElseStatement startPos);
+		  endPos: (self copy: aFASTFortranElseStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranEncodeStatement: aFASTFortranEncodeStatement [
 	<generated>
-	^FASTFortranEncodeStatement new
-		ioParameters: (self copy: aFASTFortranEncodeStatement ioParameters) ;
-		label: (self copy: aFASTFortranEncodeStatement label) ;
-		startPos: (self copy: aFASTFortranEncodeStatement startPos) ;
-		endPos: (self copy: aFASTFortranEncodeStatement endPos) ;
-		yourself
 
+	^ FASTFortranEncodeStatement new
+		  ioParameters:
+			  (self copy: aFASTFortranEncodeStatement ioParameters);
+		  label: (self copy: aFASTFortranEncodeStatement label);
+		  startPos: (self copy: aFASTFortranEncodeStatement startPos);
+		  endPos: (self copy: aFASTFortranEncodeStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranEndFileStatement: aFASTFortranEndFileStatement [
 	<generated>
-	^FASTFortranEndFileStatement new
-		ioParameters: (self copy: aFASTFortranEndFileStatement ioParameters) ;
-		label: (self copy: aFASTFortranEndFileStatement label) ;
-		startPos: (self copy: aFASTFortranEndFileStatement startPos) ;
-		endPos: (self copy: aFASTFortranEndFileStatement endPos) ;
-		yourself
 
+	^ FASTFortranEndFileStatement new
+		  ioParameters:
+			  (self copy: aFASTFortranEndFileStatement ioParameters);
+		  label: (self copy: aFASTFortranEndFileStatement label);
+		  startPos: (self copy: aFASTFortranEndFileStatement startPos);
+		  endPos: (self copy: aFASTFortranEndFileStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranEntity: aFASTFortranEntity [
 	<generated>
-	^FASTFortranEntity new
-		startPos: (self copy: aFASTFortranEntity startPos) ;
-		endPos: (self copy: aFASTFortranEntity endPos) ;
-		yourself
 
+	^ FASTFortranEntity new
+		  startPos: (self copy: aFASTFortranEntity startPos);
+		  endPos: (self copy: aFASTFortranEntity endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranEntryStatement: aFASTFortranEntryStatement [
 	<generated>
-	^FASTFortranEntryStatement new
-		name: (self copy: aFASTFortranEntryStatement name) ;
-		label: (self copy: aFASTFortranEntryStatement label) ;
-		entryArguments: (self copy: aFASTFortranEntryStatement entryArguments) ;
-		startPos: (self copy: aFASTFortranEntryStatement startPos) ;
-		endPos: (self copy: aFASTFortranEntryStatement endPos) ;
-		yourself
 
+	^ FASTFortranEntryStatement new
+		  name: (self copy: aFASTFortranEntryStatement name);
+		  label: (self copy: aFASTFortranEntryStatement label);
+		  entryArguments:
+			  (self copy: aFASTFortranEntryStatement entryArguments);
+		  startPos: (self copy: aFASTFortranEntryStatement startPos);
+		  endPos: (self copy: aFASTFortranEntryStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranEquivalenceGroup: aFASTFortranEquivalenceGroup [
 	<generated>
-	^FASTFortranEquivalenceGroup new
-		variables: (self copy: aFASTFortranEquivalenceGroup variables) ;
-		startPos: (self copy: aFASTFortranEquivalenceGroup startPos) ;
-		endPos: (self copy: aFASTFortranEquivalenceGroup endPos) ;
-		yourself
 
+	^ FASTFortranEquivalenceGroup new
+		  variables: (self copy: aFASTFortranEquivalenceGroup variables);
+		  startPos: (self copy: aFASTFortranEquivalenceGroup startPos);
+		  endPos: (self copy: aFASTFortranEquivalenceGroup endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranEquivalenceStatement: aFASTFortranEquivalenceStatement [
 	<generated>
-	^FASTFortranEquivalenceStatement new
-		variableGroups: (self copy: aFASTFortranEquivalenceStatement variableGroups) ;
-		label: (self copy: aFASTFortranEquivalenceStatement label) ;
-		startPos: (self copy: aFASTFortranEquivalenceStatement startPos) ;
-		endPos: (self copy: aFASTFortranEquivalenceStatement endPos) ;
-		yourself
 
+	^ FASTFortranEquivalenceStatement new
+		  variableGroups:
+			  (self copy: aFASTFortranEquivalenceStatement variableGroups);
+		  label: (self copy: aFASTFortranEquivalenceStatement label);
+		  startPos: (self copy: aFASTFortranEquivalenceStatement startPos);
+		  endPos: (self copy: aFASTFortranEquivalenceStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranExitStatement: aFASTFortranExitStatement [
 	<generated>
-	^FASTFortranExitStatement new
-		label: (self copy: aFASTFortranExitStatement label) ;
-		startPos: (self copy: aFASTFortranExitStatement startPos) ;
-		endPos: (self copy: aFASTFortranExitStatement endPos) ;
-		yourself
 
+	^ FASTFortranExitStatement new
+		  label: (self copy: aFASTFortranExitStatement label);
+		  startPos: (self copy: aFASTFortranExitStatement startPos);
+		  endPos: (self copy: aFASTFortranExitStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranExternalStatement: aFASTFortranExternalStatement [
 	<generated>
-	^FASTFortranExternalStatement new
-		name: (self copy: aFASTFortranExternalStatement name) ;
-		label: (self copy: aFASTFortranExternalStatement label) ;
-		startPos: (self copy: aFASTFortranExternalStatement startPos) ;
-		endPos: (self copy: aFASTFortranExternalStatement endPos) ;
-		yourself
 
+	^ FASTFortranExternalStatement new
+		  name: (self copy: aFASTFortranExternalStatement name);
+		  label: (self copy: aFASTFortranExternalStatement label);
+		  startPos: (self copy: aFASTFortranExternalStatement startPos);
+		  endPos: (self copy: aFASTFortranExternalStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranFormatStatement: aFASTFortranFormatStatement [
 	<generated>
-	^FASTFortranFormatStatement new
-		format: (self copy: aFASTFortranFormatStatement format) ;
-		label: (self copy: aFASTFortranFormatStatement label) ;
-		formatDescription: (self copy: aFASTFortranFormatStatement formatDescription) ;
-		startPos: (self copy: aFASTFortranFormatStatement startPos) ;
-		endPos: (self copy: aFASTFortranFormatStatement endPos) ;
-		yourself
 
+	^ FASTFortranFormatStatement new
+		  format: (self copy: aFASTFortranFormatStatement format);
+		  label: (self copy: aFASTFortranFormatStatement label);
+		  formatDescription:
+			  (self copy: aFASTFortranFormatStatement formatDescription);
+		  startPos: (self copy: aFASTFortranFormatStatement startPos);
+		  endPos: (self copy: aFASTFortranFormatStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranFunction: aFASTFortranFunction [
 	<generated>
-	^FASTFortranFunction new
-		comments: (self copy: aFASTFortranFunction comments) ;
-		name: (self copy: aFASTFortranFunction name) ;
-		parameters: (self copy: aFASTFortranFunction parameters) ;
-		returnType: (self copy: aFASTFortranFunction returnType) ;
-		statementBlock: (self copy: aFASTFortranFunction statementBlock) ;
-		startPos: (self copy: aFASTFortranFunction startPos) ;
-		endPos: (self copy: aFASTFortranFunction endPos) ;
-		yourself
 
+	^ FASTFortranFunction new
+		  comments: (self copy: aFASTFortranFunction comments);
+		  name: (self copy: aFASTFortranFunction name);
+		  parameters: (self copy: aFASTFortranFunction parameters);
+		  returnType: (self copy: aFASTFortranFunction returnType);
+		  statementBlock: (self copy: aFASTFortranFunction statementBlock);
+		  startPos: (self copy: aFASTFortranFunction startPos);
+		  endPos: (self copy: aFASTFortranFunction endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranFunctionCall: aFASTFortranFunctionCall [
 	<generated>
-	^FASTFortranFunctionCall new
-		name: (self copy: aFASTFortranFunctionCall name) ;
-		arguments: (self copy: aFASTFortranFunctionCall arguments) ;
-		startPos: (self copy: aFASTFortranFunctionCall startPos) ;
-		endPos: (self copy: aFASTFortranFunctionCall endPos) ;
-		yourself
 
+	^ FASTFortranFunctionCall new
+		  name: (self copy: aFASTFortranFunctionCall name);
+		  arguments: (self copy: aFASTFortranFunctionCall arguments);
+		  startPos: (self copy: aFASTFortranFunctionCall startPos);
+		  endPos: (self copy: aFASTFortranFunctionCall endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranFunctionStatement: aFASTFortranFunctionStatement [
 	<generated>
-	^FASTFortranFunctionStatement new
-		name: (self copy: aFASTFortranFunctionStatement name) ;
-		arguments: (self copy: aFASTFortranFunctionStatement arguments) ;
-		label: (self copy: aFASTFortranFunctionStatement label) ;
-		expression: (self copy: aFASTFortranFunctionStatement expression) ;
-		startPos: (self copy: aFASTFortranFunctionStatement startPos) ;
-		endPos: (self copy: aFASTFortranFunctionStatement endPos) ;
-		yourself
 
+	^ FASTFortranFunctionStatement new
+		  name: (self copy: aFASTFortranFunctionStatement name);
+		  arguments: (self copy: aFASTFortranFunctionStatement arguments);
+		  label: (self copy: aFASTFortranFunctionStatement label);
+		  expression: (self copy: aFASTFortranFunctionStatement expression);
+		  startPos: (self copy: aFASTFortranFunctionStatement startPos);
+		  endPos: (self copy: aFASTFortranFunctionStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranGoToAssignedStatement: aFASTFortranGoToAssignedStatement [
 	<generated>
-	^FASTFortranGoToAssignedStatement new
-		labelReferences: (self copy: aFASTFortranGoToAssignedStatement labelReferences) ;
-		label: (self copy: aFASTFortranGoToAssignedStatement label) ;
-		selectorExpression: (self copy: aFASTFortranGoToAssignedStatement selectorExpression) ;
-		startPos: (self copy: aFASTFortranGoToAssignedStatement startPos) ;
-		endPos: (self copy: aFASTFortranGoToAssignedStatement endPos) ;
-		yourself
 
+	^ FASTFortranGoToAssignedStatement new
+		  labelReferences:
+			  (self copy: aFASTFortranGoToAssignedStatement labelReferences);
+		  label: (self copy: aFASTFortranGoToAssignedStatement label);
+		  selectorExpression:
+			  (self copy: aFASTFortranGoToAssignedStatement selectorExpression);
+		  startPos: (self copy: aFASTFortranGoToAssignedStatement startPos);
+		  endPos: (self copy: aFASTFortranGoToAssignedStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranGoToComputedStatement: aFASTFortranGoToComputedStatement [
 	<generated>
-	^FASTFortranGoToComputedStatement new
-		labelReferences: (self copy: aFASTFortranGoToComputedStatement labelReferences) ;
-		label: (self copy: aFASTFortranGoToComputedStatement label) ;
-		selectorExpression: (self copy: aFASTFortranGoToComputedStatement selectorExpression) ;
-		startPos: (self copy: aFASTFortranGoToComputedStatement startPos) ;
-		endPos: (self copy: aFASTFortranGoToComputedStatement endPos) ;
-		yourself
 
+	^ FASTFortranGoToComputedStatement new
+		  labelReferences:
+			  (self copy: aFASTFortranGoToComputedStatement labelReferences);
+		  label: (self copy: aFASTFortranGoToComputedStatement label);
+		  selectorExpression:
+			  (self copy: aFASTFortranGoToComputedStatement selectorExpression);
+		  startPos: (self copy: aFASTFortranGoToComputedStatement startPos);
+		  endPos: (self copy: aFASTFortranGoToComputedStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranGoToStatement: aFASTFortranGoToStatement [
 	<generated>
-	^FASTFortranGoToStatement new
-		labelReferences: (self copy: aFASTFortranGoToStatement labelReferences) ;
-		label: (self copy: aFASTFortranGoToStatement label) ;
-		startPos: (self copy: aFASTFortranGoToStatement startPos) ;
-		endPos: (self copy: aFASTFortranGoToStatement endPos) ;
-		yourself
 
+	^ FASTFortranGoToStatement new
+		  labelReferences:
+			  (self copy: aFASTFortranGoToStatement labelReferences);
+		  label: (self copy: aFASTFortranGoToStatement label);
+		  startPos: (self copy: aFASTFortranGoToStatement startPos);
+		  endPos: (self copy: aFASTFortranGoToStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortranIfArithmeticStatement [
 	<generated>
-	^FASTFortranIfArithmeticStatement new
-		condition: (self copy: aFASTFortranIfArithmeticStatement condition) ;
-		lessLabel: (self copy: aFASTFortranIfArithmeticStatement lessLabel) ;
-		label: (self copy: aFASTFortranIfArithmeticStatement label) ;
-		equalLabel: (self copy: aFASTFortranIfArithmeticStatement equalLabel) ;
-		startPos: (self copy: aFASTFortranIfArithmeticStatement startPos) ;
-		endPos: (self copy: aFASTFortranIfArithmeticStatement endPos) ;
-		greaterLabel: (self copy: aFASTFortranIfArithmeticStatement greaterLabel) ;
-		yourself
 
+	^ FASTFortranIfArithmeticStatement new
+		  condition:
+			  (self copy: aFASTFortranIfArithmeticStatement condition);
+		  lessLabel:
+			  (self copy: aFASTFortranIfArithmeticStatement lessLabel);
+		  label: (self copy: aFASTFortranIfArithmeticStatement label);
+		  equalLabel:
+			  (self copy: aFASTFortranIfArithmeticStatement equalLabel);
+		  startPos: (self copy: aFASTFortranIfArithmeticStatement startPos);
+		  endPos: (self copy: aFASTFortranIfArithmeticStatement endPos);
+		  greaterLabel:
+			  (self copy: aFASTFortranIfArithmeticStatement greaterLabel);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranIfBlockStatement: aFASTFortranIfBlockStatement [
 	<generated>
-	^FASTFortranIfBlockStatement new
-		condition: (self copy: aFASTFortranIfBlockStatement condition) ;
-		thenStatementBlock: (self copy: aFASTFortranIfBlockStatement thenStatementBlock) ;
-		elseStatementBlock: (self copy: aFASTFortranIfBlockStatement elseStatementBlock) ;
-		label: (self copy: aFASTFortranIfBlockStatement label) ;
-		startPos: (self copy: aFASTFortranIfBlockStatement startPos) ;
-		endPos: (self copy: aFASTFortranIfBlockStatement endPos) ;
-		yourself
 
+	^ FASTFortranIfBlockStatement new
+		  condition: (self copy: aFASTFortranIfBlockStatement condition);
+		  thenStatementBlock:
+			  (self copy: aFASTFortranIfBlockStatement thenStatementBlock);
+		  elseStatementBlock:
+			  (self copy: aFASTFortranIfBlockStatement elseStatementBlock);
+		  label: (self copy: aFASTFortranIfBlockStatement label);
+		  startPos: (self copy: aFASTFortranIfBlockStatement startPos);
+		  endPos: (self copy: aFASTFortranIfBlockStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranIfLogicalStatement: aFASTFortranIfLogicalStatement [
 	<generated>
-	^FASTFortranIfLogicalStatement new
-		condition: (self copy: aFASTFortranIfLogicalStatement condition) ;
-		statement: (self copy: aFASTFortranIfLogicalStatement statement) ;
-		label: (self copy: aFASTFortranIfLogicalStatement label) ;
-		startPos: (self copy: aFASTFortranIfLogicalStatement startPos) ;
-		endPos: (self copy: aFASTFortranIfLogicalStatement endPos) ;
-		yourself
 
+	^ FASTFortranIfLogicalStatement new
+		  condition: (self copy: aFASTFortranIfLogicalStatement condition);
+		  statement: (self copy: aFASTFortranIfLogicalStatement statement);
+		  label: (self copy: aFASTFortranIfLogicalStatement label);
+		  startPos: (self copy: aFASTFortranIfLogicalStatement startPos);
+		  endPos: (self copy: aFASTFortranIfLogicalStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranImplicitLocalDeclaration: aFASTFortranImplicitLocalDeclaration [
 	<generated>
-	^FASTFortranImplicitLocalDeclaration new
-		yourself
 
+	^ FASTFortranImplicitLocalDeclaration new yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranImplicitRange: aFASTFortranImplicitRange [
 	<generated>
-	^FASTFortranImplicitRange new
-		to: (self copy: aFASTFortranImplicitRange to) ;
-		from: (self copy: aFASTFortranImplicitRange from) ;
-		startPos: (self copy: aFASTFortranImplicitRange startPos) ;
-		endPos: (self copy: aFASTFortranImplicitRange endPos) ;
-		yourself
 
+	^ FASTFortranImplicitRange new
+		  to: (self copy: aFASTFortranImplicitRange to);
+		  from: (self copy: aFASTFortranImplicitRange from);
+		  startPos: (self copy: aFASTFortranImplicitRange startPos);
+		  endPos: (self copy: aFASTFortranImplicitRange endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranImplicitStatement: aFASTFortranImplicitStatement [
 	<generated>
-	^FASTFortranImplicitStatement new
-		label: (self copy: aFASTFortranImplicitStatement label) ;
-		typingRules: (self copy: aFASTFortranImplicitStatement typingRules) ;
-		startPos: (self copy: aFASTFortranImplicitStatement startPos) ;
-		endPos: (self copy: aFASTFortranImplicitStatement endPos) ;
-		yourself
 
+	^ FASTFortranImplicitStatement new
+		  label: (self copy: aFASTFortranImplicitStatement label);
+		  typingRules:
+			  (self copy: aFASTFortranImplicitStatement typingRules);
+		  startPos: (self copy: aFASTFortranImplicitStatement startPos);
+		  endPos: (self copy: aFASTFortranImplicitStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranImplicitTypingRule: aFASTFortranImplicitTypingRule [
 	<generated>
-	^FASTFortranImplicitTypingRule new
-		type: (self copy: aFASTFortranImplicitTypingRule type) ;
-		ranges: (self copy: aFASTFortranImplicitTypingRule ranges) ;
-		startPos: (self copy: aFASTFortranImplicitTypingRule startPos) ;
-		endPos: (self copy: aFASTFortranImplicitTypingRule endPos) ;
-		yourself
 
+	^ FASTFortranImplicitTypingRule new
+		  type: (self copy: aFASTFortranImplicitTypingRule type);
+		  ranges: (self copy: aFASTFortranImplicitTypingRule ranges);
+		  startPos: (self copy: aFASTFortranImplicitTypingRule startPos);
+		  endPos: (self copy: aFASTFortranImplicitTypingRule endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranImpliedDoExpression: aFASTFortranImpliedDoExpression [
 	<generated>
-	^FASTFortranImpliedDoExpression new
-		loopControl: (self copy: aFASTFortranImpliedDoExpression loopControl) ;
-		variables: (self copy: aFASTFortranImpliedDoExpression variables) ;
-		startPos: (self copy: aFASTFortranImpliedDoExpression startPos) ;
-		endPos: (self copy: aFASTFortranImpliedDoExpression endPos) ;
-		yourself
 
+	^ FASTFortranImpliedDoExpression new
+		  loopControl:
+			  (self copy: aFASTFortranImpliedDoExpression loopControl);
+		  variables: (self copy: aFASTFortranImpliedDoExpression variables);
+		  startPos: (self copy: aFASTFortranImpliedDoExpression startPos);
+		  endPos: (self copy: aFASTFortranImpliedDoExpression endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranIncludeStatement: aFASTFortranIncludeStatement [
 	<generated>
-	^FASTFortranIncludeStatement new
-		label: (self copy: aFASTFortranIncludeStatement label) ;
-		startPos: (self copy: aFASTFortranIncludeStatement startPos) ;
-		endPos: (self copy: aFASTFortranIncludeStatement endPos) ;
-		yourself
 
+	^ FASTFortranIncludeStatement new
+		  label: (self copy: aFASTFortranIncludeStatement label);
+		  startPos: (self copy: aFASTFortranIncludeStatement startPos);
+		  endPos: (self copy: aFASTFortranIncludeStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranInquireStatement: aFASTFortranInquireStatement [
 	<generated>
-	^FASTFortranInquireStatement new
-		ioParameters: (self copy: aFASTFortranInquireStatement ioParameters) ;
-		label: (self copy: aFASTFortranInquireStatement label) ;
-		startPos: (self copy: aFASTFortranInquireStatement startPos) ;
-		endPos: (self copy: aFASTFortranInquireStatement endPos) ;
-		yourself
 
+	^ FASTFortranInquireStatement new
+		  ioParameters:
+			  (self copy: aFASTFortranInquireStatement ioParameters);
+		  label: (self copy: aFASTFortranInquireStatement label);
+		  startPos: (self copy: aFASTFortranInquireStatement startPos);
+		  endPos: (self copy: aFASTFortranInquireStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranIntegerLiteral: aFASTFortranIntegerLiteral [
-	<generated>
-	^FASTFortranIntegerLiteral new
-		primitiveValue: (self copy: aFASTFortranIntegerLiteral primitiveValue) ;
-		startPos: (self copy: aFASTFortranIntegerLiteral startPos) ;
-		endPos: (self copy: aFASTFortranIntegerLiteral endPos) ;
-		yourself
 
+	<generated>
+	^ FASTFortranIntegerLiteral new
+		  primitiveValue:
+			  (self copy: aFASTFortranIntegerLiteral primitiveValue);
+		  startPos: (self copy: aFASTFortranIntegerLiteral startPos);
+		  endPos: (self copy: aFASTFortranIntegerLiteral endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranIntegerType: aFASTFortranIntegerType [
-	<generated>
-	^FASTFortranIntegerType new
-		size: (self copy: aFASTFortranIntegerType size) ;
-		startPos: (self copy: aFASTFortranIntegerType startPos) ;
-		endPos: (self copy: aFASTFortranIntegerType endPos) ;
-		yourself
 
+	<generated>
+	^ FASTFortranIntegerType new
+		  size: (self copy: aFASTFortranIntegerType size);
+		  startPos: (self copy: aFASTFortranIntegerType startPos);
+		  endPos: (self copy: aFASTFortranIntegerType endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranIntrinsicStatement: aFASTFortranIntrinsicStatement [
 	<generated>
-	^FASTFortranIntrinsicStatement new
-		variables: (self copy: aFASTFortranIntrinsicStatement variables) ;
-		label: (self copy: aFASTFortranIntrinsicStatement label) ;
-		startPos: (self copy: aFASTFortranIntrinsicStatement startPos) ;
-		endPos: (self copy: aFASTFortranIntrinsicStatement endPos) ;
-		yourself
 
+	^ FASTFortranIntrinsicStatement new
+		  variables: (self copy: aFASTFortranIntrinsicStatement variables);
+		  label: (self copy: aFASTFortranIntrinsicStatement label);
+		  startPos: (self copy: aFASTFortranIntrinsicStatement startPos);
+		  endPos: (self copy: aFASTFortranIntrinsicStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranLabelReference: aFASTFortranLabelReference [
 	<generated>
-	^FASTFortranLabelReference new
-		label: (self copy: aFASTFortranLabelReference label) ;
-		startPos: (self copy: aFASTFortranLabelReference startPos) ;
-		endPos: (self copy: aFASTFortranLabelReference endPos) ;
-		yourself
 
+	^ FASTFortranLabelReference new
+		  label: (self copy: aFASTFortranLabelReference label);
+		  startPos: (self copy: aFASTFortranLabelReference startPos);
+		  endPos: (self copy: aFASTFortranLabelReference endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranLogicalType: aFASTFortranLogicalType [
 	<generated>
-	^FASTFortranLogicalType new
-		size: (self copy: aFASTFortranLogicalType size) ;
-		startPos: (self copy: aFASTFortranLogicalType startPos) ;
-		endPos: (self copy: aFASTFortranLogicalType endPos) ;
-		yourself
 
+	^ FASTFortranLogicalType new
+		  size: (self copy: aFASTFortranLogicalType size);
+		  startPos: (self copy: aFASTFortranLogicalType startPos);
+		  endPos: (self copy: aFASTFortranLogicalType endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranLoopControlExpression: aFASTFortranLoopControlExpression [
-	<generated>
-	^FASTFortranLoopControlExpression new
-		increment: (self copy: aFASTFortranLoopControlExpression increment) ;
-		limit: (self copy: aFASTFortranLoopControlExpression limit) ;
-		init: (self copy: aFASTFortranLoopControlExpression init) ;
-		startPos: (self copy: aFASTFortranLoopControlExpression startPos) ;
-		endPos: (self copy: aFASTFortranLoopControlExpression endPos) ;
-		yourself
 
+	<generated>
+	^ FASTFortranLoopControlExpression new
+		  increment:
+			  (self copy: aFASTFortranLoopControlExpression increment);
+		  limit: (self copy: aFASTFortranLoopControlExpression limit);
+		  init: (self copy: aFASTFortranLoopControlExpression init);
+		  startPos: (self copy: aFASTFortranLoopControlExpression startPos);
+		  endPos: (self copy: aFASTFortranLoopControlExpression endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranMapStatement: aFASTFortranMapStatement [
 	<generated>
-	^FASTFortranMapStatement new
-		label: (self copy: aFASTFortranMapStatement label) ;
-		startPos: (self copy: aFASTFortranMapStatement startPos) ;
-		endPos: (self copy: aFASTFortranMapStatement endPos) ;
-		yourself
 
+	^ FASTFortranMapStatement new
+		  label: (self copy: aFASTFortranMapStatement label);
+		  startPos: (self copy: aFASTFortranMapStatement startPos);
+		  endPos: (self copy: aFASTFortranMapStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranNameListStatement: aFASTFortranNameListStatement [
 	<generated>
-	^FASTFortranNameListStatement new
-		label: (self copy: aFASTFortranNameListStatement label) ;
-		startPos: (self copy: aFASTFortranNameListStatement startPos) ;
-		endPos: (self copy: aFASTFortranNameListStatement endPos) ;
-		yourself
 
+	^ FASTFortranNameListStatement new
+		  label: (self copy: aFASTFortranNameListStatement label);
+		  startPos: (self copy: aFASTFortranNameListStatement startPos);
+		  endPos: (self copy: aFASTFortranNameListStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranNumericalConstant: aFASTFortranNumericalConstant [
 	<generated>
-	^FASTFortranNumericalConstant new
-		primitiveValue: (self copy: aFASTFortranNumericalConstant primitiveValue) ;
-		startPos: (self copy: aFASTFortranNumericalConstant startPos) ;
-		endPos: (self copy: aFASTFortranNumericalConstant endPos) ;
-		yourself
 
+	^ FASTFortranNumericalConstant new
+		  primitiveValue:
+			  (self copy: aFASTFortranNumericalConstant primitiveValue);
+		  startPos: (self copy: aFASTFortranNumericalConstant startPos);
+		  endPos: (self copy: aFASTFortranNumericalConstant endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranOpenStatement: aFASTFortranOpenStatement [
 	<generated>
-	^FASTFortranOpenStatement new
-		ioParameters: (self copy: aFASTFortranOpenStatement ioParameters) ;
-		label: (self copy: aFASTFortranOpenStatement label) ;
-		startPos: (self copy: aFASTFortranOpenStatement startPos) ;
-		endPos: (self copy: aFASTFortranOpenStatement endPos) ;
-		yourself
 
+	^ FASTFortranOpenStatement new
+		  ioParameters: (self copy: aFASTFortranOpenStatement ioParameters);
+		  label: (self copy: aFASTFortranOpenStatement label);
+		  startPos: (self copy: aFASTFortranOpenStatement startPos);
+		  endPos: (self copy: aFASTFortranOpenStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranOptionsStatement: aFASTFortranOptionsStatement [
 	<generated>
-	^FASTFortranOptionsStatement new
-		label: (self copy: aFASTFortranOptionsStatement label) ;
-		startPos: (self copy: aFASTFortranOptionsStatement startPos) ;
-		endPos: (self copy: aFASTFortranOptionsStatement endPos) ;
-		yourself
 
+	^ FASTFortranOptionsStatement new
+		  label: (self copy: aFASTFortranOptionsStatement label);
+		  startPos: (self copy: aFASTFortranOptionsStatement startPos);
+		  endPos: (self copy: aFASTFortranOptionsStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranParameterStatement: aFASTFortranParameterStatement [
 	<generated>
-	^FASTFortranParameterStatement new
-		label: (self copy: aFASTFortranParameterStatement label) ;
-		declarators: (self copy: aFASTFortranParameterStatement declarators) ;
-		startPos: (self copy: aFASTFortranParameterStatement startPos) ;
-		endPos: (self copy: aFASTFortranParameterStatement endPos) ;
-		yourself
 
+	^ FASTFortranParameterStatement new
+		  label: (self copy: aFASTFortranParameterStatement label);
+		  declarators:
+			  (self copy: aFASTFortranParameterStatement declarators);
+		  startPos: (self copy: aFASTFortranParameterStatement startPos);
+		  endPos: (self copy: aFASTFortranParameterStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranPauseStatement: aFASTFortranPauseStatement [
 	<generated>
-	^FASTFortranPauseStatement new
-		label: (self copy: aFASTFortranPauseStatement label) ;
-		displayArgument: (self copy: aFASTFortranPauseStatement displayArgument) ;
-		startPos: (self copy: aFASTFortranPauseStatement startPos) ;
-		endPos: (self copy: aFASTFortranPauseStatement endPos) ;
-		yourself
 
+	^ FASTFortranPauseStatement new
+		  label: (self copy: aFASTFortranPauseStatement label);
+		  displayArgument:
+			  (self copy: aFASTFortranPauseStatement displayArgument);
+		  startPos: (self copy: aFASTFortranPauseStatement startPos);
+		  endPos: (self copy: aFASTFortranPauseStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranPragmaStatement: aFASTFortranPragmaStatement [
 	<generated>
-	^FASTFortranPragmaStatement new
-		label: (self copy: aFASTFortranPragmaStatement label) ;
-		startPos: (self copy: aFASTFortranPragmaStatement startPos) ;
-		endPos: (self copy: aFASTFortranPragmaStatement endPos) ;
-		yourself
 
+	^ FASTFortranPragmaStatement new
+		  label: (self copy: aFASTFortranPragmaStatement label);
+		  startPos: (self copy: aFASTFortranPragmaStatement startPos);
+		  endPos: (self copy: aFASTFortranPragmaStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranPrintStatement: aFASTFortranPrintStatement [
 	<generated>
-	^FASTFortranPrintStatement new
-		format: (self copy: aFASTFortranPrintStatement format) ;
-		arguments: (self copy: aFASTFortranPrintStatement arguments) ;
-		label: (self copy: aFASTFortranPrintStatement label) ;
-		startPos: (self copy: aFASTFortranPrintStatement startPos) ;
-		endPos: (self copy: aFASTFortranPrintStatement endPos) ;
-		yourself
 
+	^ FASTFortranPrintStatement new
+		  format: (self copy: aFASTFortranPrintStatement format);
+		  arguments: (self copy: aFASTFortranPrintStatement arguments);
+		  label: (self copy: aFASTFortranPrintStatement label);
+		  startPos: (self copy: aFASTFortranPrintStatement startPos);
+		  endPos: (self copy: aFASTFortranPrintStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranProcedure: aFASTFortranProcedure [
 	<generated>
-	^FASTFortranProcedure new
-		comments: (self copy: aFASTFortranProcedure comments) ;
-		name: (self copy: aFASTFortranProcedure name) ;
-		parameters: (self copy: aFASTFortranProcedure parameters) ;
-		statementBlock: (self copy: aFASTFortranProcedure statementBlock) ;
-		startPos: (self copy: aFASTFortranProcedure startPos) ;
-		endPos: (self copy: aFASTFortranProcedure endPos) ;
-		yourself
 
+	^ FASTFortranProcedure new
+		  comments: (self copy: aFASTFortranProcedure comments);
+		  name: (self copy: aFASTFortranProcedure name);
+		  parameters: (self copy: aFASTFortranProcedure parameters);
+		  statementBlock: (self copy: aFASTFortranProcedure statementBlock);
+		  startPos: (self copy: aFASTFortranProcedure startPos);
+		  endPos: (self copy: aFASTFortranProcedure endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranProgramFile: aFASTFortranProgramFile [
 	<generated>
-	^FASTFortranProgramFile new
-		comments: (self copy: aFASTFortranProgramFile comments) ;
-		programUnit: (self copy: aFASTFortranProgramFile programUnit) ;
-		startPos: (self copy: aFASTFortranProgramFile startPos) ;
-		endPos: (self copy: aFASTFortranProgramFile endPos) ;
-		yourself
 
+	^ FASTFortranProgramFile new
+		  comments: (self copy: aFASTFortranProgramFile comments);
+		  programUnit: (self copy: aFASTFortranProgramFile programUnit);
+		  startPos: (self copy: aFASTFortranProgramFile startPos);
+		  endPos: (self copy: aFASTFortranProgramFile endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranProgramMain: aFASTFortranProgramMain [
 	<generated>
-	^FASTFortranProgramMain new
-		comments: (self copy: aFASTFortranProgramMain comments) ;
-		name: (self copy: aFASTFortranProgramMain name) ;
-		parameters: (self copy: aFASTFortranProgramMain parameters) ;
-		statementBlock: (self copy: aFASTFortranProgramMain statementBlock) ;
-		startPos: (self copy: aFASTFortranProgramMain startPos) ;
-		endPos: (self copy: aFASTFortranProgramMain endPos) ;
-		yourself
 
+	^ FASTFortranProgramMain new
+		  comments: (self copy: aFASTFortranProgramMain comments);
+		  name: (self copy: aFASTFortranProgramMain name);
+		  parameters: (self copy: aFASTFortranProgramMain parameters);
+		  statementBlock:
+			  (self copy: aFASTFortranProgramMain statementBlock);
+		  startPos: (self copy: aFASTFortranProgramMain startPos);
+		  endPos: (self copy: aFASTFortranProgramMain endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranProgramUnit: aFASTFortranProgramUnit [
 	<generated>
-	^FASTFortranProgramUnit new
-		comments: (self copy: aFASTFortranProgramUnit comments) ;
-		name: (self copy: aFASTFortranProgramUnit name) ;
-		parameters: (self copy: aFASTFortranProgramUnit parameters) ;
-		statementBlock: (self copy: aFASTFortranProgramUnit statementBlock) ;
-		startPos: (self copy: aFASTFortranProgramUnit startPos) ;
-		endPos: (self copy: aFASTFortranProgramUnit endPos) ;
-		yourself
 
+	^ FASTFortranProgramUnit new
+		  comments: (self copy: aFASTFortranProgramUnit comments);
+		  name: (self copy: aFASTFortranProgramUnit name);
+		  parameters: (self copy: aFASTFortranProgramUnit parameters);
+		  statementBlock:
+			  (self copy: aFASTFortranProgramUnit statementBlock);
+		  startPos: (self copy: aFASTFortranProgramUnit startPos);
+		  endPos: (self copy: aFASTFortranProgramUnit endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranReadStatement: aFASTFortranReadStatement [
 	<generated>
-	^FASTFortranReadStatement new
-		ioParameters: (self copy: aFASTFortranReadStatement ioParameters) ;
-		arguments: (self copy: aFASTFortranReadStatement arguments) ;
-		label: (self copy: aFASTFortranReadStatement label) ;
-		startPos: (self copy: aFASTFortranReadStatement startPos) ;
-		endPos: (self copy: aFASTFortranReadStatement endPos) ;
-		yourself
 
+	^ FASTFortranReadStatement new
+		  ioParameters: (self copy: aFASTFortranReadStatement ioParameters);
+		  arguments: (self copy: aFASTFortranReadStatement arguments);
+		  label: (self copy: aFASTFortranReadStatement label);
+		  startPos: (self copy: aFASTFortranReadStatement startPos);
+		  endPos: (self copy: aFASTFortranReadStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranRealLiteral: aFASTFortranRealLiteral [
 	<generated>
-	^FASTFortranRealLiteral new
-		primitiveValue: (self copy: aFASTFortranRealLiteral primitiveValue) ;
-		startPos: (self copy: aFASTFortranRealLiteral startPos) ;
-		endPos: (self copy: aFASTFortranRealLiteral endPos) ;
-		yourself
 
+	^ FASTFortranRealLiteral new
+		  primitiveValue:
+			  (self copy: aFASTFortranRealLiteral primitiveValue);
+		  startPos: (self copy: aFASTFortranRealLiteral startPos);
+		  endPos: (self copy: aFASTFortranRealLiteral endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranRealType: aFASTFortranRealType [
 	<generated>
-	^FASTFortranRealType new
-		size: (self copy: aFASTFortranRealType size) ;
-		startPos: (self copy: aFASTFortranRealType startPos) ;
-		endPos: (self copy: aFASTFortranRealType endPos) ;
-		yourself
 
+	^ FASTFortranRealType new
+		  size: (self copy: aFASTFortranRealType size);
+		  startPos: (self copy: aFASTFortranRealType startPos);
+		  endPos: (self copy: aFASTFortranRealType endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranReturnStatement: aFASTFortranReturnStatement [
 	<generated>
-	^FASTFortranReturnStatement new
-		label: (self copy: aFASTFortranReturnStatement label) ;
-		expression: (self copy: aFASTFortranReturnStatement expression) ;
-		alternateReturnLabel: (self copy: aFASTFortranReturnStatement alternateReturnLabel) ;
-		startPos: (self copy: aFASTFortranReturnStatement startPos) ;
-		endPos: (self copy: aFASTFortranReturnStatement endPos) ;
-		yourself
 
+	^ FASTFortranReturnStatement new
+		  label: (self copy: aFASTFortranReturnStatement label);
+		  expression: (self copy: aFASTFortranReturnStatement expression);
+		  alternateReturnLabel:
+			  (self copy: aFASTFortranReturnStatement alternateReturnLabel);
+		  startPos: (self copy: aFASTFortranReturnStatement startPos);
+		  endPos: (self copy: aFASTFortranReturnStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranRewindStatement: aFASTFortranRewindStatement [
 	<generated>
-	^FASTFortranRewindStatement new
-		ioParameters: (self copy: aFASTFortranRewindStatement ioParameters) ;
-		label: (self copy: aFASTFortranRewindStatement label) ;
-		startPos: (self copy: aFASTFortranRewindStatement startPos) ;
-		endPos: (self copy: aFASTFortranRewindStatement endPos) ;
-		yourself
 
+	^ FASTFortranRewindStatement new
+		  ioParameters:
+			  (self copy: aFASTFortranRewindStatement ioParameters);
+		  label: (self copy: aFASTFortranRewindStatement label);
+		  startPos: (self copy: aFASTFortranRewindStatement startPos);
+		  endPos: (self copy: aFASTFortranRewindStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranSaveStatement: aFASTFortranSaveStatement [
 	<generated>
-	^FASTFortranSaveStatement new
-		label: (self copy: aFASTFortranSaveStatement label) ;
-		startPos: (self copy: aFASTFortranSaveStatement startPos) ;
-		endPos: (self copy: aFASTFortranSaveStatement endPos) ;
-		yourself
 
+	^ FASTFortranSaveStatement new
+		  label: (self copy: aFASTFortranSaveStatement label);
+		  startPos: (self copy: aFASTFortranSaveStatement startPos);
+		  endPos: (self copy: aFASTFortranSaveStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranScalarVariable: aFASTFortranScalarVariable [
-	<generated>
-	^FASTFortranScalarVariable new
-		name: (self copy: aFASTFortranScalarVariable name) ;
-		startPos: (self copy: aFASTFortranScalarVariable startPos) ;
-		endPos: (self copy: aFASTFortranScalarVariable endPos) ;
-		yourself
 
+	<generated>
+	^ FASTFortranScalarVariable new
+		  name: (self copy: aFASTFortranScalarVariable name);
+		  startPos: (self copy: aFASTFortranScalarVariable startPos);
+		  endPos: (self copy: aFASTFortranScalarVariable endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBlock [
-	<generated>
-	^FASTFortranStatementBlock new
-		comments: (self copy: aFASTFortranStatementBlock comments) ;
-		statements: (self copy: aFASTFortranStatementBlock statements) ;
-		startPos: (self copy: aFASTFortranStatementBlock startPos) ;
-		endPos: (self copy: aFASTFortranStatementBlock endPos) ;
-		yourself
 
+	<generated>
+	^ FASTFortranStatementBlock new
+		  comments: (self copy: aFASTFortranStatementBlock comments);
+		  statements: (self copy: aFASTFortranStatementBlock statements);
+		  startPos: (self copy: aFASTFortranStatementBlock startPos);
+		  endPos: (self copy: aFASTFortranStatementBlock endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranStaticStatement: aFASTFortranStaticStatement [
 	<generated>
-	^FASTFortranStaticStatement new
-		label: (self copy: aFASTFortranStaticStatement label) ;
-		startPos: (self copy: aFASTFortranStaticStatement startPos) ;
-		endPos: (self copy: aFASTFortranStaticStatement endPos) ;
-		yourself
 
+	^ FASTFortranStaticStatement new
+		  label: (self copy: aFASTFortranStaticStatement label);
+		  startPos: (self copy: aFASTFortranStaticStatement startPos);
+		  endPos: (self copy: aFASTFortranStaticStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranStopStatement: aFASTFortranStopStatement [
 	<generated>
-	^FASTFortranStopStatement new
-		label: (self copy: aFASTFortranStopStatement label) ;
-		displayArgument: (self copy: aFASTFortranStopStatement displayArgument) ;
-		startPos: (self copy: aFASTFortranStopStatement startPos) ;
-		endPos: (self copy: aFASTFortranStopStatement endPos) ;
-		yourself
 
+	^ FASTFortranStopStatement new
+		  label: (self copy: aFASTFortranStopStatement label);
+		  displayArgument:
+			  (self copy: aFASTFortranStopStatement displayArgument);
+		  startPos: (self copy: aFASTFortranStopStatement startPos);
+		  endPos: (self copy: aFASTFortranStopStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranSubprogram: aFASTFortranSubprogram [
 	<generated>
-	^FASTFortranSubprogram new
-		comments: (self copy: aFASTFortranSubprogram comments) ;
-		name: (self copy: aFASTFortranSubprogram name) ;
-		parameters: (self copy: aFASTFortranSubprogram parameters) ;
-		statementBlock: (self copy: aFASTFortranSubprogram statementBlock) ;
-		startPos: (self copy: aFASTFortranSubprogram startPos) ;
-		endPos: (self copy: aFASTFortranSubprogram endPos) ;
-		yourself
 
+	^ FASTFortranSubprogram new
+		  comments: (self copy: aFASTFortranSubprogram comments);
+		  name: (self copy: aFASTFortranSubprogram name);
+		  parameters: (self copy: aFASTFortranSubprogram parameters);
+		  statementBlock: (self copy: aFASTFortranSubprogram statementBlock);
+		  startPos: (self copy: aFASTFortranSubprogram startPos);
+		  endPos: (self copy: aFASTFortranSubprogram endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranSubroutine: aFASTFortranSubroutine [
-	<generated>
-	^FASTFortranSubroutine new
-		comments: (self copy: aFASTFortranSubroutine comments) ;
-		name: (self copy: aFASTFortranSubroutine name) ;
-		parameters: (self copy: aFASTFortranSubroutine parameters) ;
-		statementBlock: (self copy: aFASTFortranSubroutine statementBlock) ;
-		startPos: (self copy: aFASTFortranSubroutine startPos) ;
-		endPos: (self copy: aFASTFortranSubroutine endPos) ;
-		yourself
 
+	<generated>
+	^ FASTFortranSubroutine new
+		  comments: (self copy: aFASTFortranSubroutine comments);
+		  name: (self copy: aFASTFortranSubroutine name);
+		  parameters: (self copy: aFASTFortranSubroutine parameters);
+		  statementBlock: (self copy: aFASTFortranSubroutine statementBlock);
+		  startPos: (self copy: aFASTFortranSubroutine startPos);
+		  endPos: (self copy: aFASTFortranSubroutine endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranSubstring: aFASTFortranSubstring [
 	<generated>
-	^FASTFortranSubstring new
-		startPos: (self copy: aFASTFortranSubstring startPos) ;
-		endPos: (self copy: aFASTFortranSubstring endPos) ;
-		yourself
 
+	^ FASTFortranSubstring new
+		  startPos: (self copy: aFASTFortranSubstring startPos);
+		  endPos: (self copy: aFASTFortranSubstring endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranType: aFASTFortranType [
 	<generated>
-	^FASTFortranType new
-		size: (self copy: aFASTFortranType size) ;
-		startPos: (self copy: aFASTFortranType startPos) ;
-		endPos: (self copy: aFASTFortranType endPos) ;
-		yourself
 
+	^ FASTFortranType new
+		  size: (self copy: aFASTFortranType size);
+		  startPos: (self copy: aFASTFortranType startPos);
+		  endPos: (self copy: aFASTFortranType endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranUnaryExpression: aFASTFortranUnaryExpression [
 	<generated>
-	^FASTFortranUnaryExpression new
-		expression: (self copy: aFASTFortranUnaryExpression expression) ;
-		startPos: (self copy: aFASTFortranUnaryExpression startPos) ;
-		endPos: (self copy: aFASTFortranUnaryExpression endPos) ;
-		operator: (self copy: aFASTFortranUnaryExpression operator) ;
-		yourself
 
+	^ FASTFortranUnaryExpression new
+		  expression: (self copy: aFASTFortranUnaryExpression expression);
+		  startPos: (self copy: aFASTFortranUnaryExpression startPos);
+		  endPos: (self copy: aFASTFortranUnaryExpression endPos);
+		  operator: (self copy: aFASTFortranUnaryExpression operator);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranUnionStatement: aFASTFortranUnionStatement [
 	<generated>
-	^FASTFortranUnionStatement new
-		label: (self copy: aFASTFortranUnionStatement label) ;
-		startPos: (self copy: aFASTFortranUnionStatement startPos) ;
-		endPos: (self copy: aFASTFortranUnionStatement endPos) ;
-		yourself
 
+	^ FASTFortranUnionStatement new
+		  label: (self copy: aFASTFortranUnionStatement label);
+		  startPos: (self copy: aFASTFortranUnionStatement startPos);
+		  endPos: (self copy: aFASTFortranUnionStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranVariable: aFASTFortranVariable [
 	<generated>
-	^FASTFortranVariable new
-		name: (self copy: aFASTFortranVariable name) ;
-		startPos: (self copy: aFASTFortranVariable startPos) ;
-		endPos: (self copy: aFASTFortranVariable endPos) ;
-		yourself
 
+	^ FASTFortranVariable new
+		  name: (self copy: aFASTFortranVariable name);
+		  startPos: (self copy: aFASTFortranVariable startPos);
+		  endPos: (self copy: aFASTFortranVariable endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFortranVariableDeclarationStatement [
-	<generated>
-	^FASTFortranVariableDeclarationStatement new
-		type: (self copy: aFASTFortranVariableDeclarationStatement type) ;
-		label: (self copy: aFASTFortranVariableDeclarationStatement label) ;
-		declarators: (self copy: aFASTFortranVariableDeclarationStatement declarators) ;
-		startPos: (self copy: aFASTFortranVariableDeclarationStatement startPos) ;
-		endPos: (self copy: aFASTFortranVariableDeclarationStatement endPos) ;
-		yourself
 
+	<generated>
+	^ FASTFortranVariableDeclarationStatement new
+		  type: (self copy: aFASTFortranVariableDeclarationStatement type);
+		  label: (self copy: aFASTFortranVariableDeclarationStatement label);
+		  declarators:
+			  (self copy: aFASTFortranVariableDeclarationStatement declarators);
+		  startPos:
+			  (self copy: aFASTFortranVariableDeclarationStatement startPos);
+		  endPos:
+			  (self copy: aFASTFortranVariableDeclarationStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranVariableDeclarator: aFASTFortranVariableDeclarator [
-	<generated>
-	^FASTFortranVariableDeclarator new
-		dimensions: (self copy: aFASTFortranVariableDeclarator dimensions) ;
-		name: (self copy: aFASTFortranVariableDeclarator name) ;
-		expression: (self copy: aFASTFortranVariableDeclarator expression) ;
-		startPos: (self copy: aFASTFortranVariableDeclarator startPos) ;
-		endPos: (self copy: aFASTFortranVariableDeclarator endPos) ;
-		yourself
 
+	<generated>
+	^ FASTFortranVariableDeclarator new
+		  dimensions: (self copy: aFASTFortranVariableDeclarator dimensions);
+		  name: (self copy: aFASTFortranVariableDeclarator name);
+		  expression: (self copy: aFASTFortranVariableDeclarator expression);
+		  startPos: (self copy: aFASTFortranVariableDeclarator startPos);
+		  endPos: (self copy: aFASTFortranVariableDeclarator endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranVirtualStatement: aFASTFortranVirtualStatement [
 	<generated>
-	^FASTFortranVirtualStatement new
-		label: (self copy: aFASTFortranVirtualStatement label) ;
-		startPos: (self copy: aFASTFortranVirtualStatement startPos) ;
-		endPos: (self copy: aFASTFortranVirtualStatement endPos) ;
-		yourself
 
+	^ FASTFortranVirtualStatement new
+		  label: (self copy: aFASTFortranVirtualStatement label);
+		  startPos: (self copy: aFASTFortranVirtualStatement startPos);
+		  endPos: (self copy: aFASTFortranVirtualStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranVolatileStatement: aFASTFortranVolatileStatement [
 	<generated>
-	^FASTFortranVolatileStatement new
-		label: (self copy: aFASTFortranVolatileStatement label) ;
-		startPos: (self copy: aFASTFortranVolatileStatement startPos) ;
-		endPos: (self copy: aFASTFortranVolatileStatement endPos) ;
-		yourself
 
+	^ FASTFortranVolatileStatement new
+		  label: (self copy: aFASTFortranVolatileStatement label);
+		  startPos: (self copy: aFASTFortranVolatileStatement startPos);
+		  endPos: (self copy: aFASTFortranVolatileStatement endPos);
+		  yourself
 ]
 
 { #category : #visiting }
 FASTFortranCopyVisitor >> visitFASTFortranWriteStatement: aFASTFortranWriteStatement [
 	<generated>
-	^FASTFortranWriteStatement new
-		ioParameters: (self copy: aFASTFortranWriteStatement ioParameters) ;
-		arguments: (self copy: aFASTFortranWriteStatement arguments) ;
-		label: (self copy: aFASTFortranWriteStatement label) ;
-		startPos: (self copy: aFASTFortranWriteStatement startPos) ;
-		endPos: (self copy: aFASTFortranWriteStatement endPos) ;
-		yourself
 
+	^ FASTFortranWriteStatement new
+		  ioParameters: (self copy: aFASTFortranWriteStatement ioParameters);
+		  arguments: (self copy: aFASTFortranWriteStatement arguments);
+		  label: (self copy: aFASTFortranWriteStatement label);
+		  startPos: (self copy: aFASTFortranWriteStatement startPos);
+		  endPos: (self copy: aFASTFortranWriteStatement endPos);
+		  yourself
 ]
