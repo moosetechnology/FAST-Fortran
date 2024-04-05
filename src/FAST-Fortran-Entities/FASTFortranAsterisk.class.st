@@ -7,7 +7,7 @@ I represent an Asterisk Character Literal (Constant) that is often used as a for
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `entryStatement` | `FASTFortranTEntryStatement` | `entryArguments` | `FASTFortranEntryStatement` | |
+| `entryStatement` | `FASTFortranTEntryArgument` | `entryArguments` | `FASTFortranEntryStatement` | |
 | `parentFormatedStatement` | `FASTFortranTFormat` | `format` | `FASTFortranTWithFormat` | A format description in a Format/Print/Read/Write statement|
 | `parentIOStatement` | `FASTFortranTIOParameter` | `ioParameters` | `FASTFortranAbstractIOStatement` | |
 
@@ -17,8 +17,8 @@ I represent an Asterisk Character Literal (Constant) that is often used as a for
 Class {
 	#name : #FASTFortranAsterisk,
 	#superclass : #FASTFortranIntegerLiteral,
-	#traits : 'FASTFortranTEntryStatement + FASTFortranTFormat',
-	#classTraits : 'FASTFortranTEntryStatement classTrait + FASTFortranTFormat classTrait',
+	#traits : 'FASTFortranTEntryArgument + FASTFortranTFormat',
+	#classTraits : 'FASTFortranTEntryArgument classTrait + FASTFortranTFormat classTrait',
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 

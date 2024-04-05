@@ -1,6 +1,6 @@
 Class {
 	#name : #FASTFortranGenerator,
-	#superclass : #FASTMetamodelGenerator,
+	#superclass : #FamixMetamodelGenerator,
 	#instVars : [
 		'acceptStatement',
 		'assignmentStatement',
@@ -113,7 +113,26 @@ Class {
 		'tWithLoopControl',
 		'abstractIOStatement',
 		'numericalConstant',
-		'conditionalStatement'
+		'conditionalStatement',
+		'tEntity',
+		'tBehaviouralEntity',
+		'tNamedEntity',
+		'tWithParameters',
+		'tWithComments',
+		'tComment',
+		'tStatement',
+		'tAssignment',
+		'tWithArguments',
+		'tReturnStatement',
+		'tStatementBlock',
+		'tExpression',
+		'tCharacterLiteral',
+		'tBooleanLiteral',
+		'tNumericalLiteral',
+		'tUnaryExpression',
+		'tBinaryExpression',
+		'tVariableEntity',
+		'entity'
 	],
 	#category : #'FAST-Fortran-Generator'
 }
@@ -331,6 +350,8 @@ I contain the value of the label referred to'.
 FASTFortranGenerator >> defineFASTClasses [
 	"FAMIX-level classes (might be removed later)"
 
+	entity  := builder newClassNamed: #Entity.
+
 	programFile := builder
 		               newClassNamed: #ProgramFile
 		               comment:
@@ -395,7 +416,7 @@ FASTFortranGenerator >> defineHierarchy [
 
 	super defineHierarchy.
 
-	tEntity --|> #TEntity.  "FASTFortranTEntity --|> FASTTEntity"
+	entity --|> tEntity.
 
 	programUnit --|> tEntity.
 	programUnit --|> tBehaviouralEntity.
@@ -969,22 +990,34 @@ FASTFortranGenerator >> defineTraits [
 
 	super defineTraits.
 
-	tEntryArgument := builder newTraitNamed: #TEntryStatement comment: 'I represent an argument in an entry statement: it can be a variable name, array name, formal procedure name, or an asterisk'.
+	tEntity := self remoteTrait: #TEntity withPrefix: #FAST.
 
+	tAssignment := self remoteTrait: #TAssignment withPrefix: #FAST.
+	tBehaviouralEntity := self remoteTrait: #TBehaviouralEntity withPrefix: #FAST.
+	tBinaryExpression := self remoteTrait: #TBinaryExpression withPrefix: #FAST. 
+	tBooleanLiteral := self remoteTrait: #TBooleanLiteral withPrefix: #FAST.
+	tCharacterLiteral := self remoteTrait: #TCharacterLiteral withPrefix: #FAST.
+	tComment := self remoteTrait: #TComment withPrefix: #FAST.
+	tExpression := self remoteTrait: #TExpression withPrefix: #FAST. 
+	tNamedEntity := self remoteTrait: #TNamedEntity withPrefix: #FAST.
+	tNumericalLiteral := self remoteTrait: #TNumericalLiteral withPrefix: #FAST.
+	tStatement := self remoteTrait: #TStatement withPrefix: #FAST.
+	tStatementBlock := self remoteTrait: #TStatementBlock withPrefix: #FAST.
+	tReturnStatement := self remoteTrait: #TReturnStatement withPrefix: #FAST.
+	tUnaryExpression := self remoteTrait: #TUnaryExpression withPrefix: #FAST. 
+	tVariableEntity := self remoteTrait: #TVariableEntity withPrefix: #FAST.
+	tWithArguments := self remoteTrait: #TWithArguments withPrefix: #FAST.
+	tWithComments := self remoteTrait: #TWithComments withPrefix: #FAST.
+	tWithParameters := self remoteTrait: #TWithParameters withPrefix: #FAST.
+
+	tEntryArgument := builder newTraitNamed: #TEntryArgument comment: 'I represent an argument in an entry statement: it can be a variable name, array name, formal procedure name, or an asterisk'.
 	tFormat := builder newTraitNamed: #TFormat comment: 'I represent a format description (eg. in Format or Print statement)'.
-
 	tIOParameter := builder newTraitNamed: #TIOParameter comment: 'I represent a parameter to an IO-statement (read or write)'.
-
 	tVariableGroup := builder newTraitNamed: #TVariableGroup comment: 'I represent an entity with several variables like in a DataStatement or an EquivalenceStatement'.
-
-	tWithLoopControl := builder newTraitNamed: #TWithLoopControl comment: 'I represent a loop control: initialization/limit/increment'.
- 
-	tWithVariableGroup := builder newTraitNamed: #TWithVariableGroups comment: 'I represent a statement with variable groups like a DataStatement or an EquivalenceStatement'.
- 
 	tWithDeclarators := builder newTraitNamed: #TWithDeclarators comment: 'I represent a declaration with several variable declarators'.
-
 	tWithFormat := builder newTraitNamed: #TWithFormat comment: 'I represent a statement with a format (format, print)'.
-
 	tWithLabelReferences := builder newTraitNamed: #TWithLabelReferences comment: 'I represent a statement (various kind of goto) that can have label references'.
+	tWithLoopControl := builder newTraitNamed: #TWithLoopControl comment: 'I represent a loop control: initialization/limit/increment'.
+	tWithVariableGroup := builder newTraitNamed: #TWithVariableGroups comment: 'I represent a statement with variable groups like a DataStatement or an EquivalenceStatement'.
 
 ]

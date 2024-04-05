@@ -7,7 +7,7 @@ Part of a variable declaration: name of the variable + optional initial value
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `invokedIn` | `FASTFortranTNamedEntity` | `invoked` | `FASTFortranTInvocation` | Optional invocation where this name is used|
+| `invokedIn` | `FASTTNamedEntity` | `invoked` | `FASTTInvocation` | Optional invocation where this name is used|
 | `parentDeclaration` | `FASTFortranVariableDeclarator` | `declarators` | `FASTFortranTWithDeclarators` | |
 
 ### Children
@@ -23,21 +23,19 @@ Part of a variable declaration: name of the variable + optional initial value
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
-| `endPos` | `Number` | nil | |
 | `name` | `String` | nil | |
-| `startPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : #FASTFortranVariableDeclarator,
 	#superclass : #FASTFortranEntity,
-	#traits : 'FASTFortranTNamedEntity',
-	#classTraits : 'FASTFortranTNamedEntity classTrait',
+	#traits : 'FASTTNamedEntity',
+	#classTraits : 'FASTTNamedEntity classTrait',
 	#instVars : [
 		'#dimensions => FMMany type: #FASTFortranArrayRange opposite: #parentVariableDeclarator',
-		'#expression => FMOne type: #FASTFortranAbstractExpression opposite: #variableDeclaratorOwner',
-		'#parentDeclaration => FMOne type: #FASTFortranTWithDeclarators opposite: #declarators'
+		'#parentDeclaration => FMOne type: #FASTFortranTWithDeclarators opposite: #declarators',
+		'#expression => FMOne type: #FASTFortranAbstractExpression opposite: #variableDeclaratorOwner'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
