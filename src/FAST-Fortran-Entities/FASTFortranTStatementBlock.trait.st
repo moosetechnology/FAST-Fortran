@@ -33,8 +33,6 @@ Trait {
 		'#fastBehaviouralParent => FMOne type: #FASTFortranTBehaviouralEntity opposite: #statementBlock',
 		'#statements => FMMany type: #FASTFortranTStatement opposite: #statementContainer'
 	],
-	#traits : 'FASTFortranTStatement',
-	#classTraits : 'FASTFortranTStatement classTrait',
 	#category : #'FAST-Fortran-Entities-Traits'
 }
 
