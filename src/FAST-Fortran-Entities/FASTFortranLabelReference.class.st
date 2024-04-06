@@ -8,6 +8,8 @@ I contain the value of the label referred to
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
+| `parentFormatStatement` | `FASTFortranTFormat` | `format` | `FASTFortranPrintStatement` | |
+| `parentIOStatement` | `FASTFortranTIOParameter` | `ioParameters` | `FASTFortranAbstractIOStatement` | |
 | `parentIfArithmeticEqualBranch` | `FASTFortranLabelReference` | `equalLabel` | `FASTFortranIfArithmeticStatement` | |
 | `parentIfArithmeticLessBranch` | `FASTFortranLabelReference` | `lessLabel` | `FASTFortranIfArithmeticStatement` | |
 | `parentIfArithmeticMoreBranch` | `FASTFortranLabelReference` | `greaterLabel` | `FASTFortranIfArithmeticStatement` | |
@@ -25,10 +27,12 @@ I contain the value of the label referred to
 Class {
 	#name : #FASTFortranLabelReference,
 	#superclass : #FASTFortranEntity,
+	#traits : 'FASTFortranTFormat',
+	#classTraits : 'FASTFortranTFormat classTrait',
 	#instVars : [
 		'#label => FMProperty',
-		'#parentIfArithmeticLessBranch => FMOne type: #FASTFortranIfArithmeticStatement opposite: #lessLabel',
 		'#parentIfArithmeticEqualBranch => FMOne type: #FASTFortranIfArithmeticStatement opposite: #equalLabel',
+		'#parentIfArithmeticLessBranch => FMOne type: #FASTFortranIfArithmeticStatement opposite: #lessLabel',
 		'#parentIfArithmeticMoreBranch => FMOne type: #FASTFortranIfArithmeticStatement opposite: #greaterLabel',
 		'#referencer => FMOne type: #FASTFortranTWithLabelReferences opposite: #labelReferences'
 	],

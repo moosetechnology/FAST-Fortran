@@ -573,7 +573,10 @@ FASTFortranGenerator >> defineHierarchy [
 	asterisk --|> tEntryArgument.
 	asterisk --|> tFormat.
 
-	tFormat --|> tIOParameter
+	tFormat --|> tIOParameter.
+
+	labelReference --|> tFormat.
+
 ]
 
 { #category : #definition }
