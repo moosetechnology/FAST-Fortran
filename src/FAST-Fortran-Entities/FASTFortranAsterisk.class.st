@@ -8,7 +8,7 @@ I represent an Asterisk Character Literal (Constant) that is often used as a for
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `entryStatement` | `FASTFortranTEntryArgument` | `entryArguments` | `FASTFortranEntryStatement` | |
-| `parentFormatedStatement` | `FASTFortranTFormat` | `format` | `FASTFortranTWithFormat` | A format description in a Format/Print/Read/Write statement|
+| `parentFormatStatement` | `FASTFortranTFormat` | `format` | `FASTFortranPrintStatement` | |
 | `parentIOStatement` | `FASTFortranTIOParameter` | `ioParameters` | `FASTFortranAbstractIOStatement` | |
 
 

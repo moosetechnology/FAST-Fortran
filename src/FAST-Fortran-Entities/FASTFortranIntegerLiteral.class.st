@@ -7,7 +7,7 @@ I represent Fortran Arithmetic Integer Literal (Constant)
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parentFormatedStatement` | `FASTFortranTFormat` | `format` | `FASTFortranTWithFormat` | A format description in a Format/Print/Read/Write statement|
+| `parentFormatStatement` | `FASTFortranTFormat` | `format` | `FASTFortranPrintStatement` | |
 | `parentIOStatement` | `FASTFortranTIOParameter` | `ioParameters` | `FASTFortranAbstractIOStatement` | |
 | `parentTypeSize` | `FASTFortranIntegerLiteral` | `size` | `FASTFortranType` | |
 

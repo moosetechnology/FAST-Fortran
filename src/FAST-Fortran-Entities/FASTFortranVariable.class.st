@@ -11,7 +11,7 @@ an abstract Fortran Variable, could be an array or a scalar
 | `invokedIn` | `FASTTNamedEntity` | `invoked` | `FASTTInvocation` | Optional invocation where this name is used|
 | `parameterOwner` | `FASTTVariableEntity` | `parameters` | `FASTTWithParameters` | parameterOwner|
 | `parentAssignmentExpression` | `FASTTVariableEntity` | `variable` | `FASTTAssignment` | Optional assignment to the variable|
-| `parentFormatedStatement` | `FASTFortranTFormat` | `format` | `FASTFortranTWithFormat` | A format description in a Format/Print/Read/Write statement|
+| `parentFormatStatement` | `FASTFortranTFormat` | `format` | `FASTFortranPrintStatement` | |
 | `parentIOStatement` | `FASTFortranTIOParameter` | `ioParameters` | `FASTFortranAbstractIOStatement` | |
 | `parentImpliedExpression` | `FASTTVariableEntity` | `variables` | `FASTFortranImpliedDoExpression` | |
 | `parentVariableGroup` | `FASTFortranVariable` | `variables` | `FASTFortranTVariableGroup` | |

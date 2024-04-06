@@ -103,7 +103,6 @@ Class {
 		'equivalenceGroup',
 		'tVariableGroup',
 		'tWithVariableGroup',
-		'tWithFormat',
 		'tFormat',
 		'tIOParameter',
 		'arrayRange',
@@ -470,7 +469,6 @@ FASTFortranGenerator >> defineHierarchy [
 	externalStatement --|> abstractStatement.
 	externalStatement --|> tNamedEntity.
 	formatStatement --|> abstractStatement.
-	formatStatement --|> tWithFormat.
 	functionStatement --|> abstractStatement.
 	functionStatement --|> tWithArguments.
 	functionStatement --|> tNamedEntity.
@@ -497,7 +495,6 @@ FASTFortranGenerator >> defineHierarchy [
 	pauseStatement --|> abstractStatement.
 	pragmaStatement --|> abstractStatement.
 	printStatement --|> abstractStatement.
-	printStatement --|> tWithFormat.
 	printStatement --|> tWithArguments.
 	readStatement --|> abstractIOStatement.
 	readStatement --|> tWithArguments.
@@ -590,7 +587,8 @@ FASTFortranGenerator >> defineProperties [
 	(comment property: #content type: #String) comment:
 		'Determines a content of a comment'.
 
-	(formatStatement property: #formatDescription type: #String).
+	(formatStatement property: #formatDescription type: #String) comment:
+		'The description of the format'.
 
 	(functionCall property: #name type: #String) comment:
 		'Name of called function'.
@@ -625,142 +623,142 @@ FASTFortranGenerator >> defineRelations [
 
 	super defineRelations.
 
+	((abstractIOStatement property: #ioParameters) comment: 'IO-Parameters of an IO-statement (READ, WRITE...)')
+		<>-* (tIOParameter property: #parentIOStatement).
+
 	((arrayRange property: #upperBound) comment: 'An upper bound of an array dimension')
-	<>- ((abstractExpression property: #parentArrayDimensionDeclarator) comment:
+		<>- ((abstractExpression property: #parentArrayDimensionDeclarator) comment:
 			 'Parent array dimension declarator').
 
 	((arrayRange property: #lowerBound) comment: 'A lower bound of an array dimension')
-	<>- ((abstractExpression property: #parentArrayDimensionDeclarator) comment:
+		<>- ((abstractExpression property: #parentArrayDimensionDeclarator) comment:
 			 'Parent array dimension declarator').
 
-	((variableDeclarator property: #dimensions) comment: 'Possible dimensions in case this is an array declaration')
-	<>-* ((arrayRange property: #parentVariableDeclarator)
-			comment: 'The variable declarator I am part of').
-
 	((arrayVariable property: #indices) comment: 'Indices used in the array access')
-	<>-* ((abstractExpression property: #parentArrayExpression) comment: 'an ArrayVariable expression of which I am an indice').
+		<>-* ((abstractExpression property: #parentArrayExpression) comment: 'an ArrayVariable expression of which I am an indice').
 
 	((commonStatement property: #groups) comment:
 		 'List common groups in this common statement')
-	<>-* ((commonGroup property: #parentCommonStatement) comment:
+		<>-* ((commonGroup property: #parentCommonStatement) comment:
 			 'Parent common statement I belong to').
 
+	((conditionalStatement property: #condition) comment: 'Condition')
+		<>-
+		((abstractExpression property: #parentConditionalStatement) comment: 'Parent conditional statement (if-block, if-logical, ...)').
+
 	(dataGroup property: #dataConstants)
-	<>-* (abstractExpression property: #parentDataStatement).
-
-	(impliedDoExpression property: #variables)
-	<>-* (tVariableEntity property: #parentImpliedExpression).
-
-	(tVariableGroup property: #variables)
-	<>-* (variable property: #parentVariableGroup).
-
-	((abstractIOStatement property: #ioParameters) comment: 'IO-Parameters of an IO-statement (READ, WRITE...)')
-	<>-* (tIOParameter property: #parentIOStatement).
-
-	tWithVariableGroup <>-* tVariableGroup.
-	
-	((tWithDeclarators property: #declarators) comment: 'variables declared')
-	<>-* (variableDeclarator property: #parentDeclaration).
-
-	((variableDeclarator property: #expression) comment:
-		 'Expression assigned to the variable declared')
-	<>- (abstractExpression property: #variableDeclaratorOwner) .
-
-	((variableDeclarationStatement property: #type) comment: 'type')
-	<>-
-	((type property: #parentDeclaration) comment: 'Parent declaration').
-
-	((tWithLoopControl property: #loopControl) comment: 'loop control')
-	<>-
-	((loopControlExpression property: #parentLoop) comment: 'Parent loop').
+		<>-* (abstractExpression property: #parentDataStatement).
 
 	((doStatement property: #statementBlock) comment:
 		 'Statement block containing statements of the do body ')
-	<>- ((statementBlock property: #parentDoStatement) comment:
+		<>- ((statementBlock property: #parentDoStatement) comment:
 			 'Parent do statement').
 
 	(entryStatement property: #entryArguments)
-	<>-* (tEntryArgument property: #entryStatement).
+		<>-* (tEntryArgument property: #entryStatement).
 
 	(function property: #returnType)
-	<>- (type property: #typedFunctions).
+		<>- (type property: #typedFunctions).
 
 	((functionStatement property: #expression) comment:
 		 'Expression thats being assigned upon declaration to the var')
-	<>- ((abstractExpression property: #assignementExpressionOwner) comment:
+		<>- ((abstractExpression property: #assignementExpressionOwner) comment:
 			 'The AssignementExpression owner (if possible)').
 
 	((goToComputed property: #selectorExpression) comment: 'The expression which value selects the label to go to')
-	<>- (abstractExpression property: #parentGotoComputedStatement).
+		<>- (abstractExpression property: #parentGotoComputedStatement).
 
 	((goToAssignedStatement property: #selectorExpression) comment: 'The expression which value selects the label to go to')
-	<>- (abstractExpression property: #parentGotoAssignedStatement).
+		<>- (abstractExpression property: #parentGotoAssignedStatement).
 
-	((conditionalStatement property: #condition) comment: 'Condition')
-	<>-
-	((abstractExpression property: #parentConditionalStatement) comment: 'Parent conditional statement (if-block, if-logical, ...)').
+	(ifArithmeticStatement property: #lessLabel)
+		<>- (labelReference property: #parentIfArithmeticLessBranch).
 
-	((ifLogicalStatement property: #statement) comment:
-		 'Statement of the logical if')
-	<>- ((abstractStatement property: #parentIfStatement) comment: 'Parent if statement').
+	(ifArithmeticStatement property: #equalLabel)
+		<>- (labelReference property: #parentIfArithmeticEqualBranch).
+
+	(ifArithmeticStatement property: #greaterLabel)
+		<>- (labelReference property: #parentIfArithmeticMoreBranch).
 
 	((ifBlockStatement property: #thenStatementBlock) comment:
 		 'Statement block containing statements of then branch ')
-	<>-
-	((statementBlock property: #parentIfBlock) comment:
+		<>-
+		((statementBlock property: #parentIfBlock) comment:
 		 'Parent if block').
 
 	((ifBlockStatement property: #elseStatementBlock) comment:
 		 'Statement block containing statements of else branch ')
-	<>-
-	((statementBlock property: #parentIfBlock) comment:
+		<>-
+		((statementBlock property: #parentIfBlock) comment:
 		 'Parent if block').
 
-	(ifArithmeticStatement property: #lessLabel)
-	<>- (labelReference property: #parentIfArithmeticLessBranch).
+	((ifLogicalStatement property: #statement) comment:
+		 'Statement of the logical if')
+		<>- ((abstractStatement property: #parentIfStatement) comment: 'Parent if statement').
 
-	(ifArithmeticStatement property: #equalLabel)
-	<>- (labelReference property: #parentIfArithmeticEqualBranch).
-
-	(ifArithmeticStatement property: #greaterLabel)
-	<>- (labelReference property: #parentIfArithmeticMoreBranch).
+	(impliedDoExpression property: #variables)
+		<>-* (tVariableEntity property: #parentImpliedExpression).
 
 	(implicitStatement property: #typingRules)
-	<>-* (implicitTypingRule property: #parentImplicitStatement).
+		<>-* (implicitTypingRule property: #parentImplicitStatement).
 
 	implicitTypingRule
-	<>- (type property: #parentImplicitRule).
+		<>- (type property: #parentImplicitRule).
 
 	(implicitTypingRule property: #ranges)
-	<>-* (implicitRange property: #parentImplicitRule).
+		<>-* (implicitRange property: #parentImplicitRule).
 
 	((loopControlExpression property: #init) comment:
 		 'initial assignment')
-	<>- (assignmentExpression property: #parentLoopControlInitialization).
+		<>- (assignmentExpression property: #parentLoopControlInitialization).
 
 	((loopControlExpression property: #increment) comment:
 		'Loop control increment value')
-	<>- (abstractExpression property: #parentLoopControlIncrement).
+		<>- (abstractExpression property: #parentLoopControlIncrement).
 
 	((loopControlExpression property: #limit) comment:
 		'Loop control limit value')
-	<>- (abstractExpression property: #parentLoopControlLimit).
+		<>- (abstractExpression property: #parentLoopControlLimit).
+
+	(printStatement property: #format)
+		<>- (tFormat property: #parentFormatStatement).
 
 	((programFile property: #programUnit) comment:
 		 'Program Units in a program file')
-	<>-* ((programUnit property: #parentProgramFile) comment:
+		<>-* ((programUnit property: #parentProgramFile) comment:
 			 'Parent program file').
 
-	((type property: #size) comment: 'a data size in bytes')
-	<>- (integerConstant property: #parentTypeSize).
+	(tVariableGroup property: #variables)
+		<>-* (variable property: #parentVariableGroup).
 
-	((tWithFormat property: #format) comment: 'The description of the format')
-	<>- ((tFormat property: #parentFormatedStatement) comment: 'A format description in a Format/Print/Read/Write statement').
+	((tWithDeclarators property: #declarators) comment: 'variables declared')
+		<>-* (variableDeclarator property: #parentDeclaration).
 
 	((tWithLabelReferences property: #labelReferences) comment:
 		 'the label(s) referenced')
-	<>-* ((labelReference property: #referencer) comment:
+		<>-* ((labelReference property: #referencer) comment:
 			 'A statement (like goto) referencing this label').
+
+	((tWithLoopControl property: #loopControl) comment: 'loop control')
+		<>-
+		((loopControlExpression property: #parentLoop) comment: 'Parent loop').
+
+	tWithVariableGroup <>-* tVariableGroup.
+	
+	((type property: #size) comment: 'a data size in bytes')
+		<>- (integerConstant property: #parentTypeSize).
+
+	((variableDeclarator property: #dimensions) comment: 'Possible dimensions in case this is an array declaration')
+		<>-* ((arrayRange property: #parentVariableDeclarator)
+			comment: 'The variable declarator I am part of').
+
+	((variableDeclarator property: #expression) comment:
+		 'Expression assigned to the variable declared')
+		<>- (abstractExpression property: #variableDeclaratorOwner) .
+
+	((variableDeclarationStatement property: #type) comment: 'type')
+		<>-
+		((type property: #parentDeclaration) comment: 'Parent declaration').
 
 ]
 
@@ -1015,7 +1013,6 @@ FASTFortranGenerator >> defineTraits [
 	tIOParameter := builder newTraitNamed: #TIOParameter comment: 'I represent a parameter to an IO-statement (read or write)'.
 	tVariableGroup := builder newTraitNamed: #TVariableGroup comment: 'I represent an entity with several variables like in a DataStatement or an EquivalenceStatement'.
 	tWithDeclarators := builder newTraitNamed: #TWithDeclarators comment: 'I represent a declaration with several variable declarators'.
-	tWithFormat := builder newTraitNamed: #TWithFormat comment: 'I represent a statement with a format (format, print)'.
 	tWithLabelReferences := builder newTraitNamed: #TWithLabelReferences comment: 'I represent a statement (various kind of goto) that can have label references'.
 	tWithLoopControl := builder newTraitNamed: #TWithLoopControl comment: 'I represent a loop control: initialization/limit/increment'.
 	tWithVariableGroup := builder newTraitNamed: #TWithVariableGroups comment: 'I represent a statement with variable groups like a DataStatement or an EquivalenceStatement'.

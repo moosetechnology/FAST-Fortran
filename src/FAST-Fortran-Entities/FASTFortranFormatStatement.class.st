@@ -1,28 +1,17 @@
 "
 I represent Fortran Format statement
 
-## Relations
-======================
-
-### Children
-| Relation | Origin | Opposite | Type | Comment |
-|---|
-| `format` | `FASTFortranTWithFormat` | `parentFormatedStatement` | `FASTFortranTFormat` | The description of the format|
-
-
 ## Properties
 ======================
 
 | Name | Type | Default value | Comment |
 |---|
-| `formatDescription` | `String` | nil | |
+| `formatDescription` | `String` | nil | The description of the format|
 
 "
 Class {
 	#name : #FASTFortranFormatStatement,
 	#superclass : #FASTFortranAbstractStatement,
-	#traits : 'FASTFortranTWithFormat',
-	#classTraits : 'FASTFortranTWithFormat classTrait',
 	#instVars : [
 		'#formatDescription => FMProperty'
 	],
@@ -43,6 +32,7 @@ FASTFortranFormatStatement >> formatDescription [
 
 	<FMProperty: #formatDescription type: #String>
 	<generated>
+	<FMComment: 'The description of the format'>
 	^ formatDescription
 ]
 

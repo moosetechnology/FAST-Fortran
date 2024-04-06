@@ -7,7 +7,7 @@ I represent a format description (eg. in Format or Print statement)
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parentFormatedStatement` | `FASTFortranTFormat` | `format` | `FASTFortranTWithFormat` | A format description in a Format/Print/Read/Write statement|
+| `parentFormatStatement` | `FASTFortranTFormat` | `format` | `FASTFortranPrintStatement` | |
 | `parentIOStatement` | `FASTFortranTIOParameter` | `ioParameters` | `FASTFortranAbstractIOStatement` | |
 
 
@@ -16,7 +16,7 @@ I represent a format description (eg. in Format or Print statement)
 Trait {
 	#name : #FASTFortranTFormat,
 	#instVars : [
-		'#parentFormatedStatement => FMOne type: #FASTFortranTWithFormat opposite: #format'
+		'#parentFormatStatement => FMOne type: #FASTFortranPrintStatement opposite: #format'
 	],
 	#traits : 'FASTFortranTIOParameter',
 	#classTraits : 'FASTFortranTIOParameter classTrait',
@@ -33,26 +33,25 @@ FASTFortranTFormat classSide >> annotation [
 ]
 
 { #category : #accessing }
-FASTFortranTFormat >> parentFormatedStatement [
-	"Relation named: #parentFormatedStatement type: #FASTFortranTWithFormat opposite: #format"
+FASTFortranTFormat >> parentFormatStatement [
+	"Relation named: #parentFormatStatement type: #FASTFortranPrintStatement opposite: #format"
 
 	<generated>
-	<FMComment: 'A format description in a Format/Print/Read/Write statement'>
 	<container>
 	<derived>
-	^ parentFormatedStatement
+	^ parentFormatStatement
 ]
 
 { #category : #accessing }
-FASTFortranTFormat >> parentFormatedStatement: anObject [
+FASTFortranTFormat >> parentFormatStatement: anObject [
 
 	<generated>
-	parentFormatedStatement := anObject
+	parentFormatStatement := anObject
 ]
 
 { #category : #navigation }
-FASTFortranTFormat >> parentFormatedStatementGroup [
+FASTFortranTFormat >> parentFormatStatementGroup [
 	<generated>
-	<navigation: 'ParentFormatedStatement'>
-	^ MooseSpecializedGroup with: self parentFormatedStatement
+	<navigation: 'ParentFormatStatement'>
+	^ MooseSpecializedGroup with: self parentFormatStatement
 ]
