@@ -617,13 +617,14 @@ FASTFortranSyntaxJsonVisitor >> visitElseIf: aNode [
 	 #start_pos is the start of ELSE
 	 for #startPos of inner IF we add 5  (=length of 'ELSE ') to this"
 
-	| data |
-	data := super visitElseIf: aNode.
+	| innerIf elseStart |
+	innerIf := super visitElseIf: aNode.
 
-	data startPos: (data startPos x @ (data startPos y+ 5)).
+	elseStart := innerIf startPos.
+	innerIf startPos: (innerIf startPos x @ (innerIf startPos y+ 5)).
 
-	^(self statementBlockFromStatementList: { data })
-		startPos: (data at: #start_pos) ;
+	^(self statementBlockFromStatementList: { innerIf })
+		startPos: elseStart ;
 		yourself
 ]
 

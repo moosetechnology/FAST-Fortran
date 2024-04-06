@@ -2052,7 +2052,7 @@ SyntaxJsonToFASTTests >> testIfArithmetic [
 SyntaxJsonToFASTTests >> testIfElseIf [
 	"note: starting and ending position of else block are approximate"
 
-	| result conditional |
+	| result ifStatement |
 	fortranCode := '      PROGRAM MYPROG
          IF ( A ) THEN
           a = 1
@@ -2071,40 +2071,42 @@ SyntaxJsonToFASTTests >> testIfElseIf [
 
 	self assert: result first statementBlock statements size equals: 1.
 
-	conditional := result first statementBlock statements first.
-	self assert: conditional class equals: FASTFortranIfBlockStatement.
+	"IF (A)"
+	ifStatement := result first statementBlock statements first.
+	self assert: ifStatement class equals: FASTFortranIfBlockStatement.
 
-	self assert: conditional thenStatementBlock statements size equals: 1.
-	self assert: conditional thenStatementBlock startPos equals: 55.
-	self assert: conditional thenStatementBlock endPos equals: 59.
+	self assert: ifStatement thenStatementBlock statements size equals: 1.
+	self assert: ifStatement thenStatementBlock startPos equals: 55.
+	self assert: ifStatement thenStatementBlock endPos equals: 59.
 
-	self assert: conditional elseStatementBlock statements size equals: 1.
-	self assert: conditional elseStatementBlock startPos equals: 75.
-	self assert: conditional elseStatementBlock endPos equals: 193.
+	self assert: ifStatement elseStatementBlock statements size equals: 1.
+	self assert: ifStatement elseStatementBlock startPos equals: 70.
+	self assert: ifStatement elseStatementBlock endPos equals: 193.
 
-	conditional := conditional elseStatementBlock statements first.
-	self assert: conditional class equals: FASTFortranIfBlockStatement.
+	"IF (B)"
+	ifStatement := ifStatement elseStatementBlock statements first.
+	self assert: ifStatement class equals: FASTFortranIfBlockStatement.
 
-	self assert: conditional thenStatementBlock statements size equals: 1.
-	self assert: conditional thenStatementBlock startPos equals: 99.
-	self assert: conditional thenStatementBlock endPos equals: 103.
+	self assert: ifStatement thenStatementBlock statements size equals: 1.
+	self assert: ifStatement thenStatementBlock startPos equals: 99.
+	self assert: ifStatement thenStatementBlock endPos equals: 103.
 
-	self assert: conditional elseStatementBlock statements size equals: 1.
-	self assert: conditional elseStatementBlock startPos equals: 119.
-	self assert: conditional elseStatementBlock endPos equals: 193.
+	self assert: ifStatement elseStatementBlock statements size equals: 1.
+	self assert: ifStatement elseStatementBlock startPos equals: 114.
+	self assert: ifStatement elseStatementBlock endPos equals: 193.
 
-	conditional := conditional elseStatementBlock statements first.
-	self assert: conditional class equals: FASTFortranIfBlockStatement.
-	self assert: conditional thenStatementBlock statements size equals: 1.
-	self assert: conditional thenStatementBlock startPos equals: 143.
-	self assert: conditional thenStatementBlock endPos equals: 147.
+	"IF (C)"
+	ifStatement := ifStatement elseStatementBlock statements first.
+	self assert: ifStatement class equals: FASTFortranIfBlockStatement.
+	self assert: ifStatement thenStatementBlock statements size equals: 1.
+	self assert: ifStatement thenStatementBlock startPos equals: 143.
+	self assert: ifStatement thenStatementBlock endPos equals: 147.
 
-	self assert: conditional elseStatementBlock statements size equals: 1.
-	self assert: conditional elseStatementBlock startPos equals: 173.
-	self assert: conditional elseStatementBlock endPos equals: 193.
+	self assert: ifStatement elseStatementBlock statements size equals: 1.
+	self assert: ifStatement elseStatementBlock startPos equals: 158.
+	self assert: ifStatement elseStatementBlock endPos equals: 193.
 
-	conditional := conditional elseStatementBlock statements first.
-	self assert: conditional class equals: FASTFortranAssignmentStatement
+	self assert: ifStatement elseStatementBlock statements first class equals: FASTFortranAssignmentStatement
 ]
 
 { #category : #'tests-statement' }
