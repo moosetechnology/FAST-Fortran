@@ -2879,21 +2879,20 @@ SyntaxJsonToFASTTests >> testPrintMultipleVariables [
 	self assert: stmt startPos equals: 36.
 	self assert: stmt endPos equals: 51.
 
-
 	arguments := stmt arguments.
 	self assert: arguments size equals: 3.
 
 	var := arguments first.
 	self assert: var class equals: FASTFortranScalarVariable.
-	self assert: var name equals: 'x'.
+	self assert: var name equals: 'X'.
 
 	var := arguments second.
 	self assert: var class equals: FASTFortranScalarVariable.
-	self assert: var name equals: 'y'.
+	self assert: var name equals: 'Y'.
 
 	var := arguments third.
 	self assert: var class equals: FASTFortranScalarVariable.
-	self assert: var name equals: 'z'
+	self assert: var name equals: 'Z'
 ]
 
 { #category : #'tests-statement' }
@@ -2917,7 +2916,7 @@ SyntaxJsonToFASTTests >> testPrintOneVariable [
 	arguments := stmt arguments.
 	self assert: arguments size equals: 1.
 	self assert: arguments first class equals: FASTFortranScalarVariable.
-	self assert: arguments first name equals: 'x'
+	self assert: arguments first name equals: 'X'
 ]
 
 { #category : #'tests-statement' }

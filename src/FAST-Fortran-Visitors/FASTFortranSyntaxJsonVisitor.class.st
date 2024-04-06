@@ -1050,6 +1050,19 @@ FASTFortranSyntaxJsonVisitor >> visitPauseStatement: aNode [
 ]
 
 { #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitPrintStatement: aNode [
+	"start_pos format io_list"
+
+	| data |
+	data := super visitPrintStatement: aNode.
+
+	^(self newLabeledStatement: FASTFortranPrintStatement withPosition: data)
+		format: (data at: #format) anyOne anyOne ;
+		arguments: (data at: #io_list) ;
+		yourself
+]
+
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitProgUnitParameters: aCollection [ 
 
 	| data |
