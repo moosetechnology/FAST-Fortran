@@ -3320,10 +3320,10 @@ SyntaxJsonToFASTTests >> testTokenPosition [
        EXIT
       END
 '.
-	jsonCode := ' EXIT |^ ./fortranCode.F, line 4: column 12: Warning:	"= .FALSE." is inserted before "%EOL". { "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "5", "column":"9"}, "statement_list" : [{"tag" : "stop_statement", "start_pos" : {"line" : "2", "column":"8"}}, {"label" : "100", "tag" : "continue_statement", "start_pos" : {"line" : "3", "column":"8"}}, {"tag" : "assignment_statement", "start_pos" : {"line" : "4", "column":"8"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"8"}, "name":"EXIT"}], "right" : [{"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "logical_constant", "start_pos" : {"line" : "4", "column":"12"}, "value":".FALSE."}}}}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "5", "column":"9"}, "statement_list" : [{"tag" : "stop_statement", "start_pos" : {"line" : "2", "column":"8"}}, {"label" : "100", "tag" : "continue_statement", "start_pos" : {"line" : "3", "column":"8"}}, {"tag" : "assignment_statement", "start_pos" : {"line" : "4", "column":"8"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"8"}, "name":"EXIT"}], "right" : [{"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "logical_constant", "start_pos" : {"line" : "4", "column":"12"}, "value":".FALSE."}}}}]}]}] }'.
 	result := self visitJsonCode.
 
-	stmnts := result statementBlock statements.
+	stmnts := result first statementBlock statements.
 	stmt := stmnts first.
 	self assert: stmt startPos equals: 29.
 	self assert: stmt endPos equals: 32.
