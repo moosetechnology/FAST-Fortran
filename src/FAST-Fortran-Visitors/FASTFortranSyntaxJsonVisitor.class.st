@@ -688,6 +688,24 @@ FASTFortranSyntaxJsonVisitor >> visitExternalStatement: aNode [
 		  yourself
 ]
 
+{ #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitFormat: aNode [
+	"data is an array which can:
+	 - be empty
+	 - contain a CharacterLiteral
+	 - contain a string (variable name)
+	 - contain another array of 1 Asterisk
+	 - contain another array of 1 LabelReference"
+ 
+   | data |
+	data := super visitFormat: aNode.
+
+	data ifEmpty: [ ^data ].
+	(data anyOne class = FASTFortranCharacterLiteral) ifTrue: [ ^data anyOne ].
+	data anyOne isString ifTrue: [ ^(self newEntity: FASTFortranScalarVariable) name: data anyOne ].
+	^data anyOne anyOne
+]
+
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitFormatStatement: aNode [
 	"specification"
@@ -1071,7 +1089,7 @@ FASTFortranSyntaxJsonVisitor >> visitPrintStatement: aNode [
 	data := super visitPrintStatement: aNode.
 
 	^(self newLabeledStatement: FASTFortranPrintStatement withPosition: data)
-		format: (data at: #format) anyOne anyOne ;
+		format: (data at: #format) ;
 		arguments: (data at: #io_list) ;
 		yourself
 ]

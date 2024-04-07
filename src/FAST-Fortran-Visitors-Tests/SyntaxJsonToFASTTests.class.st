@@ -2889,6 +2889,58 @@ SyntaxJsonToFASTTests >> testPrintFormatLabel [
 ]
 
 { #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testPrintFormatStringExpression [
+
+	| stmt result arguments |
+	fortranCode := '      subroutine mysub (msg)
+      PRINT ''(12 I2)'', X
+      end
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"25"}, "name":"MSG"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "print_statement", "start_pos" : {"line" : "2", "column":"7"}, "format" : [{"tag" : "character_constant", "start_pos" : {"line" : "2", "column":"13"}, "value":"''(12 I2)''"}], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"24"}, "name":"X"}]}]}] }'.
+
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranPrintStatement.
+	self assert: stmt startPos equals: 36.
+	self assert: stmt endPos equals: 53.
+
+	self assert: stmt format class equals: FASTFortranCharacterLiteral.
+	self assert: stmt format primitiveValue equals: '''(12 I2)'''.
+
+	arguments := stmt arguments.
+	self assert: arguments size equals: 1.
+	self assert: arguments first class equals: FASTFortranScalarVariable.
+	self assert: arguments first name equals: 'X'
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testPrintFormatVariable [
+
+	| stmt result arguments |
+	fortranCode := '      subroutine mysub (msg)
+      PRINT I, X
+      end
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"25"}, "name":"MSG"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "print_statement", "start_pos" : {"line" : "2", "column":"7"}, "format" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"I"}], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"16"}, "name":"X"}]}]}] }'.
+
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranPrintStatement.
+	self assert: stmt startPos equals: 36.
+	self assert: stmt endPos equals: 45.
+
+	self assert: stmt format class equals: FASTFortranScalarVariable.
+	self assert: stmt format name equals: 'I'.
+
+	arguments := stmt arguments.
+	self assert: arguments size equals: 1.
+	self assert: arguments first class equals: FASTFortranScalarVariable.
+	self assert: arguments first name equals: 'X'
+]
+
+{ #category : #'tests-statement' }
 SyntaxJsonToFASTTests >> testPrintMultipleVariables [
 
 	| stmt result var arguments |
