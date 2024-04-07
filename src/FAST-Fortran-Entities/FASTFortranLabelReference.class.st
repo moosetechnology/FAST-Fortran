@@ -8,11 +8,12 @@ I contain the value of the label referred to
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parentFormatStatement` | `FASTFortranTFormat` | `format` | `FASTFortranPrintStatement` | |
 | `parentIOStatement` | `FASTFortranTIOParameter` | `ioParameters` | `FASTFortranAbstractIOStatement` | |
 | `parentIfArithmeticEqualBranch` | `FASTFortranLabelReference` | `equalLabel` | `FASTFortranIfArithmeticStatement` | |
 | `parentIfArithmeticLessBranch` | `FASTFortranLabelReference` | `lessLabel` | `FASTFortranIfArithmeticStatement` | |
 | `parentIfArithmeticMoreBranch` | `FASTFortranLabelReference` | `greaterLabel` | `FASTFortranIfArithmeticStatement` | |
+| `parentStatement` | `FASTFortranTFormat` | `format` | `FASTFortranTWithFormat` | Formatted statement (PRINT or IOStatement)|
+| `parentStatement` | `FASTFortranTFormat` | `format` | `FASTFortranAbstractIOStatement` | |
 | `referencer` | `FASTFortranLabelReference` | `labelReferences` | `FASTFortranTWithLabelReferences` | A statement (like goto) referencing this label|
 
 

@@ -131,7 +131,8 @@ Class {
 		'tUnaryExpression',
 		'tBinaryExpression',
 		'tVariableEntity',
-		'entity'
+		'entity',
+		'tWithFormat'
 	],
 	#category : #'FAST-Fortran-Generator'
 }
@@ -438,6 +439,7 @@ FASTFortranGenerator >> defineHierarchy [
 	"FORTRAN STATEMENTS"
 	abstractStatement --|> tStatement.
 	abstractIOStatement --|> abstractStatement.
+	abstractIOStatement --|> tWithFormat.
 	acceptStatement  --|> abstractStatement.
 	assignmentStatement --|> abstractStatement.
 	assignmentStatement --|> tAssignment.
@@ -496,6 +498,7 @@ FASTFortranGenerator >> defineHierarchy [
 	pragmaStatement --|> abstractStatement.
 	printStatement --|> abstractStatement.
 	printStatement --|> tWithArguments.
+	printStatement --|> tWithFormat.
 	readStatement --|> abstractIOStatement.
 	readStatement --|> tWithArguments.
 	returnStatement --|> abstractStatement.
@@ -629,6 +632,9 @@ FASTFortranGenerator >> defineRelations [
 	((abstractIOStatement property: #ioParameters) comment: 'IO-Parameters of an IO-statement (READ, WRITE...)')
 		<>-* (tIOParameter property: #parentIOStatement).
 
+	(abstractIOStatement property: #format)
+		<>- (tFormat property: #parentStatement).
+
 	((arrayRange property: #upperBound) comment: 'An upper bound of an array dimension')
 		<>- ((abstractExpression property: #parentArrayDimensionDeclarator) comment:
 			 'Parent array dimension declarator').
@@ -723,8 +729,9 @@ FASTFortranGenerator >> defineRelations [
 		'Loop control limit value')
 		<>- (abstractExpression property: #parentLoopControlLimit).
 
-	(printStatement property: #format)
-		<>- (tFormat property: #parentFormatStatement).
+	(tWithFormat property: #format)
+		<>- ((tFormat property: #parentStatement) comment:
+			'Formatted statement (PRINT or IOStatement)').
 
 	((programFile property: #programUnit) comment:
 		 'Program Units in a program file')
@@ -1016,6 +1023,7 @@ FASTFortranGenerator >> defineTraits [
 	tIOParameter := builder newTraitNamed: #TIOParameter comment: 'I represent a parameter to an IO-statement (read or write)'.
 	tVariableGroup := builder newTraitNamed: #TVariableGroup comment: 'I represent an entity with several variables like in a DataStatement or an EquivalenceStatement'.
 	tWithDeclarators := builder newTraitNamed: #TWithDeclarators comment: 'I represent a declaration with several variable declarators'.
+	tWithFormat := builder newTraitNamed: #TWithFormat comment: 'I represent a statement with a Format (PRINT or IOStatements)'.
 	tWithLabelReferences := builder newTraitNamed: #TWithLabelReferences comment: 'I represent a statement (various kind of goto) that can have label references'.
 	tWithLoopControl := builder newTraitNamed: #TWithLoopControl comment: 'I represent a loop control: initialization/limit/increment'.
 	tWithVariableGroup := builder newTraitNamed: #TWithVariableGroups comment: 'I represent a statement with variable groups like a DataStatement or an EquivalenceStatement'.

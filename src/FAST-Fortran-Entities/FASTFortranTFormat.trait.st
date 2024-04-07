@@ -7,8 +7,9 @@ I represent a format description (eg. in Format or Print statement)
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parentFormatStatement` | `FASTFortranTFormat` | `format` | `FASTFortranPrintStatement` | |
 | `parentIOStatement` | `FASTFortranTIOParameter` | `ioParameters` | `FASTFortranAbstractIOStatement` | |
+| `parentStatement` | `FASTFortranTFormat` | `format` | `FASTFortranTWithFormat` | Formatted statement (PRINT or IOStatement)|
+| `parentStatement` | `FASTFortranTFormat` | `format` | `FASTFortranAbstractIOStatement` | |
 
 
 
@@ -16,7 +17,7 @@ I represent a format description (eg. in Format or Print statement)
 Trait {
 	#name : #FASTFortranTFormat,
 	#instVars : [
-		'#parentFormatStatement => FMOne type: #FASTFortranPrintStatement opposite: #format'
+		'#parentStatement => FMOne type: #FASTFortranAbstractIOStatement opposite: #format'
 	],
 	#traits : 'FASTFortranTIOParameter',
 	#classTraits : 'FASTFortranTIOParameter classTrait',
@@ -33,25 +34,25 @@ FASTFortranTFormat classSide >> annotation [
 ]
 
 { #category : #accessing }
-FASTFortranTFormat >> parentFormatStatement [
-	"Relation named: #parentFormatStatement type: #FASTFortranPrintStatement opposite: #format"
+FASTFortranTFormat >> parentStatement [
+	"Relation named: #parentStatement type: #FASTFortranAbstractIOStatement opposite: #format"
 
 	<generated>
 	<container>
 	<derived>
-	^ parentFormatStatement
+	^ parentStatement
 ]
 
 { #category : #accessing }
-FASTFortranTFormat >> parentFormatStatement: anObject [
+FASTFortranTFormat >> parentStatement: anObject [
 
 	<generated>
-	parentFormatStatement := anObject
+	parentStatement := anObject
 ]
 
 { #category : #navigation }
-FASTFortranTFormat >> parentFormatStatementGroup [
+FASTFortranTFormat >> parentStatementGroup [
 	<generated>
-	<navigation: 'ParentFormatStatement'>
-	^ MooseSpecializedGroup with: self parentFormatStatement
+	<navigation: 'ParentStatement'>
+	^ MooseSpecializedGroup with: self parentStatement
 ]

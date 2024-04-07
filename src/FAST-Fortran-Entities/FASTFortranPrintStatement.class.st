@@ -8,7 +8,7 @@ I represent Fortran Print statement
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `arguments` | `FASTTWithArguments` | `argumentOwner` | `FASTTExpression` | My arguments|
-| `format` | `FASTFortranPrintStatement` | `parentFormatStatement` | `FASTFortranTFormat` | |
+| `format` | `FASTFortranTWithFormat` | `parentStatement` | `FASTFortranTFormat` | |
 
 
 
@@ -16,11 +16,8 @@ I represent Fortran Print statement
 Class {
 	#name : #FASTFortranPrintStatement,
 	#superclass : #FASTFortranAbstractStatement,
-	#traits : 'FASTTWithArguments',
-	#classTraits : 'FASTTWithArguments classTrait',
-	#instVars : [
-		'#format => FMOne type: #FASTFortranTFormat opposite: #parentFormatStatement'
-	],
+	#traits : 'FASTFortranTWithFormat + FASTTWithArguments',
+	#classTraits : 'FASTFortranTWithFormat classTrait + FASTTWithArguments classTrait',
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
@@ -31,26 +28,4 @@ FASTFortranPrintStatement class >> annotation [
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
-]
-
-{ #category : #accessing }
-FASTFortranPrintStatement >> format [
-	"Relation named: #format type: #FASTFortranTFormat opposite: #parentFormatStatement"
-
-	<generated>
-	^ format
-]
-
-{ #category : #accessing }
-FASTFortranPrintStatement >> format: anObject [
-
-	<generated>
-	format := anObject
-]
-
-{ #category : #navigation }
-FASTFortranPrintStatement >> formatGroup [
-	<generated>
-	<navigation: 'Format'>
-	^ MooseSpecializedGroup with: self format
 ]
