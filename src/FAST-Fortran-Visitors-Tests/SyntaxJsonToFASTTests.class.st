@@ -2870,7 +2870,7 @@ SyntaxJsonToFASTTests >> testPrintFormatLabel [
       PRINT 10, X
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"25"}, "name":"MSG"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "print_statement", "start_pos" : {"line" : "2", "column":"7"}, "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"17"}, "name":"X"}], "format" : [{"label_ref":"10"}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"25"}, "name":"MSG"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "print_statement", "start_pos" : {"line" : "2", "column":"7"}, "format" : [{"label_ref":"10"}], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"17"}, "name":"X"}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -3540,7 +3540,7 @@ SyntaxJsonToFASTTests >> testWriteArrayIOParameter [
 	self assert: stmt ioParameters first indices size equals: 1.
 	self
 		assert: stmt ioParameters second class
-		equals: FASTFortranIntegerLiteral
+		equals: FASTFortranLabelReference
 	"self assert: stmt ioParameters second startPos equals: 43"
 ]
 
@@ -3604,7 +3604,7 @@ SyntaxJsonToFASTTests >> testWriteFullIOParameters [
 	"self assert: stmt ioParameters first startPos equals: 40."
 	self
 		assert: stmt ioParameters second class
-		equals: FASTFortranIntegerLiteral.
+		equals: FASTFortranLabelReference.
 	"self assert: stmt ioParameters second startPos equals: 43."
 	self
 		assert: stmt ioParameters third class
@@ -3693,7 +3693,7 @@ SyntaxJsonToFASTTests >> testWriteToInternalFile [
 	"self assert: stmt ioParameters first startPos equals: 40."
 	self
 		assert: stmt ioParameters second class
-		equals: FASTFortranIntegerLiteral.
+		equals: FASTFortranLabelReference.
 	"self assert: stmt ioParameters second startPos equals: 48."
 
 	self assert: stmt arguments size equals: 1.

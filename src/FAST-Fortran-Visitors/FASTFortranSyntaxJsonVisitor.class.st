@@ -874,12 +874,26 @@ FASTFortranSyntaxJsonVisitor >> visitIoParameter: aNode [
 	^data
 ]
 
+{ #category : #'visiting expression' }
+FASTFortranSyntaxJsonVisitor >> visitLabelRef: aString [ 
+
+	^(self newEntity: FASTFortranLabelReference)
+		label: (super visitLabelRef: aString) ;
+		yourself
+]
+
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitLabelReference: labelRefNode [
 
 	^(self newEntity: FASTFortranLabelReference)
 		label: (labelRefNode at: #label_ref) ;
 		yourself
+]
+
+{ #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitLabels: aCollection [
+
+   ^(super visitLabels: aCollection) flatten
 ]
 
 { #category : #'visiting statement' }
