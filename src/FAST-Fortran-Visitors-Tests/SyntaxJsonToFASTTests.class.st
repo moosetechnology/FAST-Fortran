@@ -945,9 +945,11 @@ SyntaxJsonToFASTTests >> testComment [
 C comment in a function''s body
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { "2":"C comment in a function''s body\n" }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "function", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"24"}, "name":"AFCT"}, "prog_unit_parameters" : [], "return_type" : {"tag" : "type_reference", "name":"INTEGER"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : []}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { "2":"C comment in a function''s body\n" }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "function", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"24"}, "name":"AFCT"}, "prog_unit_parameters" : [], "return_type" : {"tag" : "type_reference", "name":"INTEGER"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : []}] }'.
 
 	result := self visitJsonCode.
+
+	self assert: result first statementBlock comments size equals: 1.
 
 	cmt := result first statementBlock comments anyOne.
 	self assert: cmt content equals: 'C comment in a function''s body'.
