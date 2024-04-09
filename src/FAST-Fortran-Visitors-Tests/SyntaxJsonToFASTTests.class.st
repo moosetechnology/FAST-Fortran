@@ -1667,6 +1667,7 @@ SyntaxJsonToFASTTests >> testEntryStatement [
       END
 '.
 	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"SUBRTN"}, "parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"XYZ"}, "parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"17"}, "name":"ABC"}, "*"], "tag" : "entry_statement", "start_pos" : {"line" : "2", "column":"7"}}]}] }'.
+
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
