@@ -9,7 +9,7 @@ SyntaxJsonToFASTTests class >> generateFortranSourcesFromTests [
 	"regenerate #jsonCode for all test methods from the #sourceCode in these methods"
 
 	| fortranFilename |
-	fortranFilename := 'FastTmp/tmpFASTSource.f'.
+	fortranFilename := 'tmpFASTSource.f'.
 
 	SyntaxJsonToFASTTests methods do: [ :mth|
 		(mth selector beginsWith: 'test')
@@ -19,10 +19,13 @@ SyntaxJsonToFASTTests class >> generateFortranSourcesFromTests [
 				ifTrue: [
 					fortran := mth ast body statements first value value.
 					json := FortranProjectSyntaxImporter new getJsonFor: fortran.
-					i := json indexOfSubCollection: fortranFilename.
-					json := (json copyFrom: 1 to: i-1) ,
-						'./fortranCode.F' ,
-						(json copyFrom: i + fortranFilename size to: json size).
+					json := String streamContents: [ :str |
+						i := json indexOfSubCollection: '/home/'.
+						str << (json copyFrom: 1 to: i-1).
+						str << './fortranCode.F'.
+						i := json indexOfSubCollection: fortranFilename.
+						str << (json copyFrom: i + fortranFilename size to: json size)
+					]
 				]
 				ifFalse: [ json := nil ].
 
@@ -50,10 +53,10 @@ SyntaxJsonToFASTTests >> testArrayAccess [
 	| result stmt arrayAccess |
 	fortranCode := '      PROGRAM MYPROG
       integer arr(10)
-		v = arr(1,i)
+      v = arr(1,i)
       END
 '.
-	jsonCode := ' v = arr(1,i) |^ ./fortranCode.F, line 3: column 9: Warning:	A tabulation character is illegal outside comments or character constants. In this executable program, each such tabulation character is changed into one space. { "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "name":"INTEGER"}, "declarators" : [{"tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"15"}, "name":"ARR"}, "dimension_declarators" : [{"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"19"}, "value":"10"}}]}]}, {"tag" : "assignment_statement", "start_pos" : {"line" : "3", "column":"10"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"10"}, "name":"V"}], "right" : [{"tag" : "array_element_name", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"14"}, "name":"ARR"}, "qualifiers_list" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "3", "column":"18"}, "value":"1"}}, {"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"20"}, "name":"I"}]}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "name":"INTEGER"}, "declarators" : [{"tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"15"}, "name":"ARR"}, "dimension_declarators" : [{"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"19"}, "value":"10"}}]}]}, {"tag" : "assignment_statement", "start_pos" : {"line" : "3", "column":"7"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"7"}, "name":"V"}], "right" : [{"tag" : "array_element_name", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"11"}, "name":"ARR"}, "qualifiers_list" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "3", "column":"15"}, "value":"1"}}, {"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"17"}, "name":"I"}]}]}]}] }'.
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements second.
@@ -83,7 +86,7 @@ SyntaxJsonToFASTTests >> testArrayDeclaration [
       integer arr(10)
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "name":"INTEGER"}, "declarators" : [{"tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"15"}, "name":"ARR"}, "dimension_declarators" : [{"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"19"}, "value":"10"}}]}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "name":"INTEGER"}, "declarators" : [{"tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"15"}, "name":"ARR"}, "dimension_declarators" : [{"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"19"}, "value":"10"}}]}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -117,7 +120,7 @@ SyntaxJsonToFASTTests >> testArrayDeclarationDimensionsWithOperation [
       integer arr(0:max-1)
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "name":"INTEGER"}, "declarators" : [{"tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"15"}, "name":"ARR"}, "dimension_declarators" : [{"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"19"}, "value":"10"}}]}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "name":"INTEGER"}, "declarators" : [{"tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"15"}, "name":"ARR"}, "dimension_declarators" : [{"lower_bound" : {"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"19"}, "value":"0"}}, "upper_bound" : {"tag" : "binary_expression", "lhs" : {"tag" : "variable_expression", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"21"}, "name":"MAX"}}, "operator" : "-", "rhs" : {"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"25"}, "value":"1"}}}}]}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -130,11 +133,13 @@ SyntaxJsonToFASTTests >> testArrayDeclarationDimensionsWithOperation [
 	declarator := stmt declarators first.
 
 	self assert: declarator dimensions size equals: 1.
-	self assert: declarator dimensions anyOne class equals: FASTFortranArrayRange.
+	self
+		assert: declarator dimensions anyOne class
+		equals: FASTFortranArrayRange.
 
 	bound := declarator dimensions anyOne lowerBound.
 	self assert: bound class equals: FASTFortranIntegerLiteral.
-	self assert: bound primitiveValue	equals: '0'.
+	self assert: bound primitiveValue equals: '0'.
 
 	bound := declarator dimensions anyOne upperBound.
 	self assert: bound class equals: FASTFortranBinaryExpression.
@@ -219,7 +224,7 @@ SyntaxJsonToFASTTests >> testArrayDeclarationMultipleDimensions [
 { #category : #'tests-statement' }
 SyntaxJsonToFASTTests >> testArrayDeclarationThreeDimensions [
 
-	| result stmt arrA arrB arrayAccess |
+	| result stmt arrayAccess |
 	fortranCode := '
       REAL A(3:5, 7, 3:5), B(0:2)
       END
@@ -233,7 +238,7 @@ SyntaxJsonToFASTTests >> testArrayDeclarationThreeDimensions [
 		equals: FASTFortranVariableDeclarationStatement.
 	self assert: stmt declarators size equals: 2.
 
-	arrA := stmt declarators first.
+	arrayAccess  := stmt declarators first.
 	self assert: arrayAccess class equals: FASTFortranArrayVariable.
 	self assert: arrayAccess name equals: 'arr'.
 	self assert: arrayAccess indices size equals: 2.
@@ -474,7 +479,7 @@ SyntaxJsonToFASTTests >> testAssignementStringLiteralDoubleQuotes [
           c = "once upon a time there were ''''quotes''''! "
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"11"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"11"}, "name":"C"}], "right" : [{"tag" : "character_expression", "expression" : {"tag" : "character_constant", "start_pos" : {"line" : "2", "column":"15"}, "value":"\"once upon a time there were ''''quotes''''! \""}}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"11"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"11"}, "name":"C"}], "right" : [{"tag" : "character_expression", "expression" : {"tag" : "character_constant", "start_pos" : {"line" : "2", "column":"15"}, "value":"\"once upon a time there were ''''quotes''''! \""}}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -500,7 +505,7 @@ SyntaxJsonToFASTTests >> testAssignementStringLiteralSingleQuotes [
           c = ''once upon a time there were "quotes"! ''
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"11"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"11"}, "name":"C"}], "right" : [{"tag" : "character_expression", "expression" : {"tag" : "character_constant", "start_pos" : {"line" : "2", "column":"15"}, "value":"''once upon a time there were \"quotes\"! ''"}}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"11"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"11"}, "name":"C"}], "right" : [{"tag" : "character_expression", "expression" : {"tag" : "character_constant", "start_pos" : {"line" : "2", "column":"15"}, "value":"''once upon a time there were \"quotes\"! ''"}}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -901,7 +906,7 @@ SyntaxJsonToFASTTests >> testBlockData [
 	self assert: bd class equals: FASTFortranBlockData.
 	self assert: bd name equals: 'MYBLCK'.
 	self assert: bd startPos equals: 7.
-	self assert: bd endPos equals: 33.
+	self assert: bd endPos equals: 33
 ]
 
 { #category : #'tests-statement' }
@@ -945,7 +950,7 @@ SyntaxJsonToFASTTests >> testComment [
 C comment in a function''s body
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { "2":"C comment in a function''s body\n" }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "function", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"24"}, "name":"AFCT"}, "prog_unit_parameters" : [], "return_type" : {"tag" : "type_reference", "name":"INTEGER"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : []}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { "2":"C comment in a function''s body\n" }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "function", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"24"}, "name":"AFCT"}, "prog_unit_parameters" : [], "return_type" : {"tag" : "type_reference", "name":"INTEGER"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : []}] }'.
 
 	result := self visitJsonCode.
 
@@ -1413,7 +1418,7 @@ SyntaxJsonToFASTTests >> testDoStatementEmptyInitIncrementLimit [
       end do
       end
 '.
-	jsonCode := ' end do |^ ./fortranCode.F, line 3: column 13: Error:	"CONTINUE %EOL" is inserted before "END". { "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "do_statement", "start_pos" : {"line" : "2", "column":"7"}, "loop_control" : {"variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"10"}, "name":"I"}, "init" : {"tag" : "array_element_name", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"14"}, "name":"LEN"}, "qualifiers_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"18"}, "name":"CHAINE"}]}, "limit" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"26"}, "value":"1"}, "increment" : {"tag" : "constant_signed", "sign" : "-", "constant" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"29"}, "value":"1"}}}, "statement_list" : [{"tag" : "continue_statement", "start_pos" : {"line" : "3", "column":"13"}}]}]}] }'.
+	jsonCode := ' end do |^ ./fortranCode.F, line 3: column 13: Error:	"CONTINUE %EOL" is inserted before "END". { "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "do_statement", "start_pos" : {"line" : "2", "column":"7"}, "loop_control" : {"variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"10"}, "name":"I"}, "init" : {"tag" : "array_element_name", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"14"}, "name":"LEN"}, "qualifiers_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"18"}, "name":"CHAINE"}]}, "limit" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"26"}, "value":"1"}, "increment" : {"tag" : "constant_signed", "sign" : "-", "constant" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"29"}, "value":"1"}}}, "statement_list" : [{"tag" : "continue_statement", "start_pos" : {"line" : "3", "column":"13"}}], "end_do" : {"label":""}}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -1455,7 +1460,7 @@ SyntaxJsonToFASTTests >> testDoStatementEmptyNoIncrement [
       end do
       end
 '.
-	jsonCode := ' end do |^ ./fortranCode.F, line 3: column 13: Error:	"CONTINUE %EOL" is inserted before "END". { "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "do_statement", "start_pos" : {"line" : "2", "column":"7"}, "loop_control" : {"variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"10"}, "name":"I"}, "init" : "limit" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"12"}, "value":"1"}}, "statement_list" : [{"tag" : "continue_statement", "start_pos" : {"line" : "3", "column":"13"}}]}]}] }'.
+	jsonCode := ' end do |^ ./fortranCode.F, line 3: column 13: Error:	"CONTINUE %EOL" is inserted before "END". { "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "do_statement", "start_pos" : {"line" : "2", "column":"7"}, "loop_control" : {"variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"10"}, "name":"I"}, "init" : "limit" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"12"}, "value":"1"}}, "statement_list" : [{"tag" : "continue_statement", "start_pos" : {"line" : "3", "column":"13"}}], "end_do" : {"label":""}}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -1505,7 +1510,7 @@ SyntaxJsonToFASTTests >> testDoStatementNestedOneContinue [
    30 CONTINUE
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "7", "column":"9"}, "statement_list" : [{"tag" : "do_statement", "start_pos" : {"line" : "2", "column":"7"}, "statement_number" : {"label_ref":"30"}, "loop_control" : {"variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"L"}, "init" : "limit" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"15"}, "value":"1"}}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "3", "column":"7"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"7"}, "name":"A"}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "3", "column":"9"}, "value":"1"}}]}, {"tag" : "do_statement", "start_pos" : {"line" : "4", "column":"7"}, "statement_number" : {"label_ref":"30"}, "loop_control" : {"variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"13"}, "name":"M"}, "init" : "limit" : {"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"15"}, "name":"L"}}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "5", "column":"7"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "5", "column":"7"}, "name":"A"}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "5", "column":"9"}, "value":"2"}}]}, {"label" : "30", "tag" : "continue_statement", "start_pos" : {"line" : "6", "column":"7"}}]}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "7", "column":"9"}, "statement_list" : [{"tag" : "do_statement", "start_pos" : {"line" : "2", "column":"7"}, "statement_number" : {"label_ref":"30"}, "loop_control" : {"variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"L"}, "init" : "limit" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"15"}, "value":"1"}}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "3", "column":"7"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"7"}, "name":"A"}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "3", "column":"9"}, "value":"1"}}]}, {"tag" : "do_statement", "start_pos" : {"line" : "4", "column":"7"}, "statement_number" : {"label_ref":"30"}, "loop_control" : {"variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"13"}, "name":"M"}, "init" : "limit" : {"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"15"}, "name":"L"}}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "5", "column":"7"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "5", "column":"7"}, "name":"A"}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "5", "column":"9"}, "value":"2"}}]}, {"label" : "30", "tag" : "continue_statement", "start_pos" : {"line" : "6", "column":"7"}}]}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -1558,7 +1563,7 @@ C comment in loop
       end do
       end
 '.
-	jsonCode := ' end do |^ /home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f, line 4: column 13: Error:	"CONTINUE %EOL" is inserted before "END". { "tag":"fortran_file", "comments": { "3":"C comment in loop\n" }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "5", "column":"9"}, "statement_list" : [{"tag" : "do_statement", "start_pos" : {"line" : "2", "column":"7"}, "loop_control" : {"variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"10"}, "name":"I"}, "init" : "limit" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"12"}, "value":"1"}}, "statement_list" : [{"tag" : "continue_statement", "start_pos" : {"line" : "4", "column":"13"}}], "end_do" : {"label":""}}]}] }'.
+	jsonCode := ' end do |^ ./fortranCode.F, line 4: column 13: Error:	"CONTINUE %EOL" is inserted before "END". { "tag":"fortran_file", "comments": { "3":"C comment in loop\n" }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "5", "column":"9"}, "statement_list" : [{"tag" : "do_statement", "start_pos" : {"line" : "2", "column":"7"}, "loop_control" : {"variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"10"}, "name":"I"}, "init" : "limit" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"12"}, "value":"1"}}, "statement_list" : [{"tag" : "continue_statement", "start_pos" : {"line" : "4", "column":"13"}}], "end_do" : {"label":""}}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -1584,7 +1589,7 @@ SyntaxJsonToFASTTests >> testDoStatementWithLabelAndContinue [
 100   continue
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "5", "column":"9"}, "statement_list" : [{"tag" : "do_statement", "start_pos" : {"line" : "2", "column":"7"}, "statement_number" : {"label_ref":"100"}, "loop_control" : {"variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"14"}, "name":"I"}, "init" : "limit" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"16"}, "value":"1"}}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "3", "column":"7"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"7"}, "name":"A"}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "3", "column":"9"}, "value":"1"}}]}, {"label" : "100", "tag" : "continue_statement", "start_pos" : {"line" : "4", "column":"7"}}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "5", "column":"9"}, "statement_list" : [{"tag" : "do_statement", "start_pos" : {"line" : "2", "column":"7"}, "statement_number" : {"label_ref":"100"}, "loop_control" : {"variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"14"}, "name":"I"}, "init" : "limit" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"16"}, "value":"1"}}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "3", "column":"7"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"7"}, "name":"A"}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "3", "column":"9"}, "value":"1"}}]}, {"label" : "100", "tag" : "continue_statement", "start_pos" : {"line" : "4", "column":"7"}}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -1627,7 +1632,7 @@ SyntaxJsonToFASTTests >> testDoStatementWithLabelAndTerminalStatement [
 100   print *,i
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "do_statement", "start_pos" : {"line" : "2", "column":"7"}, "statement_number" : {"label_ref":"100"}, "loop_control" : {"variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"14"}, "name":"I"}, "init" : "limit" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"16"}, "value":"1"}}, "statement_list" : [{"label" : "100", "tag" : "print_statement", "start_pos" : {"line" : "3", "column":"7"}, "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"15"}, "name":"I"}], "format" : [{"asterisk":"*"}]}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "do_statement", "start_pos" : {"line" : "2", "column":"7"}, "statement_number" : {"label_ref":"100"}, "loop_control" : {"variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"14"}, "name":"I"}, "init" : "limit" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"16"}, "value":"1"}}, "statement_list" : [{"label" : "100", "tag" : "print_statement", "start_pos" : {"line" : "3", "column":"7"}, "format" : [{"asterisk":"*"}], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"15"}, "name":"I"}]}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -1853,7 +1858,7 @@ SyntaxJsonToFASTTests >> testFunctionNoParameter [
 	self assert: fct startPos equals: 7.
 	self assert: fct endPos equals: 39.
 
-	self assert: fct returnType class equals: FASTFortranIntegerType.
+	self assert: fct returnType class equals: FASTFortranIntegerType
 ]
 
 { #category : #'tests-statement' }
@@ -1911,7 +1916,7 @@ SyntaxJsonToFASTTests >> testFunctionWithParameter [
 
 	param := fct parameters second.
 	self assert: param class equals: FASTFortranScalarVariable.
-	self assert: param name equals: 'J'.
+	self assert: param name equals: 'J'
 	"self assert: param startPos equals: 32."
 ]
 
@@ -1923,7 +1928,7 @@ SyntaxJsonToFASTTests >> testFunctionWithStatement [
       return 1
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "function", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"24"}, "name":"AFCT"}, "prog_unit_parameters" : [], "return_type" : {"tag" : "type_reference", "name":"INTEGER"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "return_statement", "start_pos" : {"line" : "2", "column":"7"}}]}] }'.
+	jsonCode := ' return 1 |^ ./fortranCode.F, line 2: column 14: Error:	An alternate return is not allowed in a function subprogram, this expression is erased. { "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "function", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"24"}, "name":"AFCT"}, "prog_unit_parameters" : [], "return_type" : {"tag" : "type_reference", "name":"INTEGER"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "return_statement", "start_pos" : {"line" : "2", "column":"7"}}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -2101,7 +2106,9 @@ SyntaxJsonToFASTTests >> testIfElseIf [
 	self assert: ifStatement elseStatementBlock startPos equals: 158.
 	self assert: ifStatement elseStatementBlock endPos equals: 193.
 
-	self assert: ifStatement elseStatementBlock statements first class equals: FASTFortranAssignmentStatement
+	self
+		assert: ifStatement elseStatementBlock statements first class
+		equals: FASTFortranAssignmentStatement
 ]
 
 { #category : #'tests-statement' }
@@ -2115,7 +2122,7 @@ C comment in else part
        END IF
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { "4":"C comment in else part\n" }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "6", "column":"9"}, "statement_list" : [{"tag" : "block_if_statement", "start_pos" : {"line" : "2", "column":"8"}, "condition" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"A"}, "then_statements" : [], "else_block" : {"tag" : "else", "start_pos" : {"line" : "3", "column":"8"}, "statement_list" : [], "end_if" : {"tag" : "end_if", "start_pos" : {"line" : "5", "column":"8"}}}}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { "4":"C comment in else part\n" }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "6", "column":"9"}, "statement_list" : [{"tag" : "block_if_statement", "start_pos" : {"line" : "2", "column":"8"}, "condition" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"A"}, "then_statements" : [], "else_block" : {"tag" : "else", "start_pos" : {"line" : "3", "column":"8"}, "statement_list" : [], "end_if" : {"tag" : "end_if", "start_pos" : {"line" : "5", "column":"8"}}}}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -2125,7 +2132,7 @@ C comment in else part
 	self assert: conditional elseStatementBlock statements isEmpty.
 	self assert: conditional elseStatementBlock comments size equals: 1.
 	self assert: conditional elseStatementBlock startPos equals: 51.
-	self assert: conditional elseStatementBlock endPos equals: 91.
+	self assert: conditional elseStatementBlock endPos equals: 91
 ]
 
 { #category : #'tests-statement' }
@@ -2178,8 +2185,7 @@ SyntaxJsonToFASTTests >> testIfEmpty [
 		equals: FASTFortranArrayVariable.
 	self assert: ifStatement condition name equals: 'A'.
 	self assert: ifStatement thenStatementBlock statements size equals: 0.
-	self assert: ifStatement elseStatementBlock equals: nil.
-
+	self assert: ifStatement elseStatementBlock equals: nil
 ]
 
 { #category : #'tests-statement' }
@@ -2239,27 +2245,23 @@ SyntaxJsonToFASTTests >> testIfThenWithTwoStatements [
 	fortranCode := '      PROGRAM MYPROG
       if (iur .eq. 0) then 
          write(*,*) '' user'',name,'' does not exist''
-         return
+10       continue
       end if 
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "6", "column":"9"}, "statement_list" : [{"tag" : "block_if_statement", "start_pos" : {"line" : "2", "column":"7"}, "condition" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "binary_expression", "lhs" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"11"}, "name":"IUR"}, "operator" : ".EQ.", "rhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"20"}, "value":"0"}}}}}, "then_statements" : [{"tag" : "write_statement", "start_pos" : {"line" : "3", "column":"10"}, "control_info_list" : [{"asterisk":"*"},{"asterisk":"*"}], "io_list" : [{"tag" : "character_expression", "expression" : {"tag" : "character_constant", "start_pos" : {"line" : "3", "column":"21"}, "value":"'' user''"}},{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"29"}, "name":"NAME"},{"tag" : "character_expression", "expression" : {"tag" : "character_constant", "start_pos" : {"line" : "3", "column":"34"}, "value":"'' does not exist''"}}]}, {"tag" : "return_statement", "start_pos" : {"line" : "4", "column":"10"}}], "else_block" : {"statement_list" : [], "end_if" : {"tag" : "end_if", "start_pos" : {"line" : "5", "column":"7"}}}}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "6", "column":"9"}, "statement_list" : [{"tag" : "block_if_statement", "start_pos" : {"line" : "2", "column":"7"}, "condition" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "binary_expression", "lhs" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"11"}, "name":"IUR"}, "operator" : ".EQ.", "rhs" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"20"}, "value":"0"}}}}}, "then_statements" : [{"tag" : "write_statement", "start_pos" : {"line" : "3", "column":"10"}, "control_info_list" : [{"asterisk":"*"},{"asterisk":"*"}], "io_list" : [{"tag" : "character_expression", "expression" : {"tag" : "character_constant", "start_pos" : {"line" : "3", "column":"21"}, "value":"'' user''"}},{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"29"}, "name":"NAME"},{"tag" : "character_expression", "expression" : {"tag" : "character_constant", "start_pos" : {"line" : "3", "column":"34"}, "value":"'' does not exist''"}}]}, {"label" : "10", "tag" : "continue_statement", "start_pos" : {"line" : "4", "column":"10"}}], "else_block" : {"statement_list" : [], "end_if" : {"tag" : "end_if", "start_pos" : {"line" : "5", "column":"7"}}}}]}] }'' user''"}},{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"29"}, "name":"NAME"},{"tag" : "character_expression", "expression" : {"tag" : "character_constant", "start_pos" : {"line" : "3", "column":"34"}, "value":"'' does not exist''"}}]}, {"tag" : "return_statement", "start_pos" : {"line" : "4", "column":"10"}}], "else_block" : {"statement_list" : [], "end_if" : {"tag" : "end_if", "start_pos" : {"line" : "5", "column":"7"}}}}]}] }'.
 
 	result := self visitJsonCode.
 
 	ifStatement := result first statementBlock statements first.
 	self assert: ifStatement class equals: FASTFortranIfBlockStatement.
 	self assert: ifStatement thenStatementBlock startPos equals: 59.
-	self assert: ifStatement thenStatementBlock endPos equals: 115.
+	self assert: ifStatement thenStatementBlock endPos equals: 117.
 
 	thenStatements := ifStatement thenStatementBlock statements.
 	self assert: thenStatements size equals: 2.
-	self
-		assert: thenStatements first class
-		equals: FASTFortranWriteStatement.
-	self
-		assert: thenStatements second class
-		equals: FASTFortranReturnStatement.
+	self assert: thenStatements first class equals: FASTFortranWriteStatement.
+	self assert: thenStatements second class equals: FASTFortranContinueStatement 
 ]
 
 { #category : #'tests-statement' }
@@ -2680,7 +2682,7 @@ SyntaxJsonToFASTTests >> testMainProgramAndSubroutine [
 	self assert: progUnit class equals: FASTFortranSubroutine.
 	self assert: progUnit name equals: 'RANK'.
 	self assert: progUnit startPos equals: 47.
-	self assert: progUnit endPos equals: 71.
+	self assert: progUnit endPos equals: 71
 ]
 
 { #category : #'tests-programUnit' }
@@ -2865,7 +2867,7 @@ SyntaxJsonToFASTTests >> testPrintFormatLabel [
       PRINT 10, X
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"25"}, "name":"MSG"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "print_statement", "start_pos" : {"line" : "2", "column":"7"}, "format" : [{"label_ref":"10"}], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"17"}, "name":"X"}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"25"}, "name":"MSG"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "print_statement", "start_pos" : {"line" : "2", "column":"7"}, "format" : [{"label_ref":"10"}], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"17"}, "name":"X"}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -2891,7 +2893,7 @@ SyntaxJsonToFASTTests >> testPrintFormatStringExpression [
       PRINT ''(12 I2)'', X
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"25"}, "name":"MSG"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "print_statement", "start_pos" : {"line" : "2", "column":"7"}, "format" : [{"tag" : "character_constant", "start_pos" : {"line" : "2", "column":"13"}, "value":"''(12 I2)''"}], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"24"}, "name":"X"}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"25"}, "name":"MSG"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "print_statement", "start_pos" : {"line" : "2", "column":"7"}, "format" : [{"tag" : "character_constant", "start_pos" : {"line" : "2", "column":"13"}, "value":"''(12 I2)''"}], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"24"}, "name":"X"}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -2917,7 +2919,7 @@ SyntaxJsonToFASTTests >> testPrintFormatVariable [
       PRINT I, X
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"25"}, "name":"MSG"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "print_statement", "start_pos" : {"line" : "2", "column":"7"}, "format" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"I"}], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"16"}, "name":"X"}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"25"}, "name":"MSG"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "print_statement", "start_pos" : {"line" : "2", "column":"7"}, "format" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"I"}], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"16"}, "name":"X"}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -2943,7 +2945,7 @@ SyntaxJsonToFASTTests >> testPrintMultipleVariables [
       PRINT *, X, Y, Z
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"25"}, "name":"MSG"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "print_statement", "start_pos" : {"line" : "2", "column":"7"}, "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"16"}, "name":"X"},{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"19"}, "name":"Y"},{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"22"}, "name":"Z"}], "format" : [{"asterisk":"*"}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"25"}, "name":"MSG"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "print_statement", "start_pos" : {"line" : "2", "column":"7"}, "format" : [{"asterisk":"*"}], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"16"}, "name":"X"},{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"19"}, "name":"Y"},{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"22"}, "name":"Z"}]}]}] }'.
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
@@ -2976,7 +2978,7 @@ SyntaxJsonToFASTTests >> testPrintOneVariable [
       PRINT *, X
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"25"}, "name":"MSG"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "print_statement", "start_pos" : {"line" : "2", "column":"7"}, "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"16"}, "name":"X"}], "format" : [{"asterisk":"*"}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"25"}, "name":"MSG"}], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "print_statement", "start_pos" : {"line" : "2", "column":"7"}, "format" : [{"asterisk":"*"}], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"16"}, "name":"X"}]}]}] }'.
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
@@ -3000,7 +3002,7 @@ SyntaxJsonToFASTTests >> testReadWithFormat [
       READ( 3, ''(5F4.1)'') V
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "read_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [{"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"13"}, "value":"3"},{"tag" : "character_constant", "start_pos" : {"line" : "2", "column":"16"}, "value":"''(5F4.1)''"}], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"27"}, "name":"V"}], "format" : []}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "read_statement", "start_pos" : {"line" : "2", "column":"7"}, "format" : [], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"27"}, "name":"V"}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -3036,7 +3038,7 @@ SyntaxJsonToFASTTests >> testReadWithFormatLabelRef [
       READ 10, V
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "read_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"16"}, "name":"V"}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "read_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"16"}, "name":"V"}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -3072,7 +3074,7 @@ SyntaxJsonToFASTTests >> testReadWithFormatStringExpression [
       READ ''(12 I2)'', V
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "read_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"23"}, "name":"V"}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "read_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"23"}, "name":"V"}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -3108,7 +3110,7 @@ SyntaxJsonToFASTTests >> testReadWithFormatVariable [
       READ I, V
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "read_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"15"}, "name":"V"}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYSUB"}, "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "read_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [], "io_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"15"}, "name":"V"}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -3144,7 +3146,7 @@ SyntaxJsonToFASTTests >> testReturnStatementEmpty [
       return
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYPROG"}, "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "return_statement", "start_pos" : {"line" : "2", "column":"7"}}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"MYPROG"}, "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "return_statement", "start_pos" : {"line" : "2", "column":"7"}}]}] }'.
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
@@ -3321,7 +3323,7 @@ SyntaxJsonToFASTTests >> testSubroutineEmpty [
 	self assert: rtn parameters isEmpty.
 	self assert: rtn statementBlock statements isEmpty.
 	self assert: rtn startPos equals: 7.
-	self assert: rtn endPos equals: 31.
+	self assert: rtn endPos equals: 31
 ]
 
 { #category : #'tests-programUnit' }
@@ -3332,7 +3334,7 @@ SyntaxJsonToFASTTests >> testSubroutineWithComment [
 C This is a comment
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { "2":"C This is a comment\n" }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"RANK"}, "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : []}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { "2":"C This is a comment\n" }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"RANK"}, "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : []}] }'.
 
 	result := self visitJsonCode.
 
@@ -3347,8 +3349,7 @@ C This is a comment
 
 	self assert: rtn comments size equals: 1.
 	self assert: rtn comments first startPos equals: 22.
-	self assert: rtn comments first endPos equals: 41.
-	
+	self assert: rtn comments first endPos equals: 41
 ]
 
 { #category : #'tests-programUnit' }
@@ -3377,7 +3378,7 @@ SyntaxJsonToFASTTests >> testSubroutineWithParameters [
 	"self assert: param startPos equals: 36."
 
 	param := rtn parameters second.
-	self assert: param name equals: 'B'.
+	self assert: param name equals: 'B'
 	"self assert: param startPos equals: 39."
 ]
 
@@ -3420,10 +3421,10 @@ SyntaxJsonToFASTTests >> testTokenPosition [
 	fortranCode := '      PROGRAM MYPROG
        STOP
 100    CONTINUE
-       EXIT
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/fast-fortran-syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "5", "column":"9"}, "statement_list" : [{"tag" : "stop_statement", "start_pos" : {"line" : "2", "column":"8"}}, {"label" : "100", "tag" : "continue_statement", "start_pos" : {"line" : "3", "column":"8"}}, {"tag" : "assignment_statement", "start_pos" : {"line" : "4", "column":"8"}, "left" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"8"}, "name":"EXIT"}], "right" : [{"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "logical_constant", "start_pos" : {"line" : "4", "column":"12"}, "value":".FALSE."}}}}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "stop_statement", "start_pos" : {"line" : "2", "column":"8"}}, {"label" : "100", "tag" : "continue_statement", "start_pos" : {"line" : "3", "column":"8"}}]}] }'.
+
 	result := self visitJsonCode.
 
 	stmnts := result first statementBlock statements.
