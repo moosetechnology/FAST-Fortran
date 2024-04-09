@@ -8,8 +8,8 @@ I represent Fortran Arithmetic Integer Literal (Constant)
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `parentIOStatement` | `FASTFortranTIOParameter` | `ioParameters` | `FASTFortranAbstractIOStatement` | |
-| `parentStatement` | `FASTFortranTFormat` | `format` | `FASTFortranTWithFormat` | Formatted statement (PRINT or IOStatement)|
 | `parentStatement` | `FASTFortranTFormat` | `format` | `FASTFortranAbstractIOStatement` | |
+| `parentStatement` | `FASTFortranTFormat` | `format` | `FASTFortranTWithFormat` | Formatted statement (PRINT or IOStatement)|
 | `parentTypeSize` | `FASTFortranIntegerLiteral` | `size` | `FASTFortranType` | |
 
 
