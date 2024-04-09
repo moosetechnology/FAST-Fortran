@@ -2635,7 +2635,7 @@ FortranToFASTTests >> testPrintOneVariable [
 ]
 
 { #category : #'tests-statement' }
-FortranToFASTTests >> testReadWithFormat [
+FortranToFASTTests >> testReadWithIOParams [
 
 	| stmt result |
 	fortranCode := '      subroutine mysub ()

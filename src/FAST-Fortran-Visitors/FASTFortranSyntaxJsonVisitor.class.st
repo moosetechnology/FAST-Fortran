@@ -1124,7 +1124,8 @@ FASTFortranSyntaxJsonVisitor >> visitReadStatement: aNode [
 	data := super visitReadStatement: aNode.
 
 	^(self newLabeledStatement: FASTFortranReadStatement withPosition: data)
-		ioParameters: (data at: #control_info_list) ;
+		ioParameters: (data at: #control_info_list ifAbsent: [ #() ]) ;
+		format: (data at: #format ifAbsent: [ nil ]) ;
 		arguments: (data at: #io_list) ;
 		yourself
 ]
