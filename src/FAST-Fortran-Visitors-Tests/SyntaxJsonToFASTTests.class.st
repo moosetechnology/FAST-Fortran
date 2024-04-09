@@ -83,7 +83,8 @@ SyntaxJsonToFASTTests >> testArrayDeclaration [
       integer arr(10)
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "name":"INTEGER"}, "declarators" : [{"tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"15"}, "name":"ARR"}, "dimension_declarators" : [{"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"19"}, "value":"10"}}]}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "name":"INTEGER"}, "declarators" : [{"tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"15"}, "name":"ARR"}, "dimension_declarators" : [{"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"19"}, "value":"10"}}]}]}]}] }'.
+
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
@@ -93,8 +94,8 @@ SyntaxJsonToFASTTests >> testArrayDeclaration [
 	self assert: stmt declarators size equals: 1.
 
 	declarator := stmt declarators first.
-	self assert: declarator variable class equals: FASTFortranVariable.
-	self assert: declarator variable name equals: 'ARR'.
+	self assert: declarator class equals: FASTFortranVariableDeclarator.
+	self assert: declarator name equals: 'ARR'.
 	self assert: declarator dimensions size equals: 1.
 	self
 		assert: declarator dimensions first class
@@ -111,12 +112,13 @@ SyntaxJsonToFASTTests >> testArrayDeclaration [
 { #category : #'tests-statement' }
 SyntaxJsonToFASTTests >> testArrayDeclarationDimensionsWithOperation [
 
-	| result stmt declarator |
+	| result stmt declarator bound |
 	fortranCode := '      PROGRAM MYPROG
       integer arr(0:max-1)
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "name":"INTEGER"}, "declarators" : [{"tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"15"}, "name":"ARR"}, "dimension_declarators" : [{"lower_bound" : {"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"19"}, "value":"0"}}, "upper_bound" : {"tag" : "binary_expression", "lhs" : {"tag" : "variable_expression", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"21"}, "name":"MAX"}}, "operator" : "-", "rhs" : {"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"25"}, "value":"1"}}}}]}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "name":"INTEGER"}, "declarators" : [{"tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"15"}, "name":"ARR"}, "dimension_declarators" : [{"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"19"}, "value":"10"}}]}]}]}] }'.
+
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
@@ -127,33 +129,21 @@ SyntaxJsonToFASTTests >> testArrayDeclarationDimensionsWithOperation [
 
 	declarator := stmt declarators first.
 
-	self
-		assert: declarator dimensions first lowerBound class
-		equals: FASTFortranIntegerLiteral.
-	self
-		assert: declarator dimensions first lowerBound primitiveValue
-		equals: '0'.
+	self assert: declarator dimensions size equals: 1.
+	self assert: declarator dimensions anyOne class equals: FASTFortranArrayRange.
 
-	self
-		assert: declarator dimensions first upperBound class
-		equals: FASTFortranBinaryExpression.
-	self
-		assert: declarator dimensions first upperBound left class
-		equals: FASTFortranScalarVariable.
-	self
-		assert: declarator dimensions first upperBound left name
-		equals: 'MAX'.
+	bound := declarator dimensions anyOne lowerBound.
+	self assert: bound class equals: FASTFortranIntegerLiteral.
+	self assert: bound primitiveValue	equals: '0'.
 
-	self
-		assert: declarator dimensions first upperBound operator
-		equals: '-'.
+	bound := declarator dimensions anyOne upperBound.
+	self assert: bound class equals: FASTFortranBinaryExpression.
+	self assert: bound left class equals: FASTFortranScalarVariable.
+	self assert: bound left name equals: 'MAX'.
 
-	self
-		assert: declarator dimensions first upperBound right class
-		equals: FASTFortranIntegerLiteral.
-	self
-		assert: declarator dimensions first upperBound right primitiveValue
-		equals: '1'
+	self assert: bound operator equals: '-'.
+	self assert: bound right class equals: FASTFortranIntegerLiteral.
+	self assert: bound right primitiveValue equals: '1'
 ]
 
 { #category : #'tests-statement' }
