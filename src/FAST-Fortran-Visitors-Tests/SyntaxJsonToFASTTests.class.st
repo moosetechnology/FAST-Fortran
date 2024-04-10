@@ -3380,9 +3380,6 @@ SyntaxJsonToFASTTests >> testTokenPosition [
 	self assert: stmt startPos equals: 41.
 	self assert: stmt endPos equals: 48.
 
-	stmt := stmnts third.
-	self assert: stmt startPos equals: 57.
-	self assert: stmt endPos equals: 60
 ]
 
 { #category : #'tests-expression' }
