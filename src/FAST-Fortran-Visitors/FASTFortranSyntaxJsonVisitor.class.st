@@ -95,6 +95,22 @@ FASTFortranSyntaxJsonVisitor >> initLineSizes: fortranSource [
 	lineSizes := fortranSource lines collect: #size
 ]
 
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> makeLoopControl: data [
+
+	| init |
+	init := (self newEntity: FASTFortranAssignmentExpression)
+		        variable: (data at: #variable_name);
+		        expression: (data at: #init);
+		        yourself.
+
+	^ (self newEntity: FASTFortranLoopControlExpression)
+		  init: init;
+		  limit: (self variableNameOrExpression: (data at: #limit));
+		  increment: (data at: #increment ifAbsent: [ nil ]);
+		  yourself
+]
+
 { #category : #helpers }
 FASTFortranSyntaxJsonVisitor >> newEntity: aFASTFortranClass [
 
@@ -525,6 +541,26 @@ FASTFortranSyntaxJsonVisitor >> visitControlInfoOption: aNode [
 		  expression: expression ;
 		  variable: (self variableNameOrExpression: (data at: #symbolic_name)) ;
 		  yourself
+]
+
+{ #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitDataImplyDoList: aNode [
+    "dlist init limit increment"
+
+	| data vars |
+	data := super visitDataImplyDoList: aNode.
+
+	vars := (data at: #dlist) collect: [:var |
+		(self newEntity: FASTFortranScalarVariable) name: var ].
+	data
+		at: #variable_name
+		put: ((self newEntity: FASTFortranScalarVariable) name: (data at: #variable_name)).
+
+	^(self newEntity: FASTFortranImpliedDoExpression)
+		variables: vars ;
+		loopControl: (self makeLoopControl: data) ;
+		yourself
+		
 ]
 
 { #category : #visiting }
@@ -988,21 +1024,9 @@ FASTFortranSyntaxJsonVisitor >> visitLogicalType: aNode [
 
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitLoopControl: aNode [
-	"variable_name init increment"
+	"variable_name init limit increment"
 
-	| data init |
-	data := super visitLoopControl: aNode.
-
-	init := (self newEntity: FASTFortranAssignmentExpression)
-		variable: (data at: #variable_name) ;
-		expression: (data at: #init) ;
-		yourself.
-
-	^(self newEntity: FASTFortranLoopControlExpression)
-		init: init ;
-		limit: (self variableNameOrExpression: (data at: #limit)) ;
-		increment: (data at: #increment ifAbsent: [nil] ) ;
-		yourself
+	^ self makeLoopControl: (super visitLoopControl: aNode)
 ]
 
 { #category : #'visiting prog-unit' }

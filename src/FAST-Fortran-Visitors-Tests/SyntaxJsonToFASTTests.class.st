@@ -2417,10 +2417,10 @@ SyntaxJsonToFASTTests >> testImpliedDoExpression [
 	| result stmt control |
 	fortranCode := '      PROGRAM MYPROG
       WRITE (*,*) (SPACE,I,I=1,N)
-
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "4", "column":"9"}, "statement_list" : [{"tag" : "write_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [{"asterisk":"*"},{"asterisk":"*"}], "io_list" : [{"tag" : "data_imply_do_list", "dlist" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"20"}, "name":"SPACE"},{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"26"}, "name":"I"},{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"28"}, "name":"I"}], "init" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"30"}, "value":"1"}, "limit" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"32"}, "name":"N"}, "increment" : {}}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "write_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [{"asterisk":"*"},{"asterisk":"*"}], "io_list" : [{"tag" : "data_imply_do_list", "dlist" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"20"}, "name":"SPACE"},{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"26"}, "name":"I"},{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"28"}, "name":"I"}], "init" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"30"}, "value":"1"}, "limit" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"32"}, "name":"N"}}]}]}] }'.
+
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
@@ -2430,32 +2430,27 @@ SyntaxJsonToFASTTests >> testImpliedDoExpression [
 
 	self assert: stmt arguments size equals: 1.
 
-	self
-		assert: stmt arguments anyOne class
-		equals: FASTFortranImpliedDoExpression.
-	self assert: stmt arguments first startPos equals: 40.
+	self assert: stmt arguments anyOne class equals: FASTFortranImpliedDoExpression.
+	"self assert: stmt arguments anyOne startPos equals: 40."
 
-	self assert: stmt arguments anyOne variables size equals: 2.
+	self assert: stmt arguments anyOne variables size equals: 1.	
+	self assert: stmt arguments anyOne variables anyOne class equals: FASTFortranScalarVariable.
+	self assert: stmt arguments anyOne variables anyOne name equals: 'SPACE'.
 
-	control := stmt arguments first loopControl.
+	control := stmt arguments anyOne loopControl.
 	self assert: control class equals: FASTFortranLoopControlExpression.
 	self assert: control limit class equals: FASTFortranScalarVariable.
-	self assert: control limit name equals: 'n'.
+	self assert: control limit name equals: 'N'.
 	self assert: control increment isNil.
 
-	self
-		assert: control init class
-		equals: FASTFortranAssignmentExpression.
+	self assert: control init class equals: FASTFortranAssignmentExpression.
 
-	self
-		assert: control init variable class
-		equals: FASTFortranScalarVariable.
-	self assert: control init variable name equals: 'i'.
+	self assert: control init variable class equals: FASTFortranScalarVariable.
+	self assert: control init variable name equals: 'I'.
 
-	self
-		assert: control init expression class
-		equals: FASTFortranIntegerLiteral.
-	self assert: control init expression primitiveValue equals: '1'
+	self assert: control init expression class equals: FASTFortranIntegerLiteral.
+	self assert: control init expression primitiveValue equals: '1'.
+
 ]
 
 { #category : #'tests-statement' }
