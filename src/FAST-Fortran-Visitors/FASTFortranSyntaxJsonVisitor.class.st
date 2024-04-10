@@ -160,7 +160,7 @@ FASTFortranSyntaxJsonVisitor >> nextComment [
 	line := lineComment key asInteger.
 
 	^currentComment := 	(self newEntity: FASTFortranComment)
-		content: lineComment value ;
+		content: lineComment value trim ;
 		startPos: line @ 0 ;
 		endPos: line @ (lineSizes at: line) ;
 		yourself

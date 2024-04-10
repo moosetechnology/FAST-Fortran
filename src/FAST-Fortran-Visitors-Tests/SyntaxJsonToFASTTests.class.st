@@ -931,11 +931,11 @@ C comment in a function''s body
 
 	result := self visitJsonCode.
 
-	self assert: result first statementBlock comments size equals: 1.
+	self assert: result first comments size equals: 1.
 
-	cmt := result first statementBlock comments anyOne.
+	cmt := result first comments anyOne.
 	self assert: cmt content equals: 'C comment in a function''s body'.
-	self assert: cmt startPos equals: 31.
+	self assert: cmt startPos equals: 30.
 	self assert: cmt endPos equals: 60
 ]
 
