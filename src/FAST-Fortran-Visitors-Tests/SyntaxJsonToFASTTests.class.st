@@ -1842,6 +1842,8 @@ SyntaxJsonToFASTTests >> testFunctionNoParameter [
 SyntaxJsonToFASTTests >> testFunctionStatement [
 
 	| result stmt |
+	self skip: 'knowing that this is a function and not an array depends on semantic information. Must be treated after import and symbol resolution.'.
+
 	fortranCode := '      program main
       add(x,y) = x + y
       end
