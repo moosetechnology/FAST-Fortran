@@ -1649,7 +1649,7 @@ SyntaxJsonToFASTTests >> testEntryStatement [
       ENTRY XYZ(ABC,*)
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "subroutine", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"18"}, "name":"SUBRTN"}, "parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"XYZ"}, "parameters" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"17"}, "name":"ABC"}, "*"], "tag" : "entry_statement", "start_pos" : {"line" : "2", "column":"7"}}]}] }'.
+	jsonCode := ''.
 
 	result := self visitJsonCode.
 
@@ -1849,7 +1849,8 @@ SyntaxJsonToFASTTests >> testFunctionStatement [
       add(x,y) = x + y
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "2", "column":"7"}, "left" : [{"tag" : "array_element_name", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"7"}, "name":"ADD"}, "qualifiers_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"11"}, "name":"X"}, {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"13"}, "name":"Y"}]}], "right" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "binary_expression", "lhs" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"18"}, "name":"X"}, "operator" : "+", "rhs" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"22"}, "name":"Y"}}}]}]}] }'.
+	jsonCode := ''.
+
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
