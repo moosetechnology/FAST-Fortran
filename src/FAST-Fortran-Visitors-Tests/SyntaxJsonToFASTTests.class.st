@@ -1122,21 +1122,22 @@ SyntaxJsonToFASTTests >> testDeclarationIntegerWithInitializer [
 
 	self assert: result first statementBlock statements size equals: 1.
 
-	stmt := result first statementBlock statements first.
-	self
-		assert: stmt class
-		equals: FASTFortranVariableDeclarationStatement.
+	stmt := result first statementBlock statements first.	
+
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
 	self assert: stmt startPos equals: 26.
 	self assert: stmt endPos equals: 34.
-
 	self assert: stmt declarators size equals: 1.
+
 	declarator := stmt declarators anyOne.
+
 	self assert: declarator class equals: FASTFortranVariableDeclarator.
-	self assert: declarator variable equals: 'i'.
+	self assert: declarator name equals: 'i'.
 	self assert: declarator startPos equals: 34.
 
 	self assert: stmt type class equals: FASTFortranIntegerType.
-	self assert: stmt type startPos equals: 26
+	self assert: stmt type startPos equals: 26.
+
 ]
 
 { #category : #'tests-statement' }
@@ -3428,34 +3429,6 @@ SyntaxJsonToFASTTests >> testUnaryMinusVariable [
 ]
 
 { #category : #'tests-statement' }
-SyntaxJsonToFASTTests >> testVariableDeclarationCharacter [
-
-	| result stmt var |
-	fortranCode := '      program main
-      character*40 aString
-      end
-'.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "name" : "CHARACTER", "len_specification" : {"tag" : "nonzero_unsigned_int_constant", "start_pos" : {"line" : "2", "column":"17"}, "value":"40"}}, "declarators" : [{"tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"17"}, "name":"ASTRING"}, "dimension_declarators" : []}]}]}] }'.
-	result := self visitJsonCode.
-
-	self assert: result first statementBlock statements size equals: 1.
-
-	stmt := result first statementBlock statements first.
-	self
-		assert: stmt class
-		equals: FASTFortranVariableDeclarationStatement.
-	self assert: stmt startPos equals: 26.
-	"self assert: stmt endPos equals: 45."
-
-	self assert: stmt type class equals: FASTFortranCharacterType.
-	self assert: stmt type size class equals: FASTFortranIntegerLiteral.
-
-	self assert: stmt declarators size equals: 1.
-	var := stmt declarators first.
-	self assert: var name equals: 'ASTRING'
-]
-
-{ #category : #'tests-statement' }
 SyntaxJsonToFASTTests >> testVariableDeclarationInteger [
 
 	| result stmt var |
@@ -3560,14 +3533,14 @@ SyntaxJsonToFASTTests >> testVariableDeclarationReal [
 ]
 
 { #category : #'tests-statement' }
-SyntaxJsonToFASTTests >> testVariableDeclarationWithLength [
+SyntaxJsonToFASTTests >> testVariableDeclarationTypeSizeFixed [
 
 	| result stmt var |
 	fortranCode := '      program main
-      character var*10, str*(n)
+      character*40 aString
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "name":"CHARACTER"}, "declarators" : [{"len_specifier" : {"tag" : "nonzero_unsigned_int_constant", "start_pos" : {"line" : "2", "column":"21"}, "value":"10"}, "tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"17"}, "name":"VAR"}, "dimension_declarators" : []}, {"len_specifier" : {"tag" : "variable_expression", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"30"}, "name":"N"}}, "tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"25"}, "name":"STR"}, "dimension_declarators" : []}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "name" : "CHARACTER", "len_specification" : {"tag" : "nonzero_unsigned_int_constant", "start_pos" : {"line" : "2", "column":"17"}, "value":"40"}}, "declarators" : [{"tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"17"}, "name":"ASTRING"}, "dimension_declarators" : []}]}]}] }'.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
@@ -3581,14 +3554,15 @@ SyntaxJsonToFASTTests >> testVariableDeclarationWithLength [
 
 	self assert: stmt type class equals: FASTFortranCharacterType.
 	self assert: stmt type size class equals: FASTFortranIntegerLiteral.
+	self assert: stmt type size primitiveValue equals: '40'.
 
 	self assert: stmt declarators size equals: 1.
 	var := stmt declarators first.
-	self assert: var equals: 'ASTRING'
+	self assert: var name equals: 'ASTRING'
 ]
 
 { #category : #'tests-statement' }
-SyntaxJsonToFASTTests >> testVariableDeclarationWithStarSize [
+SyntaxJsonToFASTTests >> testVariableDeclarationTypeSizeUnknown [
 
 	| result stmt |
 	fortranCode := '      program main
@@ -3609,6 +3583,33 @@ SyntaxJsonToFASTTests >> testVariableDeclarationWithStarSize [
 
 	self assert: stmt type class equals: FASTFortranCharacterType.
 	self assert: stmt type size class equals: FASTFortranAsterisk
+]
+
+{ #category : #'tests-statement' }
+SyntaxJsonToFASTTests >> testVariableDeclarationWVariableLength [
+
+	| result stmt var |
+	fortranCode := '      program main
+      character var*10, str*(n)
+      end
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "name":"CHARACTER"}, "declarators" : [{"len_specifier" : {"tag" : "nonzero_unsigned_int_constant", "start_pos" : {"line" : "2", "column":"21"}, "value":"10"}, "tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"17"}, "name":"VAR"}, "dimension_declarators" : []}, {"len_specifier" : {"tag" : "variable_expression", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"30"}, "name":"N"}}, "tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"25"}, "name":"STR"}, "dimension_declarators" : []}]}]}] }'.
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.
+	self
+		assert: stmt class
+		equals: FASTFortranVariableDeclarationStatement.
+	self assert: stmt startPos equals: 26.
+	"self assert: stmt endPos equals: 45."
+
+	self assert: stmt type class equals: FASTFortranCharacterType.
+
+	self assert: stmt declarators size equals: 1.
+	var := stmt declarators first.
+	self assert: var equals: 'ASTRING'
 ]
 
 { #category : #'tests-statement' }

@@ -961,12 +961,12 @@ FASTFortranSyntaxJsonVisitor >> visitLenSpecification: aNode [
 	| data |
 	data := super visitLenSpecification: aNode.
 
-	^data at: #value
-		ifPresent: [ :size |
+	^data isDictionary
+		ifTrue: [ 
 			(self newEntity: FASTFortranIntegerLiteral)
-				primitiveValue: size
+				primitiveValue: (data at: #value)
 		]
-		ifAbsent: [ 	self newEntity: FASTFortranAsterisk ]
+		ifFalse: [ 	data ]
 ]
 
 { #category : #visiting }
