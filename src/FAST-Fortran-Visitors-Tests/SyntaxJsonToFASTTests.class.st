@@ -64,18 +64,12 @@ SyntaxJsonToFASTTests >> testArrayAccess [
 
 	arrayAccess := stmt expression.
 	self assert: arrayAccess class equals: FASTFortranArrayVariable.
-	self
-		assert: arrayAccess name class
-		equals: FASTFortranCharacterLiteral.
-	self assert: arrayAccess name primitiveValue equals: 'ARR'.
+	self assert: arrayAccess name equals: 'ARR'.
 	self assert: arrayAccess indices size equals: 2.
 
-	self
-		assert: arrayAccess indices first class
-		equals: FASTFortranIntegerLiteral.
-	self
-		assert: arrayAccess indices second class
-		equals: FASTFortranScalarVariable
+	self assert: arrayAccess indices first class equals: FASTFortranIntegerLiteral.
+	self assert: arrayAccess indices second class equals: FASTFortranScalarVariable.
+
 ]
 
 { #category : #'tests-statement' }
@@ -125,30 +119,29 @@ SyntaxJsonToFASTTests >> testArrayDeclarationDimensionsWithOperation [
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
-	self
-		assert: stmt class
-		equals: FASTFortranVariableDeclarationStatement.
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
 	self assert: stmt declarators size equals: 1.
 
 	declarator := stmt declarators first.
 
 	self assert: declarator dimensions size equals: 1.
-	self
-		assert: declarator dimensions anyOne class
-		equals: FASTFortranArrayRange.
+	self assert: declarator dimensions anyOne class equals: FASTFortranArrayRange.
 
 	bound := declarator dimensions anyOne lowerBound.
+
 	self assert: bound class equals: FASTFortranIntegerLiteral.
 	self assert: bound primitiveValue equals: '0'.
 
 	bound := declarator dimensions anyOne upperBound.
+
 	self assert: bound class equals: FASTFortranBinaryExpression.
-	self assert: bound left class equals: FASTFortranScalarVariable.
-	self assert: bound left name equals: 'MAX'.
+	self assert: bound leftOperand class equals: FASTFortranScalarVariable.
+	self assert: bound leftOperand name equals: 'MAX'.
 
 	self assert: bound operator equals: '-'.
-	self assert: bound right class equals: FASTFortranIntegerLiteral.
-	self assert: bound right primitiveValue equals: '1'
+
+	self assert: bound rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: bound rightOperand primitiveValue equals: '1'
 ]
 
 { #category : #'tests-statement' }
@@ -163,13 +156,11 @@ SyntaxJsonToFASTTests >> testArrayDeclarationImplicitLower [
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
-	self
-		assert: stmt class
-		equals: FASTFortranVariableDeclarationStatement.
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
 	self assert: stmt declarators size equals: 1.
 
 	declarator := stmt declarators first.
-	self assert: declarator variable name equals: 'ARR'.
+	self assert: declarator name equals: 'ARR'.
 	self assert: declarator dimensions size equals: 1.
 	self
 		assert: declarator dimensions first lowerBound class
@@ -203,52 +194,45 @@ SyntaxJsonToFASTTests >> testArrayDeclarationMultipleDimensions [
 	self assert: stmt declarators size equals: 1.
 
 	declarator := stmt declarators first.
-	self assert: declarator variable name equals: 'ARR'.
+	self assert: declarator name equals: 'ARR'.
 	self assert: declarator dimensions size equals: 2.
 
-	self
-		assert: declarator dimensions first lowerBound primitiveValue
-		equals: '1'.
-	self
-		assert: declarator dimensions first upperBound primitiveValue
-		equals: '10'.
+	self assert: declarator dimensions first lowerBound primitiveValue equals: '1'.
+	self assert: declarator dimensions first upperBound primitiveValue equals: '10'.
 
-	self
-		assert: declarator dimensions second lowerBound primitiveValue
-		equals: '0'.
-	self
-		assert: declarator dimensions second upperBound primitiveValue
-		equals: '5'
+	self assert: declarator dimensions second lowerBound primitiveValue equals: '0'.
+	self assert: declarator dimensions second upperBound primitiveValue equals: '5'
 ]
 
 { #category : #'tests-statement' }
 SyntaxJsonToFASTTests >> testArrayDeclarationThreeDimensions [
 
-	| result stmt arrayAccess |
+	| result stmt declarator |
 	fortranCode := '
       REAL A(3:5, 7, 3:5), B(0:2)
       END
 '.
 	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : "null", "prog_unit_parameters" : [], "start_pos" : {"line" : "2", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "name":"REAL"}, "declarators" : [{"tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"12"}, "name":"A"}, "dimension_declarators" : [{"lower_bound" : {"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"14"}, "value":"3"}}, "upper_bound" : {"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"16"}, "value":"5"}}}, {"upper_bound" : {"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"19"}, "value":"7"}}}, {"lower_bound" : {"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"22"}, "value":"3"}}, "upper_bound" : {"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"24"}, "value":"5"}}}]},{"tag" : "variable_declarator", "variable" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"28"}, "name":"B"}, "dimension_declarators" : [{"lower_bound" : {"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"30"}, "value":"0"}}, "upper_bound" : {"tag" : "literal_expression", "literal" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"32"}, "value":"2"}}}]}]}]}] }'.
+
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
-	self
-		assert: stmt class
-		equals: FASTFortranVariableDeclarationStatement.
+
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
 	self assert: stmt declarators size equals: 2.
 
-	arrayAccess  := stmt declarators first.
-	self assert: arrayAccess class equals: FASTFortranArrayVariable.
-	self assert: arrayAccess name equals: 'arr'.
-	self assert: arrayAccess indices size equals: 2.
+	declarator  := stmt declarators first.
 
-	self
-		assert: arrayAccess indices first class
-		equals: FASTFortranIntegerLiteral.
-	self
-		assert: arrayAccess indices second class
-		equals: FASTFortranScalarVariable
+	self assert: declarator class equals: FASTFortranVariableDeclarator.
+	self assert: declarator name equals: 'A'.
+	self assert: declarator dimensions size equals: 3.
+
+	self assert: declarator dimensions first class equals: FASTFortranArrayRange.
+	self assert: declarator dimensions second class equals: FASTFortranArrayRange.
+	self assert: declarator dimensions third class equals: FASTFortranArrayRange.
+
+	self assert: declarator dimensions second lowerBound isNil.
+	self assert: declarator dimensions second upperBound class equals: FASTFortranIntegerLiteral.
 ]
 
 { #category : #'tests-statement' }
@@ -263,24 +247,17 @@ SyntaxJsonToFASTTests >> testArrayDeclarationVariableBound [
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
-	self
-		assert: stmt class
-		equals: FASTFortranVariableDeclarationStatement.
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
 	self assert: stmt declarators size equals: 1.
 
 	declarator := stmt declarators first.
-	self assert: declarator variable name equals: 'ARR'.
+
+	self assert: declarator name equals: 'ARR'.
 	self assert: declarator dimensions size equals: 1.
-	self
-		assert: declarator dimensions first class
-		equals: FASTFortranArrayRange.
+	self assert: declarator dimensions first class equals: FASTFortranArrayRange.
 	self assert: declarator dimensions first lowerBound equals: nil.
-	self
-		assert: declarator dimensions first upperBound class
-		equals: FASTFortranScalarVariable.
-	self
-		assert: declarator dimensions first upperBound name
-		equals: 'MAX'
+	self assert: declarator dimensions first upperBound class equals: FASTFortranScalarVariable.
+	self assert: declarator dimensions first upperBound name equals: 'MAX'
 ]
 
 { #category : #'tests-statement' }
