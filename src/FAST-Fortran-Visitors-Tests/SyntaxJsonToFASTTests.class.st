@@ -1497,7 +1497,7 @@ SyntaxJsonToFASTTests >> testDoStatementNestedOneContinue [
 	"DO 30 L=1,10"
 	stmt := result first statementBlock statements anyOne.
 	self assert: stmt class equals: FASTFortranDoStatement.
-	self assert: stmt statementBlock statements size equals: 3.
+	self assert: stmt statementBlock statements size equals: 2.
 	self assert: stmt labelReferences size equals: 1.
 	self
 		assert: stmt labelReferences first class
@@ -1505,15 +1505,12 @@ SyntaxJsonToFASTTests >> testDoStatementNestedOneContinue [
 	self assert: stmt labelReferences first label equals: '30'.
 
 	"A=1"
-	stmt := result first statementBlock statements first statementBlock
-		        statements first.
-	self assert: stmt class equals: FASTFortranAssignmentStatement.
+	self assert: stmt statementBlock statements first class equals: FASTFortranAssignmentStatement.
 
 	"DO 30 M=L,10"
-	stmt := result first statementBlock statements first statementBlock
-		        statements second.
+	stmt := stmt statementBlock statements second.
 	self assert: stmt class equals: FASTFortranDoStatement.
-	self assert: stmt statementBlock statements size equals: 1.
+	self assert: stmt statementBlock statements size equals: 2.
 	self assert: stmt labelReferences size equals: 1.
 	self
 		assert: stmt labelReferences first class
@@ -1521,12 +1518,10 @@ SyntaxJsonToFASTTests >> testDoStatementNestedOneContinue [
 	self assert: stmt labelReferences first label equals: '30'.
 
 	"a=2"
-	stmt := stmt statementBlock statements first.
-	self assert: stmt class equals: FASTFortranAssignmentStatement.
+	self assert: stmt statementBlock statements first class equals: FASTFortranAssignmentStatement.
 
 	"30 CONTINUE"
-	stmt := result first statementBlock statements first statementBlock
-		        statements third.
+	stmt := stmt statementBlock statements second.
 	self assert: stmt class equals: FASTFortranContinueStatement.
 	self assert: stmt label equals: '30'
 ]
