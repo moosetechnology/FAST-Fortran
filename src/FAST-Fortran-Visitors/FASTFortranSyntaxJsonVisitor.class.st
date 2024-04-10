@@ -100,8 +100,8 @@ FASTFortranSyntaxJsonVisitor >> makeLoopControl: data [
 
 	| init |
 	init := (self newEntity: FASTFortranAssignmentExpression)
-		        variable: (data at: #variable_name);
-		        expression: (data at: #init);
+		        variable: (data at: #variable_name) ;
+		        expression: (self variableNameOrExpression: (data at: #init)) ;
 		        yourself.
 
 	^ (self newEntity: FASTFortranLoopControlExpression)
