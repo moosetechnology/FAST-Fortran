@@ -3038,7 +3038,7 @@ FortranToFASTTests >> testVariableDeclarationTypeSizeUnknown [
 ]
 
 { #category : #'tests-statement' }
-FortranToFASTTests >> testVariableDeclarationWVariableLength [
+FortranToFASTTests >> testVariableDeclarationVariableLength [
 
 	| result stmt var |
 	fortranCode := '      program main

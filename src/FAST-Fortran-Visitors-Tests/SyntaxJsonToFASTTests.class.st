@@ -3582,7 +3582,7 @@ SyntaxJsonToFASTTests >> testVariableDeclarationTypeSizeUnknown [
 ]
 
 { #category : #'tests-statement' }
-SyntaxJsonToFASTTests >> testVariableDeclarationWVariableLength [
+SyntaxJsonToFASTTests >> testVariableDeclarationVariableLength [
 
 	| result stmt var |
 	fortranCode := '      program main
