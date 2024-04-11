@@ -1308,6 +1308,12 @@ FASTFortranSyntaxJsonVisitor >> visitUnconditionalGotoStatement: aNode [
 		yourself
 ]
 
+{ #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitUndefinedType: aNode [
+
+	^self newEntity: FASTFortranImplicitUndefinedType
+]
+
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitUnsignedIntConstant: aNode [
 	

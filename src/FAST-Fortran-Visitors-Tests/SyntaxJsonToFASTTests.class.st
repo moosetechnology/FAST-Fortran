@@ -2361,7 +2361,7 @@ SyntaxJsonToFASTTests >> testImplicitUndefinedStatement [
        IMPLICIT UNDEFINED (A-Z)
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "implicit_statement", "start_pos" : {"line" : "2", "column":"8"}, "implicit_parameters" : [{"type" : "UNDEFINED", "implicit_elements" : [{"tag" : "implicit_range", "implicit_range_lower" : "A", "implicit_range_upper":"Z"}]}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "implicit_statement", "start_pos" : {"line" : "2", "column":"8"}, "implicit_parameters" : [{"type" : {"tag" : "type_reference", "name":"UNDEFINED"}, "implicit_elements" : [{"tag" : "implicit_range", "implicit_range_lower" : "A", "implicit_range_upper":"Z"}]}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -2369,19 +2369,19 @@ SyntaxJsonToFASTTests >> testImplicitUndefinedStatement [
 
 	self assert: stmt class equals: FASTFortranImplicitStatement.
 	self assert: stmt startPos equals: 29.
-	self assert: stmt endPos equals: 50.
+	self assert: stmt endPos equals: 52.
 
 	self assert: stmt typingRules size equals: 1.
 
 	rule := stmt typingRules anyOne.
-	self assert: rule type equals: 'UNDEFINED'.
+	self assert: rule type class equals: FASTFortranImplicitUndefinedType.
 
 	self assert: rule ranges size equals: 1.
 	self
 		assert: rule ranges anyOne class
 		equals: FASTFortranImplicitRange.
 	self assert: rule ranges anyOne from equals: 'A'.
-	self assert: rule ranges anyOne to equals: 'A'
+	self assert: rule ranges anyOne to equals: 'Z'
 ]
 
 { #category : #'tests-expression' }
