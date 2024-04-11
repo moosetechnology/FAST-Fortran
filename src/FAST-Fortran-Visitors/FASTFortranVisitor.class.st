@@ -295,6 +295,12 @@ FASTFortranVisitor >> visitFASTFortranExitStatement: aFASTFortranExitStatement [
 	self visitFASTFortranTStatement: aFASTFortranExitStatement
 ]
 
+{ #category : #visiting }
+FASTFortranVisitor >> visitFASTFortranExternalProcedure: aFASTFortranExternalProcedure [
+
+	self visitFASTFortranTNamedEntity: aFASTFortranExternalProcedure
+]
+
 { #category : #'visiting - statements' }
 FASTFortranVisitor >> visitFASTFortranExternalStatement: aFASTFortranExternalStatement [
 	<generated>

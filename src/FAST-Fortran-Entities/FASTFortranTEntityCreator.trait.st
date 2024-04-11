@@ -334,6 +334,13 @@ FASTFortranTEntityCreator >> newExitStatement [
 ]
 
 { #category : #'entity creation' }
+FASTFortranTEntityCreator >> newExternalProcedure [
+
+	<generated>
+	^ self add: FASTFortranExternalProcedure new
+]
+
+{ #category : #'entity creation' }
 FASTFortranTEntityCreator >> newExternalStatement [
 
 	<generated>

@@ -13,8 +13,8 @@ an abstract Fortran Variable, could be an array or a scalar
 | `parentAssignmentExpression` | `FASTTVariableEntity` | `variable` | `FASTTAssignment` | Optional assignment to the variable|
 | `parentIOStatement` | `FASTFortranTIOParameter` | `ioParameters` | `FASTFortranAbstractIOStatement` | |
 | `parentImpliedExpression` | `FASTTVariableEntity` | `variables` | `FASTFortranImpliedDoExpression` | |
-| `parentStatement` | `FASTFortranTFormat` | `format` | `FASTFortranTWithFormat` | Formatted statement (PRINT or IOStatement)|
 | `parentStatement` | `FASTFortranTFormat` | `format` | `FASTFortranAbstractIOStatement` | |
+| `parentStatement` | `FASTFortranTFormat` | `format` | `FASTFortranTWithFormat` | Formatted statement (PRINT or IOStatement)|
 | `parentVariableGroup` | `FASTFortranVariable` | `variables` | `FASTFortranTVariableGroup` | |
 
 

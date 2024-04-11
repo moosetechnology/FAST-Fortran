@@ -132,7 +132,8 @@ Class {
 		'tBinaryExpression',
 		'tVariableEntity',
 		'entity',
-		'tWithFormat'
+		'tWithFormat',
+		'externalProcedure'
 	],
 	#category : #'FAST-Fortran-Generator'
 }
@@ -382,7 +383,10 @@ FASTFortranGenerator >> defineFASTClasses [
 		             newClassNamed: #Procedure
 		             comment:
 		             'I represent a fortran subroutine or a function'.
-
+	externalProcedure := builder
+		             newClassNamed: #ExternalProcedure
+		             comment:
+		             'I represent a procedure in a ExternalStatement'.
 	function := builder
 		            newClassNamed: #Function
 		            comment: 'I represent a Fortran Function'.
@@ -396,18 +400,6 @@ FASTFortranGenerator >> defineFASTClasses [
 		              newClassNamed: #Subroutine
 		              comment:
 		              'The SUBROUTINE statement identifies a subprogram, a named program unit as a subroutine, and specifies arguments for it'.
-
-	blockData := builder
-		             newClassNamed: #BlockData
-		             comment:
-		             'The BLOCK DATA statement identifies a subprogram that initializes variables and arrays in labeled common blocks.'.
-
-	statementBlock := builder
-		             newClassNamed: #StatementBlock
-		             comment:
-		             'Contains the block of Fortran statements'.
-
-	conditionalStatement := builder newClassNamed: #ConditionalStatement comment: 'I represent a fortran statement with a condition: if-block, if-logical'.
 
 ]
 
@@ -572,10 +564,13 @@ FASTFortranGenerator >> defineHierarchy [
 	logicalType --|> type.
 	realType --|> type.
 
+	"Others"
 	asterisk --|> integerConstant.  "used as type size"
 	asterisk --|> tEntryArgument.
 	asterisk --|> tFormat.
 
+	externalProcedure --|> tNamedEntity.
+	
 	tFormat --|> tIOParameter.
 
 	labelReference --|> tFormat.
@@ -665,6 +660,9 @@ FASTFortranGenerator >> defineRelations [
 
 	(entryStatement property: #entryArguments)
 		<>-* (tEntryArgument property: #entryStatement).
+
+	(externalStatement property: #procedures)
+		<>-* (externalProcedure property: #externalStatement).
 
 	(function property: #returnType)
 		<>- (type property: #typedFunctions).
@@ -801,6 +799,12 @@ FASTFortranGenerator >> defineStatements [
 		                      newClassNamed: #BackspaceStatement
 		                      comment:
 		                      'I represent Fortran Backspace statement'.
+
+	blockData := builder
+		             newClassNamed: #BlockData
+		             comment:
+		             'The BLOCK DATA statement identifies a subprogram that initializes variables and arrays in labeled common blocks.'.
+
 	callStatement := builder
 		                 newClassNamed: #CallStatement
 		                 comment: 'I represent Fortran Call statement'.
@@ -810,6 +814,7 @@ FASTFortranGenerator >> defineStatements [
 	commonStatement := builder
 		                   newClassNamed: #CommonStatement
 		                   comment: 'I represent Fortran Common statement'.
+	conditionalStatement := builder newClassNamed: #ConditionalStatement comment: 'I represent a fortran statement with a condition: if-block, if-logical'.
 	continueStatement := builder
 		                     newClassNamed: #ContinueStatement
 		                     comment:
@@ -926,7 +931,7 @@ FASTFortranGenerator >> defineStatements [
 	nameListStatement := builder
 		                     newClassNamed: #NameListStatement
 		                     comment:
-		                     'I represent Fortran NameList statement'.
+		                     'I represent Fortran NameList statement [not implemented yet]'.
 	openStatement := builder
 		                 newClassNamed: #OpenStatement
 		                 comment: 'I represent Fortran Open statement'.
@@ -965,6 +970,11 @@ FASTFortranGenerator >> defineStatements [
 	staticStatement := builder
 		                   newClassNamed: #StaticStatement
 		                   comment: 'I represent Fortran Static statement'.
+
+	statementBlock := builder
+		             newClassNamed: #StatementBlock
+		             comment:
+		             'Contains the block of Fortran statements'.
 	stopStatement := builder
 		                 newClassNamed: #StopStatement
 		                 comment: 'I represent Fortran Stop statement'.
