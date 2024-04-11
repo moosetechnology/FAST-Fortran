@@ -724,7 +724,7 @@ FASTFortranSyntaxJsonVisitor >> visitExternalStatement: aNode [
 	data := super visitExternalStatement: aNode.
 
 	^ (self newLabeledStatement: FASTFortranExternalStatement withPosition: data)
-		  procedures: (data at: 'proc_list');
+		  procedures: ((data at: 'proc_list') collect: [:name | (self newEntity: FASTFortranExternalProcedure) name: name]) ;
 		  yourself
 ]
 

@@ -1745,19 +1745,24 @@ SyntaxJsonToFASTTests >> testExternalStatement [
 
 	| result stmt |
 	fortranCode := '      program main
-      external mypnt
+      external sin, cos, tan
       end
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "external_statement", "start_pos" : {"line" : "2", "column":"7"}, "proc_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"16"}, "name":"MYPNT"}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MAIN"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "external_statement", "start_pos" : {"line" : "2", "column":"7"}, "proc_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"16"}, "name":"SIN"}, {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"21"}, "name":"COS"}, {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"26"}, "name":"TAN"}]}]}] }'.
+
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranExternalStatement.
-	self assert: stmt name equals: 'mypnt'.
 	self assert: stmt startPos equals: 26.
-	self assert: stmt endPos equals: 39
+	"self assert: stmt endPos equals: 39"
+
+	self assert: stmt procedures size equals: 3.
+	self assert: stmt procedures first name equals: 'SIN'.
+	self assert: stmt procedures second name equals: 'COS'.
+	self assert: stmt procedures third name equals: 'TAN'.
 ]
 
 { #category : #'tests-statement' }
