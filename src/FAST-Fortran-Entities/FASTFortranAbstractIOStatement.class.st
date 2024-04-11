@@ -7,8 +7,8 @@ I am the abstract superclass of all IO-statements (READ, WRITE, CLOSE, ENCODE...
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `format` | `FASTFortranAbstractIOStatement` | `parentStatement` | `FASTFortranTFormat` | |
 | `format` | `FASTFortranTWithFormat` | `parentStatement` | `FASTFortranTFormat` | |
+| `format` | `FASTFortranAbstractIOStatement` | `parentStatement` | `FASTFortranTFormat` | |
 | `ioParameters` | `FASTFortranAbstractIOStatement` | `parentIOStatement` | `FASTFortranTIOParameter` | IO-Parameters of an IO-statement (READ, WRITE...)|
 
 

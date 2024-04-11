@@ -133,7 +133,8 @@ Class {
 		'tVariableEntity',
 		'entity',
 		'tWithFormat',
-		'externalProcedure'
+		'externalProcedure',
+		'undefinedType'
 	],
 	#category : #'FAST-Fortran-Generator'
 }
@@ -225,9 +226,7 @@ FASTFortranGenerator >> defineData [
 	byteType := builder
 		            newClassNamed: #ByteType
 		            comment:
-			            'I represent Fortran Byte statement. The BYTE data type provides a data type that uses only one byte of storage. It is a logical data type, and has the synonym,
-LOGICAL*1. A variable of type BYTE can hold any of the following: 1)one character, 2)an integer between -128 and 127, 3)the logical values, .TRUE. or .FALSE. If it is interpreted as a logical value, a value of 0 represents .FALSE., and any other value is interpreted as .TRUE.
-f77 allows the BYTE type as an array index, just as it allows the REAL type, but it does not allow BYTE as a DO loop index (where it allows only INTEGER, REAL, and DOUBLE PRECISION). Wherever the compiler expects INTEGER explicitly, it will not allow BYTE.'.
+			            'I represent Fortran Byte statement'.
 
 	characterConstant := builder
 		                     newClassNamed: #CharacterLiteral
@@ -343,7 +342,12 @@ I contain the value of the label referred to'.
 	unaryExpression := builder
 		                   newClassNamed: #UnaryExpression
 		                   comment:
-		                   'a Fortran Unary Expression (arithmetic, logical, character)'
+		                   'a Fortran Unary Expression (arithmetic, logical, character)'.
+
+	undefinedType := builder
+		            newClassNamed: #ImplicitUndefinedType
+		            comment:
+		            'I represent a virtual UNDEFINED type that can be used in a IMPLICIT UNDEFINED statement'.
 
 ]
 
@@ -410,6 +414,7 @@ FASTFortranGenerator >> defineHierarchy [
 
 	entity --|> tEntity.
 
+	"PROGRAM UNITS"
 	programUnit --|> tEntity.
 	programUnit --|> tBehaviouralEntity.
 	programUnit --|> tNamedEntity.
@@ -424,11 +429,7 @@ FASTFortranGenerator >> defineHierarchy [
 	programFile --|> tWithComments.
 	programUnit --|> tWithComments.
 
-	"other entities"
-	comment --|> tEntity.
-	comment --|> tComment. 
-
-	"FORTRAN STATEMENTS"
+	"STATEMENTS"
 	abstractStatement --|> tStatement.
 	abstractIOStatement --|> abstractStatement.
 	abstractIOStatement --|> tWithFormat.
@@ -510,7 +511,7 @@ FASTFortranGenerator >> defineHierarchy [
 	writeStatement --|> tWithArguments.
 
 
-	"Expressions"
+	"EXPRESSIONS"
 	abstractExpression --|> tExpression.
 	abstractLiteral --|> abstractExpression.
 	ampersand --|> abstractLiteral.
@@ -554,7 +555,8 @@ FASTFortranGenerator >> defineHierarchy [
 	variable --|> tFormat.
 	variableDeclarator --|> tNamedEntity.
 
-	"types"
+
+	"TYPES"
 	byteType --|> type.
 	characterType --|> type.
 	complexType --|> type.
@@ -564,16 +566,22 @@ FASTFortranGenerator >> defineHierarchy [
 	logicalType --|> type.
 	realType --|> type.
 
-	"Others"
+	undefinedType --|> type.
+
+
+	"OTHERS"
 	asterisk --|> integerConstant.  "used as type size"
 	asterisk --|> tEntryArgument.
 	asterisk --|> tFormat.
 
+	comment --|> tEntity.
+	comment --|> tComment. 
+
 	externalProcedure --|> tNamedEntity.
-	
-	tFormat --|> tIOParameter.
 
 	labelReference --|> tFormat.
+
+	tFormat --|> tIOParameter.
 
 ]
 

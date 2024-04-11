@@ -439,6 +439,13 @@ FASTFortranTEntityCreator >> newImplicitTypingRule [
 ]
 
 { #category : #'entity creation' }
+FASTFortranTEntityCreator >> newImplicitUndefinedType [
+
+	<generated>
+	^ self add: FASTFortranImplicitUndefinedType new
+]
+
+{ #category : #'entity creation' }
 FASTFortranTEntityCreator >> newImpliedDoExpression [
 
 	<generated>
