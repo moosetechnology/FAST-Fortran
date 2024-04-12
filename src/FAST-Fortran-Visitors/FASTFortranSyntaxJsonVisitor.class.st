@@ -35,16 +35,46 @@ FASTFortranSyntaxJsonVisitor >> checkEmptyElse: blockIf [
 
 { #category : #'helpers - comments' }
 FASTFortranSyntaxJsonVisitor >> checkForComments: aStatementBlock [
+	"StatementBlocks should be created inside-out (inner most first), so we just check which comments
+	 the block englobes"
 
-	currentComment ifNil: [ ^self ].
-
-	[ (aStatementBlock startPos x to: aStatementBlock endPos x) includes: currentComment startPos x ]
-	whileTrue: [
-		aStatementBlock addComment: currentComment.
-		self nextComment.
-		
-		currentComment ifNil: [ ^self ]
+	(self commentsWithin: aStatementBlock) do: [ :aComment || commentLine |
+		commentLine := aComment key asInteger.
+		aStatementBlock addComment: ((self newEntity: FASTFortranComment)
+			content: aComment value trim ;
+			startPos: commentLine @ 0 ;
+			endPos: commentLine @ (lineSizes at: commentLine) ;
+			yourself).
+		commentList remove: aComment
 	]
+
+]
+
+{ #category : #'accessing - private tests' }
+FASTFortranSyntaxJsonVisitor >> commentList [
+
+	^commentList
+]
+
+{ #category : #'helpers - comments' }
+FASTFortranSyntaxJsonVisitor >> commentsWithin: aStatementBlock [
+	"We just check line numbers because Fortran-77 does not have end-of-line comments
+	Note: #commentList is ordered by the comments line number, pas the last line of commentBlock,
+	 there is no need to continue
+	 We compare with <= and >= because start/end pos are not always clear"
+
+	| assignedComments |
+	assignedComments := OrderedCollection new.
+
+	commentList do: [ :aComment |
+		(aStatementBlock startPos x <= aComment key) ifTrue: [
+			(aStatementBlock endPos x >= aComment key)
+			ifTrue: [ assignedComments add: aComment ]
+			ifFalse: [ ^assignedComments "comment is after the blockStatement" ]
+		]
+	].
+
+	^assignedComments 
 ]
 
 { #category : #running }
@@ -144,27 +174,6 @@ FASTFortranSyntaxJsonVisitor >> newLabeledStatement: aFASTStatementClass withPos
 		ifTrue: [ statement endPos: (self endOfLinePosition: (aNode at: #start_pos)) ].
 
 	^ statement
-]
-
-{ #category : #'helpers - comments' }
-FASTFortranSyntaxJsonVisitor >> nextComment [
-	"if there are still comments in #commentList, put the next one (they are ordered by line number)
-	 in #currentComment
-	 If there are no more comments, we create a false one that is past the last line of the file"
-
-	| lineComment line |
-
-	commentList ifEmpty:[ ^currentComment := nil ].
-
-	lineComment := commentList removeFirst.
-	line := lineComment key asInteger.
-
-	^currentComment := 	(self newEntity: FASTFortranComment)
-		content: lineComment value trim ;
-		startPos: line @ 0 ;
-		endPos: line @ (lineSizes at: line) ;
-		yourself
-
 ]
 
 { #category : #running }
@@ -420,13 +429,20 @@ FASTFortranSyntaxJsonVisitor >> visitCharacterType: aNode [
 ]
 
 { #category : #visiting }
-FASTFortranSyntaxJsonVisitor >> visitComments: aCollection [
+FASTFortranSyntaxJsonVisitor >> visitComments: theComments [
+	"creating an ordered collectin of the coments (which are in a Dictionary) where theCachedRepository comments are ordered by their line number (which is itself converted from String to Integer)
 
-	commentList := OrderedCollection withAll: aCollection associations.
-	commentList sort: [ :a :b | a key < b key ].
+	Would have liked to use Dictionnary>>associations instead of #new:streamContents:, but it
+	creates an Array, and we need a collection where we will remove elements in the future"
 
-	self nextComment
-	
+	commentList := OrderedCollection
+		new: theComments size
+		streamContents: [ :commentCollection |
+			 theComments associationsDo: [ :assoc |
+				commentCollection nextPut: (assoc key asInteger -> assoc value) ] ].
+
+	commentList sort: [ :a :b | a key < b key ]
+
 ]
 
 { #category : #'visiting statement' }
@@ -599,17 +615,22 @@ FASTFortranSyntaxJsonVisitor >> visitDimensionStatement: aNode [
 FASTFortranSyntaxJsonVisitor >> visitDoStatement: aNode [
 	"start_pos statement_number loop_control statement_list"
 
-	| data |
+	| data statement |
 	data := super visitDoStatement: aNode.
 
-	^(self newLabeledStatement: FASTFortranDoStatement withPosition: data)
+	statement := (self newLabeledStatement: FASTFortranDoStatement withPosition: data)
 		labelReferences: (data
 			at: #statement_number
 			ifPresent: [ :labelRef | { labelRef } ]
 			ifAbsent: [ #() ] ) ;
 		loopControl: (data at: #loop_control) ;
 		statementBlock: (data at: #statement_list) ;
-		yourself
+		yourself.
+
+	statement statementBlock startPos: (self endOfLinePosition: statement startPos) + 1.
+	self checkForComments: statement statementBlock.
+
+	^statement
 ]
 
 { #category : #'visiting statement' }
@@ -762,12 +783,12 @@ FASTFortranSyntaxJsonVisitor >> visitFormatStatement: aNode [
 FASTFortranSyntaxJsonVisitor >> visitFortranFile: aProgramFile [
 	"comments program_units file"
 
-	| progUnit |
-	progUnit := (super visitFortranFile: aProgramFile) at: #program_units.
+	| progUnits |
+	progUnits := (super visitFortranFile: aProgramFile) at: #program_units.
 
-	self checkForComments: progUnit.
+	progUnits do: [:each | self checkForComments: each ].
 
-	^progUnit
+	^progUnits
 ]
 
 { #category : #visiting }

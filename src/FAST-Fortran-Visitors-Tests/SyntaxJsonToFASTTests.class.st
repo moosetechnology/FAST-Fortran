@@ -919,6 +919,126 @@ SyntaxJsonToFASTTests >> testCallSubroutine [
 	self assert: arg primitiveValue equals: '*8'
 ]
 
+{ #category : #'tests-comments' }
+SyntaxJsonToFASTTests >> testCheckForComments [
+	"fake fortranCode to have line lengths and fake jsonCode to have comments"
+
+	| block |
+	fortranCode := '      line 1
+      line 2
+      line 3
+      line 4
+      line 5
+      line 6
+      line 7
+      line 8
+      line 9
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { "5":"third", "4":"second", "3":"first", "7":"fifth", "6":"fourth" }, "program_units" : []}'.
+
+	self visitJsonCode.
+
+	block := FASTFortranStatementBlock new.
+	block startPos: 5@5.
+	block endPos: 6@5.
+
+	visitor checkForComments: block.
+
+	self assert: visitor commentList size equals: 3.
+	self assert: block comments size equals: 2.
+
+]
+
+{ #category : #'tests-comments' }
+SyntaxJsonToFASTTests >> testCheckForCommentsAfter [
+	"fake fortranCode to have line lengths and fake jsonCode to have comments"
+
+	| block |
+	fortranCode := '      line 1
+      line 2
+      line 3
+      line 4
+      line 5
+      line 6
+      line 7
+      line 8
+      line 9
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { "5":"third", "4":"second", "3":"first", "7":"fifth", "6":"fourth" }, "program_units" : []}'.
+
+	self visitJsonCode.
+
+	block := FASTFortranStatementBlock new.
+	block startPos: 1@5.
+	block endPos: 2@5.
+
+	visitor checkForComments: block.
+
+	self assert: visitor commentList size equals: 5.
+	self assert: block comments size equals: 0.
+
+]
+
+{ #category : #'tests-comments' }
+SyntaxJsonToFASTTests >> testCheckForCommentsBefore [
+	"fake fortranCode to have line lengths and fake jsonCode to have comments"
+
+	| block |
+	fortranCode := '      line 1
+      line 2
+      line 3
+      line 4
+      line 5
+      line 6
+      line 7
+      line 8
+      line 9
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { "5":"third", "4":"second", "3":"first", "7":"fifth", "6":"fourth" }, "program_units" : []}'.
+
+	self visitJsonCode.
+
+	block := FASTFortranStatementBlock new.
+	block startPos: 8@5.
+	block endPos: 9@5.
+
+	visitor checkForComments: block.
+
+	self assert: visitor commentList size equals: 5.
+	self assert: block comments size equals: 0.
+
+]
+
+{ #category : #'tests-comments' }
+SyntaxJsonToFASTTests >> testCheckForCommentsNoComment [
+	"fake fortranCode to have line lengths and fake jsonCode to have comments"
+
+	| block |
+	fortranCode := '      line 1
+      line 2
+      line 3
+      line 4
+      line 5
+      line 6
+      line 7
+      line 8
+      line 9
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "program_units" : []}'.
+
+	self visitJsonCode.
+
+	block := FASTFortranStatementBlock new.
+	block startPos: 2@5.
+	block endPos: 5@5.
+
+	visitor checkForComments: block.
+
+	self assert: visitor commentList size equals: 0.
+	self assert: block comments size equals: 0.
+
+]
+
 { #category : #tests }
 SyntaxJsonToFASTTests >> testComment [
 
@@ -937,6 +1057,141 @@ C comment in a function''s body
 	self assert: cmt content equals: 'C comment in a function''s body'.
 	self assert: cmt startPos equals: 30.
 	self assert: cmt endPos equals: 60
+]
+
+{ #category : #'tests-comments' }
+SyntaxJsonToFASTTests >> testCommentsOrder [
+	"fake fortranCode to have line lengths and fake jsonCode to have comments"
+
+	fortranCode := '      line 1
+      line 2
+      line 3
+      line 4
+      line 5
+      line 6
+      line 7
+      line 8
+      line 9
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { "5":"third", "4":"second", "3":"first", "7":"fifth", "6":"fourth" }, "program_units" : []}'.
+
+	self visitJsonCode.
+
+	self assert: visitor commentList size equals: 5.
+
+	self assert: visitor commentList first  key equals: 3.
+	self assert: visitor commentList second key equals: 4.
+	self assert: visitor commentList third  key equals: 5.
+	self assert: visitor commentList fourth key equals: 6.
+	self assert: visitor commentList fifth  key equals: 7.
+
+
+]
+
+{ #category : #'tests-comments' }
+SyntaxJsonToFASTTests >> testCommentsWithin [
+	"fake fortranCode to have line lengths and fake jsonCode to have comments"
+
+	| block |
+	fortranCode := '      line 1
+      line 2
+      line 3
+      line 4
+      line 5
+      line 6
+      line 7
+      line 8
+      line 9
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { "5":"third", "4":"second", "3":"first", "7":"fifth", "6":"fourth" }, "program_units" : []}'.
+
+	self visitJsonCode.
+
+	block := FASTFortranStatementBlock new.
+	block startPos: 5@5.
+	block endPos: 6@5.
+
+	self assert: (visitor commentsWithin: block) size equals: 2.
+	self assert: (visitor commentsWithin: block) first value equals: 'third'.
+	self assert: (visitor commentsWithin: block) second value equals: 'fourth'.
+
+]
+
+{ #category : #'tests-comments' }
+SyntaxJsonToFASTTests >> testCommentsWithinAfter [
+	"fake fortranCode to have line lengths and fake jsonCode to have comments"
+
+	| block |
+	fortranCode := '      line 1
+      line 2
+      line 3
+      line 4
+      line 5
+      line 6
+      line 7
+      line 8
+      line 9
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { "5":"third", "4":"second", "3":"first", "7":"fifth", "6":"fourth" }, "program_units" : []}'.
+	self visitJsonCode.
+
+	block := FASTFortranStatementBlock new.
+	block startPos: 1@5.
+	block endPos: 2@5.
+
+	self assert: (visitor commentsWithin: block) size equals: 0
+]
+
+{ #category : #'tests-comments' }
+SyntaxJsonToFASTTests >> testCommentsWithinBefore [
+	"fake fortranCode to have line lengths and fake jsonCode to have comments"
+
+	| block |
+	fortranCode := '      line 1
+      line 2
+      line 3
+      line 4
+      line 5
+      line 6
+      line 7
+      line 8
+      line 9
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { "5":"third", "4":"second", "3":"first", "7":"fifth", "6":"fourth" }, "program_units" : []}'.
+
+	self visitJsonCode.
+
+	block := FASTFortranStatementBlock new.
+	block startPos: 8@5.
+	block endPos: 9@5.
+
+	self assert: (visitor commentsWithin: block) size equals: 0
+]
+
+{ #category : #'tests-comments' }
+SyntaxJsonToFASTTests >> testCommentsWithinNocomment [
+	"fake fortranCode to have line lengths and fake jsonCode to have comments"
+
+	| block |
+	fortranCode := '      line 1
+      line 2
+      line 3
+      line 4
+      line 5
+      line 6
+      line 7
+      line 8
+      line 9
+'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "program_units" : []}'.
+
+	self visitJsonCode.
+
+	block := FASTFortranStatementBlock new.
+	block startPos: 2@5.
+	block endPos: 5@5.
+
+	self assert: (visitor commentsWithin: block) size equals: 0
 ]
 
 { #category : #'tests-statement' }
@@ -1495,7 +1750,7 @@ SyntaxJsonToFASTTests >> testDoStatementNestedOneContinue [
 	self assert: stmt label equals: '30'
 ]
 
-{ #category : #'tests-statement' }
+{ #category : #'tests-comments' }
 SyntaxJsonToFASTTests >> testDoStatementWithComment [
 
 	| result stmt |
@@ -2061,7 +2316,7 @@ SyntaxJsonToFASTTests >> testIfElseIf [
 		equals: FASTFortranAssignmentStatement
 ]
 
-{ #category : #'tests-statement' }
+{ #category : #'tests-comments' }
 SyntaxJsonToFASTTests >> testIfElseWithComment [
 
 	| result conditional |
@@ -2138,7 +2393,7 @@ SyntaxJsonToFASTTests >> testIfEmpty [
 	self assert: ifStatement elseStatementBlock equals: nil
 ]
 
-{ #category : #'tests-statement' }
+{ #category : #'tests-comments' }
 SyntaxJsonToFASTTests >> testIfThenWithComment [
 
 	| result conditional |
@@ -3241,7 +3496,7 @@ SyntaxJsonToFASTTests >> testSubroutineEmpty [
 	self assert: rtn endPos equals: 31
 ]
 
-{ #category : #'tests-programUnit' }
+{ #category : #'tests-comments' }
 SyntaxJsonToFASTTests >> testSubroutineWithComment [
 
 	| rtn result |

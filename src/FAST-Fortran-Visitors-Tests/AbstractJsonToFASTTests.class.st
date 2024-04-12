@@ -3,7 +3,8 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'fortranCode',
-		'jsonCode'
+		'jsonCode',
+		'visitor'
 	],
 	#category : #'FAST-Fortran-Visitors-Tests-Visitor'
 }
@@ -16,7 +17,6 @@ AbstractJsonToFASTTests >> jsonVisitor [
 { #category : #running }
 AbstractJsonToFASTTests >> visitJsonCode [
 
-	| visitor |
 	visitor := self jsonVisitor new.
 	visitor initLineSizes: fortranCode.
 	^ visitor onFile: (NeoJSONReader fromString: jsonCode)
