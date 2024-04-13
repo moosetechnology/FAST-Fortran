@@ -7,7 +7,7 @@ I represent an entity with several variables like in a DataStatement or an Equiv
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `withVariableGroups` | `FASTFortranTVariableGroup` | `variableGroups` | `FASTFortranTWithVariableGroups` | |
+| `parentVariableGroup` | `FASTFortranTVariableGroup` | `variableGroup` | `FASTFortranTWithVariableGroups` | |
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
@@ -20,8 +20,8 @@ I represent an entity with several variables like in a DataStatement or an Equiv
 Trait {
 	#name : #FASTFortranTVariableGroup,
 	#instVars : [
-		'#variables => FMMany type: #FASTFortranVariable opposite: #parentVariableGroup',
-		'#withVariableGroups => FMOne type: #FASTFortranTWithVariableGroups opposite: #variableGroups'
+		'#parentVariableGroup => FMOne type: #FASTFortranTWithVariableGroups opposite: #variableGroup',
+		'#variables => FMMany type: #FASTFortranVariable opposite: #parentVariableGroup'
 	],
 	#category : #'FAST-Fortran-Entities-Traits'
 }
@@ -39,6 +39,29 @@ FASTFortranTVariableGroup classSide >> annotation [
 FASTFortranTVariableGroup >> addVariable: anObject [
 	<generated>
 	^ self variables add: anObject
+]
+
+{ #category : #accessing }
+FASTFortranTVariableGroup >> parentVariableGroup [
+	"Relation named: #parentVariableGroup type: #FASTFortranTWithVariableGroups opposite: #variableGroup"
+
+	<generated>
+	<container>
+	^ parentVariableGroup
+]
+
+{ #category : #accessing }
+FASTFortranTVariableGroup >> parentVariableGroup: anObject [
+
+	<generated>
+	parentVariableGroup := anObject
+]
+
+{ #category : #navigation }
+FASTFortranTVariableGroup >> parentVariableGroupGroup [
+	<generated>
+	<navigation: 'ParentVariableGroup'>
+	^ MooseSpecializedGroup with: self parentVariableGroup
 ]
 
 { #category : #accessing }
@@ -62,27 +85,4 @@ FASTFortranTVariableGroup >> variablesGroup [
 	<generated>
 	<navigation: 'Variables'>
 	^ MooseSpecializedGroup withAll: self variables asSet
-]
-
-{ #category : #accessing }
-FASTFortranTVariableGroup >> withVariableGroups [
-	"Relation named: #withVariableGroups type: #FASTFortranTWithVariableGroups opposite: #variableGroups"
-
-	<generated>
-	<container>
-	^ withVariableGroups
-]
-
-{ #category : #accessing }
-FASTFortranTVariableGroup >> withVariableGroups: anObject [
-
-	<generated>
-	withVariableGroups := anObject
-]
-
-{ #category : #navigation }
-FASTFortranTVariableGroup >> withVariableGroupsGroup [
-	<generated>
-	<navigation: 'WithVariableGroups'>
-	^ MooseSpecializedGroup with: self withVariableGroups
 ]

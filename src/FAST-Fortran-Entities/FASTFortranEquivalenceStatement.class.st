@@ -7,7 +7,7 @@ I represent a Fortran Equivalence statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `variableGroups` | `FASTFortranTWithVariableGroups` | `withVariableGroups` | `FASTFortranTVariableGroup` | |
+| `variableGroup` | `FASTFortranTWithVariableGroups` | `parentVariableGroup` | `FASTFortranTVariableGroup` | |
 
 
 

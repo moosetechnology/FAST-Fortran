@@ -7,7 +7,7 @@ I represent a statement with variable groups like a DataStatement or an Equivale
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `variableGroups` | `FASTFortranTWithVariableGroups` | `withVariableGroups` | `FASTFortranTVariableGroup` | |
+| `variableGroup` | `FASTFortranTWithVariableGroups` | `parentVariableGroup` | `FASTFortranTVariableGroup` | |
 
 
 
@@ -15,7 +15,7 @@ I represent a statement with variable groups like a DataStatement or an Equivale
 Trait {
 	#name : #FASTFortranTWithVariableGroups,
 	#instVars : [
-		'#variableGroups => FMMany type: #FASTFortranTVariableGroup opposite: #withVariableGroups'
+		'#variableGroup => FMMany type: #FASTFortranTVariableGroup opposite: #parentVariableGroup'
 	],
 	#category : #'FAST-Fortran-Entities-Traits'
 }
@@ -32,28 +32,28 @@ FASTFortranTWithVariableGroups classSide >> annotation [
 { #category : #adding }
 FASTFortranTWithVariableGroups >> addVariableGroup: anObject [
 	<generated>
-	^ self variableGroups add: anObject
+	^ self variableGroup add: anObject
 ]
 
 { #category : #accessing }
-FASTFortranTWithVariableGroups >> variableGroups [
-	"Relation named: #variableGroups type: #FASTFortranTVariableGroup opposite: #withVariableGroups"
+FASTFortranTWithVariableGroups >> variableGroup [
+	"Relation named: #variableGroup type: #FASTFortranTVariableGroup opposite: #parentVariableGroup"
 
 	<generated>
 	<derived>
-	^ variableGroups
+	^ variableGroup
 ]
 
 { #category : #accessing }
-FASTFortranTWithVariableGroups >> variableGroups: anObject [
+FASTFortranTWithVariableGroups >> variableGroup: anObject [
 
 	<generated>
-	variableGroups value: anObject
+	variableGroup value: anObject
 ]
 
 { #category : #navigation }
-FASTFortranTWithVariableGroups >> variableGroupsGroup [
+FASTFortranTWithVariableGroups >> variableGroupGroup [
 	<generated>
-	<navigation: 'VariableGroups'>
-	^ MooseSpecializedGroup withAll: self variableGroups asSet
+	<navigation: 'VariableGroup'>
+	^ MooseSpecializedGroup withAll: self variableGroup asSet
 ]

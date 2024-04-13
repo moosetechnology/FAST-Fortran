@@ -1,5 +1,6 @@
 "
-I represent a Fortran Data group in a Data statement
+I represent a Fortran Data group (nlist, clist) in a Data statement
+DATA nlist / clist / [[,] nlist / clist /] ...
 
 ## Relations
 ======================
@@ -7,12 +8,13 @@ I represent a Fortran Data group in a Data statement
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `withVariableGroups` | `FASTFortranTVariableGroup` | `variableGroups` | `FASTFortranTWithVariableGroups` | |
+| `parentDataStatement` | `FASTFortranDataGroup` | `groups` | `FASTFortranDataStatement` | |
+| `parentVariableGroup` | `FASTFortranTVariableGroup` | `variableGroup` | `FASTFortranTWithVariableGroups` | |
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `dataConstants` | `FASTFortranDataGroup` | `parentDataStatement` | `FASTFortranAbstractExpression` | |
+| `constants` | `FASTFortranDataGroup` | `parentDataGroup` | `FASTFortranAbstractExpression` | |
 | `variables` | `FASTFortranTVariableGroup` | `parentVariableGroup` | `FASTFortranVariable` | |
 
 
@@ -24,7 +26,8 @@ Class {
 	#traits : 'FASTFortranTVariableGroup',
 	#classTraits : 'FASTFortranTVariableGroup classTrait',
 	#instVars : [
-		'#dataConstants => FMMany type: #FASTFortranAbstractExpression opposite: #parentDataStatement'
+		'#constants => FMMany type: #FASTFortranAbstractExpression opposite: #parentDataGroup',
+		'#parentDataStatement => FMOne type: #FASTFortranDataStatement opposite: #groups'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
@@ -39,30 +42,53 @@ FASTFortranDataGroup class >> annotation [
 ]
 
 { #category : #adding }
-FASTFortranDataGroup >> addDataConstant: anObject [
+FASTFortranDataGroup >> addConstant: anObject [
 	<generated>
-	^ self dataConstants add: anObject
+	^ self constants add: anObject
 ]
 
 { #category : #accessing }
-FASTFortranDataGroup >> dataConstants [
-	"Relation named: #dataConstants type: #FASTFortranAbstractExpression opposite: #parentDataStatement"
+FASTFortranDataGroup >> constants [
+	"Relation named: #constants type: #FASTFortranAbstractExpression opposite: #parentDataGroup"
 
 	<generated>
 	<derived>
-	^ dataConstants
+	^ constants
 ]
 
 { #category : #accessing }
-FASTFortranDataGroup >> dataConstants: anObject [
+FASTFortranDataGroup >> constants: anObject [
 
 	<generated>
-	dataConstants value: anObject
+	constants value: anObject
 ]
 
 { #category : #navigation }
-FASTFortranDataGroup >> dataConstantsGroup [
+FASTFortranDataGroup >> constantsGroup [
 	<generated>
-	<navigation: 'DataConstants'>
-	^ MooseSpecializedGroup withAll: self dataConstants asSet
+	<navigation: 'Constants'>
+	^ MooseSpecializedGroup withAll: self constants asSet
+]
+
+{ #category : #accessing }
+FASTFortranDataGroup >> parentDataStatement [
+	"Relation named: #parentDataStatement type: #FASTFortranDataStatement opposite: #groups"
+
+	<generated>
+	<container>
+	^ parentDataStatement
+]
+
+{ #category : #accessing }
+FASTFortranDataGroup >> parentDataStatement: anObject [
+
+	<generated>
+	parentDataStatement := anObject
+]
+
+{ #category : #navigation }
+FASTFortranDataGroup >> parentDataStatementGroup [
+	<generated>
+	<navigation: 'ParentDataStatement'>
+	^ MooseSpecializedGroup with: self parentDataStatement
 ]

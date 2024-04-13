@@ -1,5 +1,6 @@
 "
-I represent a Fortran Data statement
+The DATA statement initializes variables, substrings, arrays
+DATA nlist / clist / [[,] nlist / clist /] ...
 
 ## Relations
 ======================
@@ -7,7 +8,7 @@ I represent a Fortran Data statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `variableGroups` | `FASTFortranTWithVariableGroups` | `withVariableGroups` | `FASTFortranTVariableGroup` | |
+| `groups` | `FASTFortranDataStatement` | `parentDataStatement` | `FASTFortranDataGroup` | |
 
 
 
@@ -15,8 +16,9 @@ I represent a Fortran Data statement
 Class {
 	#name : #FASTFortranDataStatement,
 	#superclass : #FASTFortranAbstractStatement,
-	#traits : 'FASTFortranTWithVariableGroups',
-	#classTraits : 'FASTFortranTWithVariableGroups classTrait',
+	#instVars : [
+		'#groups => FMMany type: #FASTFortranDataGroup opposite: #parentDataStatement'
+	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
@@ -27,4 +29,33 @@ FASTFortranDataStatement class >> annotation [
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
+]
+
+{ #category : #adding }
+FASTFortranDataStatement >> addGroup: anObject [
+	<generated>
+	^ self groups add: anObject
+]
+
+{ #category : #accessing }
+FASTFortranDataStatement >> groups [
+	"Relation named: #groups type: #FASTFortranDataGroup opposite: #parentDataStatement"
+
+	<generated>
+	<derived>
+	^ groups
+]
+
+{ #category : #accessing }
+FASTFortranDataStatement >> groups: anObject [
+
+	<generated>
+	groups value: anObject
+]
+
+{ #category : #navigation }
+FASTFortranDataStatement >> groupsGroup [
+	<generated>
+	<navigation: 'Groups'>
+	^ MooseSpecializedGroup withAll: self groups asSet
 ]

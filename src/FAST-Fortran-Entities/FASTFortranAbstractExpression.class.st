@@ -11,11 +11,11 @@ I am the super class of all Fortran expressions
 | `assignedIn` | `FASTTExpression` | `expression` | `FASTTAssignment` | Optional assignment where this expression is used|
 | `assignementExpressionOwner` | `FASTFortranAbstractExpression` | `expression` | `FASTFortranFunctionStatement` | The AssignementExpression owner (if possible)|
 | `expressionStatementOwner` | `FASTTExpression` | `expression` | `FASTTExpressionStatement` | The expression statement that own me (if it's the case|
-| `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `upperBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
 | `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `lowerBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
+| `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `upperBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
 | `parentArrayExpression` | `FASTFortranAbstractExpression` | `indices` | `FASTFortranArrayVariable` | an ArrayVariable expression of which I am an indice|
 | `parentConditionalStatement` | `FASTFortranAbstractExpression` | `condition` | `FASTFortranConditionalStatement` | Parent conditional statement (if-block, if-logical, ...)|
-| `parentDataStatement` | `FASTFortranAbstractExpression` | `dataConstants` | `FASTFortranDataGroup` | |
+| `parentDataGroup` | `FASTFortranAbstractExpression` | `constants` | `FASTFortranDataGroup` | |
 | `parentExpression` | `FASTTExpression` | `expression` | `FASTTUnaryExpression` | Parent (unary) expression|
 | `parentExpressionLeft` | `FASTTExpression` | `leftOperand` | `FASTTBinaryExpression` | Parent (binary) expression of which I am left side|
 | `parentExpressionRight` | `FASTTExpression` | `rightOperand` | `FASTTBinaryExpression` | Parent (binary) expression of which I am right side|
@@ -42,16 +42,16 @@ Class {
 	#traits : 'FASTTExpression',
 	#classTraits : 'FASTTExpression classTrait',
 	#instVars : [
+		'#assignementExpressionOwner => FMOne type: #FASTFortranFunctionStatement opposite: #expression',
 		'#parentArrayDimensionDeclarator => FMOne type: #FASTFortranArrayRange opposite: #upperBound',
 		'#parentArrayExpression => FMOne type: #FASTFortranArrayVariable opposite: #indices',
-		'#parentDataStatement => FMOne type: #FASTFortranDataGroup opposite: #dataConstants',
-		'#variableDeclaratorOwner => FMOne type: #FASTFortranVariableDeclarator opposite: #expression',
-		'#assignementExpressionOwner => FMOne type: #FASTFortranFunctionStatement opposite: #expression',
-		'#parentGotoComputedStatement => FMOne type: #FASTFortranGoToComputedStatement opposite: #selectorExpression',
-		'#parentGotoAssignedStatement => FMOne type: #FASTFortranGoToAssignedStatement opposite: #selectorExpression',
 		'#parentConditionalStatement => FMOne type: #FASTFortranConditionalStatement opposite: #condition',
+		'#parentDataGroup => FMOne type: #FASTFortranDataGroup opposite: #constants',
+		'#parentGotoAssignedStatement => FMOne type: #FASTFortranGoToAssignedStatement opposite: #selectorExpression',
+		'#parentGotoComputedStatement => FMOne type: #FASTFortranGoToComputedStatement opposite: #selectorExpression',
 		'#parentLoopControlIncrement => FMOne type: #FASTFortranLoopControlExpression opposite: #increment',
-		'#parentLoopControlLimit => FMOne type: #FASTFortranLoopControlExpression opposite: #limit'
+		'#parentLoopControlLimit => FMOne type: #FASTFortranLoopControlExpression opposite: #limit',
+		'#variableDeclaratorOwner => FMOne type: #FASTFortranVariableDeclarator opposite: #expression'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
@@ -165,26 +165,26 @@ FASTFortranAbstractExpression >> parentConditionalStatementGroup [
 ]
 
 { #category : #accessing }
-FASTFortranAbstractExpression >> parentDataStatement [
-	"Relation named: #parentDataStatement type: #FASTFortranDataGroup opposite: #dataConstants"
+FASTFortranAbstractExpression >> parentDataGroup [
+	"Relation named: #parentDataGroup type: #FASTFortranDataGroup opposite: #constants"
 
 	<generated>
 	<container>
-	^ parentDataStatement
+	^ parentDataGroup
 ]
 
 { #category : #accessing }
-FASTFortranAbstractExpression >> parentDataStatement: anObject [
+FASTFortranAbstractExpression >> parentDataGroup: anObject [
 
 	<generated>
-	parentDataStatement := anObject
+	parentDataGroup := anObject
 ]
 
 { #category : #navigation }
-FASTFortranAbstractExpression >> parentDataStatementGroup [
+FASTFortranAbstractExpression >> parentDataGroupGroup [
 	<generated>
-	<navigation: 'ParentDataStatement'>
-	^ MooseSpecializedGroup with: self parentDataStatement
+	<navigation: 'ParentDataGroup'>
+	^ MooseSpecializedGroup with: self parentDataGroup
 ]
 
 { #category : #accessing }

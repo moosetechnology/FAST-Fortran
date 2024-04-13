@@ -445,7 +445,6 @@ FASTFortranGenerator >> defineHierarchy [
 	conditionalStatement --|> abstractStatement.
 	continueStatement --|> abstractStatement.
 	dataStatement --|> abstractStatement.
-	dataStatement --|> tWithVariableGroup.
 	decodeStatement --|> abstractIOStatement.
 	dimensionStatement --|> abstractStatement.
 	dimensionStatement --|> tWithDeclarators.
@@ -658,8 +657,11 @@ FASTFortranGenerator >> defineRelations [
 		<>-
 		((abstractExpression property: #parentConditionalStatement) comment: 'Parent conditional statement (if-block, if-logical, ...)').
 
-	(dataGroup property: #dataConstants)
-		<>-* (abstractExpression property: #parentDataStatement).
+	(dataGroup property: #constants)
+		<>-* (abstractExpression property: #parentDataGroup).
+
+	(dataStatement property: #groups)
+		<>-* (dataGroup property: #parentDataStatement).
 
 	((doStatement property: #statementBlock) comment:
 		 'Statement block containing statements of the do body ')
@@ -759,7 +761,7 @@ FASTFortranGenerator >> defineRelations [
 		<>-
 		((loopControlExpression property: #parentLoop) comment: 'Parent loop').
 
-	tWithVariableGroup <>-* tVariableGroup.
+	tWithVariableGroup <>-* (tVariableGroup property: #parentVariableGroup).
 	
 	((type property: #size) comment: 'a data size in bytes')
 		<>- (integerConstant property: #parentTypeSize).
@@ -829,11 +831,13 @@ FASTFortranGenerator >> defineStatements [
 		                     'I represent Fortran Continue statement'.
 	dataStatement := builder
 		                 newClassNamed: #DataStatement
-		                 comment: 'I represent a Fortran Data statement'.
+		                 comment: 'The DATA statement initializes variables, substrings, arrays
+DATA nlist / clist / [[,] nlist / clist /] ...'.
 
 	dataGroup := builder
 		                 newClassNamed: #DataGroup
-		                 comment: 'I represent a Fortran Data group in a Data statement'.
+		                 comment: 'I represent a Fortran Data group (nlist, clist) in a Data statement
+DATA nlist / clist / [[,] nlist / clist /] ...'.
 	decodeStatement := builder
 		                   newClassNamed: #DecodeStatement
 		                   comment: 'I represent Fortran Decode statement'.

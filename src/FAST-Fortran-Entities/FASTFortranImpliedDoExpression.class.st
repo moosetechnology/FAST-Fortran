@@ -7,7 +7,7 @@ I represent a Fortran ""implied do"" expression
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `withVariableGroups` | `FASTFortranTVariableGroup` | `variableGroups` | `FASTFortranTWithVariableGroups` | |
+| `parentVariableGroup` | `FASTFortranTVariableGroup` | `variableGroup` | `FASTFortranTWithVariableGroups` | |
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
