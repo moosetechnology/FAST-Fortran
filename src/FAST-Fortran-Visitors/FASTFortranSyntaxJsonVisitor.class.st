@@ -559,6 +559,18 @@ FASTFortranSyntaxJsonVisitor >> visitControlInfoOption: aNode [
 		  yourself
 ]
 
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitDataGroup: aNode [
+
+	| data |
+	data :=  self visitJsonElement: aNode.
+
+	^(self newEntity: FASTFortranDataGroup)
+		variables: (data at: #nlist) ;
+		constants: (data at: #clist) ;
+		yourself
+]
+
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitDataImplyDoList: aNode [
     "dlist init limit increment"
@@ -577,6 +589,44 @@ FASTFortranSyntaxJsonVisitor >> visitDataImplyDoList: aNode [
 		loopControl: (self makeLoopControl: data) ;
 		yourself
 		
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitDataParameters: aNode [
+
+	^aNode collect: [ :each |
+		self visitDataGroup: each
+	]
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitDataStatement: aNode [
+	"start_pos data_parameters"
+
+	| data |
+	data := super visitDataStatement: aNode.
+
+	^(self newEntity: FASTFortranDataStatement withPosition: data)
+		groups: (data at: #data_parameters) ;
+		yourself
+]
+
+{ #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitDataStatementConstant: aNode [
+	"occurence constant"
+
+	| data |
+	data :=  super visitDataStatementConstant: aNode.
+
+	^(data at: #occurence)
+		ifNil:[ data at: #constant	]
+		ifNotNil:  [ :multiplier |
+			(self newEntity: FASTFortranBinaryExpression)
+				operator: '*' ;
+				leftOperand: multiplier ;
+				rightOperand: (data at: #constant) ;
+				yourselfNotUsed
+		]
 ]
 
 { #category : #visiting }
@@ -1063,6 +1113,15 @@ FASTFortranSyntaxJsonVisitor >> visitMain: aNode [
 	self checkForComments: progUnit.
 
 	^progUnit
+]
+
+{ #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitNlist: aNode [
+
+	| data |
+	data := super visitNlist: aNode.
+
+	^data collect: [ :each | self variableNameOrExpression: each ]
 ]
 
 { #category : #'visiting statement' }
