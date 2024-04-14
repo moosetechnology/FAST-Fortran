@@ -3045,7 +3045,7 @@ FortranToFASTTests >> testVariableDeclarationVariableLength [
       character var*10, str*(n)
       end
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:26)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:20)-(2:26)","type":"scalar","variable":{"anno":[],"span":"(2:20)-(2:26)","tag":"value","value":{"contents":"astring","tag":"variable"}}}],"span":"(2:20)-(2:26)"},"span":"(2:7)-(2:26)","tag":"declaration","type":{"anno":[],"base_type":"character","selector":{"anno":[],"kind":null,"length":{"anno":[],"span":"(2:17)-(2:18)","tag":"value","value":{"contents":["40",null],"tag":"integer"}},"span":"(2:16)-(2:18)"},"span":"(2:7)-(2:18)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"/home/anquetil/Pharo/images/syntax/FastTmp/tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:31)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":{"anno":[],"span":"(2:21)-(2:22)","tag":"value","value":{"contents":["10",null],"tag":"integer"}},"span":"(2:17)-(2:22)","type":"scalar","variable":{"anno":[],"span":"(2:17)-(2:19)","tag":"value","value":{"contents":"var","tag":"variable"}}},{"anno":[],"initial":null,"length":{"anno":[],"span":"(2:29)-(2:31)","tag":"value","value":{"contents":"n","tag":"variable"}},"span":"(2:25)-(2:31)","type":"scalar","variable":{"anno":[],"span":"(2:25)-(2:27)","tag":"value","value":{"contents":"str","tag":"variable"}}}],"span":"(2:17)-(2:31)"},"span":"(2:7)-(2:31)","tag":"declaration","type":{"anno":[],"base_type":"character","selector":null,"span":"(2:7)-(2:15)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
 	result := self visitJsonCode.
 
 	self assert: result first statementBlock statements size equals: 1.
@@ -3053,14 +3053,14 @@ FortranToFASTTests >> testVariableDeclarationVariableLength [
 	stmt := result first statementBlock statements first.	
 	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
 	self assert: stmt startPos equals: 26.
-	self assert: stmt endPos equals: 45.
+	self assert: stmt endPos equals: 50.
 
 	self assert: stmt type class equals: FASTFortranCharacterType.
-	self assert: stmt type size class equals: FASTFortranIntegerLiteral.
 
-	self assert: stmt declarators size equals: 1.
+	self assert: stmt declarators size equals: 2.
+
 	var := stmt declarators first.
-	self assert: var name equals: 'astring'.
+	self assert: var name equals: 'var'.
 ]
 
 { #category : #'tests-statement' }

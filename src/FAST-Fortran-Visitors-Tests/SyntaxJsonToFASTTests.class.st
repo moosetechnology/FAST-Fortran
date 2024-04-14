@@ -3832,9 +3832,15 @@ SyntaxJsonToFASTTests >> testVariableDeclarationVariableLength [
 
 	self assert: stmt type class equals: FASTFortranCharacterType.
 
-	self assert: stmt declarators size equals: 1.
+	self assert: stmt declarators size equals: 2.
+
 	var := stmt declarators first.
-	self assert: var equals: 'ASTRING'
+	self assert: var class equals: FASTFortranVariableDeclarator.
+	self assert: var name equals: 'VAR'.
+
+	var := stmt declarators second.
+	self assert: var class equals: FASTFortranVariableDeclarator.
+	self assert: var name equals: 'STR'
 ]
 
 { #category : #'tests-statement' }
