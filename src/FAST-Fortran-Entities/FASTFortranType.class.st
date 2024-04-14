@@ -23,10 +23,10 @@ Class {
 	#name : #FASTFortranType,
 	#superclass : #FASTFortranEntity,
 	#instVars : [
-		'#parentDeclaration => FMOne type: #FASTFortranVariableDeclarationStatement opposite: #type',
 		'#typedFunctions => FMOne type: #FASTFortranFunction opposite: #returnType',
 		'#parentImplicitRule => FMOne type: #FASTFortranImplicitTypingRule opposite: #type',
-		'#size => FMOne type: #FASTFortranIntegerLiteral opposite: #parentTypeSize'
+		'#size => FMOne type: #FASTFortranIntegerLiteral opposite: #parentTypeSize',
+		'#parentDeclaration => FMOne type: #FASTFortranVariableDeclarationStatement opposite: #type'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }

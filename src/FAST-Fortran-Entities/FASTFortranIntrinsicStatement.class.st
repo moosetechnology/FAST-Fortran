@@ -7,7 +7,7 @@ I represent Fortran Intrinsic statement
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parentVariableGroup` | `FASTFortranTVariableGroup` | `variableGroup` | `FASTFortranTWithVariableGroups` | |
+| `parentVariableGroup` | `FASTFortranTVariableGroup` | `variableGroups` | `FASTFortranEquivalenceStatement` | |
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |

@@ -33,8 +33,8 @@ Class {
 	#traits : 'FASTTNamedEntity',
 	#classTraits : 'FASTTNamedEntity classTrait',
 	#instVars : [
-		'#dimensions => FMMany type: #FASTFortranArrayRange opposite: #parentVariableDeclarator',
 		'#parentDeclaration => FMOne type: #FASTFortranTWithDeclarators opposite: #declarators',
+		'#dimensions => FMMany type: #FASTFortranArrayRange opposite: #parentVariableDeclarator',
 		'#expression => FMOne type: #FASTFortranAbstractExpression opposite: #variableDeclaratorOwner'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'

@@ -9,7 +9,7 @@ DATA nlist / clist / [[,] nlist / clist /] ...
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `parentDataStatement` | `FASTFortranDataGroup` | `groups` | `FASTFortranDataStatement` | |
-| `parentVariableGroup` | `FASTFortranTVariableGroup` | `variableGroup` | `FASTFortranTWithVariableGroups` | |
+| `parentVariableGroup` | `FASTFortranTVariableGroup` | `variableGroups` | `FASTFortranEquivalenceStatement` | |
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |

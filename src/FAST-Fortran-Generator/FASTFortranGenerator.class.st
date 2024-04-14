@@ -102,7 +102,6 @@ Class {
 		'tWithLabelReferences',
 		'equivalenceGroup',
 		'tVariableGroup',
-		'tWithVariableGroup',
 		'tFormat',
 		'tIOParameter',
 		'arrayRange',
@@ -458,7 +457,6 @@ FASTFortranGenerator >> defineHierarchy [
 	entryStatement --|> abstractStatement.
 	entryStatement --|> tNamedEntity.
 	equivalenceStatement --|> abstractStatement.
-	equivalenceStatement --|> tWithVariableGroup.
 	exitStatement --|> abstractStatement.
 	externalStatement --|> abstractStatement.
 	externalStatement --|> tNamedEntity.
@@ -761,7 +759,8 @@ FASTFortranGenerator >> defineRelations [
 		<>-
 		((loopControlExpression property: #parentLoop) comment: 'Parent loop').
 
-	tWithVariableGroup <>-* (tVariableGroup property: #parentVariableGroup).
+	(equivalenceStatement property: #variableGroups)
+		<>-* (tVariableGroup property: #parentVariableGroup).
 	
 	((type property: #size) comment: 'a data size in bytes')
 		<>- (integerConstant property: #parentTypeSize).
@@ -1048,6 +1047,5 @@ FASTFortranGenerator >> defineTraits [
 	tWithFormat := builder newTraitNamed: #TWithFormat comment: 'I represent a statement with a Format (PRINT or IOStatements)'.
 	tWithLabelReferences := builder newTraitNamed: #TWithLabelReferences comment: 'I represent a statement (various kind of goto) that can have label references'.
 	tWithLoopControl := builder newTraitNamed: #TWithLoopControl comment: 'I represent a loop control: initialization/limit/increment'.
-	tWithVariableGroup := builder newTraitNamed: #TWithVariableGroups comment: 'I represent a statement with variable groups like a DataStatement or an EquivalenceStatement'.
 
 ]

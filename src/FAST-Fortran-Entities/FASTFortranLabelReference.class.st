@@ -12,8 +12,8 @@ I contain the value of the label referred to
 | `parentIfArithmeticEqualBranch` | `FASTFortranLabelReference` | `equalLabel` | `FASTFortranIfArithmeticStatement` | |
 | `parentIfArithmeticLessBranch` | `FASTFortranLabelReference` | `lessLabel` | `FASTFortranIfArithmeticStatement` | |
 | `parentIfArithmeticMoreBranch` | `FASTFortranLabelReference` | `greaterLabel` | `FASTFortranIfArithmeticStatement` | |
-| `parentStatement` | `FASTFortranTFormat` | `format` | `FASTFortranTWithFormat` | Formatted statement (PRINT or IOStatement)|
 | `parentStatement` | `FASTFortranTFormat` | `format` | `FASTFortranAbstractIOStatement` | |
+| `parentStatement` | `FASTFortranTFormat` | `format` | `FASTFortranTWithFormat` | Formatted statement (PRINT or IOStatement)|
 | `referencer` | `FASTFortranLabelReference` | `labelReferences` | `FASTFortranTWithLabelReferences` | A statement (like goto) referencing this label|
 
 
@@ -32,8 +32,8 @@ Class {
 	#classTraits : 'FASTFortranTFormat classTrait',
 	#instVars : [
 		'#label => FMProperty',
-		'#parentIfArithmeticEqualBranch => FMOne type: #FASTFortranIfArithmeticStatement opposite: #equalLabel',
 		'#parentIfArithmeticLessBranch => FMOne type: #FASTFortranIfArithmeticStatement opposite: #lessLabel',
+		'#parentIfArithmeticEqualBranch => FMOne type: #FASTFortranIfArithmeticStatement opposite: #equalLabel',
 		'#parentIfArithmeticMoreBranch => FMOne type: #FASTFortranIfArithmeticStatement opposite: #greaterLabel',
 		'#referencer => FMOne type: #FASTFortranTWithLabelReferences opposite: #labelReferences'
 	],

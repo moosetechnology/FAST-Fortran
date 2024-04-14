@@ -23,10 +23,10 @@ Class {
 	#name : #FASTFortranLoopControlExpression,
 	#superclass : #FASTFortranEntity,
 	#instVars : [
-		'#parentLoop => FMOne type: #FASTFortranTWithLoopControl opposite: #loopControl',
 		'#init => FMOne type: #FASTFortranAssignmentExpression opposite: #parentLoopControlInitialization',
 		'#increment => FMOne type: #FASTFortranAbstractExpression opposite: #parentLoopControlIncrement',
-		'#limit => FMOne type: #FASTFortranAbstractExpression opposite: #parentLoopControlLimit'
+		'#limit => FMOne type: #FASTFortranAbstractExpression opposite: #parentLoopControlLimit',
+		'#parentLoop => FMOne type: #FASTFortranTWithLoopControl opposite: #loopControl'
 	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }

@@ -7,7 +7,7 @@ I represent an entity with several variables like in a DataStatement or an Equiv
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parentVariableGroup` | `FASTFortranTVariableGroup` | `variableGroup` | `FASTFortranTWithVariableGroups` | |
+| `parentVariableGroup` | `FASTFortranTVariableGroup` | `variableGroups` | `FASTFortranEquivalenceStatement` | |
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
@@ -20,8 +20,8 @@ I represent an entity with several variables like in a DataStatement or an Equiv
 Trait {
 	#name : #FASTFortranTVariableGroup,
 	#instVars : [
-		'#parentVariableGroup => FMOne type: #FASTFortranTWithVariableGroups opposite: #variableGroup',
-		'#variables => FMMany type: #FASTFortranVariable opposite: #parentVariableGroup'
+		'#variables => FMMany type: #FASTFortranVariable opposite: #parentVariableGroup',
+		'#parentVariableGroup => FMOne type: #FASTFortranEquivalenceStatement opposite: #variableGroups'
 	],
 	#category : #'FAST-Fortran-Entities-Traits'
 }
@@ -43,7 +43,7 @@ FASTFortranTVariableGroup >> addVariable: anObject [
 
 { #category : #accessing }
 FASTFortranTVariableGroup >> parentVariableGroup [
-	"Relation named: #parentVariableGroup type: #FASTFortranTWithVariableGroups opposite: #variableGroup"
+	"Relation named: #parentVariableGroup type: #FASTFortranEquivalenceStatement opposite: #variableGroups"
 
 	<generated>
 	<container>

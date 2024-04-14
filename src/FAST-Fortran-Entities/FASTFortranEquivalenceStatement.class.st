@@ -7,7 +7,7 @@ I represent a Fortran Equivalence statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `variableGroup` | `FASTFortranTWithVariableGroups` | `parentVariableGroup` | `FASTFortranTVariableGroup` | |
+| `variableGroups` | `FASTFortranEquivalenceStatement` | `parentVariableGroup` | `FASTFortranTVariableGroup` | |
 
 
 
@@ -15,8 +15,9 @@ I represent a Fortran Equivalence statement
 Class {
 	#name : #FASTFortranEquivalenceStatement,
 	#superclass : #FASTFortranAbstractStatement,
-	#traits : 'FASTFortranTWithVariableGroups',
-	#classTraits : 'FASTFortranTWithVariableGroups classTrait',
+	#instVars : [
+		'#variableGroups => FMMany type: #FASTFortranTVariableGroup opposite: #parentVariableGroup'
+	],
 	#category : #'FAST-Fortran-Entities-Entities'
 }
 
@@ -27,4 +28,33 @@ FASTFortranEquivalenceStatement class >> annotation [
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
+]
+
+{ #category : #adding }
+FASTFortranEquivalenceStatement >> addVariableGroup: anObject [
+	<generated>
+	^ self variableGroups add: anObject
+]
+
+{ #category : #accessing }
+FASTFortranEquivalenceStatement >> variableGroups [
+	"Relation named: #variableGroups type: #FASTFortranTVariableGroup opposite: #parentVariableGroup"
+
+	<generated>
+	<derived>
+	^ variableGroups
+]
+
+{ #category : #accessing }
+FASTFortranEquivalenceStatement >> variableGroups: anObject [
+
+	<generated>
+	variableGroups value: anObject
+]
+
+{ #category : #navigation }
+FASTFortranEquivalenceStatement >> variableGroupsGroup [
+	<generated>
+	<navigation: 'VariableGroups'>
+	^ MooseSpecializedGroup withAll: self variableGroups asSet
 ]
