@@ -98,15 +98,15 @@ FASTFortranSyntaxJsonVisitor >> groupCommonSequences: aCollection [
 	- mut be grouped by: #common_name, #variable_declarators
 	- #common_name is optional (and there is only one group in this case)
 	
-	a #common_name is stored in an array of 1 element. This is how we recognized them"
+	a #common_name is a dictionary with a key #dommon_name. This is how we recognized them"
 
 	| groups current_group |
 	groups := OrderedCollection new.
 	aCollection do: [ :each |
-		(each isArray and: [each size = 1])
+		each isDictionary
 			ifTrue: [
 				current_group ifNotNil: [ groups add: current_group ].
-				current_group := each first.
+				current_group := each at: #common_name.
 			]
 			ifFalse: [
 				current_group ifNil: [ current_group := self newEntity: FASTFortranCommonGroup ].
@@ -541,16 +541,16 @@ FASTFortranSyntaxJsonVisitor >> visitContinueStatement: aNode [
 
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitControlInfoOption: aNode [
-	"symbolic_name right
-	right can be a symbolic_name, a literal, or an array with a label_ref.
+	"(symbolic_name right)
+	#right can be another symbolic_name, a literal, or an array with a label_ref.
 	The later needs to be converted (to unsigned_int for now)"
 
 	| data expression |
 	data := super visitControlInfoOption: aNode.
 	
-	expression := (data at: #right) isArray
+	expression := (data at: #right) isDictionary
 		ifTrue: [(self newEntity: FASTFortranIntegerLiteral)
-			primitiveValue: ((data at: #right) first) ]
+			primitiveValue: ((data at: #right) at: #label_ref) label]
 		ifFalse: [ self variableNameOrExpression: (data at: #right) ].
 
 	^ (self newEntity: FASTFortranAssignmentExpression)
@@ -585,17 +585,17 @@ FASTFortranSyntaxJsonVisitor >> visitDimensionDeclarators: aNode [
 
 	| data |
 	data := super visitDimensionDeclarators: aNode.
-	^ data collect: [ :declarator |
+	^ data collect: [ :dimension |
 		  | arrayRange |
 		  arrayRange := self newEntity: FASTFortranArrayRange.
 
 		  "array dimension is a bound variable"
-		  declarator isArray
-			  ifFalse: [ arrayRange upperBound: declarator ]
-			  ifTrue: [ "array dimension is an expression"
-				  declarator size > 1 ifTrue: [
-					  arrayRange lowerBound: declarator first ].
-				  arrayRange upperBound: declarator last.
+		  dimension isDictionary
+			  ifFalse: [ arrayRange upperBound: dimension ]
+			  ifTrue: [
+				  arrayRange upperBound: (dimension at: #upper_bound).
+				  dimension at: #lower_bound ifPresent: [ :lower |
+					  arrayRange lowerBound: lower ].
 				  arrayRange ] ]
 ]
 
@@ -653,21 +653,19 @@ FASTFortranSyntaxJsonVisitor >> visitElse: aNode [
 
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitElseBlock: aNode [
-	"if ELSE is empty, data will contain an array with 2 elements:
-	 - empty StatementBlock
-	 - #end_if
-	we return this StatementBlock and set its endPos after #end_if"
+	"statement_list end_if
+	 if the ELSE is not empty, data contains the StatementBlock"
 
 	| data |
 	data := super visitElseBlock: aNode.
 
-	^data isArray
-		ifTrue: [
-			data first
-				endPos: (self endOfLinePosition: (data second at: #start_pos)) ;
+	^(data isMooseEntity)
+		ifTrue: [ data ]
+		ifFalse: [
+			(data at: #statement_list)
+				endPos: (self endOfLinePosition: ((data at: #end_if) at: #start_pos)) ;
 				yourself
 		]
-		ifFalse: [ data ]
 ]
 
 { #category : #'visiting statement' }
@@ -935,8 +933,8 @@ FASTFortranSyntaxJsonVisitor >> visitIoList: aCollection [
 FASTFortranSyntaxJsonVisitor >> visitIoParameter: aNode [
 	"many different forms of IO_Parameters:
 	 - a variable name which appears as a string (symbolic name)
-	 - a label_ref which appears as an array containing only a string (the label)
-	 - an asterisk which appears as an array containing only a FASTFortranAsterisk
+	 - a label_ref which appears as an dictionary with key #label_ref
+	 - an asterisk which appears as an dictionary with key #asterisk
 	 - the rest should be FASTFortran objects, so there is no difficulties with them"
 
    | data |
@@ -945,10 +943,10 @@ FASTFortranSyntaxJsonVisitor >> visitIoParameter: aNode [
 	data isString
 		ifTrue: [ ^(self newEntity: FASTFortranScalarVariable) name: data ].
 
-	(data isCollection and: [ data size = 1 ])
-		ifTrue: [ data first isString
-			ifTrue: [ ^(self newEntity: FASTFortranIntegerLiteral) primitiveValue: data first ]
-			ifFalse: [ ^data first ] ].
+	data isDictionary ifTrue: [
+		(data includesKey: #asterisk)  ifTrue: [ ^data at: #asterisk ].
+		(data includesKey: #label_ref) ifTrue: [ ^data at: #label_ref ]
+	].
 
 	^data
 ]
@@ -972,7 +970,7 @@ FASTFortranSyntaxJsonVisitor >> visitLabelReference: labelRefNode [
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitLabels: aCollection [
 
-   ^(super visitLabels: aCollection) flatten
+   ^(super visitLabels: aCollection) collect: [ :each | each at: #label_ref ]
 ]
 
 { #category : #'visiting statement' }
