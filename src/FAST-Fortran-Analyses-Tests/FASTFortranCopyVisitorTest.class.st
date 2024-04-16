@@ -371,14 +371,14 @@ FASTFortranCopyVisitorTest >> testDataStatement [
 	| stmt |
 
 	stmt := FASTFortranDataStatement new
-		variableGroups: {
+		groups: {
 			FASTFortranDataGroup new
 				variables: (self scalarVariables: #(a b)) ;
-				dataConstants: { self characterLiteral: 'un' . self characterLiteral: 'deux' }
+				constants: { self characterLiteral: 'un' . self characterLiteral: 'deux' }
 			.
 			FASTFortranDataGroup new
 				variables: (self scalarVariables: #(c)) ;
-				dataConstants: { self characterLiteral: 'trois' }
+				constants: { self characterLiteral: 'trois' }
 		} ;
 		yourself.
 
@@ -945,10 +945,10 @@ FASTFortranCopyVisitorTest >> testLongDataStatementLine [
 	| stmt |
 
 	stmt := FASTFortranDataStatement new
-		variableGroups: {
+		groups: {
 			FASTFortranDataGroup new
 				variables: (self scalarVariables: #(abcde fghijk lmnopq)) ;
-				dataConstants: {
+				constants: {
 					self characterLiteral: '---------------' .
 					self characterLiteral: '---------------' .
 					self characterLiteral: '---------------' }
