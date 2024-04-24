@@ -317,7 +317,7 @@ FASTFortranExporterVisitor >> visitFASTFortranDataGroup: aFASTFortranDataGroup [
 	self
 		visitNodeListSeparatedByCommas: aFASTFortranDataGroup variables;
 		<< ' /';
-		visitNodeListSeparatedByCommas: aFASTFortranDataGroup dataConstants;
+		visitNodeListSeparatedByCommas: aFASTFortranDataGroup constants;
 		<< '/ '
 ]
 
@@ -328,7 +328,7 @@ FASTFortranExporterVisitor >> visitFASTFortranDataStatement: aFASTFortranDataSta
 		visitFASTFortranAbstractStatement: aFASTFortranDataStatement;
 		<< 'data ';
 		visitNodeListSeparatedByCommas:
-			aFASTFortranDataStatement variableGroups;
+			aFASTFortranDataStatement groups;
 		newLine
 ]
 
