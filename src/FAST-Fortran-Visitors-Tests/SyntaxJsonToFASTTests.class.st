@@ -303,8 +303,8 @@ SyntaxJsonToFASTTests >> testAssignementBooleanLiteral [
 	self assert: stmt startPos equals: 32.
 
 	self assert: stmt expression class equals: FASTFortranBooleanLiteral.
-	self assert: stmt expression primitiveValue equals: true
-	"self assert: stmt expression startPos equals: 36."
+	self assert: stmt expression primitiveValue equals: true.
+	self assert: stmt expression startPos equals: 36.
 ]
 
 { #category : #'tests-statement' }
@@ -331,8 +331,8 @@ SyntaxJsonToFASTTests >> testAssignementFunctionCall [
 	self assert: stmt endPos equals: 40.
 
 	self assert: stmt expression class equals: FASTFortranFunctionCall.
-	self assert: stmt expression name equals: 'FCT'
-	"self assert: stmt expression startPos equals: 36."
+	self assert: stmt expression name equals: 'FCT'.
+	self assert: stmt expression startPos equals: 36.
 ]
 
 { #category : #'tests-statement' }
@@ -359,8 +359,8 @@ SyntaxJsonToFASTTests >> testAssignementIntegerLiteral [
 	self assert: stmt endPos equals: 36.
 
 	self assert: stmt expression class equals: FASTFortranIntegerLiteral.
-	self assert: stmt expression primitiveValue equals: '1'
-	"self assert: stmt expression startPos equals: 36."
+	self assert: stmt expression primitiveValue equals: '1'.
+	self assert: stmt expression startPos equals: 36.
 ]
 
 { #category : #'tests-statement' }
@@ -423,8 +423,8 @@ SyntaxJsonToFASTTests >> testAssignementRealLiteral [
 	self assert: stmt endPos equals: 39.
 
 	self assert: stmt expression class equals: FASTFortranRealLiteral.
-	self assert: stmt expression primitiveValue equals: '2.12'
-	"self assert: stmt expression startPos equals: 36."
+	self assert: stmt expression primitiveValue equals: '2.12'.
+	self assert: stmt expression startPos equals: 36.
 ]
 
 { #category : #'tests-statement' }
@@ -470,8 +470,8 @@ SyntaxJsonToFASTTests >> testAssignementStringLiteralDoubleQuotes [
 		equals: FASTFortranCharacterLiteral.
 	self
 		assert: stmt expression primitiveValue
-		equals: '"once upon a time there were ''''quotes''''! "'
-	"self assert: stmt expression startPos equals: 36."
+		equals: '"once upon a time there were ''''quotes''''! "'.
+	self assert: stmt expression startPos equals: 36.
 ]
 
 { #category : #'tests-statement' }
@@ -496,8 +496,8 @@ SyntaxJsonToFASTTests >> testAssignementStringLiteralSingleQuotes [
 		equals: FASTFortranCharacterLiteral.
 	self
 		assert: stmt expression primitiveValue
-		equals: '''once upon a time there were "quotes"! '''
-	"self assert: stmt expression startPos equals: 36."
+		equals: '''once upon a time there were "quotes"! '''.
+	self assert: stmt expression startPos equals: 36.
 ]
 
 { #category : #'tests-statement' }
@@ -522,9 +522,9 @@ SyntaxJsonToFASTTests >> testAssignementToArray [
 		assert: var indices first class
 		equals: FASTFortranIntegerLiteral.
 
-	self assert: var indices first primitiveValue equals: '1'
-	"self assert: var indices first startPos equals: 35.
-	self assert: var indices first endPos equals: 37."
+	self assert: var indices first primitiveValue equals: '1'.
+	self assert: var indices first startPos equals: 35.
+	self assert: var indices first endPos equals: 37.
 ]
 
 { #category : #'tests-statement' }
@@ -555,9 +555,9 @@ SyntaxJsonToFASTTests >> testAssignementToArrayRange [
 	self
 		assert: var indices first upperBound class
 		equals: FASTFortranIntegerLiteral.
-	self assert: var indices first upperBound primitiveValue equals: '1'
-	"self assert: var indices first startPos equals: 35.
-	self assert: var indices first endPos equals: 37."
+	self assert: var indices first upperBound primitiveValue equals: '1'.
+	self assert: var indices first startPos equals: 35.
+	self assert: var indices first endPos equals: 37.
 ]
 
 { #category : #'tests-expression' }
@@ -585,8 +585,8 @@ SyntaxJsonToFASTTests >> testBinaryExpressionDivision [
 
 	self
 		assert: expr rightOperand class
-		equals: FASTFortranIntegerLiteral
-	"self assert: expr right startPos equals: 37."
+		equals: FASTFortranIntegerLiteral.
+	self assert: expr right startPos equals: 37.
 ]
 
 { #category : #'tests-expression' }
@@ -608,17 +608,17 @@ SyntaxJsonToFASTTests >> testBinaryExpressionEqKeyword [
 	expr := asnmt condition.
 	self assert: expr class equals: FASTFortranBinaryExpression.
 	self assert: expr operator equals: '.EQ.'.
-	"self assert: expr startPos equals: 34."
+	self assert: expr startPos equals: 34.
 
 	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
 	self assert: expr leftOperand primitiveValue equals: '5'.
-	"self assert: expr left startPos equals: 34."
+	self assert: expr left startPos equals: 34.
 
 	self
 		assert: expr rightOperand class
 		equals: FASTFortranIntegerLiteral.
-	self assert: expr rightOperand primitiveValue equals: '6'
-	"self assert: expr right startPos equals: 41."
+	self assert: expr rightOperand primitiveValue equals: '6'.
+	self assert: expr right startPos equals: 41.
 ]
 
 { #category : #'tests-expression' }
@@ -639,15 +639,15 @@ SyntaxJsonToFASTTests >> testBinaryExpressionExponentiation [
 	expr := asnmt expression.
 	self assert: expr class equals: FASTFortranBinaryExpression.
 	self assert: expr operator equals: '**'.
-	"self assert: expr startPos equals: 33."
+	self assert: expr startPos equals: 33.
 
 	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
-	"self assert: expr left startPos equals: 33."
+	self assert: expr left startPos equals: 33.
 
 	self
 		assert: expr rightOperand class
-		equals: FASTFortranIntegerLiteral
-	"self assert: expr right startPos equals: 38."
+		equals: FASTFortranIntegerLiteral.
+	self assert: expr right startPos equals: 38.
 ]
 
 { #category : #'tests-expression' }
@@ -669,17 +669,17 @@ SyntaxJsonToFASTTests >> testBinaryExpressionGtKeyword [
 	expr := asnmt condition.
 	self assert: expr class equals: FASTFortranBinaryExpression.
 	self assert: expr operator equals: '.GT.'.
-	"self assert: expr startPos equals: 34."
+	self assert: expr startPos equals: 34.
 
 	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
 	self assert: expr leftOperand primitiveValue equals: '5'.
-	"	self assert: expr left startPos equals: 34."
+	self assert: expr left startPos equals: 34.
 
 	self
 		assert: expr rightOperand class
 		equals: FASTFortranIntegerLiteral.
-	self assert: expr rightOperand primitiveValue equals: '6'
-	"self assert: expr right startPos equals: 41."
+	self assert: expr rightOperand primitiveValue equals: '6'.
+	self assert: expr right startPos equals: 41.
 ]
 
 { #category : #'tests-expression' }
@@ -701,17 +701,17 @@ SyntaxJsonToFASTTests >> testBinaryExpressionGteKeyword [
 	expr := asnmt condition.
 	self assert: expr class equals: FASTFortranBinaryExpression.
 	self assert: expr operator equals: '.GE.'.
-	"self assert: expr startPos equals: 34."
+	self assert: expr startPos equals: 34.
 
 	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
 	self assert: expr leftOperand primitiveValue equals: '5'.
-	"self assert: expr left startPos equals: 34."
+	self assert: expr left startPos equals: 34.
 
 	self
 		assert: expr rightOperand class
 		equals: FASTFortranIntegerLiteral.
-	self assert: expr rightOperand primitiveValue equals: '6'
-	"self assert: expr right startPos equals: 41."
+	self assert: expr rightOperand primitiveValue equals: '6'.
+	self assert: expr right startPos equals: 41.
 ]
 
 { #category : #'tests-expression' }
@@ -733,17 +733,17 @@ SyntaxJsonToFASTTests >> testBinaryExpressionLtKeyword [
 	expr := asnmt condition.
 	self assert: expr class equals: FASTFortranBinaryExpression.
 	self assert: expr operator equals: '.LT.'.
-	"self assert: expr startPos equals: 34."
+	self assert: expr startPos equals: 34.
 
 	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
 	self assert: expr leftOperand primitiveValue equals: '5'.
-	"self assert: expr left startPos equals: 34."
+	self assert: expr left startPos equals: 34.
 
 	self
 		assert: expr rightOperand class
 		equals: FASTFortranIntegerLiteral.
-	self assert: expr rightOperand primitiveValue equals: '6'
-	"self assert: expr right startPos equals: 41."
+	self assert: expr rightOperand primitiveValue equals: '6'.
+	self assert: expr right startPos equals: 41.
 ]
 
 { #category : #'tests-expression' }
@@ -765,17 +765,17 @@ SyntaxJsonToFASTTests >> testBinaryExpressionLteKeyword [
 	expr := asnmt condition.
 	self assert: expr class equals: FASTFortranBinaryExpression.
 	self assert: expr operator equals: '.LE.'.
-	"self assert: expr startPos equals: 34."
+	self assert: expr startPos equals: 34.
 
 	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
 	self assert: expr leftOperand primitiveValue equals: '5'.
-	"self assert: expr left startPos equals: 34."
+	self assert: expr left startPos equals: 34.
 
 	self
 		assert: expr rightOperand class
 		equals: FASTFortranIntegerLiteral.
-	self assert: expr rightOperand primitiveValue equals: '6'
-	"self assert: expr right startPos equals: 41."
+	self assert: expr rightOperand primitiveValue equals: '6'.
+	self assert: expr right startPos equals: 41.
 ]
 
 { #category : #'tests-expression' }
@@ -796,15 +796,15 @@ SyntaxJsonToFASTTests >> testBinaryExpressionMultiplication [
 	expr := asnmt expression.
 	self assert: expr class equals: FASTFortranBinaryExpression.
 	self assert: expr operator equals: '*'.
-	"self assert: expr startPos equals: 33."
+	self assert: expr startPos equals: 33.
 
 	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
-	"self assert: expr left startPos equals: 33."
+	self assert: expr left startPos equals: 33.
 
 	self
 		assert: expr rightOperand class
-		equals: FASTFortranIntegerLiteral
-	"self assert: expr right startPos equals: 37."
+		equals: FASTFortranIntegerLiteral.
+	self assert: expr right startPos equals: 37.
 ]
 
 { #category : #'tests-expression' }
@@ -826,17 +826,17 @@ SyntaxJsonToFASTTests >> testBinaryExpressionNeKeyword [
 	expr := asnmt condition.
 	self assert: expr class equals: FASTFortranBinaryExpression.
 	self assert: expr operator equals: '.NE.'.
-	"self assert: expr startPos equals: 34."
+	self assert: expr startPos equals: 34.
 
 	self assert: expr leftOperand class equals: FASTFortranIntegerLiteral.
 	self assert: expr leftOperand primitiveValue equals: '5'.
-	"self assert: expr left startPos equals: 34."
+	self assert: expr left startPos equals: 34.
 
 	self
 		assert: expr rightOperand class
 		equals: FASTFortranIntegerLiteral.
-	self assert: expr rightOperand primitiveValue equals: '6'
-	"self assert: expr right startPos equals: 41."
+	self assert: expr rightOperand primitiveValue equals: '6'.
+	self assert: expr right startPos equals: 41.
 ]
 
 { #category : #'tests-expression' }
@@ -855,17 +855,17 @@ SyntaxJsonToFASTTests >> testBinaryExpressionSubstraction [
 
 	self assert: expr class equals: FASTFortranBinaryExpression.
 	self assert: expr operator equals: '-'.
-	"self assert: expr startPos equals: 33."
+	self assert: expr startPos equals: 33.
 
 	self assert: expr leftOperand class equals: FASTFortranScalarVariable.
 	self assert: expr leftOperand name equals: 'MAX'.
-	"self assert: expr left startPos equals: 33."
+	self assert: expr left startPos equals: 33.
 
 	self
 		assert: expr rightOperand class
 		equals: FASTFortranIntegerLiteral.
-	self assert: expr rightOperand primitiveValue equals: '1'
-	"self assert: expr right startPos equals: 37."
+	self assert: expr rightOperand primitiveValue equals: '1'.
+	self assert: expr right startPos equals: 37.
 ]
 
 { #category : #'tests-programUnit' }
@@ -906,8 +906,8 @@ SyntaxJsonToFASTTests >> testCallSubroutine [
 	self assert: call class equals: FASTFortranCallStatement.
 	self assert: call name equals: 'RANK'.
 	self assert: call arguments size equals: 2.
-	"self assert: call startPos equals: 30.
-	self assert: call endPos equals: 48."
+	self assert: call startPos equals: 30.
+	self assert: call endPos equals: 48.
 
 
 	arg := call arguments first.
@@ -1210,8 +1210,8 @@ SyntaxJsonToFASTTests >> testCommonStatementMultipleGroups [
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranCommonStatement.
-	"self assert: stmt startPos equals: 32.
-	self assert: stmt endPos equals: 78."
+	self assert: stmt startPos equals: 32.
+	self assert: stmt endPos equals: 78.
 
 	self assert: stmt groups size equals: 2.
 
@@ -1247,9 +1247,9 @@ SyntaxJsonToFASTTests >> testCommonStatementNamed [
 
 	commonGroup := stmt groups first.
 	self assert: commonGroup name equals: 'NAME'.
-	self assert: commonGroup declarators size equals: 2
-	"self assert: commonGroup declarators first startPos equals: 48.
-	self assert: commonGroup declarators second startPos equals: 54"
+	self assert: commonGroup declarators size equals: 2.
+	self assert: commonGroup declarators first startPos equals: 48.
+	self assert: commonGroup declarators second startPos equals: 54
 ]
 
 { #category : #'tests-statement' }
@@ -1281,13 +1281,13 @@ SyntaxJsonToFASTTests >> testCommonStatementNoName [
 		assert: commonGroup declarators first class
 		equals: FASTFortranVariableDeclarator.
 	self assert: commonGroup declarators first name equals: 'VAR1'.
-	"self assert: commonGroup declarators first startPos equals: 39."
+	self assert: commonGroup declarators first startPos equals: 39.
 
 	self
 		assert: commonGroup declarators second class
 		equals: FASTFortranVariableDeclarator.
-	self assert: commonGroup declarators second name equals: 'VAR2'
-	"self assert: commonGroup declarators second startPos equals: 45"
+	self assert: commonGroup declarators second name equals: 'VAR2'.
+	self assert: commonGroup declarators second startPos equals: 45
 ]
 
 { #category : #'tests-statement' }
@@ -1325,7 +1325,7 @@ SyntaxJsonToFASTTests >> testDataStatement [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranDataStatement.
 	self assert: stmt startPos equals: 32.
-	"self assert: stmt endPos equals: 95".
+	self assert: stmt endPos equals: 95.
 
 	self assert: stmt groups size equals: 2.
 
@@ -1335,7 +1335,7 @@ SyntaxJsonToFASTTests >> testDataStatement [
 		assert: dataGroup variables first class
 		equals: FASTFortranScalarVariable.
 	self assert: dataGroup variables first name equals: 'CHAINE1'.
-	"self assert: dataGroup variables first startPos equals: 37."
+	self assert: dataGroup variables first startPos equals: 37.
 
 	self assert: dataGroup constants size equals: 2.
 	self
@@ -1344,7 +1344,7 @@ SyntaxJsonToFASTTests >> testDataStatement [
 	self
 		assert: dataGroup constants first primitiveValue
 		equals: '''Blah'''.
-	"self assert: dataGroup constants first startPos equals: 56."
+	self assert: dataGroup constants first startPos equals: 56.
 
 	dataGroup := stmt groups second.
 	self assert: dataGroup variables size equals: 1.
@@ -1352,7 +1352,7 @@ SyntaxJsonToFASTTests >> testDataStatement [
 		assert: dataGroup variables first class
 		equals: FASTFortranScalarVariable.
 	self assert: dataGroup variables first name equals: 'CHAINE3'.
-	"self assert: dataGroup variables first startPos equals: 76."
+	self assert: dataGroup variables first startPos equals: 76.
 
 	self assert: dataGroup constants size equals: 1.
 	self
@@ -1361,7 +1361,7 @@ SyntaxJsonToFASTTests >> testDataStatement [
 	self
 		assert: dataGroup constants first primitiveValue
 		equals: '''Encore'''.
-	"self assert: dataGroup constants first startPos equals: 86"
+	self assert: dataGroup constants first startPos equals: 86
 ]
 
 { #category : #'tests-statement' }
@@ -1631,25 +1631,25 @@ SyntaxJsonToFASTTests >> testDoStatementEmptyInitIncrementLimit [
 	self assert: stmt class equals: FASTFortranDoStatement.
 	self assert: stmt loopControl isNotNil.
 	self assert: stmt startPos equals: 26.
-	"self assert: stmt endPos equals: 76."
+	self assert: stmt endPos equals: 76.
 
 	control := stmt loopControl.
 	self assert: control class equals: FASTFortranLoopControlExpression.
-	"self assert: control startPos equals: 29."
+	self assert: control startPos equals: 29.
 
 	self
 		assert: control init class
 		equals: FASTFortranAssignmentExpression.
-	"self assert: control init startPos equals: 29."
+	self assert: control init startPos equals: 29.
 
 	self
 		assert: control increment class
 		equals: FASTFortranIntegerLiteral.
-	"self assert: control increment startPos equals: 47."
+	self assert: control increment startPos equals: 47.
 	self assert: control increment primitiveValue equals: '-1'.
 
 	self assert: control limit class equals: FASTFortranIntegerLiteral.
-	"self assert: control limit startPos equals: 45."
+	self assert: control limit startPos equals: 45.
 	self assert: control limit primitiveValue equals: '1'
 ]
 
@@ -1673,31 +1673,31 @@ SyntaxJsonToFASTTests >> testDoStatementEmptyNoIncrement [
 	self assert: stmt class equals: FASTFortranDoStatement.
 	self assert: stmt loopControl isNotNil.
 	self assert: stmt startPos equals: 26.
-	"self assert: stmt endPos equals: 49."
+	self assert: stmt endPos equals: 49.
 
 	control := stmt loopControl.
 	self assert: control class equals: FASTFortranLoopControlExpression.
 	self assert: control limit class equals: FASTFortranScalarVariable.
 	self assert: control limit name equals: 'MAX'.
 	self assert: control increment isNil.
-	"self assert: control startPos equals: 29."
+	self assert: control startPos equals: 29.
 
 	self
 		assert: control init class
 		equals: FASTFortranAssignmentExpression.
-	"self assert: control init startPos equals: 29."
+	self assert: control init startPos equals: 29.
 
 	self
 		assert: control init variable class
 		equals: FASTFortranScalarVariable.
 	self assert: control init variable name equals: 'I'.
-	"self assert: control init variable startPos equals: 29."
+	self assert: control init variable startPos equals: 29.
 
 	self
 		assert: control init expression class
 		equals: FASTFortranIntegerLiteral.
 	self assert: control init expression primitiveValue equals: '1'.
-	"self assert: control init expression startPos equals: 31"
+	self assert: control init expression startPos equals: 31
 ]
 
 { #category : #'tests-statement' }
@@ -1771,7 +1771,7 @@ C comment in loop
 	self assert: stmt class equals: FASTFortranDoStatement.
 	self assert: stmt loopControl isNotNil.
 	self assert: stmt startPos equals: 26.
-	"self assert: stmt endPos equals: 67."
+	self assert: stmt endPos equals: 67.
 
 	self assert: stmt statementBlock comments size equals: 1
 ]
@@ -1877,8 +1877,8 @@ SyntaxJsonToFASTTests >> testEntryStatement [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranEntryStatement.
 	self assert: stmt name primitiveValue equals: 'XYZ'.
-	"self assert: stmt startPos equals: 31.
-	self assert: stmt endPos equals: 46."
+	self assert: stmt startPos equals: 31.
+	self assert: stmt endPos equals: 46.
 
 	self assert: stmt entryArguments size equals: 2.
 
@@ -1886,12 +1886,12 @@ SyntaxJsonToFASTTests >> testEntryStatement [
 		assert: stmt entryArguments first class
 		equals: FASTFortranScalarVariable.
 	self assert: stmt entryArguments first name equals: 'ABC'.
-	"self assert: stmt entryArguments first startPos equals: 41."
+	self assert: stmt entryArguments first startPos equals: 41.
 
 	self
 		assert: stmt entryArguments second class
-		equals: FASTFortranAsterisk
-	"self assert: stmt entryArguments second startPos equals: 45."
+		equals: FASTFortranAsterisk.
+	self assert: stmt entryArguments second startPos equals: 45.
 ]
 
 { #category : #'tests-statement' }
@@ -1917,7 +1917,7 @@ SyntaxJsonToFASTTests >> testEquivalenceStatementOneGroupArrayVariables [
 
 	grp := stmt variableGroups first.
 	self assert: grp class equals: FASTFortranEquivalenceGroup.
-	"self assert: grp startPos equals: 43."
+	self assert: grp startPos equals: 43.
 
 	self assert: grp variables size equals: 3.
 	self
@@ -1954,7 +1954,7 @@ SyntaxJsonToFASTTests >> testEquivalenceStatementOneGroupScalarVariables [
 
 	grp := stmt variableGroups first.
 	self assert: grp class equals: FASTFortranEquivalenceGroup.
-	"self assert: grp startPos equals: 43."
+	self assert: grp startPos equals: 43.
 
 	self assert: grp variables size equals: 3.
 	grp variables do: [ :var |
@@ -1987,12 +1987,12 @@ SyntaxJsonToFASTTests >> testEquivalenceStatementSeveralGroups [
 	grp := stmt variableGroups first.
 	self assert: grp class equals: FASTFortranEquivalenceGroup.
 	self assert: grp variables size equals: 3.
-	"self assert: grp startPos equals: 43."
+	self assert: grp startPos equals: 43.
 
 	grp := stmt variableGroups second.
 	self assert: grp class equals: FASTFortranEquivalenceGroup.
-	self assert: grp variables size equals: 2
-	"self assert: grp startPos equals: 52"
+	self assert: grp variables size equals: 2.
+	self assert: grp startPos equals: 52
 ]
 
 { #category : #'tests-statement' }
@@ -2012,7 +2012,7 @@ SyntaxJsonToFASTTests >> testExternalStatement [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranExternalStatement.
 	self assert: stmt startPos equals: 26.
-	"self assert: stmt endPos equals: 39"
+	self assert: stmt endPos equals: 39.
 
 	self assert: stmt procedures size equals: 3.
 	self assert: stmt procedures first name equals: 'SIN'.
@@ -2117,12 +2117,12 @@ SyntaxJsonToFASTTests >> testFunctionWithParameter [
 	param := fct parameters first.
 	self assert: param class equals: FASTFortranScalarVariable.
 	self assert: param name equals: 'I'.
-	"self assert: param startPos equals: 30."
+	self assert: param startPos equals: 30.
 
 	param := fct parameters second.
 	self assert: param class equals: FASTFortranScalarVariable.
-	self assert: param name equals: 'J'
-	"self assert: param startPos equals: 32."
+	self assert: param name equals: 'J'.
+	self assert: param startPos equals: 32.
 ]
 
 { #category : #'tests-programUnit' }
@@ -2172,8 +2172,8 @@ SyntaxJsonToFASTTests >> testGoto [
 	self assert: stmt endPos equals: 37.
 
 	self assert: stmt labelReferences size equals: 1.
-	self assert: stmt labelReferences anyOne label equals: '100'
-	"self assert: stmt labelReferences anyOne startPos equals: 35."
+	self assert: stmt labelReferences anyOne label equals: '100'.
+	self assert: stmt labelReferences anyOne startPos equals: 35.
 ]
 
 { #category : #'tests-statement' }
@@ -2199,14 +2199,14 @@ SyntaxJsonToFASTTests >> testGotoComputed [
 	self assert: stmt labelReferences size equals: 4.
 	stmt labelReferences do: [ :label |
 		self assert: label class equals: FASTFortranLabelReference.
-		self assert: (label label endsWith: '00')
-		"self assert: (#(36 40 44 48) includes: label startPos)" ].
+		self assert: (label label endsWith: '00').
+		self assert: (#(36 40 44 48) includes: label startPos) ].
 
 	self
 		assert: stmt selectorExpression class
 		equals: FASTFortranScalarVariable.
-	self assert: stmt selectorExpression name equals: 'VAR'
-	"self assert: stmt selectorExpression startPos equals: 53."
+	self assert: stmt selectorExpression name equals: 'VAR'.
+	self assert: stmt selectorExpression startPos equals: 53.
 ]
 
 { #category : #'tests-statement' }
@@ -2232,25 +2232,25 @@ SyntaxJsonToFASTTests >> testIfArithmetic [
 		assert: conditional condition class
 		equals: FASTFortranScalarVariable.
 	self assert: conditional condition name equals: 'A'.
-	"self assert: conditional condition startPos equals: 36."
+	self assert: conditional condition startPos equals: 36.
 
 	self
 		assert: conditional lessLabel class
 		equals: FASTFortranLabelReference.
 	self assert: conditional lessLabel label equals: '10'.
-	"self assert: conditional lessLabel startPos equals: 40."
+	self assert: conditional lessLabel startPos equals: 40.
 
 	self
 		assert: conditional equalLabel class
 		equals: FASTFortranLabelReference.
 	self assert: conditional equalLabel label equals: '20'.
-	"self assert: conditional equalLabel startPos equals: 44."
+	self assert: conditional equalLabel startPos equals: 44.
 
 	self
 		assert: conditional greaterLabel class
 		equals: FASTFortranLabelReference.
-	self assert: conditional greaterLabel label equals: '30'
-	"self assert: conditional greaterLabel startPos equals: 48"
+	self assert: conditional greaterLabel label equals: '30'.
+	self assert: conditional greaterLabel startPos equals: 48
 ]
 
 { #category : #'tests-statement' }
@@ -2485,7 +2485,7 @@ SyntaxJsonToFASTTests >> testImplicitNoneStatement [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranImplicitStatement.
 	self assert: stmt startPos equals: 29.
-	"self assert: stmt endPos equals: 41."
+	self assert: stmt endPos equals: 41.
 
 	self assert: stmt typingRules isEmpty
 ]
@@ -2506,7 +2506,7 @@ SyntaxJsonToFASTTests >> testImplicitStatement [
 
 	self assert: stmt class equals: FASTFortranImplicitStatement.
 	self assert: stmt startPos equals: 29.
-	"self assert: stmt endPos equals: 50."
+	self assert: stmt endPos equals: 50.
 
 	self assert: stmt typingRules size equals: 1.
 
@@ -2537,7 +2537,7 @@ SyntaxJsonToFASTTests >> testImplicitStatementCharacterSize [
 
 	self assert: stmt class equals: FASTFortranImplicitStatement.
 	self assert: stmt startPos equals: 29.
-	"self assert: stmt endPos equals: 54."
+	self assert: stmt endPos equals: 54.
 
 	self assert: stmt typingRules size equals: 1.
 
@@ -2563,7 +2563,7 @@ SyntaxJsonToFASTTests >> testImplicitStatementNoRange [
 
 	self assert: stmt class equals: FASTFortranImplicitStatement.
 	self assert: stmt startPos equals: 29.
-	"self assert: stmt endPos equals: 52."
+	self assert: stmt endPos equals: 52.
 
 	self assert: stmt typingRules size equals: 1.
 
@@ -2590,7 +2590,7 @@ SyntaxJsonToFASTTests >> testImplicitStatementSeveralItems [
 
 	self assert: stmt class equals: FASTFortranImplicitStatement.
 	self assert: stmt startPos equals: 29.
-	"self assert: stmt endPos equals: 65."
+	self assert: stmt endPos equals: 65.
 
 	self assert: stmt typingRules size equals: 2.
 
@@ -2659,7 +2659,7 @@ SyntaxJsonToFASTTests >> testImpliedDoExpression [
 	self assert: stmt arguments size equals: 1.
 
 	self assert: stmt arguments anyOne class equals: FASTFortranImpliedDoExpression.
-	"self assert: stmt arguments anyOne startPos equals: 40."
+	self assert: stmt arguments anyOne startPos equals: 40.
 
 	self assert: stmt arguments anyOne variables size equals: 1.	
 	self assert: stmt arguments anyOne variables anyOne class equals: FASTFortranScalarVariable.
@@ -2696,29 +2696,29 @@ SyntaxJsonToFASTTests >> testInquireStatement [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranInquireStatement.
 	self assert: stmt startPos equals: 26.
-	"self assert: stmt endPos equals: 74."
+	self assert: stmt endPos equals: 74.
 
 	self assert: stmt ioParameters size equals: 4.
 
 	self
 		assert: stmt ioParameters first class
 		equals: FASTFortranAssignmentExpression.
-	"self assert: stmt ioParameters first startPos equals: 34."
+	self assert: stmt ioParameters first startPos equals: 34.
 	self assert: stmt ioParameters first variable name equals: 'UNIT'.
 	self
 		assert: stmt ioParameters second class
 		equals: FASTFortranAssignmentExpression.
-	"self assert: stmt ioParameters second startPos equals: 45."
+	self assert: stmt ioParameters second startPos equals: 45.
 	self assert: stmt ioParameters second variable name equals: 'FORM'.
 	self
 		assert: stmt ioParameters third class
 		equals: FASTFortranAssignmentExpression.
-	"self assert: stmt ioParameters third startPos equals: 56."
+	self assert: stmt ioParameters third startPos equals: 56.
 	self assert: stmt ioParameters third variable name equals: 'ERR'.
 	self
 		assert: stmt ioParameters fourth class
 		equals: FASTFortranAssignmentExpression.
-	"self assert: stmt ioParameters fourth startPos equals: 63."
+	self assert: stmt ioParameters fourth startPos equals: 63.
 	self assert: stmt ioParameters fourth variable name equals: 'IOSTAT'
 ]
 
@@ -2738,14 +2738,14 @@ SyntaxJsonToFASTTests >> testInquireStatementFilename [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranInquireStatement.
 	self assert: stmt startPos equals: 26.
-	"self assert: stmt endPos equals: 64."
+	self assert: stmt endPos equals: 64.
 
 	self assert: stmt ioParameters size equals: 2.
 
 	self
 		assert: stmt ioParameters first class
 		equals: FASTFortranAssignmentExpression.
-	"self assert: stmt ioParameters first startPos equals: 35."
+	self assert: stmt ioParameters first startPos equals: 35.
 	self assert: stmt ioParameters first variable name equals: 'FILE'.
 	self
 		assert: stmt ioParameters first expression class
@@ -2774,14 +2774,14 @@ SyntaxJsonToFASTTests >> testInquireStatementImplicitUnit [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranInquireStatement.
 	self assert: stmt startPos equals: 26.
-	"self assert: stmt endPos equals: 73."
+	self assert: stmt endPos equals: 73.
 
 	self assert: stmt ioParameters size equals: 4.
 
 	self
 		assert: stmt ioParameters first class
 		equals: FASTFortranIntegerLiteral.
-	"self assert: stmt ioParameters first startPos equals: 36."
+	self assert: stmt ioParameters first startPos equals: 36.
 	self assert: stmt ioParameters first primitiveValue equals: '3'.
 
 	self
@@ -2811,19 +2811,19 @@ SyntaxJsonToFASTTests >> testIntrinsicStatement [
 
 	self assert: stmt class equals: FASTFortranIntrinsicStatement.
 	self assert: stmt startPos equals: 29.
-	"self assert: stmt endPos equals: 46."
+	self assert: stmt endPos equals: 46.
 
 	self assert: stmt variables size equals: 2.
 
 	self
 		assert: stmt variables first class
 		equals: FASTFortranScalarVariable.
-	"self assert: stmt variables first startPos equals: 39."
+	self assert: stmt variables first startPos equals: 39.
 	self assert: stmt variables first name equals: 'SIN'.
 	self
 		assert: stmt variables second class
 		equals: FASTFortranScalarVariable.
-	"self assert: stmt variables second startPos equals: 44."
+	self assert: stmt variables second startPos equals: 44.
 	self assert: stmt variables second name equals: 'COS'
 ]
 
@@ -2842,17 +2842,17 @@ SyntaxJsonToFASTTests >> testLogicalIfEmpty [
 	conditional := result first statementBlock statements first.
 	self assert: conditional class equals: FASTFortranIfLogicalStatement.
 	self assert: conditional startPos equals: 29.
-	"self assert: conditional endPos equals: 50."
+	self assert: conditional endPos equals: 50.
 
 	self
 		assert: conditional condition class
 		equals: FASTFortranBinaryExpression.
-	"self assert: conditional condition startPos equals: 34."
+	self assert: conditional condition startPos equals: 34.
 
 	self
 		assert: conditional statement class
-		equals: FASTFortranReturnStatement
-	"self assert: conditional statement startPos equals: 45."
+		equals: FASTFortranReturnStatement.
+	self assert: conditional statement startPos equals: 45.
 ]
 
 { #category : #'tests-programUnit' }
@@ -2922,20 +2922,20 @@ SyntaxJsonToFASTTests >> testOpenStatement [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranOpenStatement.
 	self assert: stmt startPos equals: 26.
-	"self assert: stmt endPos equals: 67."
+	self assert: stmt endPos equals: 67.
 
 	self assert: stmt ioParameters size equals: 3.
 
 	self
 		assert: stmt ioParameters first class
 		equals: FASTFortranIntegerLiteral.
-	"self assert: stmt ioParameters first startPos equals: 31."
+	self assert: stmt ioParameters first startPos equals: 31.
 	self assert: stmt ioParameters first primitiveValue equals: '8'.
 
 	self
 		assert: stmt ioParameters second class
 		equals: FASTFortranAssignmentExpression.
-	"self assert: stmt ioParameters second startPos equals: 34."
+	self assert: stmt ioParameters second startPos equals: 34.
 	self assert: stmt ioParameters second variable name equals: 'FILE'.
 	self
 		assert: stmt ioParameters second expression class
@@ -2947,7 +2947,7 @@ SyntaxJsonToFASTTests >> testOpenStatement [
 	self
 		assert: stmt ioParameters third class
 		equals: FASTFortranAssignmentExpression.
-	"self assert: stmt ioParameters third startPos equals: 61."
+	self assert: stmt ioParameters third startPos equals: 61.
 	self assert: stmt ioParameters third variable name equals: 'ERR'
 ]
 
@@ -2968,7 +2968,7 @@ SyntaxJsonToFASTTests >> testParameterStatement [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranParameterStatement.
 	self assert: stmt startPos equals: 26.
-	"self assert: stmt endPos equals: 73."
+	self assert: stmt endPos equals: 73.
 
 	self assert: stmt declarators size equals: 3.
 
@@ -2977,21 +2977,21 @@ SyntaxJsonToFASTTests >> testParameterStatement [
 	self assert: var name equals: 'PI'.
 	self assert: var expression class equals: FASTFortranRealLiteral.
 	self assert: var expression primitiveValue equals: '3.141593'.
-	"self assert: var startPos equals: 37."
+	self assert: var startPos equals: 37.
 
 	var := stmt declarators second.
 	self assert: var class equals: FASTFortranVariableDeclarator.
 	self assert: var name equals: 'TEXT'.
 	self assert: var expression class equals: FASTFortranCharacterLiteral.
 	self assert: var expression primitiveValue equals: '''Header'''.
-	"self assert: var startPos equals: 50."
+	self assert: var startPos equals: 50.
 
 	var := stmt declarators third.
 	self assert: var class equals: FASTFortranVariableDeclarator.
 	self assert: var name equals: 'T'.
 	self assert: var expression class equals: FASTFortranBooleanLiteral.
-	self assert: var expression primitiveValue equals: true
-	"self assert: var startPos equals: 65"
+	self assert: var expression primitiveValue equals: true.
+	self assert: var startPos equals: 65
 ]
 
 { #category : #'tests-statement' }
@@ -3009,7 +3009,7 @@ SyntaxJsonToFASTTests >> testPauseStatementEmpty [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranPauseStatement.
 	self assert: stmt startPos equals: 28.
-	"self assert: stmt endPos equals: 32."
+	self assert: stmt endPos equals: 32.
 
 	self assert: stmt displayArgument equals: nil
 ]
@@ -3029,7 +3029,7 @@ SyntaxJsonToFASTTests >> testPauseStatementWithInteger [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranPauseStatement.
 	self assert: stmt startPos equals: 28.
-	"self assert: stmt endPos equals: 34."
+	self assert: stmt endPos equals: 34.
 
 	self
 		assert: stmt displayArgument class
@@ -3051,7 +3051,7 @@ SyntaxJsonToFASTTests >> testPauseStatementWithString [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranPauseStatement.
 	self assert: stmt startPos equals: 28.
-	"self assert: stmt endPos equals: 39."
+	self assert: stmt endPos equals: 39.
 
 	self
 		assert: stmt displayArgument class
@@ -3209,12 +3209,12 @@ SyntaxJsonToFASTTests >> testReadWithFormatLabelRef [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranReadStatement.
 	self assert: stmt startPos equals: 33.
-	"self assert: stmt endPos equals: 53."
+	self assert: stmt endPos equals: 53.
 
 	self assert: stmt ioParameters size equals: 0.
 
 	self assert: stmt format class equals: FASTFortranLabelReference.
-	"self assert: stmt ioParameters first startPos equals: 39."
+	self assert: stmt ioParameters first startPos equals: 39.
 
 	self assert: stmt arguments size equals: 1.
 
@@ -3235,12 +3235,12 @@ SyntaxJsonToFASTTests >> testReadWithFormatStringExpression [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranReadStatement.
 	self assert: stmt startPos equals: 33.
-	"self assert: stmt endPos equals: 53."
+	self assert: stmt endPos equals: 53.
 
 	self assert: stmt ioParameters size equals: 0.
 
 	self assert: stmt format class equals: FASTFortranCharacterLiteral.
-	"self assert: stmt ioParameters first startPos equals: 39."
+	self assert: stmt ioParameters first startPos equals: 39.
 
 	self assert: stmt arguments size equals: 1.
 
@@ -3261,12 +3261,12 @@ SyntaxJsonToFASTTests >> testReadWithFormatVariable [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranReadStatement.
 	self assert: stmt startPos equals: 33.
-	"self assert: stmt endPos equals: 53."
+	self assert: stmt endPos equals: 53.
 
 	self assert: stmt ioParameters size equals: 0.
 
 	self assert: stmt format class equals: FASTFortranScalarVariable.
-	"self assert: stmt ioParameters first startPos equals: 39."
+	self assert: stmt ioParameters first startPos equals: 39.
 
 	self assert: stmt arguments size equals: 1.
 
@@ -3287,25 +3287,25 @@ SyntaxJsonToFASTTests >> testReadWithIOParams [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranReadStatement.
 	self assert: stmt startPos equals: 33.
-	"self assert: stmt endPos equals: 53."
+	self assert: stmt endPos equals: 53.
 
 	self assert: stmt ioParameters size equals: 2.
 
 	self
 		assert: stmt ioParameters first class
 		equals: FASTFortranIntegerLiteral.
-	"self assert: stmt ioParameters first startPos equals: 39."
+	self assert: stmt ioParameters first startPos equals: 39.
 	self
 		assert: stmt ioParameters second class
 		equals: FASTFortranCharacterLiteral.
-	"self assert: stmt ioParameters second startPos equals: 42."
+	self assert: stmt ioParameters second startPos equals: 42.
 
 	self assert: stmt arguments size equals: 1.
 
 	self
 		assert: stmt arguments first class
-		equals: FASTFortranScalarVariable
-	"self assert: stmt arguments first startPos equals: 53"
+		equals: FASTFortranScalarVariable.
+	self assert: stmt arguments first startPos equals: 53
 ]
 
 { #category : #'tests-statement' }
@@ -3320,9 +3320,9 @@ SyntaxJsonToFASTTests >> testReturnStatementEmpty [
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
-	self assert: stmt class equals: FASTFortranReturnStatement
-	"self assert: stmt startPos equals: 28.
-	self assert: stmt endPos equals: 33."
+	self assert: stmt class equals: FASTFortranReturnStatement.
+	self assert: stmt startPos equals: 28.
+	self assert: stmt endPos equals: 33.
 ]
 
 { #category : #'tests-statement' }
@@ -3340,14 +3340,14 @@ SyntaxJsonToFASTTests >> testRewindStatementIOParameters [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranRewindStatement.
 	self assert: stmt startPos equals: 26.
-	"self assert: stmt endPos equals: 62."
+	self assert: stmt endPos equals: 62.
 
 	self assert: stmt ioParameters size equals: 3.
 
 	self
 		assert: stmt ioParameters first class
 		equals: FASTFortranAssignmentExpression.
-	"self assert: stmt ioParameters first startPos equals: 34."
+	self assert: stmt ioParameters first startPos equals: 34.
 	self assert: stmt ioParameters first variable name equals: 'UNIT'.
 	self
 		assert: stmt ioParameters first expression primitiveValue
@@ -3356,13 +3356,13 @@ SyntaxJsonToFASTTests >> testRewindStatementIOParameters [
 	self
 		assert: stmt ioParameters second class
 		equals: FASTFortranAssignmentExpression.
-	"self assert: stmt ioParameters second startPos equals: 42."
+	self assert: stmt ioParameters second startPos equals: 42.
 	self assert: stmt ioParameters second variable name equals: 'IOSTAT'.
 
 	self
 		assert: stmt ioParameters third class
 		equals: FASTFortranAssignmentExpression.
-	"self assert: stmt ioParameters third startPos equals: 55."
+	self assert: stmt ioParameters third startPos equals: 55.
 	self assert: stmt ioParameters third variable name equals: 'ERR'
 ]
 
@@ -3380,14 +3380,14 @@ SyntaxJsonToFASTTests >> testRewindStatementUnit [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranRewindStatement.
 	self assert: stmt startPos equals: 26.
-	"self assert: stmt endPos equals: 33."
+	self assert: stmt endPos equals: 33.
 
 	self assert: stmt ioParameters size equals: 1.
 
 	self
 		assert: stmt ioParameters first class
 		equals: FASTFortranIntegerLiteral.
-	"self assert: stmt ioParameters first startPos equals: 33."
+	self assert: stmt ioParameters first startPos equals: 33.
 	self assert: stmt ioParameters first primitiveValue equals: '3'
 ]
 
@@ -3425,7 +3425,7 @@ SyntaxJsonToFASTTests >> testStopStatementEmpty [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranStopStatement.
 	self assert: stmt startPos equals: 28.
-	"self assert: stmt endPos equals: 31."
+	self assert: stmt endPos equals: 31.
 
 	self assert: stmt displayArgument equals: nil
 ]
@@ -3445,7 +3445,7 @@ SyntaxJsonToFASTTests >> testStopStatementWithInteger [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranStopStatement.
 	self assert: stmt startPos equals: 28.
-	"self assert: stmt endPos equals: 33."
+	self assert: stmt endPos equals: 33.
 
 	self
 		assert: stmt displayArgument class
@@ -3468,7 +3468,7 @@ SyntaxJsonToFASTTests >> testStopStatementWithString [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranStopStatement.
 	self assert: stmt startPos equals: 28.
-	"self assert: stmt endPos equals: 39."
+	self assert: stmt endPos equals: 39.
 
 	self
 		assert: stmt displayArgument class
@@ -3545,11 +3545,11 @@ SyntaxJsonToFASTTests >> testSubroutineWithParameters [
 
 	param := rtn parameters first.
 	self assert: param name equals: 'A'.
-	"self assert: param startPos equals: 36."
+	self assert: param startPos equals: 36.
 
 	param := rtn parameters second.
-	self assert: param name equals: 'B'
-	"self assert: param startPos equals: 39."
+	self assert: param name equals: 'B'.
+	self assert: param startPos equals: 39.
 ]
 
 { #category : #'tests-programUnit' }
@@ -3579,9 +3579,9 @@ SyntaxJsonToFASTTests >> testSubroutineWithParametersOnTwoLines [
 	self assert: rtn statementBlock startPos equals: 55.
 	self assert: rtn statementBlock endPos equals: 62.
 
-	self assert: rtn parameters size equals: 2
-	"self assert: rtn parameters first startPos equals: 36.
-	self assert: rtn parameters second startPos equals: 46."
+	self assert: rtn parameters size equals: 2.
+	self assert: rtn parameters first startPos equals: 36.
+	self assert: rtn parameters second startPos equals: 46.
 ]
 
 { #category : #tests }
@@ -3625,8 +3625,8 @@ SyntaxJsonToFASTTests >> testUnaryMinusConstant [
 
 	expr := asnmt expression.
 	self assert: expr class equals: FASTFortranIntegerLiteral.
-	self assert: expr primitiveValue equals: '-1'
-	"self assert: expr startPos equals: 33."
+	self assert: expr primitiveValue equals: '-1'.
+	self assert: expr startPos equals: 33.
 ]
 
 { #category : #'tests-expression' }
@@ -3647,7 +3647,7 @@ SyntaxJsonToFASTTests >> testUnaryMinusVariable [
 	expr := asnmt expression.
 	self assert: expr class equals: FASTFortranUnaryExpression.
 	self assert: expr operator equals: '-'.
-	"self assert: expr startPos equals: 33."
+	self assert: expr startPos equals: 33.
 
 	self assert: expr expression class equals: FASTFortranScalarVariable.
 	self assert: expr expression name equals: 'I'
@@ -3670,8 +3670,8 @@ SyntaxJsonToFASTTests >> testVariableDeclarationInteger [
 	self
 		assert: stmt class
 		equals: FASTFortranVariableDeclarationStatement.
-	"self assert: stmt startPos equals: 26.
-	self assert: stmt endPos equals: 34."
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 34.
 
 	self assert: stmt type class equals: FASTFortranIntegerType.
 	self assert: stmt declarators size equals: 1.
@@ -3720,8 +3720,8 @@ SyntaxJsonToFASTTests >> testVariableDeclarationLogical [
 	self
 		assert: stmt class
 		equals: FASTFortranVariableDeclarationStatement.
-	"self assert: stmt startPos equals: 26.
-	self assert: stmt endPos equals: 34."
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 34.
 
 	self assert: stmt type class equals: FASTFortranLogicalType.
 	self assert: stmt declarators size equals: 1.
@@ -3747,8 +3747,8 @@ SyntaxJsonToFASTTests >> testVariableDeclarationReal [
 	self
 		assert: stmt class
 		equals: FASTFortranVariableDeclarationStatement.
-	"self assert: stmt startPos equals: 26.
-	self assert: stmt endPos equals: 31."
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 31.
 
 	self assert: stmt type class equals: FASTFortranRealType.
 	self assert: stmt declarators size equals: 1.
@@ -3775,7 +3775,7 @@ SyntaxJsonToFASTTests >> testVariableDeclarationTypeSizeFixed [
 		assert: stmt class
 		equals: FASTFortranVariableDeclarationStatement.
 	self assert: stmt startPos equals: 26.
-	"self assert: stmt endPos equals: 45."
+	self assert: stmt endPos equals: 45.
 
 	self assert: stmt type class equals: FASTFortranCharacterType.
 	self assert: stmt type size class equals: FASTFortranIntegerLiteral.
@@ -3828,7 +3828,7 @@ SyntaxJsonToFASTTests >> testVariableDeclarationVariableLength [
 		assert: stmt class
 		equals: FASTFortranVariableDeclarationStatement.
 	self assert: stmt startPos equals: 26.
-	"self assert: stmt endPos equals: 45."
+	self assert: stmt endPos equals: 45.
 
 	self assert: stmt type class equals: FASTFortranCharacterType.
 
@@ -3858,19 +3858,19 @@ SyntaxJsonToFASTTests >> testWriteArrayIOParameter [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranWriteStatement.
 	self assert: stmt startPos equals: 26.
-	"self assert: stmt endPos equals: 46."
+	self assert: stmt endPos equals: 46.
 
 	self assert: stmt ioParameters size equals: 2.
 
 	self
 		assert: stmt ioParameters first class
 		equals: FASTFortranArrayVariable.
-	"self assert: stmt ioParameters first startPos equals: 32."
+	self assert: stmt ioParameters first startPos equals: 32.
 	self assert: stmt ioParameters first indices size equals: 1.
 	self
 		assert: stmt ioParameters second class
-		equals: FASTFortranLabelReference
-	"self assert: stmt ioParameters second startPos equals: 43"
+		equals: FASTFortranLabelReference.
+	self assert: stmt ioParameters second startPos equals: 43
 ]
 
 { #category : #'tests-statement' }
@@ -3887,25 +3887,25 @@ SyntaxJsonToFASTTests >> testWriteComplexFormat [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranWriteStatement.
 	self assert: stmt startPos equals: 33.
-	"self assert: stmt endPos equals: 54."
+	self assert: stmt endPos equals: 54.
 
 	self assert: stmt ioParameters size equals: 2.
 
 	self
 		assert: stmt ioParameters first class
 		equals: FASTFortranIntegerLiteral.
-	"self assert: stmt ioParameters first startPos equals: 40."
+	self assert: stmt ioParameters first startPos equals: 40.
 	self
 		assert: stmt ioParameters second class
 		equals: FASTFortranCharacterLiteral.
-	"self assert: stmt ioParameters second startPos equals: 43."
+	self assert: stmt ioParameters second startPos equals: 43.
 
 	self assert: stmt arguments size equals: 1.
 
 	self
 		assert: stmt arguments first class
-		equals: FASTFortranScalarVariable
-	"self assert: stmt arguments first startPos equals: 54"
+		equals: FASTFortranScalarVariable.
+	self assert: stmt arguments first startPos equals: 54
 ]
 
 { #category : #'tests-statement' }
@@ -3923,41 +3923,41 @@ SyntaxJsonToFASTTests >> testWriteFullIOParameters [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranWriteStatement.
 	self assert: stmt startPos equals: 33.
-	"self assert: stmt endPos equals: 74."
+	self assert: stmt endPos equals: 74.
 
 	self assert: stmt ioParameters size equals: 5.
 
 	self
 		assert: stmt ioParameters first class
 		equals: FASTFortranIntegerLiteral.
-	"self assert: stmt ioParameters first startPos equals: 40."
+	self assert: stmt ioParameters first startPos equals: 40.
 	self
 		assert: stmt ioParameters second class
 		equals: FASTFortranLabelReference.
-	"self assert: stmt ioParameters second startPos equals: 43."
+	self assert: stmt ioParameters second startPos equals: 43.
 	self
 		assert: stmt ioParameters third class
 		equals: FASTFortranAssignmentExpression.
-	"self assert: stmt ioParameters third startPos equals: 46."
+	self assert: stmt ioParameters third startPos equals: 46.
 	self
 		assert: stmt ioParameters fourth class
 		equals: FASTFortranAssignmentExpression.
-	"self assert: stmt ioParameters fourth startPos equals: 53."
+	self assert: stmt ioParameters fourth startPos equals: 53.
 	self
 		assert: stmt ioParameters fifth class
 		equals: FASTFortranAssignmentExpression.
-	"self assert: stmt ioParameters fifth startPos equals: 63."
+	self assert: stmt ioParameters fifth startPos equals: 63.
 
 	self assert: stmt arguments size equals: 2.
 
 	self
 		assert: stmt arguments first class
 		equals: FASTFortranScalarVariable.
-	"self assert: stmt arguments first startPos equals: 71."
+	self assert: stmt arguments first startPos equals: 71.
 	self
 		assert: stmt arguments second class
-		equals: FASTFortranScalarVariable
-	"self assert: stmt arguments second startPos equals: 74"
+		equals: FASTFortranScalarVariable.
+	self assert: stmt arguments second startPos equals: 74
 ]
 
 { #category : #'tests-statement' }
@@ -3975,25 +3975,25 @@ SyntaxJsonToFASTTests >> testWriteStarStarIOParameters [
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranWriteStatement.
 	self assert: stmt startPos equals: 33.
-	"self assert: stmt endPos equals: 57."
+	self assert: stmt endPos equals: 57.
 
 	self assert: stmt ioParameters size equals: 2.
 
 	self
 		assert: stmt ioParameters first class
 		equals: FASTFortranAsterisk.
-	"self assert: stmt ioParameters first startPos equals: 40."
+	self assert: stmt ioParameters first startPos equals: 40.
 	self
 		assert: stmt ioParameters second class
 		equals: FASTFortranAsterisk.
-	"self assert: stmt ioParameters second startPos equals: 43."
+	self assert: stmt ioParameters second startPos equals: 43.
 
 	self assert: stmt arguments size equals: 1.
 
 	self
 		assert: stmt arguments first class
-		equals: FASTFortranCharacterLiteral
-	"self assert: stmt arguments first startPos equals: 47"
+		equals: FASTFortranCharacterLiteral.
+	self assert: stmt arguments first startPos equals: 47
 ]
 
 { #category : #'tests-statement' }
@@ -4019,16 +4019,16 @@ SyntaxJsonToFASTTests >> testWriteToInternalFile [
 	self
 		assert: stmt ioParameters first class
 		equals: FASTFortranScalarVariable.
-	"self assert: stmt ioParameters first startPos equals: 40."
+	self assert: stmt ioParameters first startPos equals: 40.
 	self
 		assert: stmt ioParameters second class
 		equals: FASTFortranLabelReference.
-	"self assert: stmt ioParameters second startPos equals: 48."
+	self assert: stmt ioParameters second startPos equals: 48.
 
 	self assert: stmt arguments size equals: 1.
 
 	self
 		assert: stmt arguments first class
-		equals: FASTFortranCharacterLiteral
-	"self assert: stmt arguments first startPos equals: 51"
+		equals: FASTFortranCharacterLiteral.
+	self assert: stmt arguments first startPos equals: 51
 ]
