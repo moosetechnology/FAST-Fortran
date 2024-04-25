@@ -5,40 +5,45 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-SyntaxJsonToFASTTests class >> generateFortranSourcesFromTests [
-	"regenerate #jsonCode for all test methods from the #sourceCode in these methods"
+SyntaxJsonToFASTTests class >> generateFortranSourcesForTest: mth [
+	"regenerate #jsonCode for test method mth from the #sourceCode in these methods"
 
-	| fortranFilename |
+	| fortranFilename fortran json |
 	fortranFilename := 'tmpFASTSource.f'.
 
-	SyntaxJsonToFASTTests methods do: [ :mth|
-		(mth selector beginsWith: 'test')
-			ifTrue: [ | i fortran json |
-				((mth ast body statements first class = RBAssignmentNode) and: [
-					mth ast body statements first variable name = #fortranCode ])
-				ifTrue: [
-					fortran := mth ast body statements first value value.
-					json := FortranProjectSyntaxImporter new getJsonFor: fortran.
-					json := String streamContents: [ :str |
-						i := json indexOfSubCollection: '/home/'.
-						str << (json copyFrom: 1 to: i-1).
-						str << './fortranCode.F'.
-						i := json indexOfSubCollection: fortranFilename.
-						str << (json copyFrom: i + fortranFilename size to: json size)
-					]
-				]
-				ifFalse: [ json := nil ].
+	fortran := mth ast body statements first value value.
+	json := FortranProjectSyntaxImporter new getJsonFor: fortran.
+	json := String streamContents: [ :str || i  |
+		i := json indexOfSubCollection: '/home/'.
+		str << (json copyFrom: 1 to: i-1).
+		str << './fortranCode.F'.
+		i := json indexOfSubCollection: fortranFilename.
+		str << (json copyFrom: i + fortranFilename size to: json size)
+	].
 
-				((mth ast body statements second class = RBAssignmentNode) and: [
-					mth ast body statements second variable name = #jsonCode and: [
-					json isNotNil ] ])
-				ifTrue: [
-					mth ast body statements second value: (RBLiteralValueNode value: json).
-					SyntaxJsonToFASTTests compile: mth ast formattedCode.
-				]
-			]
-].
+	mth ast body statements second value: (RBLiteralValueNode value: json).
+	self compile: mth ast formattedCode.
 
+]
+
+{ #category : #'as yet unclassified' }
+SyntaxJsonToFASTTests class >> generateFortranSourcesForTests [
+	"regenerate #jsonCode for all test methods from the #sourceCode in these methods"
+
+	self methods do: [ :mth|
+		((mth selector beginsWith: 'test') and: [
+			(self statement: mth ast body statements first isAssignmentTo: #fortranCode) and: [ 
+			self statement: mth ast body statements second isAssignmentTo: #jsonCode ] ])
+			ifTrue: [ self generateFortranSourcesForTest: mth ]
+	]
+
+]
+
+{ #category : #'as yet unclassified' }
+SyntaxJsonToFASTTests class >> statement: astStatement isAssignmentTo: aSymbol [
+
+	^(astStatement class = RBAssignmentNode) and: [
+		astStatement variable name = aSymbol ]
 ]
 
 { #category : #running }
