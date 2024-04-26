@@ -144,10 +144,9 @@ FASTFortranSyntaxJsonVisitor >> makeLoopControl: data [
 { #category : #helpers }
 FASTFortranSyntaxJsonVisitor >> newEntity: aFASTFortranClass [
 
-	| node |
-	node := aFASTFortranClass new.
-	node mooseModel: model.
-	^ node
+	^aFASTFortranClass new
+		mooseModel: model ;
+		yourself
 ]
 
 { #category : #helpers }
