@@ -1215,9 +1215,7 @@ FASTFortranSyntaxJsonVisitor >> visitProgUnitParameters: aCollection [
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitQualifiersList: aNode [
 
-	| data |
-	data := (super visitQualifiersList: aNode).
-	^data collect: [ :each |
+	^(super visitQualifiersList: aNode) collect: [ :each |
 		  self variableNameOrExpression: each ]
 ]
 
