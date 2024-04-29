@@ -5,7 +5,6 @@ Class {
 		'lineSizes',
 		'model',
 		'nestedDoEndLabel',
-		'commentList',
 		'currentComment'
 	],
 	#category : #'FAST-Fortran-Visitors-Importer'
@@ -425,23 +424,6 @@ FASTFortranSyntaxJsonVisitor >> visitCharacterExpression: aNode [
 FASTFortranSyntaxJsonVisitor >> visitCharacterType: aNode [
 
 	^self newEntity: FASTFortranCharacterType
-]
-
-{ #category : #visiting }
-FASTFortranSyntaxJsonVisitor >> visitComments: theComments [
-	"creating an ordered collectin of the coments (which are in a Dictionary) where theCachedRepository comments are ordered by their line number (which is itself converted from String to Integer)
-
-	Would have liked to use Dictionnary>>associations instead of #new:streamContents:, but it
-	creates an Array, and we need a collection where we will remove elements in the future"
-
-	commentList := OrderedCollection
-		new: theComments size
-		streamContents: [ :commentCollection |
-			 theComments associationsDo: [ :assoc |
-				commentCollection nextPut: (assoc key asInteger -> assoc value) ] ].
-
-	commentList sort: [ :a :b | a key < b key ]
-
 ]
 
 { #category : #'visiting statement' }
