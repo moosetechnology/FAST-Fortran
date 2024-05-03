@@ -413,13 +413,6 @@ FASTFortranSyntaxJsonVisitor >> visitCharacterConstant: aNode [
 		  yourself
 ]
 
-{ #category : #'visiting expression' }
-FASTFortranSyntaxJsonVisitor >> visitCharacterExpression: aNode [
-	"tag expression"
-
-	^ (super visitCharacterExpression: aNode) at: 'expression'
-]
-
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitCharacterType: aNode [
 
