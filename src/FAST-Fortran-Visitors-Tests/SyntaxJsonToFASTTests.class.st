@@ -591,7 +591,7 @@ SyntaxJsonToFASTTests >> testBinaryExpressionDivision [
 	self
 		assert: expr rightOperand class
 		equals: FASTFortranIntegerLiteral.
-	self assert: expr right startPos equals: 37.
+	self assert: expr rightOperand startPos equals: 37.
 ]
 
 { #category : #'tests-expression' }
