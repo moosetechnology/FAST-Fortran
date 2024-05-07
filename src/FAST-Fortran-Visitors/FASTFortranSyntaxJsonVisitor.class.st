@@ -612,23 +612,27 @@ FASTFortranSyntaxJsonVisitor >> visitDataStatement: aNode [
 ]
 
 { #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitDimensionDeclarator: aNode [
+	"no keys in data"
+
+	| data arrayRange |
+	data := super visitDimensionDeclarator: aNode.
+
+	arrayRange := self
+		              newEntity: FASTFortranArrayRange
+		              withPosition: data.
+	arrayRange upperBound: (data at: #upper_bound).
+	data
+		at: #lower_bound
+		ifPresent: [ :lower | arrayRange lowerBound: lower ].
+	^ arrayRange
+]
+
+{ #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitDimensionDeclarators: aNode [
 	"no keys in data"
 
-	| data |
-	data := super visitDimensionDeclarators: aNode.
-	^ data collect: [ :dimension |
-		  | arrayRange |
-		  arrayRange := self newEntity: FASTFortranArrayRange.
-
-		  "array dimension is a bound variable"
-		  dimension isDictionary
-			  ifFalse: [ arrayRange upperBound: dimension ]
-			  ifTrue: [
-				  arrayRange upperBound: (dimension at: #upper_bound).
-				  dimension at: #lower_bound ifPresent: [ :lower |
-					  arrayRange lowerBound: lower ].
-				  arrayRange ] ]
+	^ super visitDimensionDeclarators: aNode
 ]
 
 { #category : #'visiting statement' }
