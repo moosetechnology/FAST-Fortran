@@ -259,7 +259,7 @@ FASTFortranSyntaxJsonVisitor >> visitAlternateReturnSpecifier: aNode [
 	data := super visitAlternateReturnSpecifier: aNode.
 
 	^(self newEntity: FASTFortranCharacterLiteral)
-		primitiveValue: ('*' , ((data at: #label) at: #label_ref))
+		primitiveValue: ('*' , ((data at: #label) at: #label_ref_value))
 ]
 
 { #category : #visiting }
@@ -537,12 +537,45 @@ FASTFortranSyntaxJsonVisitor >> visitControlInfoOption: aNode [
 FASTFortranSyntaxJsonVisitor >> visitDataGroup: aNode [
 
 	| data |
-	data :=  self visitJsonElement: aNode.
+	data := super visitDataGroup: aNode.
 
-	^(self newEntity: FASTFortranDataGroup)
-		variables: (data at: #nlist) ;
-		constants: (data at: #clist) ;
-		yourself
+	^ (self newEntity: FASTFortranDataGroup withPosition: data)
+		  variables: (data at: #data_group_variables_list);
+		  constants: (data at: #data_group_constants_list);
+		  yourself
+]
+
+{ #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitDataGroupConstant: aNode [
+	"occurence constant"
+
+	| data |
+	data :=  super visitDataGroupConstant: aNode.
+
+	^(data at: #occurence)
+		ifNil:[ data at: #constant	]
+		ifNotNil:  [ :multiplier |
+			(self newEntity: FASTFortranBinaryExpression withPosition: data)
+				operator: '*' ;
+				leftOperand: multiplier ;
+				rightOperand: (data at: #constant) ;
+				yourselfNotUsed
+		]
+]
+
+{ #category : #visiting }
+FASTFortranSyntaxJsonVisitor >> visitDataGroupVariablesList: aNode [
+
+	^ (super visitDataGroupVariablesList: aNode) collect: [ :each |
+		  self variableNameOrExpression: each ]
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitDataGroups: aNode [
+
+	^aNode collect: [ :each |
+		self visitDataGroup: each
+	]
 ]
 
 { #category : #visiting }
@@ -566,41 +599,16 @@ FASTFortranSyntaxJsonVisitor >> visitDataImplyDoList: aNode [
 ]
 
 { #category : #'visiting statement' }
-FASTFortranSyntaxJsonVisitor >> visitDataParameters: aNode [
-
-	^aNode collect: [ :each |
-		self visitDataGroup: each
-	]
-]
-
-{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitDataStatement: aNode [
-	"start_pos data_parameters"
+	"start_pos data_groups"
 
 	| data |
+	
 	data := super visitDataStatement: aNode.
 
 	^(self newEntity: FASTFortranDataStatement withPosition: data)
-		groups: (data at: #data_parameters) ;
+		groups: (data at: #data_groups) ;
 		yourself
-]
-
-{ #category : #visiting }
-FASTFortranSyntaxJsonVisitor >> visitDataStatementConstant: aNode [
-	"occurence constant"
-
-	| data |
-	data :=  super visitDataStatementConstant: aNode.
-
-	^(data at: #occurence)
-		ifNil:[ data at: #constant	]
-		ifNotNil:  [ :multiplier |
-			(self newEntity: FASTFortranBinaryExpression)
-				operator: '*' ;
-				leftOperand: multiplier ;
-				rightOperand: (data at: #constant) ;
-				yourselfNotUsed
-		]
 ]
 
 { #category : #visiting }
@@ -1087,15 +1095,6 @@ FASTFortranSyntaxJsonVisitor >> visitMain: aNode [
 	self checkForComments: progUnit.
 
 	^progUnit
-]
-
-{ #category : #visiting }
-FASTFortranSyntaxJsonVisitor >> visitNlist: aNode [
-
-	| data |
-	data := super visitNlist: aNode.
-
-	^data collect: [ :each | self variableNameOrExpression: each ]
 ]
 
 { #category : #'visiting statement' }
