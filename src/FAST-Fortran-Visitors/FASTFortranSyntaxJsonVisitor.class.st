@@ -246,8 +246,8 @@ FASTFortranSyntaxJsonVisitor >> statementBlockFromStatementList: statementList [
 FASTFortranSyntaxJsonVisitor >> variableNameOrExpression: anObject [
 	"Scalar variables appear as String, otherwise, don't do anything"
 
-	^anObject isString
-		ifTrue: [ (self newEntity: FASTFortranScalarVariable) name: anObject ]
+	^(anObject isString or: anObject isCharacter)
+		ifTrue: [ (self newEntity: FASTFortranVariable) name: anObject ]
 		ifFalse: [ anObject ]
 ]
 
@@ -754,6 +754,24 @@ FASTFortranSyntaxJsonVisitor >> visitEquivGroup: aCollection [
 ]
 
 { #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitEquivalenceEntity: aCollection [
+
+	^ self variableNameOrExpression:
+		  (super visitEquivalenceEntity: aCollection)
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitEquivalenceGroup: aCollection [
+
+	| data |
+	data := super visitEquivalenceGroup: aCollection.
+
+	^(self newEntity: FASTFortranEquivalenceGroup)
+		variables: (data collect: [:each | self variableNameOrExpression: each]) ;
+		yourself
+]
+
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitEquivalenceStatement: aNode [
 	"start_pos equivalence_groups"
 
@@ -798,7 +816,7 @@ FASTFortranSyntaxJsonVisitor >> visitFormat: aNode [
 	data ifEmpty: [ ^data ].
 	(data anyOne class = FASTFortranCharacterLiteral) ifTrue: [ ^data anyOne ].
 	data anyOne isString ifTrue: [ ^(self newEntity: FASTFortranScalarVariable) name: data anyOne ].
-	^data anyOne anyOne
+	^data anyOne
 ]
 
 { #category : #'visiting statement' }
@@ -987,19 +1005,11 @@ FASTFortranSyntaxJsonVisitor >> visitIoParameter: aNode [
 	^data
 ]
 
-{ #category : #'visiting expression' }
-FASTFortranSyntaxJsonVisitor >> visitLabelRef: aString [ 
-
-	^(self newEntity: FASTFortranLabelReference)
-		label: (super visitLabelRef: aString) ;
-		yourself
-]
-
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitLabelReference: labelRefNode [
 
 	^(self newEntity: FASTFortranLabelReference)
-		label: (labelRefNode at: #label_ref) ;
+		label: (labelRefNode at: #label_ref_value) ;
 		yourself
 ]
 
@@ -1403,7 +1413,7 @@ FASTFortranSyntaxJsonVisitor >> visitVariable: aNode [
 	data := super visitVariable: aNode.
 
 	^ (self newEntity: FASTFortranScalarVariable withPosition: data)
-		  name: (data at: 'name');
+		  name: (data at: 'variable_name');
 		  yourself
 ]
 
@@ -1428,7 +1438,7 @@ FASTFortranSyntaxJsonVisitor >> visitVariableDeclarator: aNode [
 	data := super visitVariableDeclarator: aNode.
 
 	return := self newEntity: FASTFortranVariableDeclarator.
-	return name: (data at: #variable) name.
+	return name: (data at: #variable_name) name.
 	data
 		at: #dimension_declarators
 		ifPresent: [ :dimensions | return dimensions: dimensions ].
