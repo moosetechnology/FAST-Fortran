@@ -519,17 +519,12 @@ FASTFortranSyntaxJsonVisitor >> visitControlInfoOption: aNode [
 	#right can be another symbolic_name, a literal, or an array with a label_ref.
 	The later needs to be converted (to unsigned_int for now)"
 
-	| data expression |
+	| data |
 	data := super visitControlInfoOption: aNode.
-	
-	expression := (data at: #right) isDictionary
-		ifTrue: [(self newEntity: FASTFortranIntegerLiteral)
-			primitiveValue: ((data at: #right) at: #label_ref) label]
-		ifFalse: [ self variableNameOrExpression: (data at: #right) ].
 
 	^ (self newEntity: FASTFortranAssignmentExpression)
-		  expression: expression ;
-		  variable: (self variableNameOrExpression: (data at: #symbolic_name)) ;
+		  expression: (data at: #control_option_value) ;
+		  variable: (self variableNameOrExpression: (data at: #control_option_name)) ;
 		  yourself
 ]
 
@@ -1306,7 +1301,7 @@ FASTFortranSyntaxJsonVisitor >> visitSubstring: aNode [
 	data := super visitSubstring: aNode.
 
 	array := (self newEntity: FASTFortranArrayVariable) name:
-		         (data at: 'variable') name.
+		         (data at: 'variable_name') name.
 
 	array indices add: ((self newEntity: FASTFortranArrayRange)
 			 lowerBound: (data at: 'lower_bound');
