@@ -1395,14 +1395,8 @@ FASTFortranSyntaxJsonVisitor >> visitVar: aNode [
 
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitVariable: aNode [
-	"start_pos tag name"
 
-	| data |
-	data := super visitVariable: aNode.
-
-	^ (self newEntity: FASTFortranScalarVariable withPosition: data)
-		  name: (data at: 'variable_name');
-		  yourself
+	^ super visitVariable: aNode
 ]
 
 { #category : #'visiting statement' }
