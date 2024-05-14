@@ -319,7 +319,7 @@ FASTFortranSyntaxJsonVisitor >> visitAssignmentStatement: aNode [
 
 	| data |
 	data := super visitAssignmentStatement: aNode.
-
+	
 	^ (self newLabeledStatement: FASTFortranAssignmentStatement withPosition: data)
 		  expression: (data at: 'right') ;
 		  variable: (self variableNameOrExpression: (data at: #left)) ;
@@ -340,7 +340,7 @@ FASTFortranSyntaxJsonVisitor >> visitBinaryExpression: aNode [
 
 	data := super visitBinaryExpression: aNode.
 	
-	^(self newEntity: FASTFortranBinaryExpression" withPosition: data")
+	^(self newEntity: FASTFortranBinaryExpression "withPosition: data")
 		leftOperand: (self variableNameOrExpression: (data at: 'lhs')) ;
 		rightOperand: (self variableNameOrExpression: (data at: 'rhs')) ;
 		operator: ((data at: 'operator') at: 'operator_value' ) ;
@@ -404,11 +404,10 @@ FASTFortranSyntaxJsonVisitor >> visitCallStatement: aNode [
 
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitCharacterConstant: aNode [
-	"start_pos tag value"
 
 	| data |
 	data := super visitCharacterConstant: aNode.
-	^ (self newEntity: FASTFortranCharacterLiteral)
+	^ (self newEntity: FASTFortranCharacterLiteral withPosition: data)
 		  primitiveValue: (data at: 'value');
 		  yourself
 ]
@@ -870,9 +869,12 @@ FASTFortranSyntaxJsonVisitor >> visitFunction: aNode [
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitFunctionReference: aNode [
 	"name tag"
+	| data |
+	
+	data := super visitFunctionReference: aNode.
 
-	^ (self newEntity: FASTFortranFunctionCall)
-		  name: ((super visitFunctionReference: aNode) at: 'name');
+	^ (self newEntity: FASTFortranFunctionCall withPosition: data)
+		  name: ( data at: 'name');
 		  yourself
 ]
 
@@ -1049,18 +1051,27 @@ FASTFortranSyntaxJsonVisitor >> visitLiteralExpression: aNode [
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitLogicalConstant: aNode [
 
-	| data |
-
+	| data ex |
 	data := super visitLogicalConstant: aNode.
-	data = '.TRUE.'
+
+	(data at: 'value') = '.TRUE.'
 		ifTrue: [
-			^ (self newEntity: FASTFortranBooleanLiteral)
+			^ (self newEntity: FASTFortranBooleanLiteral withPosition: data)
 				  primitiveValue: true;
 				  yourself ]
 		ifFalse: [
-			^ (self newEntity: FASTFortranBooleanLiteral)
+			^ (self newEntity: FASTFortranBooleanLiteral withPosition: data)
 				  primitiveValue: false;
 				  yourself ]
+]
+
+{ #category : #'visiting expression' }
+FASTFortranSyntaxJsonVisitor >> visitLogicalFactor: aNode [
+
+	| data |
+	data := super visitLogicalFactor: aNode.
+
+	^ data at: 'expression'
 ]
 
 { #category : #'visiting statement' }
@@ -1294,19 +1305,23 @@ FASTFortranSyntaxJsonVisitor >> visitSubroutine: aSubroutine [
 
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitSubstring: aNode [
-	"lower_bound tag variable upper_bound"
 
-	<generated>
-	| data array |
+	| data array indices_position |
 	data := super visitSubstring: aNode.
 
-	array := (self newEntity: FASTFortranArrayVariable) name:
-		         (data at: 'variable_name') name.
 
-	array indices add: ((self newEntity: FASTFortranArrayRange)
+	array := (self newEntity: FASTFortranArrayVariable withPosition: data)
+		         name: (data at: 'variable_name') name.
+
+	
+	indices_position := Dictionary new at: 'start_pos' put: ((data at: 'lower_bound') startPos); yourself.
+
+	array indices add: ((self
+			  newEntity: FASTFortranArrayRange
+			  withPosition: indices_position )
 			 lowerBound: (data at: 'lower_bound');
 			 upperBound: (data at: 'upper_bound')).
-			
+
 	^ array
 ]
 
@@ -1374,20 +1389,20 @@ FASTFortranSyntaxJsonVisitor >> visitUndefinedType: aNode [
 
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitUnsignedIntConstant: aNode [
-	
-	^ (self newEntity: FASTFortranIntegerLiteral)
-		  primitiveValue:
-			  ((super visitUnsignedIntConstant: aNode) at: 'value');
+
+	| data |
+	data := super visitUnsignedIntConstant: aNode.
+	^ (self newEntity: FASTFortranIntegerLiteral withPosition: data)
+		  primitiveValue: (data at: 'value');
 		  yourself
 ]
 
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitUnsignedRealConstant: aNode [
-	"start_pos tag value"
 
 	| data |
 	data := super visitUnsignedRealConstant: aNode.
-	^ (self newEntity: FASTFortranRealLiteral)
+	^ (self newEntity: FASTFortranRealLiteral withPosition: data)
 		  primitiveValue: (data at: 'value');
 		  yourself
 ]
