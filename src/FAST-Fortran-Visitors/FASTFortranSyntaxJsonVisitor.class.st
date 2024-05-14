@@ -339,11 +339,11 @@ FASTFortranSyntaxJsonVisitor >> visitBinaryExpression: aNode [
 	| data |
 
 	data := super visitBinaryExpression: aNode.
-
+	
 	^(self newEntity: FASTFortranBinaryExpression" withPosition: data")
 		leftOperand: (self variableNameOrExpression: (data at: 'lhs')) ;
 		rightOperand: (self variableNameOrExpression: (data at: 'rhs')) ;
-		operator: (data at: 'operator') ;
+		operator: ((data at: 'operator') at: 'operator_value' ) ;
 		yourself
 ]
 
@@ -489,12 +489,12 @@ FASTFortranSyntaxJsonVisitor >> visitConstantSigned: aNode [
 
 	constant isMooseEntity
 		ifTrue: [
-			constant primitiveValue: ((data at: #sign) , constant primitiveValue).
+			constant primitiveValue: (((data at: #sign) at: #sign_value) , constant primitiveValue).
 			return := constant
 		]
 		ifFalse: [
 			return := self newEntity: FASTFortranUnaryExpression.
-			return operator: (data at: 'sign').
+			return operator: ((data at: #sign) at: #sign_value).
 			return expression: ((self newEntity: FASTFortranScalarVariable)
 			 		name: constant)
 		].
@@ -1447,7 +1447,7 @@ FASTFortranSyntaxJsonVisitor >> visitVariableDeclarator: aNode [
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitVariableExpression: aNode [
 
-	^ (super visitVariableExpression: aNode) at: 'variable'
+	^ (super visitVariableExpression: aNode) at: 'variable_name'
 ]
 
 { #category : #'visiting expression' }
