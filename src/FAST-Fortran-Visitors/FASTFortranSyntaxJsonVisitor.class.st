@@ -128,12 +128,13 @@ FASTFortranSyntaxJsonVisitor >> initLineSizes: fortranSource [
 FASTFortranSyntaxJsonVisitor >> makeLoopControl: data [
 
 	| init |
-	init := (self newEntity: FASTFortranAssignmentExpression)
+	
+	init := (self newEntity: FASTFortranAssignmentExpression withPosition: data)
 		        variable: (data at: #variable_name) ;
 		        expression: (self variableNameOrExpression: (data at: #init)) ;
 		        yourself.
 
-	^ (self newEntity: FASTFortranLoopControlExpression)
+	^ (self newEntity: FASTFortranLoopControlExpression withPosition: data)
 		  init: init;
 		  limit: (self variableNameOrExpression: (data at: #limit));
 		  increment: (data at: #increment ifAbsent: [ nil ]);
@@ -485,10 +486,12 @@ FASTFortranSyntaxJsonVisitor >> visitConstantSigned: aNode [
 	data := super visitConstantSigned: aNode.
 
 	constant := data at: #constant.
-
+	
 	constant isMooseEntity
 		ifTrue: [
 			constant primitiveValue: (((data at: #sign) at: #sign_value) , constant primitiveValue).
+			"updating start position to accomodate the sign"
+			constant startPos:((constant startPos x)@(constant startPos y - 1)).
 			return := constant
 		]
 		ifFalse: [
