@@ -15,7 +15,7 @@ FASTFortranSyntaxJsonVisitor >> checkAndwrapToScalarVariable: aNode [
 
 	aNode = FASTFortranCharacterLiteral
 		ifTrue: [
-			^ (self newEntity: FASTFortranScalarVariable)
+			^ (self newEntity: FASTFortranScalarVariable withPosition: aNode)
 				  name: aNode primitiveValue;
 				  yourself ]
 		ifFalse: [ ^ aNode ]
@@ -340,9 +340,9 @@ FASTFortranSyntaxJsonVisitor >> visitBinaryExpression: aNode [
 
 	data := super visitBinaryExpression: aNode.
 	
-	^(self newEntity: FASTFortranBinaryExpression "withPosition: data")
-		leftOperand: (self variableNameOrExpression: (data at: 'lhs')) ;
-		rightOperand: (self variableNameOrExpression: (data at: 'rhs')) ;
+	^(self newEntity: FASTFortranBinaryExpression withPosition: data)
+		leftOperand: (self variableNameOrExpression: (data at: 'left')) ;
+		rightOperand: (self variableNameOrExpression: (data at: 'right')) ;
 		operator: ((data at: 'operator') at: 'operator_value' ) ;
 		yourself
 ]
@@ -1031,17 +1031,6 @@ FASTFortranSyntaxJsonVisitor >> visitLenSpecification: aNode [
 		ifFalse: [ 	data ]
 ]
 
-{ #category : #visiting }
-FASTFortranSyntaxJsonVisitor >> visitLhs: aNode [
-	"start_pos tag value"
-
-	| data |
-
-	data := super visitLhs: aNode.
-	data isArray ifTrue: [ ^ self checkAndwrapToScalarVariable: data first ].
-	^ self checkAndwrapToScalarVariable: data
-]
-
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitLiteralExpression: aNode [
 
@@ -1250,17 +1239,6 @@ FASTFortranSyntaxJsonVisitor >> visitRewindStatement: aNode [
 	^(self newLabeledStatement: FASTFortranRewindStatement withPosition: data)
 		ioParameters: (data at: #control_info_list) ;
 		yourself
-]
-
-{ #category : #visiting }
-FASTFortranSyntaxJsonVisitor >> visitRhs: aNode [
-	"start_pos value"
-| data |
-
-	data := super visitRhs: aNode.
-	data isArray ifTrue: [
-		^ self checkAndwrapToScalarVariable: data first ].
-	^ self checkAndwrapToScalarVariable: data
 ]
 
 { #category : #'visiting statement' }
