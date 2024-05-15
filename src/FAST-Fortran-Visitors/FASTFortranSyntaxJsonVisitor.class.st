@@ -99,24 +99,25 @@ FASTFortranSyntaxJsonVisitor >> groupCommonSequences: aCollection [
 	
 	a #common_name is a dictionary with a key #dommon_name. This is how we recognized them"
 
-	| groups current_group |
-	
+	| groups current_group inner |
 	groups := OrderedCollection new.
+
+	inner := [ :each |
+	         current_group := self
+		                          newEntity: FASTFortranCommonGroup
+		                          withPosition: each.
+	         current_group addDeclarator:
+		         (each at: 'common_element_name').
+	         groups add: current_group ].
+
 	aCollection do: [ :each |
 		(each includesKey: 'common_block_name')
-			ifTrue: [
-				current_group := self newEntity: FASTFortranCommonGroup withPosition: each.
-				current_group addDeclarator: (each at: 'common_element_name').
-				current_group name:  (each at: 'common_block_name').
-				groups add: current_group.
-			]
+			ifTrue: [ (inner value: each) name: (each at: 'common_block_name') ]
 			ifFalse: [
 				current_group
-					ifNotNil: [ current_group addDeclarator: (each at: 'common_element_name') ]
-					ifNil: [
-						current_group := self newEntity: FASTFortranCommonGroup withPosition: each.
-						current_group addDeclarator: (each at: 'common_element_name').
-						groups add: current_group ] ] ].
+					ifNotNil: [
+					current_group addDeclarator: (each at: 'common_element_name') ]
+					ifNil: [ inner value: each ] ] ].
 	^ groups
 ]
 
@@ -752,8 +753,8 @@ FASTFortranSyntaxJsonVisitor >> visitEquivalenceGroup: aCollection [
 	| data |
 	data := super visitEquivalenceGroup: aCollection.
 
-	^(self newEntity: FASTFortranEquivalenceGroup)
-		variables: (data collect: [:each | self variableNameOrExpression: each]) ;
+	^(self newEntity: FASTFortranEquivalenceGroup withPosition: data)
+		variables: (data at: 'equivalence_group_elements') ;
 		yourself
 ]
 
