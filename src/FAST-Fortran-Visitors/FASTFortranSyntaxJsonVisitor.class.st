@@ -578,7 +578,7 @@ FASTFortranSyntaxJsonVisitor >> visitDataImplyDoList: aNode [
 		at: #variable_name
 		put: ((self newEntity: FASTFortranScalarVariable) name: (data at: #variable_name)).
 
-	^(self newEntity: FASTFortranImpliedDoExpression)
+	^(self newEntity: FASTFortranImpliedDoExpression withPosition: data)
 		variables: vars ;
 		loopControl: (self makeLoopControl: data) ;
 		yourself
