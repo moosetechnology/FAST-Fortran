@@ -264,7 +264,7 @@ FASTFortranSyntaxJsonVisitor >> visitAlternateReturnSpecifier: aNode [
 	data := super visitAlternateReturnSpecifier: aNode.
 
 	^(self newEntity: FASTFortranCharacterLiteral)
-		primitiveValue: ('*' , ((data at: #label) at: #label_ref_value))
+		primitiveValue: ('*' , ((data at: #label) at: #label))
 ]
 
 { #category : #visiting }
@@ -1130,7 +1130,7 @@ FASTFortranSyntaxJsonVisitor >> visitParameterAssign: aNode [
     | data |
 	data := super visitParameterAssign: aNode.
 
-	^(self newEntity: FASTFortranVariableDeclarator)
+	^(self newEntity: FASTFortranVariableDeclarator withPosition: data)
 		name: (data at: #symbolic_name) ;
 		expression: (data at: #expression) ;
 		yourself
@@ -1339,8 +1339,8 @@ FASTFortranSyntaxJsonVisitor >> visitUnaryExpression: aNode [
 
 	| data |
 	data := super visitUnaryExpression: aNode.
-
-	^ (self newEntity: FASTFortranUnaryExpression)
+	
+	^ (self newEntity: FASTFortranUnaryExpression withPosition: data)
 		  expression: (data at: 'expression');
 		  operator: (data at: 'operator');
 		  yourself
