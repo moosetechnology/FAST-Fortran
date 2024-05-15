@@ -996,17 +996,15 @@ FASTFortranSyntaxJsonVisitor >> visitIoParameter: aNode [
 ]
 
 { #category : #visiting }
-FASTFortranSyntaxJsonVisitor >> visitLabelReference: labelRefNode [
+FASTFortranSyntaxJsonVisitor >> visitLabelReference: aNode [
 
-	^(self newEntity: FASTFortranLabelReference)
-		label: (labelRefNode at: #label_ref_value) ;
+	| data |
+	
+	data := super visitLabelReference: aNode.
+	
+	^(self newEntity: FASTFortranLabelReference withPosition: data)
+		label: (aNode at: #label) ;
 		yourself
-]
-
-{ #category : #visiting }
-FASTFortranSyntaxJsonVisitor >> visitLabels: aCollection [
-
-   ^(super visitLabels: aCollection) collect: [ :each | each at: #label_ref ]
 ]
 
 { #category : #'visiting statement' }
@@ -1176,16 +1174,15 @@ FASTFortranSyntaxJsonVisitor >> visitPrintStatement: aNode [
 ]
 
 { #category : #'visiting statement' }
-FASTFortranSyntaxJsonVisitor >> visitProgUnitParameters: aCollection [ 
+FASTFortranSyntaxJsonVisitor >> visitProgUnitParameters: aCollection [
 
 	| data |
 	data := super visitProgUnitParameters: aCollection.
 
-	^data collect: [ :each |
-		(self newEntity: FASTFortranScalarVariable)
-		  name: each ;
-		  yourself
-	]
+	^ data collect: [ :each |
+		  (self newEntity: FASTFortranVariable)
+			  name: each;
+			  yourself ]
 ]
 
 { #category : #visiting }
