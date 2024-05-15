@@ -513,9 +513,9 @@ FASTFortranSyntaxJsonVisitor >> visitControlInfoOption: aNode [
 
 	| data |
 	data := super visitControlInfoOption: aNode.
-
-	^ (self newEntity: FASTFortranAssignmentExpression)
-		  expression: (data at: #control_option_value) ;
+	
+	^ (self newEntity: FASTFortranAssignmentExpression withPosition: data)
+		  expression: (self variableNameOrExpression: (data at: #control_option_value)) ;
 		  variable: (self variableNameOrExpression: (data at: #control_option_name)) ;
 		  yourself
 ]
@@ -1229,6 +1229,16 @@ FASTFortranSyntaxJsonVisitor >> visitRewindStatement: aNode [
 	^(self newLabeledStatement: FASTFortranRewindStatement withPosition: data)
 		ioParameters: (data at: #control_info_list) ;
 		yourself
+]
+
+{ #category : #'visiting expression' }
+FASTFortranSyntaxJsonVisitor >> visitScalarVariable: aNode [
+
+	| data |
+	data := super visitScalarVariable: aNode.
+
+	^ (self newEntity: FASTFortranScalarVariable withPosition: data)
+		  name: (data at: 'variable_name')
 ]
 
 { #category : #'visiting statement' }
