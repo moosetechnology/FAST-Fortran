@@ -476,23 +476,23 @@ FASTFortranSyntaxJsonVisitor >> visitConstantSigned: aNode [
 	data := super visitConstantSigned: aNode.
 
 	constant := data at: #constant.
-	
+
 	constant isMooseEntity
 		ifTrue: [
-			constant primitiveValue: (((data at: #sign) at: #sign_value) , constant primitiveValue).
+			constant primitiveValue:
+				((data at: #sign) at: #sign_value) , constant primitiveValue.
 			"updating start position to accomodate the sign"
 			constant startPos:((constant startPos x)@(constant startPos y - 1)).
-			return := constant
-		]
+			return := constant ]
 		ifFalse: [
-			return := self newEntity: FASTFortranUnaryExpression.
+			return := self
+				          newEntity: FASTFortranUnaryExpression
+				          withPosition: data.
 			return operator: ((data at: #sign) at: #sign_value).
-			return expression: ((self newEntity: FASTFortranScalarVariable)
-			 		name: constant)
-		].
+			return expression:
+				((self newEntity: FASTFortranScalarVariable) name: constant) ].
 
-	^return
-
+	^ return
 ]
 
 { #category : #'visiting statement' }
