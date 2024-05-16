@@ -799,7 +799,6 @@ FASTFortranSyntaxJsonVisitor >> visitFormat: aNode [
  
    | data |
 	data := super visitFormat: aNode.
-
 	data ifEmpty: [ ^data ].
 	(data anyOne class = FASTFortranCharacterLiteral) ifTrue: [ ^data anyOne ].
 	data anyOne isString ifTrue: [ ^(self newEntity: FASTFortranScalarVariable) name: data anyOne ].
@@ -812,10 +811,11 @@ FASTFortranSyntaxJsonVisitor >> visitFormatStatement: aNode [
 
 	| data |
 	data := super visitFormatStatement: aNode.
-
-	^(self newLabeledStatement: FASTFortranFormatStatement withPosition: data)
-		formatDescription: (data at: #specification) ;
-		yourself.
+	^ (self
+		   newLabeledStatement: FASTFortranFormatStatement
+		   withPosition: data)
+		  formatDescription: (',' join: (data at: 'specification'));
+		  yourself
 ]
 
 { #category : #'visiting prog-unit' }
