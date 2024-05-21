@@ -962,39 +962,12 @@ SyntaxJsonToFASTTests >> testCallSubroutine [
 ]
 
 { #category : #'tests-comments' }
-SyntaxJsonToFASTTests >> testCheckForComments [
-	"fake fortranCode to have line lengths and fake jsonCode to have comments"
-
-	| block |
-	fortranCode := '      line 1
-      line 2
-      line 3
-      line 4
-      line 5
-      line 6
-      line 7
-      line 8
-      line 9
-'.
-	jsonCode := ' line 1 |^ ./fortranCode.F, line 1: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE1 %EOL".  line 2 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 2: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE2 %EOL".  line 3 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 3: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE3 %EOL".  line 4 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 4: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE4 %EOL".  line 5 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 5: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE5 %EOL".  line 6 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 6: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE6 %EOL".  line 7 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 7: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE7 %EOL".  line 8 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 8: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE8 %EOL".  line 9 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 9: column 13: Warning:	"= .FALSE." is inserted before "%EOL".   |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 11: column 1: Error:	"END %EOL" is inserted before "End Of File". { "tag":"fortran_file", "comments": { }, "file" : "/Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : "null", "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "11", "column":"3"}, "statement_list" : [{"tag" : "backspace_statement", "start_pos" : {"line" : "1", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"7"}, "name":"LINE1"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"7"}, "name":"LINE2"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "3", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"7"}, "name":"LINE3"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "4", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"7"}, "name":"LINE4"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "5", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "5", "column":"7"}, "name":"LINE5"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "6", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "6", "column":"7"}, "name":"LINE6"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "7", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "7", "column":"7"}, "name":"LINE7"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "8", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "8", "column":"7"}, "name":"LINE8"}]},{"tag" : "assignment_statement", "start_pos" : {"line" : "9", "column":"7"}, "left" : {"tag" : "symbolic_name", "start_pos" : {"line" : "9", "column":"7"}, "name":"LINE9"}, "right" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "logical_constant", "start_pos" : {"line" : "9", "column":"13"}, "value":".FALSE."}}}}}]}] }'.
-
-	self visitJsonCode.
-
-	block := FASTFortranStatementBlock new.
-	block startPos: 5 @ 5.
-	block endPos: 6 @ 5.
-
-	visitor checkForComments: block.
-
-	self assert: visitor commentList size equals: 3.
-	self assert: block comments size equals: 2
-]
-
-{ #category : #'tests-comments' }
 SyntaxJsonToFASTTests >> testCheckForCommentsAfter [
 	"fake fortranCode to have line lengths and fake jsonCode to have comments"
 
 	| block |
+	
+	jsonCode := '{ "tag":"fortran_file", "comments": { "5":"third", "4":"second", "3":"first", "7":"fifth", "6":"fourth" }, "program_units" : []}'.
 	fortranCode := '      line 1
       line 2
       line 3
@@ -1005,7 +978,6 @@ SyntaxJsonToFASTTests >> testCheckForCommentsAfter [
       line 8
       line 9
 '.
-	jsonCode := ' line 1 |^ ./fortranCode.F, line 1: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE1 %EOL".  line 2 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 2: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE2 %EOL".  line 3 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 3: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE3 %EOL".  line 4 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 4: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE4 %EOL".  line 5 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 5: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE5 %EOL".  line 6 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 6: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE6 %EOL".  line 7 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 7: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE7 %EOL".  line 8 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 8: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE8 %EOL".  line 9 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 9: column 13: Warning:	"= .FALSE." is inserted before "%EOL".   |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 11: column 1: Error:	"END %EOL" is inserted before "End Of File". { "tag":"fortran_file", "comments": { }, "file" : "/Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : "null", "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "11", "column":"3"}, "statement_list" : [{"tag" : "backspace_statement", "start_pos" : {"line" : "1", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"7"}, "name":"LINE1"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"7"}, "name":"LINE2"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "3", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"7"}, "name":"LINE3"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "4", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"7"}, "name":"LINE4"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "5", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "5", "column":"7"}, "name":"LINE5"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "6", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "6", "column":"7"}, "name":"LINE6"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "7", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "7", "column":"7"}, "name":"LINE7"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "8", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "8", "column":"7"}, "name":"LINE8"}]},{"tag" : "assignment_statement", "start_pos" : {"line" : "9", "column":"7"}, "left" : {"tag" : "symbolic_name", "start_pos" : {"line" : "9", "column":"7"}, "name":"LINE9"}, "right" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "logical_constant", "start_pos" : {"line" : "9", "column":"13"}, "value":".FALSE."}}}}}]}] }'.
 
 	self visitJsonCode.
 
@@ -1024,6 +996,8 @@ SyntaxJsonToFASTTests >> testCheckForCommentsBefore [
 	"fake fortranCode to have line lengths and fake jsonCode to have comments"
 
 	| block |
+	
+	jsonCode := '{ "tag":"fortran_file", "comments": { "5":"third", "4":"second", "3":"first", "7":"fifth", "6":"fourth" }, "program_units" : []}'.
 	fortranCode := '      line 1
       line 2
       line 3
@@ -1034,8 +1008,7 @@ SyntaxJsonToFASTTests >> testCheckForCommentsBefore [
       line 8
       line 9
 '.
-	jsonCode := ' line 1 |^ ./fortranCode.F, line 1: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE1 %EOL".  line 2 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 2: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE2 %EOL".  line 3 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 3: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE3 %EOL".  line 4 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 4: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE4 %EOL".  line 5 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 5: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE5 %EOL".  line 6 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 6: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE6 %EOL".  line 7 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 7: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE7 %EOL".  line 8 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 8: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE8 %EOL".  line 9 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 9: column 13: Warning:	"= .FALSE." is inserted before "%EOL".   |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 11: column 1: Error:	"END %EOL" is inserted before "End Of File". { "tag":"fortran_file", "comments": { }, "file" : "/Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : "null", "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "11", "column":"3"}, "statement_list" : [{"tag" : "backspace_statement", "start_pos" : {"line" : "1", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"7"}, "name":"LINE1"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"7"}, "name":"LINE2"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "3", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"7"}, "name":"LINE3"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "4", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"7"}, "name":"LINE4"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "5", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "5", "column":"7"}, "name":"LINE5"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "6", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "6", "column":"7"}, "name":"LINE6"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "7", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "7", "column":"7"}, "name":"LINE7"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "8", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "8", "column":"7"}, "name":"LINE8"}]},{"tag" : "assignment_statement", "start_pos" : {"line" : "9", "column":"7"}, "left" : {"tag" : "symbolic_name", "start_pos" : {"line" : "9", "column":"7"}, "name":"LINE9"}, "right" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "logical_constant", "start_pos" : {"line" : "9", "column":"13"}, "value":".FALSE."}}}}}]}] }'.
-
+	
 	self visitJsonCode.
 
 	block := FASTFortranStatementBlock new.
@@ -1049,10 +1022,12 @@ SyntaxJsonToFASTTests >> testCheckForCommentsBefore [
 ]
 
 { #category : #'tests-comments' }
-SyntaxJsonToFASTTests >> testCheckForCommentsNoComment [
+SyntaxJsonToFASTTests >> testCheckForCommentsInsideBlock [
 	"fake fortranCode to have line lengths and fake jsonCode to have comments"
 
 	| block |
+	
+	jsonCode := '{ "tag":"fortran_file", "comments": { "5":"third", "4":"second", "3":"first", "7":"fifth", "6":"fourth" }, "program_units" : []}'.
 	fortranCode := '      line 1
       line 2
       line 3
@@ -1063,7 +1038,36 @@ SyntaxJsonToFASTTests >> testCheckForCommentsNoComment [
       line 8
       line 9
 '.
-	jsonCode := ' line 1 |^ ./fortranCode.F, line 1: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE1 %EOL".  line 2 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 2: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE2 %EOL".  line 3 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 3: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE3 %EOL".  line 4 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 4: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE4 %EOL".  line 5 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 5: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE5 %EOL".  line 6 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 6: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE6 %EOL".  line 7 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 7: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE7 %EOL".  line 8 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 8: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE8 %EOL".  line 9 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 9: column 13: Warning:	"= .FALSE." is inserted before "%EOL".   |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 11: column 1: Error:	"END %EOL" is inserted before "End Of File". { "tag":"fortran_file", "comments": { }, "file" : "/Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : "null", "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "11", "column":"3"}, "statement_list" : [{"tag" : "backspace_statement", "start_pos" : {"line" : "1", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"7"}, "name":"LINE1"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"7"}, "name":"LINE2"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "3", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"7"}, "name":"LINE3"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "4", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"7"}, "name":"LINE4"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "5", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "5", "column":"7"}, "name":"LINE5"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "6", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "6", "column":"7"}, "name":"LINE6"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "7", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "7", "column":"7"}, "name":"LINE7"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "8", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "8", "column":"7"}, "name":"LINE8"}]},{"tag" : "assignment_statement", "start_pos" : {"line" : "9", "column":"7"}, "left" : {"tag" : "symbolic_name", "start_pos" : {"line" : "9", "column":"7"}, "name":"LINE9"}, "right" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "logical_constant", "start_pos" : {"line" : "9", "column":"13"}, "value":".FALSE."}}}}}]}] }'.
+
+	self visitJsonCode.
+
+	block := FASTFortranStatementBlock new.
+	block startPos: 5 @ 5.
+	block endPos: 6 @ 5.
+
+	visitor checkForComments: block.
+
+	self assert: visitor commentList size equals: 3.
+	self assert: block comments size equals: 2
+]
+
+{ #category : #'tests-comments' }
+SyntaxJsonToFASTTests >> testCheckForCommentsNoComment [
+	"fake fortranCode to have line lengths and fake jsonCode to have comments"
+
+	| block |
+	
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "program_units" : []}'.
+	fortranCode := '      line 1
+      line 2
+      line 3
+      line 4
+      line 5
+      line 6
+      line 7
+      line 8
+      line 9
+'.
 
 	self visitJsonCode.
 
@@ -1099,8 +1103,9 @@ C comment in a function''s body
 
 { #category : #'tests-comments' }
 SyntaxJsonToFASTTests >> testCommentsOrder [
-	"fake fortranCode to have line lengths and fake jsonCode to have comments"
+	"using local vars fCode and jCode to avoid detecting vars fortranCode and jsonCode and regeneration of tests"
 
+	jsonCode := '{ "tag":"fortran_file", "comments": { "5":"third", "4":"second", "3":"first", "7":"fifth", "6":"fourth" }, "program_units" : []}'.	
 	fortranCode := '      line 1
       line 2
       line 3
@@ -1111,8 +1116,7 @@ SyntaxJsonToFASTTests >> testCommentsOrder [
       line 8
       line 9
 '.
-	jsonCode := ' line 1 |^ ./fortranCode.F, line 1: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE1 %EOL".  line 2 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 2: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE2 %EOL".  line 3 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 3: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE3 %EOL".  line 4 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 4: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE4 %EOL".  line 5 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 5: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE5 %EOL".  line 6 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 6: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE6 %EOL".  line 7 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 7: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE7 %EOL".  line 8 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 8: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE8 %EOL".  line 9 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 9: column 13: Warning:	"= .FALSE." is inserted before "%EOL".   |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 11: column 1: Error:	"END %EOL" is inserted before "End Of File". { "tag":"fortran_file", "comments": { }, "file" : "/Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : "null", "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "11", "column":"3"}, "statement_list" : [{"tag" : "backspace_statement", "start_pos" : {"line" : "1", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"7"}, "name":"LINE1"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"7"}, "name":"LINE2"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "3", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"7"}, "name":"LINE3"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "4", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"7"}, "name":"LINE4"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "5", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "5", "column":"7"}, "name":"LINE5"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "6", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "6", "column":"7"}, "name":"LINE6"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "7", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "7", "column":"7"}, "name":"LINE7"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "8", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "8", "column":"7"}, "name":"LINE8"}]},{"tag" : "assignment_statement", "start_pos" : {"line" : "9", "column":"7"}, "left" : {"tag" : "symbolic_name", "start_pos" : {"line" : "9", "column":"7"}, "name":"LINE9"}, "right" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "logical_constant", "start_pos" : {"line" : "9", "column":"13"}, "value":".FALSE."}}}}}]}] }'.
-
+	
 	self visitJsonCode.
 
 	self assert: visitor commentList size equals: 5.
@@ -1125,10 +1129,12 @@ SyntaxJsonToFASTTests >> testCommentsOrder [
 ]
 
 { #category : #'tests-comments' }
-SyntaxJsonToFASTTests >> testCommentsWithin [
+SyntaxJsonToFASTTests >> testCommentsWithinAfter [
 	"fake fortranCode to have line lengths and fake jsonCode to have comments"
 
 	| block |
+	
+	jsonCode := '{ "tag":"fortran_file", "comments": { "5":"third", "4":"second", "3":"first", "7":"fifth", "6":"fourth" }, "program_units" : []}'.
 	fortranCode := '      line 1
       line 2
       line 3
@@ -1139,7 +1145,61 @@ SyntaxJsonToFASTTests >> testCommentsWithin [
       line 8
       line 9
 '.
-	jsonCode := ' line 1 |^ ./fortranCode.F, line 1: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE1 %EOL".  line 2 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 2: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE2 %EOL".  line 3 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 3: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE3 %EOL".  line 4 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 4: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE4 %EOL".  line 5 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 5: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE5 %EOL".  line 6 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 6: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE6 %EOL".  line 7 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 7: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE7 %EOL".  line 8 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 8: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE8 %EOL".  line 9 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 9: column 13: Warning:	"= .FALSE." is inserted before "%EOL".   |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 11: column 1: Error:	"END %EOL" is inserted before "End Of File". { "tag":"fortran_file", "comments": { }, "file" : "/Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : "null", "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "11", "column":"3"}, "statement_list" : [{"tag" : "backspace_statement", "start_pos" : {"line" : "1", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"7"}, "name":"LINE1"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"7"}, "name":"LINE2"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "3", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"7"}, "name":"LINE3"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "4", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"7"}, "name":"LINE4"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "5", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "5", "column":"7"}, "name":"LINE5"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "6", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "6", "column":"7"}, "name":"LINE6"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "7", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "7", "column":"7"}, "name":"LINE7"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "8", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "8", "column":"7"}, "name":"LINE8"}]},{"tag" : "assignment_statement", "start_pos" : {"line" : "9", "column":"7"}, "left" : {"tag" : "symbolic_name", "start_pos" : {"line" : "9", "column":"7"}, "name":"LINE9"}, "right" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "logical_constant", "start_pos" : {"line" : "9", "column":"13"}, "value":".FALSE."}}}}}]}] }'.
+		
+	self visitJsonCode.
+
+	block := FASTFortranStatementBlock new.
+	block startPos: 1 @ 5.
+	block endPos: 2 @ 5.
+
+	self assert: (visitor commentsWithin: block) size equals: 0
+]
+
+{ #category : #'tests-comments' }
+SyntaxJsonToFASTTests >> testCommentsWithinBefore [
+	"fake fortranCode to have line lengths and fake jsonCode to have comments"
+
+	| block |
+	
+	jsonCode := '{ "tag":"fortran_file", "comments": { "5":"third", "4":"second", "3":"first", "7":"fifth", "6":"fourth" }, "program_units" : []}'.
+	fortranCode := '      line 1
+      line 2
+      line 3
+      line 4
+      line 5
+      line 6
+      line 7
+      line 8
+      line 9
+'.
+		
+	self visitJsonCode.
+
+	block := FASTFortranStatementBlock new.
+	block startPos: 8 @ 5.
+	block endPos: 9 @ 5.
+
+	self assert: (visitor commentsWithin: block) size equals: 0
+]
+
+{ #category : #'tests-comments' }
+SyntaxJsonToFASTTests >> testCommentsWithinBlock [
+	"fake fortranCode to have line lengths and fake jsonCode to have comments"
+	
+	| block |
+	
+	jsonCode := '{ "tag":"fortran_file", "comments": { "5":"third", "4":"second", "3":"first", "7":"fifth", "6":"fourth" }, "program_units" : []}'.
+	fortranCode := '      line 1
+      line 2
+      line 3
+      line 4
+      line 5
+      line 6
+      line 7
+      line 8
+		
+      line 9
+'.
 
 	self visitJsonCode.
 
@@ -1157,61 +1217,12 @@ SyntaxJsonToFASTTests >> testCommentsWithin [
 ]
 
 { #category : #'tests-comments' }
-SyntaxJsonToFASTTests >> testCommentsWithinAfter [
-	"fake fortranCode to have line lengths and fake jsonCode to have comments"
-
-	| block |
-	fortranCode := '      line 1
-      line 2
-      line 3
-      line 4
-      line 5
-      line 6
-      line 7
-      line 8
-      line 9
-'.
-	jsonCode := ' line 1 |^ ./fortranCode.F, line 1: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE1 %EOL".  line 2 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 2: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE2 %EOL".  line 3 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 3: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE3 %EOL".  line 4 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 4: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE4 %EOL".  line 5 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 5: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE5 %EOL".  line 6 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 6: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE6 %EOL".  line 7 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 7: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE7 %EOL".  line 8 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 8: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE8 %EOL".  line 9 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 9: column 13: Warning:	"= .FALSE." is inserted before "%EOL".   |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 11: column 1: Error:	"END %EOL" is inserted before "End Of File". { "tag":"fortran_file", "comments": { }, "file" : "/Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : "null", "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "11", "column":"3"}, "statement_list" : [{"tag" : "backspace_statement", "start_pos" : {"line" : "1", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"7"}, "name":"LINE1"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"7"}, "name":"LINE2"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "3", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"7"}, "name":"LINE3"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "4", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"7"}, "name":"LINE4"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "5", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "5", "column":"7"}, "name":"LINE5"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "6", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "6", "column":"7"}, "name":"LINE6"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "7", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "7", "column":"7"}, "name":"LINE7"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "8", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "8", "column":"7"}, "name":"LINE8"}]},{"tag" : "assignment_statement", "start_pos" : {"line" : "9", "column":"7"}, "left" : {"tag" : "symbolic_name", "start_pos" : {"line" : "9", "column":"7"}, "name":"LINE9"}, "right" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "logical_constant", "start_pos" : {"line" : "9", "column":"13"}, "value":".FALSE."}}}}}]}] }'.
-	self visitJsonCode.
-
-	block := FASTFortranStatementBlock new.
-	block startPos: 1 @ 5.
-	block endPos: 2 @ 5.
-
-	self assert: (visitor commentsWithin: block) size equals: 0
-]
-
-{ #category : #'tests-comments' }
-SyntaxJsonToFASTTests >> testCommentsWithinBefore [
-	"fake fortranCode to have line lengths and fake jsonCode to have comments"
-
-	| block |
-	fortranCode := '      line 1
-      line 2
-      line 3
-      line 4
-      line 5
-      line 6
-      line 7
-      line 8
-      line 9
-'.
-	jsonCode := ' line 1 |^ ./fortranCode.F, line 1: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE1 %EOL".  line 2 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 2: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE2 %EOL".  line 3 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 3: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE3 %EOL".  line 4 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 4: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE4 %EOL".  line 5 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 5: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE5 %EOL".  line 6 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 6: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE6 %EOL".  line 7 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 7: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE7 %EOL".  line 8 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 8: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE8 %EOL".  line 9 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 9: column 13: Warning:	"= .FALSE." is inserted before "%EOL".   |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 11: column 1: Error:	"END %EOL" is inserted before "End Of File". { "tag":"fortran_file", "comments": { }, "file" : "/Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : "null", "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "11", "column":"3"}, "statement_list" : [{"tag" : "backspace_statement", "start_pos" : {"line" : "1", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"7"}, "name":"LINE1"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"7"}, "name":"LINE2"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "3", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"7"}, "name":"LINE3"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "4", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"7"}, "name":"LINE4"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "5", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "5", "column":"7"}, "name":"LINE5"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "6", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "6", "column":"7"}, "name":"LINE6"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "7", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "7", "column":"7"}, "name":"LINE7"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "8", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "8", "column":"7"}, "name":"LINE8"}]},{"tag" : "assignment_statement", "start_pos" : {"line" : "9", "column":"7"}, "left" : {"tag" : "symbolic_name", "start_pos" : {"line" : "9", "column":"7"}, "name":"LINE9"}, "right" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "logical_constant", "start_pos" : {"line" : "9", "column":"13"}, "value":".FALSE."}}}}}]}] }'.
-
-	self visitJsonCode.
-
-	block := FASTFortranStatementBlock new.
-	block startPos: 8 @ 5.
-	block endPos: 9 @ 5.
-
-	self assert: (visitor commentsWithin: block) size equals: 0
-]
-
-{ #category : #'tests-comments' }
 SyntaxJsonToFASTTests >> testCommentsWithinNocomment [
 	"fake fortranCode to have line lengths and fake jsonCode to have comments"
 
 	| block |
+	
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "program_units" : []}'.
 	fortranCode := '      line 1
       line 2
       line 3
@@ -1222,7 +1233,6 @@ SyntaxJsonToFASTTests >> testCommentsWithinNocomment [
       line 8
       line 9
 '.
-	jsonCode := ' line 1 |^ ./fortranCode.F, line 1: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE1 %EOL".  line 2 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 2: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE2 %EOL".  line 3 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 3: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE3 %EOL".  line 4 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 4: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE4 %EOL".  line 5 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 5: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE5 %EOL".  line 6 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 6: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE6 %EOL".  line 7 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 7: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE7 %EOL".  line 8 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 8: column 13: Warning:	"BACKSPACEkw" is inserted before "LINE8 %EOL".  line 9 |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 9: column 13: Warning:	"= .FALSE." is inserted before "%EOL".   |^ /Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f, line 11: column 1: Error:	"END %EOL" is inserted before "End Of File". { "tag":"fortran_file", "comments": { }, "file" : "/Users/lsafina/Documents/Pharo/images/M11A/FastTmp/tmpFASTSource.f", "program_units" : [{"tag" : "main", "name" : "null", "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "11", "column":"3"}, "statement_list" : [{"tag" : "backspace_statement", "start_pos" : {"line" : "1", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"7"}, "name":"LINE1"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "2", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"7"}, "name":"LINE2"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "3", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "3", "column":"7"}, "name":"LINE3"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "4", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "4", "column":"7"}, "name":"LINE4"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "5", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "5", "column":"7"}, "name":"LINE5"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "6", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "6", "column":"7"}, "name":"LINE6"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "7", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "7", "column":"7"}, "name":"LINE7"}]},{"tag" : "backspace_statement", "start_pos" : {"line" : "8", "column":"7"}, "control_info_list" : [{"tag" : "symbolic_name", "start_pos" : {"line" : "8", "column":"7"}, "name":"LINE8"}]},{"tag" : "assignment_statement", "start_pos" : {"line" : "9", "column":"7"}, "left" : {"tag" : "symbolic_name", "start_pos" : {"line" : "9", "column":"7"}, "name":"LINE9"}, "right" : {"tag" : "logical_expression", "expression" : {"tag" : "logical_factor", "negated" : "false", "expression" : {"tag" : "logical_primary", "expression" : {"tag" : "logical_constant", "start_pos" : {"line" : "9", "column":"13"}, "value":".FALSE."}}}}}]}] }'.
 
 	self visitJsonCode.
 
