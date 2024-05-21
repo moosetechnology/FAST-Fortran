@@ -520,6 +520,25 @@ FASTFortranSyntaxJsonVisitor >> visitControlInfoOption: aNode [
 		  yourself
 ]
 
+{ #category : #'visiting expression' }
+FASTFortranSyntaxJsonVisitor >> visitControlOptionValue: aNode [
+	"(symbolic_name right)
+	#right can be another symbolic_name, a literal, or an array with a label_ref.
+	The later needs to be converted (to unsigned_int for now)"
+
+	| data |
+	data := super visitControlOptionValue: aNode.
+
+	(data isKindOf: FASTFortranLabelReference)
+		ifTrue: [
+			^ (self newEntity: FASTFortranIntegerLiteral)
+				  primitiveValue: data label;
+				  startPos: data startPos;
+				  endPos: data endPos;
+				  yourself ]
+		ifFalse: [ ^ data ]
+]
+
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitDataGroup: aNode [
 
@@ -971,28 +990,6 @@ FASTFortranSyntaxJsonVisitor >> visitIoList: aCollection [
 			]
 			ifFalse: [ each ]
 	]
-]
-
-{ #category : #'visiting statement' }
-FASTFortranSyntaxJsonVisitor >> visitIoParameter: aNode [
-	"many different forms of IO_Parameters:
-	 - a variable name which appears as a string (symbolic name)
-	 - a label_ref which appears as an dictionary with key #label_ref
-	 - an asterisk which appears as an dictionary with key #asterisk
-	 - the rest should be FASTFortran objects, so there is no difficulties with them"
-
-   | data |
-	data := super visitIoParameter: aNode.
-
-	data isString
-		ifTrue: [ ^(self newEntity: FASTFortranScalarVariable) name: data ].
-
-	data isDictionary ifTrue: [
-		(data includesKey: #asterisk)  ifTrue: [ ^data at: #asterisk ].
-		(data includesKey: #label_ref) ifTrue: [ ^data at: #label_ref ]
-	].
-
-	^data
 ]
 
 { #category : #visiting }
