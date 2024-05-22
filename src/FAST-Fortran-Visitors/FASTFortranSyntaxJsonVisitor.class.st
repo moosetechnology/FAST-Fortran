@@ -135,12 +135,12 @@ FASTFortranSyntaxJsonVisitor >> makeLoopControl: data [
 	
 	init := (self newEntity: FASTFortranAssignmentExpression withPosition: data)
 		        variable: (data at: #variable_name) ;
-		        expression: (self variableNameOrExpression: (data at: #init)) ;
+		        expression: (self variableOrExpression: (data at: #init)) ;
 		        yourself.
 
 	^ (self newEntity: FASTFortranLoopControlExpression withPosition: data)
 		  init: init;
-		  limit: (self variableNameOrExpression: (data at: #limit));
+		  limit: (self variableOrExpression: (data at: #limit));
 		  increment: (data at: #increment ifAbsent: [ nil ]);
 		  yourself
 ]
@@ -248,12 +248,11 @@ FASTFortranSyntaxJsonVisitor >> statementBlockFromStatementList: statementList [
 ]
 
 { #category : #helpers }
-FASTFortranSyntaxJsonVisitor >> variableNameOrExpression: anObject [
-	"Scalar variables appear as String, otherwise, don't do anything"
+FASTFortranSyntaxJsonVisitor >> variableOrExpression: anObject [
 
-	^(anObject isString or: anObject isCharacter)
-		ifTrue: [ (self newEntity: FASTFortranVariable) name: anObject ]
-		ifFalse: [ anObject ]
+	(anObject isKindOf: TemporalSymbolicName) ifTrue: [
+		^ anObject asVariable: self ].
+	^ anObject
 ]
 
 { #category : #visiting }
@@ -284,7 +283,7 @@ FASTFortranSyntaxJsonVisitor >> visitArguments: aNode [
 
 	| data |
 	data := super visitArguments: aNode.
-	^data collect: [ :each | self variableNameOrExpression: each ]
+	^data collect: [ :each | self variableOrExpression: each ]
 
 ]
 
@@ -303,15 +302,13 @@ FASTFortranSyntaxJsonVisitor >> visitArithmeticIfStatement: aNode [
 		  yourself
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitArrayElementName: aNode [
-	"name tag qualifiers_list"
 
 	| data |
 	data := super visitArrayElementName: aNode.
 
-	^ (self newEntity: FASTFortranArrayVariable)
-		  name: (data at: 'name');
+	^ ((data at: 'name') asArraVariable: self)
 		  indices: (data at: 'qualifiers_list');
 		  yourself
 ]
@@ -327,7 +324,7 @@ FASTFortranSyntaxJsonVisitor >> visitAssignmentStatement: aNode [
 	
 	^ (self newLabeledStatement: FASTFortranAssignmentStatement withPosition: data)
 		  expression: (data at: 'right') ;
-		  variable: (self variableNameOrExpression: (data at: #left)) ;
+		  variable: (self variableOrExpression: (data at: #left)) ;
 		  yourself
 ]
 
@@ -346,8 +343,8 @@ FASTFortranSyntaxJsonVisitor >> visitBinaryExpression: aNode [
 	data := super visitBinaryExpression: aNode.
 	
 	^(self newEntity: FASTFortranBinaryExpression withPosition: data)
-		leftOperand: (self variableNameOrExpression: (data at: 'left')) ;
-		rightOperand: (self variableNameOrExpression: (data at: 'right')) ;
+		leftOperand: (self variableOrExpression: (data at: 'left')) ;
+		rightOperand: (self variableOrExpression: (data at: 'right')) ;
 		operator: ((data at: 'operator') at: 'operator_value' ) ;
 		yourself
 ]
@@ -360,7 +357,7 @@ FASTFortranSyntaxJsonVisitor >> visitBlockData: aNode [
 	data := super visitBlockData: aNode.
 
 	progUnit := (self newEntity: FASTFortranBlockData withPosition: data)
-		name: (data at: 'name');
+		name: ((data at: 'name') name);
 		parameters: (data at: 'prog_unit_parameters');
 		statementBlock: (data at: 'statement_list');
 		yourself.
@@ -378,7 +375,7 @@ FASTFortranSyntaxJsonVisitor >> visitBlockIfStatement: aNode [
 	data := super visitBlockIfStatement: aNode.
 
 	blockIf := (self newLabeledStatement: FASTFortranIfBlockStatement withPosition: data)
-		condition: (self variableNameOrExpression: (data at: #condition)) ;
+		condition: (self variableOrExpression: (data at: #condition)) ;
 		thenStatementBlock: (data at: #then_statements) ;
 		elseStatementBlock: (data at: #else_block) ;
 		yourself.
@@ -400,9 +397,9 @@ FASTFortranSyntaxJsonVisitor >> visitCallStatement: aNode [
 
 	| data |
 	data := super visitCallStatement: aNode.
-
+	
 	^ (self newLabeledStatement: FASTFortranCallStatement withPosition: data)
-		  name: (data at: 'name');
+		  name: ((data at: 'name') name);
 		  arguments: (data at: 'arguments');
 		  yourself
 ]
@@ -421,6 +418,12 @@ FASTFortranSyntaxJsonVisitor >> visitCharacterConstant: aNode [
 FASTFortranSyntaxJsonVisitor >> visitCharacterType: aNode [
 
 	^self newEntity: FASTFortranCharacterType
+]
+
+{ #category : #'visiting statement' }
+FASTFortranSyntaxJsonVisitor >> visitCommonBlockName: aNode [
+
+	^ (super visitCommonBlockName: aNode) name
 ]
 
 { #category : #'visiting statement' }
@@ -515,8 +518,8 @@ FASTFortranSyntaxJsonVisitor >> visitControlInfoOption: aNode [
 	data := super visitControlInfoOption: aNode.
 	
 	^ (self newEntity: FASTFortranAssignmentExpression withPosition: data)
-		  expression: (self variableNameOrExpression: (data at: #control_option_value)) ;
-		  variable: (self variableNameOrExpression: (data at: #control_option_name)) ;
+		  expression: (self variableOrExpression: (data at: #control_option_value)) ;
+		  variable: (self variableOrExpression: (data at: #control_option_name)) ;
 		  yourself
 ]
 
@@ -573,7 +576,7 @@ FASTFortranSyntaxJsonVisitor >> visitDataGroupConstant: aNode [
 FASTFortranSyntaxJsonVisitor >> visitDataGroupVariablesList: aNode [
 
 	^ (super visitDataGroupVariablesList: aNode) collect: [ :each |
-		  self variableNameOrExpression: each ]
+		  self variableOrExpression: each ]
 ]
 
 { #category : #'visiting statement' }
@@ -755,14 +758,14 @@ FASTFortranSyntaxJsonVisitor >> visitEquivGroup: aCollection [
 	data := super visitEquivGroup: aCollection.
 
 	^(self newEntity: FASTFortranEquivalenceGroup)
-		variables: (data collect: [:each | self variableNameOrExpression: each]) ;
+		variables: (data collect: [:each | self variableOrExpression: each]) ;
 		yourself
 ]
 
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitEquivalenceEntity: aCollection [
 
-	^ self variableNameOrExpression:
+	^ self variableOrExpression:
 		  (super visitEquivalenceEntity: aCollection)
 ]
 
@@ -792,18 +795,24 @@ FASTFortranSyntaxJsonVisitor >> visitEquivalenceStatement: aNode [
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitExpression: aNode [
 
-	^self variableNameOrExpression: (super visitExpression: aNode)
+	^self variableOrExpression: (super visitExpression: aNode)
 ]
 
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitExternalStatement: aNode [
-	"proc_list start_pos tag"
 
 	| data |
 	data := super visitExternalStatement: aNode.
 
-	^ (self newLabeledStatement: FASTFortranExternalStatement withPosition: data)
-		  procedures: ((data at: 'proc_list') collect: [:name | (self newEntity: FASTFortranExternalProcedure) name: name]) ;
+	^ (self
+		   newLabeledStatement: FASTFortranExternalStatement
+		   withPosition: data)
+		  procedures: ((data at: 'proc_list') collect: [ :each |
+					   (self
+						    newEntity: FASTFortranExternalProcedure
+						    withPosition: each data)
+						   name: each name;
+						   yourself ]);
 		  yourself
 ]
 
@@ -867,7 +876,7 @@ FASTFortranSyntaxJsonVisitor >> visitFunction: aNode [
 	data := super visitFunction: aNode.
 
 	progUnit := (self newEntity: FASTFortranFunction withPosition: data)
-		name: (data at: 'name');
+		name: ((data at: 'name') name);
 		parameters: (data at: 'prog_unit_parameters');
 		statementBlock: (data at: 'statement_list');
 		returnType: (data at: 'return_type');
@@ -880,13 +889,13 @@ FASTFortranSyntaxJsonVisitor >> visitFunction: aNode [
 
 { #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitFunctionReference: aNode [
-	"name tag"
+
 	| data |
 	
 	data := super visitFunctionReference: aNode.
 
 	^ (self newEntity: FASTFortranFunctionCall withPosition: data)
-		  name: ( data at: 'name');
+		  name: (( data at: 'name') name);
 		  yourself
 ]
 
@@ -978,18 +987,9 @@ FASTFortranSyntaxJsonVisitor >> visitIntrinsicStatement: aNode [
 
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitIoList: aCollection [
- 
-   | data |
-	data := super visitIoList: aCollection.
 
-	^data collect: [ :each |
-		each isString 
-			ifTrue: [ (self newEntity: FASTFortranScalarVariable)
-				name: each ;
-				yourself
-			]
-			ifFalse: [ each ]
-	]
+	^ (super visitIoList: aCollection) collect: [ :each |
+		  self variableOrExpression: each ]
 ]
 
 { #category : #visiting }
@@ -1173,20 +1173,15 @@ FASTFortranSyntaxJsonVisitor >> visitPrintStatement: aNode [
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitProgUnitParameters: aCollection [
 
-	| data |
-	data := super visitProgUnitParameters: aCollection.
-
-	^ data collect: [ :each |
-		  (self newEntity: FASTFortranVariable)
-			  name: each;
-			  yourself ]
+	^ (super visitProgUnitParameters: aCollection) collect: [ :each |
+		  each asVariable: self ]
 ]
 
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitQualifiersList: aNode [
 
 	^(super visitQualifiersList: aNode) collect: [ :each |
-		  self variableNameOrExpression: each ]
+		  self variableOrExpression: each ]
 ]
 
 { #category : #'visiting statement' }
@@ -1300,6 +1295,17 @@ FASTFortranSyntaxJsonVisitor >> visitSubstring: aNode [
 	^ array
 ]
 
+{ #category : #'visiting expression' }
+FASTFortranSyntaxJsonVisitor >> visitSymbolicName: aNode [
+
+	| data |
+	data := super visitSymbolicName: aNode.
+
+	^ TemporalSymbolicName new
+		  data: data;
+		  yourself
+]
+
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitThenStatements: aNode [
 
@@ -1387,7 +1393,7 @@ FASTFortranSyntaxJsonVisitor >> visitVar: aNode [
 
   | data |
 	data := super visitVar: aNode.
-	^self variableNameOrExpression: data
+	^self variableOrExpression: data
 ]
 
 { #category : #'visiting expression' }
