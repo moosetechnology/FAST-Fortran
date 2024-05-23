@@ -59,7 +59,7 @@ SyntaxJsonToFASTTests >> testArrayAccess [
 	fortranCode := '      v = arr(1,i)
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : "null", "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "2", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "1", "column":"7"}, "left" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"7"}, "name":"V"}, "right" : {"tag" : "array_element_name", "start_pos" : {"line" : "1", "column":"11"}, "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"11"}, "name":"ARR"}, "qualifiers_list" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "1", "column":"15"}, "value":"1"}},{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"17"}, "name":"I"}]}}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "prog_unit_parameters" : [], "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "2", "column":"9"}, "statement_list" : [{"tag" : "assignment_statement", "start_pos" : {"line" : "1", "column":"7"}, "left" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"7"}, "name":"V"}, "right" : {"tag" : "array_element_name", "start_pos" : {"line" : "1", "column":"11"}, "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"11"}, "name":"ARR"}, "qualifiers_list" : [{"tag" : "arithmetic_expression", "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "1", "column":"15"}, "value":"1"}},{"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"17"}, "name":"I"}]}}]}] }'.
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
@@ -236,7 +236,7 @@ SyntaxJsonToFASTTests >> testArrayDeclarationThreeDimensions [
       REAL A(3:5, 7, 3:5), B(0:2)
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : "null", "prog_unit_parameters" : [], "start_pos" : {"line" : "2", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "start_pos" : {"line" : "2", "column":"7"}, "name":"REAL"}, "declarators" : [{"tag" : "variable_declarator", "start_pos" : {"line" : "2", "column":"12"}, "variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"12"}, "name":"A"}, "dimension_declarators" : [{"tag" : "dimension_declarator", "start_pos" : {"line" : "2", "column":"14"}, "lower_bound" : {"tag" : "literal_expression", "start_pos" : {"line" : "2", "column":"14"}, "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"14"}, "value":"3"}}, "upper_bound" : {"tag" : "literal_expression", "start_pos" : {"line" : "2", "column":"16"}, "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"16"}, "value":"5"}}},{"tag" : "dimension_declarator", "start_pos" : {"line" : "2", "column":"19"}, "upper_bound" : {"tag" : "literal_expression", "start_pos" : {"line" : "2", "column":"19"}, "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"19"}, "value":"7"}}},{"tag" : "dimension_declarator", "start_pos" : {"line" : "2", "column":"22"}, "lower_bound" : {"tag" : "literal_expression", "start_pos" : {"line" : "2", "column":"22"}, "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"22"}, "value":"3"}}, "upper_bound" : {"tag" : "literal_expression", "start_pos" : {"line" : "2", "column":"24"}, "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"24"}, "value":"5"}}}]},{"tag" : "variable_declarator", "start_pos" : {"line" : "2", "column":"28"}, "variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"28"}, "name":"B"}, "dimension_declarators" : [{"tag" : "dimension_declarator", "start_pos" : {"line" : "2", "column":"30"}, "lower_bound" : {"tag" : "literal_expression", "start_pos" : {"line" : "2", "column":"30"}, "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"30"}, "value":"0"}}, "upper_bound" : {"tag" : "literal_expression", "start_pos" : {"line" : "2", "column":"32"}, "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"32"}, "value":"2"}}}]}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "prog_unit_parameters" : [], "start_pos" : {"line" : "2", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"tag" : "variable_declaration_statement", "start_pos" : {"line" : "2", "column":"7"}, "type" : {"tag" : "type_reference", "start_pos" : {"line" : "2", "column":"7"}, "name":"REAL"}, "declarators" : [{"tag" : "variable_declarator", "start_pos" : {"line" : "2", "column":"12"}, "variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"12"}, "name":"A"}, "dimension_declarators" : [{"tag" : "dimension_declarator", "start_pos" : {"line" : "2", "column":"14"}, "lower_bound" : {"tag" : "literal_expression", "start_pos" : {"line" : "2", "column":"14"}, "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"14"}, "value":"3"}}, "upper_bound" : {"tag" : "literal_expression", "start_pos" : {"line" : "2", "column":"16"}, "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"16"}, "value":"5"}}},{"tag" : "dimension_declarator", "start_pos" : {"line" : "2", "column":"19"}, "upper_bound" : {"tag" : "literal_expression", "start_pos" : {"line" : "2", "column":"19"}, "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"19"}, "value":"7"}}},{"tag" : "dimension_declarator", "start_pos" : {"line" : "2", "column":"22"}, "lower_bound" : {"tag" : "literal_expression", "start_pos" : {"line" : "2", "column":"22"}, "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"22"}, "value":"3"}}, "upper_bound" : {"tag" : "literal_expression", "start_pos" : {"line" : "2", "column":"24"}, "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"24"}, "value":"5"}}}]},{"tag" : "variable_declarator", "start_pos" : {"line" : "2", "column":"28"}, "variable_name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "2", "column":"28"}, "name":"B"}, "dimension_declarators" : [{"tag" : "dimension_declarator", "start_pos" : {"line" : "2", "column":"30"}, "lower_bound" : {"tag" : "literal_expression", "start_pos" : {"line" : "2", "column":"30"}, "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"30"}, "value":"0"}}, "upper_bound" : {"tag" : "literal_expression", "start_pos" : {"line" : "2", "column":"32"}, "expression" : {"tag" : "unsigned_int_constant", "start_pos" : {"line" : "2", "column":"32"}, "value":"2"}}}]}]}]}] }'.
 
 	result := self visitJsonCode.
 
@@ -2079,7 +2079,7 @@ SyntaxJsonToFASTTests >> testFormatStatement [
 110   FORMAT( A8, 2X, I4, F8.2, F8.2 ) 
       END
 '.
-	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"label" : "110", "label_pos" : {"line" : "2", "column":"1"}, "tag" : "format_statement", "start_pos" : {"line" : "2", "column":"7"}, "format_specifiers" : [{"tag" : "format_specifier", "descriptor" : {"tag" : "repeatable_edit_descriptor", "start_pos" : {"line" : "2", "column":"15"}, "descriptor_purpose" : "character_edit", "descriptor_value" : "A8"}},{"tag" : "format_specifier", "descriptor" : {"tag" : "nonrepeatable_edit_descriptor", "start_pos" : {"line" : "2", "column":"19"}, "descriptor_purpose" : "position_control", "descriptor_value" : "2X"}},{"tag" : "format_specifier", "descriptor" : {"tag" : "repeatable_edit_descriptor", "start_pos" : {"line" : "2", "column":"23"}, "descriptor_purpose" : "integer_edit", "descriptor_value" : "I4"}},{"tag" : "format_specifier", "descriptor" : {"tag" : "repeatable_edit_descriptor", "start_pos" : {"line" : "2", "column":"27"}, "descriptor_purpose" : "float_edit", "descriptor_value" : "F8.2"}},{"tag" : "format_specifier", "descriptor" : {"tag" : "repeatable_edit_descriptor", "start_pos" : {"line" : "2", "column":"33"}, "descriptor_purpose" : "float_edit", "descriptor_value" : "F8.2"}}]}]}] }'.
+	jsonCode := '{ "tag":"fortran_file", "comments": { }, "file" : "./fortranCode.F", "program_units" : [{"tag" : "main", "name" : {"tag" : "symbolic_name", "start_pos" : {"line" : "1", "column":"15"}, "name":"MYPROG"}, "start_pos" : {"line" : "1", "column":"7"}, "end_pos" : {"line" : "3", "column":"9"}, "statement_list" : [{"label" : "110", "label_pos" : {"line" : "2", "column":"1"}, "tag" : "format_statement", "start_pos" : {"line" : "2", "column":"7"}, "format_specifiers" : [{"tag" : "format_specifier", "descriptor" : {"tag" : "repeatable_edit_descriptor", "start_pos" : {"line" : "2", "column":"15"}, "descriptor_purpose" : "character_edit", "value" : "A8"}},{"tag" : "format_specifier", "descriptor" : {"tag" : "nonrepeatable_edit_descriptor", "start_pos" : {"line" : "2", "column":"19"}, "descriptor_purpose" : "position_control", "value" : "2X"}},{"tag" : "format_specifier", "descriptor" : {"tag" : "repeatable_edit_descriptor", "start_pos" : {"line" : "2", "column":"23"}, "descriptor_purpose" : "integer_edit", "value" : "I4"}},{"tag" : "format_specifier", "descriptor" : {"tag" : "repeatable_edit_descriptor", "start_pos" : {"line" : "2", "column":"27"}, "descriptor_purpose" : "float_edit", "value" : "F8.2"}},{"tag" : "format_specifier", "descriptor" : {"tag" : "repeatable_edit_descriptor", "start_pos" : {"line" : "2", "column":"33"}, "descriptor_purpose" : "float_edit", "value" : "F8.2"}}]}]}] }'.
 	result := self visitJsonCode.
 
 	stmt := result first statementBlock statements first.
@@ -2719,7 +2719,7 @@ SyntaxJsonToFASTTests >> testImpliedDoExpression [
 	self assert: stmt arguments anyOne variables size equals: 1.
 	self
 		assert: stmt arguments anyOne variables anyOne class
-		equals: FASTFortranScalarVariable.
+		equals: FASTFortranVariable.
 	self
 		assert: stmt arguments anyOne variables anyOne name
 		equals: 'SPACE'.
@@ -2736,7 +2736,7 @@ SyntaxJsonToFASTTests >> testImpliedDoExpression [
 
 	self
 		assert: control init variable class
-		equals: FASTFortranScalarVariable.
+		equals: FASTFortranVariable.
 	self assert: control init variable name equals: 'I'.
 
 	self
@@ -3145,7 +3145,7 @@ SyntaxJsonToFASTTests >> testPrintFormatLabel [
 
 	arguments := stmt arguments.
 	self assert: arguments size equals: 1.
-	self assert: arguments first class equals: FASTFortranScalarVariable.
+	self assert: arguments first class equals: FASTFortranVariable.
 	self assert: arguments first name equals: 'X'
 ]
 
@@ -3171,7 +3171,7 @@ SyntaxJsonToFASTTests >> testPrintFormatStringExpression [
 
 	arguments := stmt arguments.
 	self assert: arguments size equals: 1.
-	self assert: arguments first class equals: FASTFortranScalarVariable.
+	self assert: arguments first class equals: FASTFortranVariable.
 	self assert: arguments first name equals: 'X'
 ]
 
@@ -3192,12 +3192,12 @@ SyntaxJsonToFASTTests >> testPrintFormatVariable [
 	self assert: stmt startPos equals: 36.
 	self assert: stmt endPos equals: 45.
 
-	self assert: stmt format class equals: FASTFortranScalarVariable.
+	self assert: stmt format class equals: FASTFortranVariable.
 	self assert: stmt format name equals: 'I'.
 
 	arguments := stmt arguments.
 	self assert: arguments size equals: 1.
-	self assert: arguments first class equals: FASTFortranScalarVariable.
+	self assert: arguments first class equals: FASTFortranVariable.
 	self assert: arguments first name equals: 'X'
 ]
 
@@ -3222,15 +3222,15 @@ SyntaxJsonToFASTTests >> testPrintMultipleVariables [
 	self assert: arguments size equals: 3.
 
 	var := arguments first.
-	self assert: var class equals: FASTFortranScalarVariable.
+	self assert: var class equals: FASTFortranVariable.
 	self assert: var name equals: 'X'.
 
 	var := arguments second.
-	self assert: var class equals: FASTFortranScalarVariable.
+	self assert: var class equals: FASTFortranVariable.
 	self assert: var name equals: 'Y'.
 
 	var := arguments third.
-	self assert: var class equals: FASTFortranScalarVariable.
+	self assert: var class equals: FASTFortranVariable.
 	self assert: var name equals: 'Z'
 ]
 
@@ -3254,7 +3254,7 @@ SyntaxJsonToFASTTests >> testPrintOneVariable [
 
 	arguments := stmt arguments.
 	self assert: arguments size equals: 1.
-	self assert: arguments first class equals: FASTFortranScalarVariable.
+	self assert: arguments first class equals: FASTFortranVariable.
 	self assert: arguments first name equals: 'X'
 ]
 
@@ -3278,7 +3278,7 @@ SyntaxJsonToFASTTests >> testReadWithFormatLabelRef [
 	self assert: stmt ioParameters size equals: 0.
 
 	self assert: stmt format class equals: FASTFortranLabelReference.
-	
+
 	self assert: stmt arguments size equals: 1
 ]
 
@@ -3324,7 +3324,7 @@ SyntaxJsonToFASTTests >> testReadWithFormatVariable [
 	"self assert: stmt endPos equals: 53."
 
 	self assert: stmt ioParameters size equals: 0.
-	self assert: stmt format class equals: FASTFortranScalarVariable.
+	self assert: stmt format class equals: FASTFortranVariable.
 	self assert: stmt arguments size equals: 1
 ]
 
@@ -3358,9 +3358,7 @@ SyntaxJsonToFASTTests >> testReadWithIOParams [
 
 	self assert: stmt arguments size equals: 1.
 
-	self
-		assert: stmt arguments first class
-		equals: FASTFortranScalarVariable.
+	self assert: stmt arguments first class equals: FASTFortranVariable.
 	self assert: stmt arguments first startPos equals: 53
 ]
 
@@ -3377,7 +3375,7 @@ SyntaxJsonToFASTTests >> testReturnStatementEmpty [
 
 	stmt := result first statementBlock statements first.
 	self assert: stmt class equals: FASTFortranReturnStatement.
-	self assert: stmt startPos equals: 31.
+	self assert: stmt startPos equals: 31
 	"self assert: stmt endPos equals: 33"
 ]
 
@@ -3957,9 +3955,7 @@ SyntaxJsonToFASTTests >> testWriteComplexFormat [
 
 	self assert: stmt arguments size equals: 1.
 
-	self
-		assert: stmt arguments first class
-		equals: FASTFortranScalarVariable.
+	self assert: stmt arguments first class equals: FASTFortranVariable.
 	self assert: stmt arguments first startPos equals: 54
 ]
 
@@ -4007,11 +4003,11 @@ SyntaxJsonToFASTTests >> testWriteFullIOParameters [
 
 	self
 		assert: stmt arguments first class
-		equals: FASTFortranScalarVariable.
+		equals: FASTFortranVariable.
 	self assert: stmt arguments first startPos equals: 71.
 	self
 		assert: stmt arguments second class
-		equals: FASTFortranScalarVariable.
+		equals: FASTFortranVariable.
 	self assert: stmt arguments second startPos equals: 74
 ]
 
@@ -4073,7 +4069,7 @@ SyntaxJsonToFASTTests >> testWriteToInternalFile [
 
 	self
 		assert: stmt ioParameters first class
-		equals: FASTFortranScalarVariable.
+		equals: FASTFortranVariable.
 	self assert: stmt ioParameters first startPos equals: 40.
 	self
 		assert: stmt ioParameters second class

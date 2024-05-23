@@ -76,6 +76,12 @@ FASTFortranSyntaxJsonVisitor >> commentsWithin: aStatementBlock [
 	^assignedComments 
 ]
 
+{ #category : #helpers }
+FASTFortranSyntaxJsonVisitor >> controlOptionToVariable: data [ 
+
+	^ (self newEntity:  FASTFortranScalarVariable  withPosition: data) name: (data at: 'control_option_name')
+]
+
 { #category : #running }
 FASTFortranSyntaxJsonVisitor >> convertLineColumnToPositions [
 
@@ -330,8 +336,11 @@ FASTFortranSyntaxJsonVisitor >> visitAssignmentStatement: aNode [
 
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitAsterisk: aNode [
+	"^ TemporalSymbolicName new data: (Dictionary new at: 'name' put: '*'; at: 'start_pos' put: (self visitJsonNode: aNode key: 'start_pos'); yourself)."
 
-	^ FASTFortranAsterisk new
+	^ self
+		  newEntity: FASTFortranAsterisk
+		  withPosition: (Dictionary new at: 'start_pos' put: (self visitJsonNode: aNode key: 'start_pos'); yourself)
 ]
 
 { #category : #'visiting expression' }
@@ -485,7 +494,7 @@ FASTFortranSyntaxJsonVisitor >> visitConstantSigned: aNode [
 			constant primitiveValue:
 				((data at: #sign) at: #sign_value) , constant primitiveValue.
 			"updating start position to accomodate the sign"
-			constant startPos:((constant startPos x)@(constant startPos y - 1)).
+			constant startPos: constant startPos x @ (constant startPos y - 1).
 			return := constant ]
 		ifFalse: [
 			return := self
@@ -493,7 +502,7 @@ FASTFortranSyntaxJsonVisitor >> visitConstantSigned: aNode [
 				          withPosition: data.
 			return operator: ((data at: #sign) at: #sign_value).
 			return expression:
-				((self newEntity: FASTFortranScalarVariable) name: constant) ].
+				((self newEntity: FASTFortranScalarVariable) name: constant name) ].
 
 	^ return
 ]
@@ -509,6 +518,13 @@ FASTFortranSyntaxJsonVisitor >> visitContinueStatement: aNode [
 ]
 
 { #category : #'visiting expression' }
+FASTFortranSyntaxJsonVisitor >> visitControlInfoList: aNode [
+
+	^ (super visitControlInfoList: aNode) collect: [ :each |
+		  self variableOrExpression: each ]
+]
+
+{ #category : #'visiting expression' }
 FASTFortranSyntaxJsonVisitor >> visitControlInfoOption: aNode [
 	"(symbolic_name right)
 	#right can be another symbolic_name, a literal, or an array with a label_ref.
@@ -519,7 +535,7 @@ FASTFortranSyntaxJsonVisitor >> visitControlInfoOption: aNode [
 	
 	^ (self newEntity: FASTFortranAssignmentExpression withPosition: data)
 		  expression: (self variableOrExpression: (data at: #control_option_value)) ;
-		  variable: (self variableOrExpression: (data at: #control_option_name)) ;
+		  variable: (self controlOptionToVariable: data) ;
 		  yourself
 ]
 
@@ -589,22 +605,21 @@ FASTFortranSyntaxJsonVisitor >> visitDataGroups: aNode [
 
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitDataImplyDoList: aNode [
-    "dlist init limit increment"
+	"dlist init limit increment"
 
 	| data vars |
 	data := super visitDataImplyDoList: aNode.
-
-	vars := (data at: #dlist) collect: [:var |
-		(self newEntity: FASTFortranScalarVariable) name: var ].
+	
+	vars := (data at: #dlist) collect: [ :var |
+		        self variableOrExpression: var ].
 	data
 		at: #variable_name
-		put: ((self newEntity: FASTFortranScalarVariable) name: (data at: #variable_name)).
+		put: (self variableOrExpression: (data at: #variable_name)).
 
-	^(self newEntity: FASTFortranImpliedDoExpression withPosition: data)
-		variables: vars ;
-		loopControl: (self makeLoopControl: data) ;
-		yourself
-		
+	^ (self newEntity: FASTFortranImpliedDoExpression withPosition: data)
+		  variables: vars;
+		  loopControl: (self makeLoopControl: data);
+		  yourself
 ]
 
 { #category : #'visiting statement' }
@@ -842,7 +857,7 @@ FASTFortranSyntaxJsonVisitor >> visitFormatStatement: aNode [
 	^ (self
 		   newLabeledStatement: FASTFortranFormatStatement
 		   withPosition: data)
-		  formatDescription: (',' join: (data at: 'specification'));
+		  formatDescription: (',' join: (data at: 'format_specifiers'));
 		  yourself
 ]
 
@@ -860,12 +875,13 @@ FASTFortranSyntaxJsonVisitor >> visitFortranFile: aProgramFile [
 
 { #category : #visiting }
 FASTFortranSyntaxJsonVisitor >> visitFunList: aCollection [
- 
-   ^(super visitFunList: aCollection) collect: [ :functionName |
-		(self newEntity: FASTFortranScalarVariable)
-			name: functionName ;
-			yourself
-	]
+
+	^ (super visitFunList: aCollection) collect: [ :functionName |
+		  (self
+			   newEntity: FASTFortranScalarVariable
+			   withPosition: functionName data)
+			  name: functionName name;
+			  yourself ]
 ]
 
 { #category : #'visiting prog-unit' }
@@ -1081,13 +1097,14 @@ FASTFortranSyntaxJsonVisitor >> visitLoopControl: aNode [
 FASTFortranSyntaxJsonVisitor >> visitMain: aNode [
 	"name start_pos end_pos statement_list"
 
-	| data progUnit |
+	| data progUnit name |
 	data := super visitMain: aNode.
 
 	progUnit := (self newEntity: FASTFortranProgramMain withPosition: data)
-		name: (data at: 'name');
 		statementBlock: (data at: 'statement_list');
 	yourself.
+	
+	(data includesKey: 'name') ifTrue: [ progUnit name: ((data at: 'name') name) ].
 
 	self checkForComments: progUnit.
 
@@ -1126,9 +1143,9 @@ FASTFortranSyntaxJsonVisitor >> visitParameterAssign: aNode [
 
     | data |
 	data := super visitParameterAssign: aNode.
-
+	
 	^(self newEntity: FASTFortranVariableDeclarator withPosition: data)
-		name: (data at: #symbolic_name) ;
+		name: ((data at: #symbolic_name) name);
 		expression: (data at: #expression) ;
 		yourself
 ]
@@ -1165,7 +1182,7 @@ FASTFortranSyntaxJsonVisitor >> visitPrintStatement: aNode [
 	data := super visitPrintStatement: aNode.
 
 	^(self newLabeledStatement: FASTFortranPrintStatement withPosition: data)
-		format: (data at: #format) ;
+		format: (self variableOrExpression: (data at: #format)) ;
 		arguments: (data at: #io_list) ;
 		yourself
 ]
@@ -1186,16 +1203,24 @@ FASTFortranSyntaxJsonVisitor >> visitQualifiersList: aNode [
 
 { #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitReadStatement: aNode [
-    "start_pos format control_info_list io_list"
+	"start_pos format control_info_list io_list"
 
-	| data |
+	| data readStatement |
 	data := super visitReadStatement: aNode.
 
-	^(self newLabeledStatement: FASTFortranReadStatement withPosition: data)
-		ioParameters: (data at: #control_info_list ifAbsent: [ #() ]) ;
-		format: (data at: #format ifAbsent: [ nil ]) ;
-		arguments: (data at: #io_list) ;
-		yourself
+	readStatement := (self
+		                  newLabeledStatement: FASTFortranReadStatement
+		                  withPosition: data)
+		                 ioParameters:
+			                 (data at: #control_info_list ifAbsent: [ #(  ) ]);
+		                 arguments: (data at: #io_list);
+		                 yourself.
+
+	(data includesKey: #format) ifTrue: [
+		readStatement format:
+			(self variableOrExpression: (data at: 'format')) ].
+
+	^ readStatement
 ]
 
 { #category : #visiting }
@@ -1263,7 +1288,7 @@ FASTFortranSyntaxJsonVisitor >> visitSubroutine: aSubroutine [
 	data := super visitSubroutine: aSubroutine.
 
 	progUnit := (self newEntity: FASTFortranSubroutine withPosition: data)
-		name: (data at: #name);
+		name: ((data at: #name) name);
 		parameters: (data at: #prog_unit_parameters);
 		statementBlock: (data at: #statement_list);
 		yourself.
@@ -1408,7 +1433,7 @@ FASTFortranSyntaxJsonVisitor >> visitVariableDeclarationStatement: aNode [
 
 	| data |
 	data := super visitVariableDeclarationStatement: aNode.
-
+	
 	^ (self newLabeledStatement: FASTFortranVariableDeclarationStatement withPosition: data)
 		  type: (data at: 'type');
 		  declarators: (data at: 'declarators');
@@ -1423,6 +1448,7 @@ FASTFortranSyntaxJsonVisitor >> visitVariableDeclarator: aNode [
 	data := super visitVariableDeclarator: aNode.
 
 	return := self newEntity: FASTFortranVariableDeclarator withPosition: data.
+
 	return name: (data at: #variable_name) name.
 	data
 		at: #dimension_declarators
