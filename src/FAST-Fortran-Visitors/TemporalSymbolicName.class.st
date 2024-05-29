@@ -38,6 +38,12 @@ TemporalSymbolicName >> asScalarVariable: visitor [
 ]
 
 { #category : #converting }
+TemporalSymbolicName >> asString [
+
+	^ self name
+]
+
+{ #category : #converting }
 TemporalSymbolicName >> asVariable: visitor [
 
 	^ (visitor
@@ -55,6 +61,12 @@ TemporalSymbolicName >> data [
 TemporalSymbolicName >> data: anObject [
 
 	data := anObject
+]
+
+{ #category : #accessing }
+TemporalSymbolicName >> endPos [ 
+	
+	^ self data at: 'end_pos'
 ]
 
 { #category : #accessing }
