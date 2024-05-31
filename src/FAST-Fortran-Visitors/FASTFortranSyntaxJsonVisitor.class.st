@@ -17,6 +17,14 @@ FASTFortranSyntaxJsonVisitor >> addEndPosOfArray: array on: data [
 ]
 
 { #category : #'helpers - positions' }
+FASTFortranSyntaxJsonVisitor >> addEndPosOfArrayPlusParenthes: array on: data [
+
+	| endPosArray |
+	endPosArray := array last endPos.
+	data at: 'end_pos' put: endPosArray x @ (endPosArray y + 1)
+]
+
+{ #category : #'helpers - positions' }
 FASTFortranSyntaxJsonVisitor >> addEndPosOfInt: n on: data [
 	| startPos |
 	
@@ -49,17 +57,6 @@ FASTFortranSyntaxJsonVisitor >> addEndPosUntilEndLineOn: data [
 	
 	startPosX := (data at: 'start_pos') x. 
 	data at: 'end_pos' put: (startPosX @ (lineSizes at: startPosX )).
-]
-
-{ #category : #helpers }
-FASTFortranSyntaxJsonVisitor >> checkAndwrapToScalarVariable: aNode [
-
-	aNode = FASTFortranCharacterLiteral
-		ifTrue: [
-			^ (self newEntity: FASTFortranScalarVariable withPosition: aNode)
-				  name: aNode primitiveValue;
-				  yourself ]
-		ifFalse: [ ^ aNode ]
 ]
 
 { #category : #helpers }
@@ -188,8 +185,14 @@ FASTFortranSyntaxJsonVisitor >> makeLoopControl: data [
 		        yourself.
 
 	endPosLoop := (data includes: 'increment')
-		              ifFalse: [ (data at: #limit) endPos ]
-		              ifTrue: [ (data at: #increment) endPos ].
+		              ifFalse: [
+			              | endPos |
+			              endPos := (data at: #limit) endPos.
+			              endPos x @ (endPos y + 1) ]
+		              ifTrue: [
+			              | endPos |
+			              endPos := (data at: #increment) endPos endPos x
+			                        @ (endPos y + 1) ].
 
 	^ (self
 		   newEntity: FASTFortranLoopControlExpression
@@ -372,8 +375,9 @@ FASTFortranSyntaxJsonVisitor >> visitArrayElementName: aNode [
 	| data |
 	data := super visitArrayElementName: aNode.
 	self
-		addEndPosOfPoint: (data at: 'qualifiers_list') last endPos
+		addEndPosOfArrayPlusParenthes: (data at: 'qualifiers_list')
 		on: data.
+
 	^ ((data at: 'name') asArraVariable: self)
 		  indices: (data at: 'qualifiers_list');
 		  endPos: (data at: 'end_pos');
@@ -547,11 +551,11 @@ FASTFortranSyntaxJsonVisitor >> visitComputedGotoStatement: aNode [
 
 	| data |
 	data := super visitComputedGotoStatement: aNode.
-	self addEndPosOfPoint: (data at: #var) endPos on: data.
+	self addEndPosOfPoint: (data at: #expression) endPos on: data.
 	^ (self
 		   newLabeledStatement: FASTFortranGoToComputedStatement
 		   withPosition: data)
-		  selectorExpression: (data at: #var);
+		  selectorExpression: (data at: #expression);
 		  labelReferences: (data at: #labels);
 		  yourself
 ]
@@ -634,7 +638,7 @@ FASTFortranSyntaxJsonVisitor >> visitControlOptionValue: aNode [
 
 	(data isKindOf: FASTFortranLabelReference)
 		ifTrue: [
-			^ (self newEntity: FASTFortranIntegerLiteral withPosition: data)
+			^ (self newEntity: FASTFortranIntegerLiteral withPosition: aNode)
 				  primitiveValue: data label;
 				  startPos: data startPos;
 				  endPos: data endPos;
@@ -856,17 +860,6 @@ FASTFortranSyntaxJsonVisitor >> visitEntryStatement: aNode [
 ]
 
 { #category : #'visiting statement' }
-FASTFortranSyntaxJsonVisitor >> visitEquivGroup: aCollection [
-
-	| data |
-	data := super visitEquivGroup: aCollection.
-	1 halt. "no one entered here"
-	^(self newEntity: FASTFortranEquivalenceGroup)
-		variables: (data collect: [:each | self variableOrExpression: each]) ;
-		yourself
-]
-
-{ #category : #'visiting statement' }
 FASTFortranSyntaxJsonVisitor >> visitEquivalenceEntity: aCollection [
 
 	^ self variableOrExpression:
@@ -878,10 +871,14 @@ FASTFortranSyntaxJsonVisitor >> visitEquivalenceGroup: aCollection [
 
 	| data |
 	data := super visitEquivalenceGroup: aCollection.
-	self addEndPosOfArray: (data at: 'equivalence_group_elements') on: data. 
-	^(self newEntity: FASTFortranEquivalenceGroup withPosition: data)
-		variables: (data at: 'equivalence_group_elements') ;
-		yourself
+
+	self
+		addEndPosOfArrayPlusParenthes:
+		(data at: 'equivalence_group_elements')
+		on: data.
+	^ (self newEntity: FASTFortranEquivalenceGroup withPosition: data)
+		  variables: (data at: 'equivalence_group_elements');
+		  yourself
 ]
 
 { #category : #'visiting statement' }
@@ -946,10 +943,21 @@ FASTFortranSyntaxJsonVisitor >> visitFormat: aNode [
 FASTFortranSyntaxJsonVisitor >> visitFormatStatement: aNode [
 	"specification"
 
-	| data format_desc |
+	| data format_desc lastElem lastElemStartPos |
 	data := super visitFormatStatement: aNode.
-	format_desc := ',' join: (data at: 'format_specifiers').
-	self addEndPosOfString: format_desc on: data.
+
+	format_desc := ',' join:
+		               ((data at: 'format_specifiers') collect: [ :e |
+			                e at: 'value' ]).
+
+	lastElem := (data at: 'format_specifiers') last.
+	lastElemStartPos := lastElem at: 'start_pos'.
+
+	self
+		addEndPosOfPoint:
+		(lastElemStartPos x) @ (lastElemStartPos y
+		+ (lastElem at: 'value') size + 1)
+		on: data.
 	^ (self
 		   newLabeledStatement: FASTFortranFormatStatement
 		   withPosition: data)
@@ -1016,7 +1024,7 @@ FASTFortranSyntaxJsonVisitor >> visitImplicitNoneStatement: aNode [
 
 	| data |
 	data := super visitImplicitNoneStatement: aNode.
-	self addEndPosOfInt: 12 on: data. "implicit none"
+	self addEndPosOfInt: 13 on: data. "implicit none size -> 13"
 	^ (self
 		   newLabeledStatement: FASTFortranImplicitStatement
 		   withPosition: data)
@@ -1030,7 +1038,10 @@ FASTFortranSyntaxJsonVisitor >> visitImplicitParameter: anImplicitParameter [
 
 	| data |
 	data := super visitImplicitParameter: anImplicitParameter.
-1 halt. "no one entered here"
+	self
+		addEndPosOfArrayPlusParenthes: (data at: #implicit_elements)
+		on: data.
+
 	^ (self newEntity: FASTFortranImplicitTypingRule withPosition: data)
 		  type: (data at: #type);
 		  ranges: (data at: #implicit_elements);
@@ -1041,9 +1052,16 @@ FASTFortranSyntaxJsonVisitor >> visitImplicitParameter: anImplicitParameter [
 FASTFortranSyntaxJsonVisitor >> visitImplicitRange: aNode [
 	"implicit_range_lower implicit_range_upper"
 
-	| data |
+	| data rangeLength |
 	data := super visitImplicitRange: aNode.
-	self addEndPosOfPoint: (data at: #implicit_range_upper) on: data.
+
+	rangeLength := (data at: 'implicit_range_upper')
+		               ifNotNil: [
+			               (data at: #implicit_range_upper) size
+			               + (data at: #implicit_range_lower) size + 1 ]
+		               ifNil: [ (data at: #implicit_range_lower) size ].
+		
+	self addEndPosOfInt: rangeLength on: data.
 	^ (self newEntity: FASTFortranImplicitRange withPosition: data)
 		  from: (data at: #implicit_range_lower);
 		  to: (data at: #implicit_range_upper);
@@ -1062,6 +1080,7 @@ FASTFortranSyntaxJsonVisitor >> visitImplicitStatement: aNode [
 
 	| data |
 	data := super visitImplicitStatement: aNode.
+	
 	self addEndPosOfArray: (data at: #implicit_parameters) on: data.
 	^ (self
 		   newLabeledStatement: FASTFortranImplicitStatement
@@ -1076,7 +1095,8 @@ FASTFortranSyntaxJsonVisitor >> visitInquireStatement: aNode [
 
 	| data |
 	data := super visitInquireStatement: aNode.
-	self addEndPosOfArray: (data at: #control_info_list) on: data.
+
+	self addEndPosOfArrayPlusParenthes: (data at: #control_info_list) on: data.
 	^ (self
 		   newLabeledStatement: FASTFortranInquireStatement
 		   withPosition: data)
@@ -1153,12 +1173,12 @@ FASTFortranSyntaxJsonVisitor >> visitLogicalConstant: aNode [
 
 	(data at: 'value') = '.TRUE.'
 		ifTrue: [
-			self addEndPosOfString: 'true' on: data.
+			self addEndPosOfString: '.true.' on: data.
 			^ (self newEntity: FASTFortranBooleanLiteral withPosition: data)
 				  primitiveValue: true;
 				  yourself ]
 		ifFalse: [
-			self addEndPosOfString: 'false' on: data.
+			self addEndPosOfString: '.false.' on: data.
 			^ (self newEntity: FASTFortranBooleanLiteral withPosition: data)
 				  primitiveValue: false;
 				  yourself ]
@@ -1227,7 +1247,7 @@ FASTFortranSyntaxJsonVisitor >> visitOpenStatement: aNode [
 
 	| data |
 	data := super visitOpenStatement: aNode.
-	self addEndPosOfArray: (data at: #control_info_list) on: data.
+	self addEndPosOfArrayPlusParenthes: (data at: #control_info_list) on: data.
 	^(self newLabeledStatement: FASTFortranOpenStatement withPosition: data)
 		ioParameters: (data at: #control_info_list) ;
 		yourself
@@ -1253,7 +1273,8 @@ FASTFortranSyntaxJsonVisitor >> visitParameterAssign: aNode [
 
     | data |
 	data := super visitParameterAssign: aNode.
-	self addEndPosOfPoint: (data at: #expression) on: data.
+
+	self addEndPosOfPoint: (data at: #expression) endPos on: data.
 	^(self newEntity: FASTFortranVariableDeclarator withPosition: data)
 		name: ((data at: #symbolic_name) name);
 		expression: (data at: #expression) ;
@@ -1266,7 +1287,7 @@ FASTFortranSyntaxJsonVisitor >> visitParameterStatement: aNode [
 
 	| data |
 	data := super visitParameterStatement: aNode.
-	self addEndPosOfArray: (data at: #constant_declarations) on: data.
+	self addEndPosOfArrayPlusParenthes: (data at: #constant_declarations) on: data.
 	^(self newLabeledStatement: FASTFortranParameterStatement withPosition: data)
 		declarators: (data at: #constant_declarations) ;
 		yourself
@@ -1371,7 +1392,7 @@ FASTFortranSyntaxJsonVisitor >> visitScalarVariable: aNode [
 
 	| data |
 	data := super visitScalarVariable: aNode.
-	self addEndPosOfString: (data at: 'variable_name') on: data.
+	self addEndPosOfPoint: (data at: 'variable_name') endPos on: data.
 	^ (self newEntity: FASTFortranScalarVariable withPosition: data)
 		  name: (data at: 'variable_name')
 ]
@@ -1563,6 +1584,7 @@ FASTFortranSyntaxJsonVisitor >> visitVariableDeclarationStatement: aNode [
 
 	| data |
 	data := super visitVariableDeclarationStatement: aNode.
+
 	self addEndPosOfArray: (data at: 'declarators') on: data.
 	^ (self newLabeledStatement: FASTFortranVariableDeclarationStatement withPosition: data)
 		  type: (data at: 'type');
@@ -1585,9 +1607,11 @@ FASTFortranSyntaxJsonVisitor >> visitVariableDeclarator: aNode [
 
 	data at: #dimension_declarators ifPresent: [ :dimensions |
 		dimensions isNotEmpty ifTrue: [
+			| endPosD  |
+			endPosD := dimensions last endPos.
 			return
 				dimensions: dimensions;
-				endPos: dimensions last endPos ] ].
+				endPos: (endPosD x)@(endPosD y + 1) ] ].
 
 	data at: #expression ifPresent: [ :initial_value |
 		return
