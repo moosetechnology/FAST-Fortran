@@ -178,168 +178,168 @@ FASTFortranGenerator >> defineClasses [
 FASTFortranGenerator >> defineData [
 	"sorted alphabetically, please keep the order"
 
-	abstractExpression := builder
+	abstractExpression := self
 		                   newClassNamed: #AbstractExpression
 		                   comment: 'I am the super class of all Fortran expressions'.
 
-	abstractLiteral := builder
+	abstractLiteral := self
 		                   newClassNamed: #AbstractLiteral
 		                   comment: 'I am the super class of all Fortran Literals'.
 
-	ampersand := builder
+	ampersand := self
 		             newClassNamed: #Ampersand
 		             comment:
 		             'I represent an Ampersand Character Literal (Constant) that is often used in parameters and format identifiers'.
 
-	arrayRange := builder
+	arrayRange := self
 		                            newClassNamed: #ArrayRange
 		                            comment:
 		                            'I represent an array lower/upper bounds'.
 
-	arrayVariable := builder
+	arrayVariable := self
 		                            newClassNamed: #ArrayVariable
 		                            comment:
 		                            'An array Fortran Variable, accessed in the code'.
 
-	assignmentExpression := builder
+	assignmentExpression := self
 		                        newClassNamed: #AssignmentExpression
 		                        comment:
 		                        'I represent an assignment expression as a part of assignment statement'.
 
-	asterisk := builder
+	asterisk := self
 		            newClassNamed: #Asterisk
 		            comment:
 		            'I represent an Asterisk Character Literal (Constant) that is often used as a format identifier'.
 
-	binaryExpression := builder
+	binaryExpression := self
 		                    newClassNamed: #BinaryExpression
 		                    comment:
 		                    'a Fortran Binary Expression (arithmetic, logical)'.
 
-	booleanConstant := builder
+	booleanConstant := self
 		                   newClassNamed: #BooleanLiteral
 		                   comment:
 		                   'I represent Fortran Boolean Literal (Constant)'.
 
-	byteType := builder
+	byteType := self
 		            newClassNamed: #ByteType
 		            comment:
 			            'I represent Fortran Byte statement. The BYTE data type provides a data type that uses only one byte of storage. It is a logical data type, and has the synonym,
 LOGICAL*1. A variable of type BYTE can hold any of the following: 1)one character, 2)an integer between -128 and 127, 3)the logical values, .TRUE. or .FALSE. If it is interpreted as a logical value, a value of 0 represents .FALSE., and any other value is interpreted as .TRUE.
 f77 allows the BYTE type as an array index, just as it allows the REAL type, but it does not allow BYTE as a DO loop index (where it allows only INTEGER, REAL, and DOUBLE PRECISION). Wherever the compiler expects INTEGER explicitly, it will not allow BYTE.'.
 
-	characterConstant := builder
+	characterConstant := self
 		                     newClassNamed: #CharacterLiteral
 		                     comment:
 		                     'I represent Fortran Character Literal (Constant)'.
 
-	characterType := builder
+	characterType := self
 		                 newClassNamed: #CharacterType
 		                 comment:
 		                 'I represent Fortran Character Literal'.
 
-	commonGroup := builder
+	commonGroup := self
 		                   newClassNamed: #CommonGroup
 		                   comment: 'I represent Common group inside a Common statement'.
 
-	complexConstant := builder
+	complexConstant := self
 		                   newClassNamed: #ComplexLiteral
 		                   comment:
 		                   'I represent Fortran Arithmetic Complex Literal (Constant)'.
 
-	complexType := builder
+	complexType := self
 		               newClassNamed: #ComplexType
 		               comment:
 		               'I represent Fortran Complex type COMPLEX, ie. a pair of REAL*4 values'.
 
-	doubleComplexConstant := builder
+	doubleComplexConstant := self
 		                         newClassNamed: #DoubleComplexLiteral
 		                         comment:
 		                         'I represent Fortran Arithmetic Double Complex Literal (Constant)'.
 
-	doubleComplexType := builder
+	doubleComplexType := self
 		                     newClassNamed: #DoubleComplexType
 		                     comment:
 		                     'I represent Fortran Double type'.
 
-	doublePrecisionConstant := builder
+	doublePrecisionConstant := self
 		                           newClassNamed: #DoublePrecisionLiteral
 		                           comment:
 		                           'I represent Fortran Arithmetic Double Precision Literal (Constant)'.
 
-	doublePrecisionType := builder
+	doublePrecisionType := self
 		                       newClassNamed: #DoublePrecisionType
 		                       comment:
 		                       'I represent Fortran Double Precision type, synonym of REAL*8'.
 
-	impliedDoExpression := builder
+	impliedDoExpression := self
 		                   newClassNamed: #ImpliedDoExpression
 		                   comment:
 		                   'I represent a Fortran "implied do" expression'.
 
-	integerConstant := builder
+	integerConstant := self
 		                   newClassNamed: #IntegerLiteral
 		                   comment:
 		                   'I represent Fortran Arithmetic Integer Literal (Constant)'.
 
-	integerType := builder
+	integerType := self
 		               newClassNamed: #IntegerType
 		               comment:
 			               'I represent Fortran Integer type'.
 
-	labelReference := builder
+	labelReference := self
 		newClassNamed: #LabelReference
 		comment: 'I represent a reference to a Fortran label, like in a GoTo statement.
 I contain the value of the label referred to'.
 
-	logicalType := builder
+	logicalType := self
 		               newClassNamed: #LogicalType
 		               comment:
 		               'I represent Fortran boolean type'.
 
-	loopControlExpression := builder
+	loopControlExpression := self
 		                         newClassNamed: #LoopControlExpression
 		                         comment:
 		                         'a Fortran Loop Control Expression'.
 
-	numericalConstant := builder
+	numericalConstant := self
 		newClassNamed: #NumericalConstant
 		comment: 'I represent Fortran numerical Literals (Integer, Real, Complex)'.
 
-	realConstant := builder
+	realConstant := self
 		                newClassNamed: #RealLiteral
 		                comment:
 		                'I represent Fortran Arithmetic Real Literal (Constant)'.
 
-	realType := builder
+	realType := self
 		            newClassNamed: #RealType
 		            comment:
 		            'I represent Fortran Real type, synonym REAL*4'.
 
-	scalarVariable := builder
+	scalarVariable := self
 		                             newClassNamed: #ScalarVariable
 		                             comment:
 		                             'a scalar Fortran Variable, used in declarations'.
 
-	substring := builder
+	substring := self
 		             newClassNamed: #Substring
 		             comment: 'I represent Fortran Substring'.
 
-	type := builder
+	type := self
 		        newClassNamed: #Type
 		        comment: 'I represent Fortran Type statement'.
 
-	variable := builder
+	variable := self
 		            newClassNamed: #Variable
 		            comment:
 		            'an abstract Fortran Variable, could be an array or a scalar'.
 
-	variableDeclarator := builder
+	variableDeclarator := self
 		            newClassNamed: #VariableDeclarator
 		            comment:
 		            'Part of a variable declaration: name of the variable + optional initial value'.
 
-	unaryExpression := builder
+	unaryExpression := self
 		                   newClassNamed: #UnaryExpression
 		                   comment:
 		                   'a Fortran Unary Expression (arithmetic, logical, character)'
@@ -350,64 +350,64 @@ I contain the value of the label referred to'.
 FASTFortranGenerator >> defineFASTClasses [
 	"FAMIX-level classes (might be removed later)"
 
-	entity  := builder newClassNamed: #Entity.
+	entity  := self newClassNamed: #Entity.
 
-	programFile := builder
+	programFile := self
 		               newClassNamed: #ProgramFile
 		               comment:
 		               'An entity that can contain fortran program units and comments'.
 
-	programUnit := builder
+	programUnit := self
 		               newClassNamed: #ProgramUnit
 		               comment:
 		               'A fortran program unit is a sequence of statements, terminated by an END statement. Every program unit is either a main program or a subprogram. If a program is to be executable, it must have a main program'.
 
-	comment := builder
+	comment := self
 		           newClassNamed: #Comment
 		           comment: 'A fortran comment'.
 
 
-	subprogram := builder
+	subprogram := self
 		              newClassNamed: #Subprogram
 		              comment:
 		              'I represent a fortran subprogram: procedure or block data'.
 
-	mainprogram := builder
+	mainprogram := self
 		               newClassNamed: #ProgramMain
 		               comment:
 		               'The PROGRAM statement identifies the program unit as a main program. program. For the loader, the main program is always named MAIN. The PROGRAM statement serves only the person who reads the program'.
 
 
-	procedure := builder
+	procedure := self
 		             newClassNamed: #Procedure
 		             comment:
 		             'I represent a fortran subroutine or a function'.
 
-	function := builder
+	function := self
 		            newClassNamed: #Function
 		            comment: 'I represent a Fortran Function'.
 	
-	functionCall := builder
+	functionCall := self
 		                     newClassNamed: #FunctionCall
 		                     comment:
 		                     'I represent a call to a function (or function statement)'.
 
-	subroutine := builder
+	subroutine := self
 		              newClassNamed: #Subroutine
 		              comment:
 		              'The SUBROUTINE statement identifies a subprogram, a named program unit as a subroutine, and specifies arguments for it'.
 
-	blockData := builder
+	blockData := self
 		             newClassNamed: #BlockData
 		             comment:
 		             'The BLOCK DATA statement identifies a subprogram that initializes variables and arrays in labeled common blocks.'.
 
-	statementBlock := builder
+	statementBlock := self
 		             newClassNamed: #StatementBlock
 		             comment:
 		             'Contains the block of Fortran statements'.
 
-	conditionalStatement := builder newClassNamed: #ConditionalStatement comment: 'I represent a fortran statement with a condition: if-block, if-logical'.
+	conditionalStatement := self newClassNamed: #ConditionalStatement comment: 'I represent a fortran statement with a condition: if-block, if-logical'.
 
 ]
 
@@ -768,219 +768,219 @@ FASTFortranGenerator >> defineRelations [
 FASTFortranGenerator >> defineStatements [
 	"A statement consists of zero or more key words, symbolic names, literal constants, statement labels, operators, and special characters."
 
-	abstractStatement := builder
+	abstractStatement := self
 		                   newClassNamed: #AbstractStatement
 		                   comment: 'I am the super class of all Fortran statements'.
 
-	abstractIOStatement := builder
+	abstractIOStatement := self
 		newClassNamed: #AbstractIOStatement
 		comment: 'I am the abstract superclass of all IO-statements (READ, WRITE, CLOSE, ENCODE...)'.
 
-	acceptStatement := builder
+	acceptStatement := self
 		                   newClassNamed: #AcceptStatement
 		                   comment: 'I represent Fortran accept statement'.
 
-	assignmentStatement := builder
+	assignmentStatement := self
 		                       newClassNamed: #AssignmentStatement
 		                       comment:
 		                       'I represent Fortran assignment made without ASSIGN statement'.
 
-	automaticStatement := builder
+	automaticStatement := self
 		                      newClassNamed: #AutomaticStatement
 		                      comment:
 		                      'I represent Fortran Automatic statement'.
-	backspaceStatement := builder
+	backspaceStatement := self
 		                      newClassNamed: #BackspaceStatement
 		                      comment:
 		                      'I represent Fortran Backspace statement'.
-	callStatement := builder
+	callStatement := self
 		                 newClassNamed: #CallStatement
 		                 comment: 'I represent Fortran Call statement'.
-	closeStatement := builder
+	closeStatement := self
 		                  newClassNamed: #CloseStatement
 		                  comment: 'I represent Fortran Close statement'.
-	commonStatement := builder
+	commonStatement := self
 		                   newClassNamed: #CommonStatement
 		                   comment: 'I represent Fortran Common statement'.
-	continueStatement := builder
+	continueStatement := self
 		                     newClassNamed: #ContinueStatement
 		                     comment:
 		                     'I represent Fortran Continue statement'.
-	dataStatement := builder
+	dataStatement := self
 		                 newClassNamed: #DataStatement
 		                 comment: 'I represent a Fortran Data statement'.
 
-	dataGroup := builder
+	dataGroup := self
 		                 newClassNamed: #DataGroup
 		                 comment: 'I represent a Fortran Data group in a Data statement'.
-	decodeStatement := builder
+	decodeStatement := self
 		                   newClassNamed: #DecodeStatement
 		                   comment: 'I represent Fortran Decode statement'.
-	encodeStatement := builder
+	encodeStatement := self
 		                   newClassNamed: #EncodeStatement
 		                   comment: 'I represent Fortran Encode statement'.
-	dimensionStatement := builder
+	dimensionStatement := self
 		                      newClassNamed: #DimensionStatement
 		                      comment:
 		                      'I represent FortranDimension statement'.
-	doStatement := builder
+	doStatement := self
 		               newClassNamed: #DoStatement
 		               comment: 'I represent Fortran Do statement'.
-	doWhileStatement := builder
+	doWhileStatement := self
 		                    newClassNamed: #DoWhileStatement
 		                    comment:
 		                    'I represent Fortran Do While statement'.
-	elseStatement := builder
+	elseStatement := self
 		                 newClassNamed: #ElseStatement
 		                 comment: 'I represent Fortran Else statement'.
-	endFileStatement := builder
+	endFileStatement := self
 		                    newClassNamed: #EndFileStatement
 		                    comment:
 		                    'I represent Fortran End File statement'.
 
-	entryStatement := builder
+	entryStatement := self
 		                  newClassNamed: #EntryStatement
 		                  comment: 'I represent Fortran Entry statement'.
-	equivalenceGroup := builder
+	equivalenceGroup := self
 		                        newClassNamed: #EquivalenceGroup
 		                        comment:
 		                        'I represent a group of variables in an Equivalence statement'.
-	equivalenceStatement := builder
+	equivalenceStatement := self
 		                        newClassNamed: #EquivalenceStatement
 		                        comment:
 		                        'I represent a Fortran Equivalence statement'.
-	externalStatement := builder
+	externalStatement := self
 		                     newClassNamed: #ExternalStatement
 		                     comment:
 		                     'I represent Fortran External statement'.
-	formatStatement := builder
+	formatStatement := self
 		                   newClassNamed: #FormatStatement
 		                   comment: 'I represent Fortran Format statement'.
 
-	functionStatement := builder
+	functionStatement := self
 		                     newClassNamed: #FunctionStatement
 		                     comment:
 		                     'I represent a function statement - a function-like declaration, made in a single statement'.
 
-	goToStatement := builder
+	goToStatement := self
 		                 newClassNamed: #GoToStatement
 		                 comment: 'I represent Fortran Go To (unconditional) statement'.
 
-	goToAssignedStatement := builder
+	goToAssignedStatement := self
 		                         newClassNamed: #GoToAssignedStatement
 		                         comment:
 		                         'I represent Fortran Go To( Assigned) statement'.
-	goToComputed := builder
+	goToComputed := self
 		                newClassNamed: #GoToComputedStatement
 		                comment:
 		                'I represent Fortran Go To (Computed) statement'.
 
-	ifArithmeticStatement := builder
+	ifArithmeticStatement := self
 		                         newClassNamed: #IfArithmeticStatement
 		                         comment:
 		                         'I represent Fortran If (Arithmetic) statement'.
-	ifBlockStatement := builder
+	ifBlockStatement := self
 		                    newClassNamed: #IfBlockStatement
 		                    comment:
 		                    'I represent Fortran If (BLock) statement'.
-	ifLogicalStatement := builder
+	ifLogicalStatement := self
 		                      newClassNamed: #IfLogicalStatement
 		                      comment:
 		                      'The logical IF statement executes one single statement, or does not execute it, depending on the value of a logical expression.'.
-	implicitStatement := builder
+	implicitStatement := self
 		                     newClassNamed: #ImplicitStatement
 		                     comment:
 		                     'I represent Fortran Implicit statement'.
 
-	implicitTypingRule := builder
+	implicitTypingRule := self
 		                     newClassNamed: #ImplicitTypingRule
 		                     comment:
 		                     'I represent a rule (ie. Type+letter range) in an Implicit statement'.
 
-	implicitRange := builder
+	implicitRange := self
 		                     newClassNamed: #ImplicitRange
 		                     comment:
 		                     'I represent a range of characters in an Implicit statement'.
 
-	includeStatement := builder
+	includeStatement := self
 		                    newClassNamed: #IncludeStatement
 		                    comment: 'I represent Fortran Include statement'.
-	inquireStatement := builder
+	inquireStatement := self
 		                    newClassNamed: #InquireStatement
 		                    comment: 'I represent Fortran Inquire statement'.
-	intrinsicStatement := builder
+	intrinsicStatement := self
 		                      newClassNamed: #IntrinsicStatement
 		                      comment:
 		                      'I represent Fortran Intrinsic statement'.
-	mapStatement := builder
+	mapStatement := self
 		                newClassNamed: #MapStatement
 		                comment: 'I represent Fortran Map statement'.
-	nameListStatement := builder
+	nameListStatement := self
 		                     newClassNamed: #NameListStatement
 		                     comment:
 		                     'I represent Fortran NameList statement'.
-	openStatement := builder
+	openStatement := self
 		                 newClassNamed: #OpenStatement
 		                 comment: 'I represent Fortran Open statement'.
-	optionsStatement := builder
+	optionsStatement := self
 		                    newClassNamed: #OptionsStatement
 		                    comment: 'I represent Fortran Options statement'.
-	parameterStatement := builder
+	parameterStatement := self
 		                      newClassNamed: #ParameterStatement
 		                      comment:
 		                      'I represent Fortran Parameter statement'.
-	pauseStatement := builder
+	pauseStatement := self
 		                  newClassNamed: #PauseStatement
 		                  comment: 'I represent Fortran Pause statement'.
-	pragmaStatement := builder
+	pragmaStatement := self
 		                   newClassNamed: #PragmaStatement
 		                   comment: 'I represent Fortran Pragma statement'.
-	printStatement := builder
+	printStatement := self
 		                  newClassNamed: #PrintStatement
 		                  comment: 'I represent Fortran Print statement'.
 
-	readStatement := builder
+	readStatement := self
 		                 newClassNamed: #ReadStatement
 		                 comment: 'I represent Fortran Read statement'.
 
-	returnStatement := builder
+	returnStatement := self
 		                   newClassNamed: #ReturnStatement
 		                   comment: 'a Fortran Return Statement'.
 
-	rewindStatement := builder
+	rewindStatement := self
 		                   newClassNamed: #RewindStatement
 		                   comment: 'I represent Fortran Rewind statement'.
-	saveStatement := builder
+	saveStatement := self
 		                 newClassNamed: #SaveStatement
 		                 comment: 'I represent Fortran Save statement'.
 
-	staticStatement := builder
+	staticStatement := self
 		                   newClassNamed: #StaticStatement
 		                   comment: 'I represent Fortran Static statement'.
-	stopStatement := builder
+	stopStatement := self
 		                 newClassNamed: #StopStatement
 		                 comment: 'I represent Fortran Stop statement'.
-	unionStatement := builder
+	unionStatement := self
 		                  newClassNamed: #UnionStatement
 		                  comment: 'I represent Fortran Union statement'.
 
-	variableDeclarationStatement := builder
+	variableDeclarationStatement := self
 		                   newClassNamed: #VariableDeclarationStatement
 		                   comment:
 		                   'I represent a type declaration for one or many scalar variables or arrays'.	
 
-	virtualStatement := builder
+	virtualStatement := self
 		                    newClassNamed: #VirtualStatement
 		                    comment: 'I represent Fortran Virtual statement'.
-	volatileStatement := builder
+	volatileStatement := self
 		                     newClassNamed: #VolatileStatement
 		                     comment: 'I represent Fortran Volatile statement'.
-	writeStatement := builder
+	writeStatement := self
 		                  newClassNamed: #WriteStatement
 		                  comment: 'I represent Fortran Write statement'.
 
 	"NOT IN THE 77 STANDARD"
-	exitStatement := builder
+	exitStatement := self
 		                 newClassNamed: #ExitStatement
 		                 comment: 'I represent Fortran90 Exit statement'
 ]
@@ -1010,14 +1010,14 @@ FASTFortranGenerator >> defineTraits [
 	tWithComments := self remoteTrait: #TWithComments withPrefix: #FAST.
 	tWithParameters := self remoteTrait: #TWithParameters withPrefix: #FAST.
 
-	tEntryArgument := builder newTraitNamed: #TEntryArgument comment: 'I represent an argument in an entry statement: it can be a variable name, array name, formal procedure name, or an asterisk'.
-	tFormat := builder newTraitNamed: #TFormat comment: 'I represent a format description (eg. in Format or Print statement)'.
-	tIOParameter := builder newTraitNamed: #TIOParameter comment: 'I represent a parameter to an IO-statement (read or write)'.
-	tVariableGroup := builder newTraitNamed: #TVariableGroup comment: 'I represent an entity with several variables like in a DataStatement or an EquivalenceStatement'.
-	tWithDeclarators := builder newTraitNamed: #TWithDeclarators comment: 'I represent a declaration with several variable declarators'.
-	tWithFormat := builder newTraitNamed: #TWithFormat comment: 'I represent a statement with a format (format, print)'.
-	tWithLabelReferences := builder newTraitNamed: #TWithLabelReferences comment: 'I represent a statement (various kind of goto) that can have label references'.
-	tWithLoopControl := builder newTraitNamed: #TWithLoopControl comment: 'I represent a loop control: initialization/limit/increment'.
-	tWithVariableGroup := builder newTraitNamed: #TWithVariableGroups comment: 'I represent a statement with variable groups like a DataStatement or an EquivalenceStatement'.
+	tEntryArgument := self newTraitNamed: #TEntryArgument comment: 'I represent an argument in an entry statement: it can be a variable name, array name, formal procedure name, or an asterisk'.
+	tFormat := self newTraitNamed: #TFormat comment: 'I represent a format description (eg. in Format or Print statement)'.
+	tIOParameter := self newTraitNamed: #TIOParameter comment: 'I represent a parameter to an IO-statement (read or write)'.
+	tVariableGroup := self newTraitNamed: #TVariableGroup comment: 'I represent an entity with several variables like in a DataStatement or an EquivalenceStatement'.
+	tWithDeclarators := self newTraitNamed: #TWithDeclarators comment: 'I represent a declaration with several variable declarators'.
+	tWithFormat := self newTraitNamed: #TWithFormat comment: 'I represent a statement with a format (format, print)'.
+	tWithLabelReferences := self newTraitNamed: #TWithLabelReferences comment: 'I represent a statement (various kind of goto) that can have label references'.
+	tWithLoopControl := self newTraitNamed: #TWithLoopControl comment: 'I represent a loop control: initialization/limit/increment'.
+	tWithVariableGroup := self newTraitNamed: #TWithVariableGroups comment: 'I represent a statement with variable groups like a DataStatement or an EquivalenceStatement'.
 
 ]
