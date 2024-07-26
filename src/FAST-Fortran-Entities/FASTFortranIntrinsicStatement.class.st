@@ -18,14 +18,16 @@ I represent Fortran Intrinsic statement
 
 "
 Class {
-	#name : #FASTFortranIntrinsicStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranIntrinsicStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTFortranTVariableGroup',
 	#classTraits : 'FASTFortranTVariableGroup classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranIntrinsicStatement class >> annotation [
 
 	<FMClass: #IntrinsicStatement super: #FASTFortranAbstractStatement>

@@ -18,15 +18,17 @@ I represent an entity with several variables like in a DataStatement or an Equiv
 
 "
 Trait {
-	#name : #FASTFortranTVariableGroup,
+	#name : 'FASTFortranTVariableGroup',
 	#instVars : [
 		'#variables => FMMany type: #FASTFortranVariable opposite: #parentVariableGroup',
 		'#withVariableGroups => FMOne type: #FASTFortranTWithVariableGroups opposite: #variableGroups'
 	],
-	#category : #'FAST-Fortran-Entities-Traits'
+	#category : 'FAST-Fortran-Entities-Traits',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Traits'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranTVariableGroup classSide >> annotation [
 
 	<FMClass: #TVariableGroup super: #Object>
@@ -35,13 +37,13 @@ FASTFortranTVariableGroup classSide >> annotation [
 	^ self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 FASTFortranTVariableGroup >> addVariable: anObject [
 	<generated>
 	^ self variables add: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTVariableGroup >> variables [
 	"Relation named: #variables type: #FASTFortranVariable opposite: #parentVariableGroup"
 
@@ -50,21 +52,21 @@ FASTFortranTVariableGroup >> variables [
 	^ variables
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTVariableGroup >> variables: anObject [
 
 	<generated>
 	variables value: anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranTVariableGroup >> variablesGroup [
 	<generated>
 	<navigation: 'Variables'>
 	^ MooseSpecializedGroup withAll: self variables asSet
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTVariableGroup >> withVariableGroups [
 	"Relation named: #withVariableGroups type: #FASTFortranTWithVariableGroups opposite: #variableGroups"
 
@@ -73,14 +75,14 @@ FASTFortranTVariableGroup >> withVariableGroups [
 	^ withVariableGroups
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTVariableGroup >> withVariableGroups: anObject [
 
 	<generated>
 	withVariableGroups := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranTVariableGroup >> withVariableGroupsGroup [
 	<generated>
 	<navigation: 'WithVariableGroups'>

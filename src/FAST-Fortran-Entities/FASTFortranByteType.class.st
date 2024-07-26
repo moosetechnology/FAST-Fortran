@@ -6,12 +6,14 @@ f77 allows the BYTE type as an array index, just as it allows the REAL type, but
 
 "
 Class {
-	#name : #FASTFortranByteType,
-	#superclass : #FASTFortranType,
-	#category : #'FAST-Fortran-Entities-Entities'
+	#name : 'FASTFortranByteType',
+	#superclass : 'FASTFortranType',
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranByteType class >> annotation [
 
 	<FMClass: #ByteType super: #FASTFortranType>

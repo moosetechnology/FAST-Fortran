@@ -13,14 +13,16 @@ I represent FortranDimension statement
 
 "
 Class {
-	#name : #FASTFortranDimensionStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranDimensionStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTFortranTWithDeclarators',
 	#classTraits : 'FASTFortranTWithDeclarators classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranDimensionStatement class >> annotation [
 
 	<FMClass: #DimensionStatement super: #FASTFortranAbstractStatement>

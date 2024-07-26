@@ -4,12 +4,14 @@ I am the super class of all Fortran Literals
 
 "
 Class {
-	#name : #FASTFortranAbstractLiteral,
-	#superclass : #FASTFortranAbstractExpression,
-	#category : #'FAST-Fortran-Entities-Entities'
+	#name : 'FASTFortranAbstractLiteral',
+	#superclass : 'FASTFortranAbstractExpression',
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranAbstractLiteral class >> annotation [
 
 	<FMClass: #AbstractLiteral super: #FASTFortranAbstractExpression>

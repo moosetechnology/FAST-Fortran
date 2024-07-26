@@ -19,17 +19,19 @@ I represent Fortran Call statement
 
 "
 Class {
-	#name : #FASTFortranCallStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranCallStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTTWithArguments',
 	#classTraits : 'FASTTWithArguments classTrait',
 	#instVars : [
 		'#name => FMProperty'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranCallStatement class >> annotation [
 
 	<FMClass: #CallStatement super: #FASTFortranAbstractStatement>
@@ -38,7 +40,7 @@ FASTFortranCallStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranCallStatement >> name [
 
 	<FMProperty: #name type: #String>
@@ -47,7 +49,7 @@ FASTFortranCallStatement >> name [
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranCallStatement >> name: anObject [
 	<generated>
 	name := anObject

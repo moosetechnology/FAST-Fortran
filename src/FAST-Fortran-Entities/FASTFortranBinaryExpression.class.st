@@ -34,14 +34,16 @@ a Fortran Binary Expression (arithmetic, logical)
 
 "
 Class {
-	#name : #FASTFortranBinaryExpression,
-	#superclass : #FASTFortranAbstractExpression,
+	#name : 'FASTFortranBinaryExpression',
+	#superclass : 'FASTFortranAbstractExpression',
 	#traits : 'FASTTBinaryExpression',
 	#classTraits : 'FASTTBinaryExpression classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranBinaryExpression class >> annotation [
 
 	<FMClass: #BinaryExpression super: #FASTFortranAbstractExpression>

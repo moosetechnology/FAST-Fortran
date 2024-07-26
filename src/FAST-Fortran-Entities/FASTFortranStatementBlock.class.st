@@ -9,8 +9,8 @@ Contains the block of Fortran statements
 |---|
 | `fastBehaviouralParent` | `FASTTStatementBlock` | `statementBlock` | `FASTTBehaviouralEntity` | Behavioural entity containing the statement block.|
 | `parentDoStatement` | `FASTFortranStatementBlock` | `statementBlock` | `FASTFortranDoStatement` | Parent do statement|
-| `parentIfBlock` | `FASTFortranStatementBlock` | `thenStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
 | `parentIfBlock` | `FASTFortranStatementBlock` | `elseStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
+| `parentIfBlock` | `FASTFortranStatementBlock` | `thenStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
 | `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
 
 ### Children
@@ -30,18 +30,20 @@ Contains the block of Fortran statements
 
 "
 Class {
-	#name : #FASTFortranStatementBlock,
-	#superclass : #FASTFortranEntity,
+	#name : 'FASTFortranStatementBlock',
+	#superclass : 'FASTFortranEntity',
 	#traits : 'FASTTStatementBlock + FASTTWithComments',
 	#classTraits : 'FASTTStatementBlock classTrait + FASTTWithComments classTrait',
 	#instVars : [
 		'#parentDoStatement => FMOne type: #FASTFortranDoStatement opposite: #statementBlock',
 		'#parentIfBlock => FMOne type: #FASTFortranIfBlockStatement opposite: #thenStatementBlock'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranStatementBlock class >> annotation [
 
 	<FMClass: #StatementBlock super: #FASTFortranEntity>
@@ -50,7 +52,7 @@ FASTFortranStatementBlock class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranStatementBlock >> parentDoStatement [
 	"Relation named: #parentDoStatement type: #FASTFortranDoStatement opposite: #statementBlock"
 
@@ -61,21 +63,21 @@ FASTFortranStatementBlock >> parentDoStatement [
 	^ parentDoStatement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranStatementBlock >> parentDoStatement: anObject [
 
 	<generated>
 	parentDoStatement := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranStatementBlock >> parentDoStatementGroup [
 	<generated>
 	<navigation: 'ParentDoStatement'>
 	^ MooseSpecializedGroup with: self parentDoStatement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranStatementBlock >> parentIfBlock [
 	"Relation named: #parentIfBlock type: #FASTFortranIfBlockStatement opposite: #thenStatementBlock"
 
@@ -86,14 +88,14 @@ FASTFortranStatementBlock >> parentIfBlock [
 	^ parentIfBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranStatementBlock >> parentIfBlock: anObject [
 
 	<generated>
 	parentIfBlock := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranStatementBlock >> parentIfBlockGroup [
 	<generated>
 	<navigation: 'ParentIfBlock'>

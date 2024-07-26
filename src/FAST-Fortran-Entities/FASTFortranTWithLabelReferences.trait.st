@@ -13,14 +13,16 @@ I represent a statement (various kind of goto) that can have label references
 
 "
 Trait {
-	#name : #FASTFortranTWithLabelReferences,
+	#name : 'FASTFortranTWithLabelReferences',
 	#instVars : [
 		'#labelReferences => FMMany type: #FASTFortranLabelReference opposite: #referencer'
 	],
-	#category : #'FAST-Fortran-Entities-Traits'
+	#category : 'FAST-Fortran-Entities-Traits',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Traits'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranTWithLabelReferences classSide >> annotation [
 
 	<FMClass: #TWithLabelReferences super: #Object>
@@ -29,13 +31,13 @@ FASTFortranTWithLabelReferences classSide >> annotation [
 	^ self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 FASTFortranTWithLabelReferences >> addLabelReference: anObject [
 	<generated>
 	^ self labelReferences add: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTWithLabelReferences >> labelReferences [
 	"Relation named: #labelReferences type: #FASTFortranLabelReference opposite: #referencer"
 
@@ -45,14 +47,14 @@ FASTFortranTWithLabelReferences >> labelReferences [
 	^ labelReferences
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTWithLabelReferences >> labelReferences: anObject [
 
 	<generated>
 	labelReferences value: anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranTWithLabelReferences >> labelReferencesGroup [
 	<generated>
 	<navigation: 'LabelReferences'>

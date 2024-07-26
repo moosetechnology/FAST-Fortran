@@ -13,14 +13,16 @@ I represent a Fortran Equivalence statement
 
 "
 Class {
-	#name : #FASTFortranEquivalenceStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranEquivalenceStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTFortranTWithVariableGroups',
 	#classTraits : 'FASTFortranTWithVariableGroups classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranEquivalenceStatement class >> annotation [
 
 	<FMClass: #EquivalenceStatement super: #FASTFortranAbstractStatement>

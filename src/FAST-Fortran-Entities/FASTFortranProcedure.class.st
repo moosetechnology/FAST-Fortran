@@ -13,14 +13,16 @@ I represent a fortran subroutine or a function
 
 "
 Class {
-	#name : #FASTFortranProcedure,
-	#superclass : #FASTFortranSubprogram,
+	#name : 'FASTFortranProcedure',
+	#superclass : 'FASTFortranSubprogram',
 	#traits : 'FASTTWithParameters',
 	#classTraits : 'FASTTWithParameters classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranProcedure class >> annotation [
 
 	<FMClass: #Procedure super: #FASTFortranSubprogram>

@@ -9,14 +9,16 @@
 
 "
 Class {
-	#name : #FASTFortranEntity,
-	#superclass : #MooseEntity,
+	#name : 'FASTFortranEntity',
+	#superclass : 'MooseEntity',
 	#traits : 'FASTTEntity',
 	#classTraits : 'FASTTEntity classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranEntity class >> annotation [
 
 	<FMClass: #Entity super: #MooseEntity>
@@ -26,28 +28,28 @@ FASTFortranEntity class >> annotation [
 	^ self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FASTFortranEntity class >> isAbstract [
 
 	<generated>
 	^ self == FASTFortranEntity
 ]
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranEntity class >> metamodel [
 
 	<generated>
 	^ FASTFortranModel metamodel
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FASTFortranEntity >> isQueryable [
 
 	<generated>
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FASTFortranEntity >> isStatement [
 
 	<generated>

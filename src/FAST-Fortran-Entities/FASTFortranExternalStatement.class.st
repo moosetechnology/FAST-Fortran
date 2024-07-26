@@ -21,14 +21,16 @@ I represent Fortran External statement
 
 "
 Class {
-	#name : #FASTFortranExternalStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranExternalStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTTNamedEntity',
 	#classTraits : 'FASTTNamedEntity classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranExternalStatement class >> annotation [
 
 	<FMClass: #ExternalStatement super: #FASTFortranAbstractStatement>

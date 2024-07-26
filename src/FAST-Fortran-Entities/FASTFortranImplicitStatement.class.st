@@ -13,15 +13,17 @@ I represent Fortran Implicit statement
 
 "
 Class {
-	#name : #FASTFortranImplicitStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranImplicitStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#instVars : [
 		'#typingRules => FMMany type: #FASTFortranImplicitTypingRule opposite: #parentImplicitStatement'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranImplicitStatement class >> annotation [
 
 	<FMClass: #ImplicitStatement super: #FASTFortranAbstractStatement>
@@ -30,13 +32,13 @@ FASTFortranImplicitStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 FASTFortranImplicitStatement >> addTypingRule: anObject [
 	<generated>
 	^ self typingRules add: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranImplicitStatement >> typingRules [
 	"Relation named: #typingRules type: #FASTFortranImplicitTypingRule opposite: #parentImplicitStatement"
 
@@ -45,14 +47,14 @@ FASTFortranImplicitStatement >> typingRules [
 	^ typingRules
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranImplicitStatement >> typingRules: anObject [
 
 	<generated>
 	typingRules value: anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranImplicitStatement >> typingRulesGroup [
 	<generated>
 	<navigation: 'TypingRules'>

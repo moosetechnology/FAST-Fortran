@@ -27,14 +27,16 @@ I represent Fortran numerical Literals (Integer, Real, Complex)
 
 "
 Class {
-	#name : #FASTFortranNumericalConstant,
-	#superclass : #FASTFortranAbstractLiteral,
+	#name : 'FASTFortranNumericalConstant',
+	#superclass : 'FASTFortranAbstractLiteral',
 	#traits : 'FASTTNumericalLiteral',
 	#classTraits : 'FASTTNumericalLiteral classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranNumericalConstant class >> annotation [
 
 	<FMClass: #NumericalConstant super: #FASTFortranAbstractLiteral>

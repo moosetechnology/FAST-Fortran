@@ -13,14 +13,16 @@ I represent a parameter to an IO-statement (read or write)
 
 "
 Trait {
-	#name : #FASTFortranTIOParameter,
+	#name : 'FASTFortranTIOParameter',
 	#instVars : [
 		'#parentIOStatement => FMOne type: #FASTFortranAbstractIOStatement opposite: #ioParameters'
 	],
-	#category : #'FAST-Fortran-Entities-Traits'
+	#category : 'FAST-Fortran-Entities-Traits',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Traits'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranTIOParameter classSide >> annotation [
 
 	<FMClass: #TIOParameter super: #Object>
@@ -29,7 +31,7 @@ FASTFortranTIOParameter classSide >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTIOParameter >> parentIOStatement [
 	"Relation named: #parentIOStatement type: #FASTFortranAbstractIOStatement opposite: #ioParameters"
 
@@ -38,14 +40,14 @@ FASTFortranTIOParameter >> parentIOStatement [
 	^ parentIOStatement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTIOParameter >> parentIOStatement: anObject [
 
 	<generated>
 	parentIOStatement := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranTIOParameter >> parentIOStatementGroup [
 	<generated>
 	<navigation: 'ParentIOStatement'>

@@ -4,12 +4,14 @@ I represent Fortran Close statement
 
 "
 Class {
-	#name : #FASTFortranCloseStatement,
-	#superclass : #FASTFortranAbstractIOStatement,
-	#category : #'FAST-Fortran-Entities-Entities'
+	#name : 'FASTFortranCloseStatement',
+	#superclass : 'FASTFortranAbstractIOStatement',
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranCloseStatement class >> annotation [
 
 	<FMClass: #CloseStatement super: #FASTFortranAbstractIOStatement>

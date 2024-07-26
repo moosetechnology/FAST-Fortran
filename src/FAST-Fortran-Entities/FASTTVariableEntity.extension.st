@@ -1,6 +1,6 @@
-Extension { #name : #FASTTVariableEntity }
+Extension { #name : 'FASTTVariableEntity' }
 
-{ #category : #'*FAST-Fortran-Entities-accessing' }
+{ #category : '*FAST-Fortran-Entities-accessing' }
 FASTTVariableEntity >> parentImpliedExpression [
 	"Relation named: #parentImpliedExpression type: #FASTFortranImpliedDoExpression opposite: #variables"
 
@@ -11,7 +11,7 @@ FASTTVariableEntity >> parentImpliedExpression [
 	^ self attributeAt: #parentImpliedExpression ifAbsent: [ nil ]
 ]
 
-{ #category : #'*FAST-Fortran-Entities-accessing' }
+{ #category : '*FAST-Fortran-Entities-accessing' }
 FASTTVariableEntity >> parentImpliedExpression: anObject [
 
 	<generated>

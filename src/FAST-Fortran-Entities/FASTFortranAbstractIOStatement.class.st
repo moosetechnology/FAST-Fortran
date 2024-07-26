@@ -13,15 +13,17 @@ I am the abstract superclass of all IO-statements (READ, WRITE, CLOSE, ENCODE...
 
 "
 Class {
-	#name : #FASTFortranAbstractIOStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranAbstractIOStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#instVars : [
 		'#ioParameters => FMMany type: #FASTFortranTIOParameter opposite: #parentIOStatement'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranAbstractIOStatement class >> annotation [
 
 	<FMClass: #AbstractIOStatement super: #FASTFortranAbstractStatement>
@@ -30,13 +32,13 @@ FASTFortranAbstractIOStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 FASTFortranAbstractIOStatement >> addIoParameter: anObject [
 	<generated>
 	^ self ioParameters add: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractIOStatement >> ioParameters [
 	"Relation named: #ioParameters type: #FASTFortranTIOParameter opposite: #parentIOStatement"
 
@@ -46,14 +48,14 @@ FASTFortranAbstractIOStatement >> ioParameters [
 	^ ioParameters
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractIOStatement >> ioParameters: anObject [
 
 	<generated>
 	ioParameters value: anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranAbstractIOStatement >> ioParametersGroup [
 	<generated>
 	<navigation: 'IoParameters'>

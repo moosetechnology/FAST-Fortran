@@ -20,18 +20,20 @@ I represent Fortran Type statement
 
 "
 Class {
-	#name : #FASTFortranType,
-	#superclass : #FASTFortranEntity,
+	#name : 'FASTFortranType',
+	#superclass : 'FASTFortranEntity',
 	#instVars : [
 		'#parentDeclaration => FMOne type: #FASTFortranVariableDeclarationStatement opposite: #type',
 		'#typedFunctions => FMOne type: #FASTFortranFunction opposite: #returnType',
 		'#parentImplicitRule => FMOne type: #FASTFortranImplicitTypingRule opposite: #type',
 		'#size => FMOne type: #FASTFortranIntegerLiteral opposite: #parentTypeSize'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranType class >> annotation [
 
 	<FMClass: #Type super: #FASTFortranEntity>
@@ -40,7 +42,7 @@ FASTFortranType class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranType >> parentDeclaration [
 	"Relation named: #parentDeclaration type: #FASTFortranVariableDeclarationStatement opposite: #type"
 
@@ -51,21 +53,21 @@ FASTFortranType >> parentDeclaration [
 	^ parentDeclaration
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranType >> parentDeclaration: anObject [
 
 	<generated>
 	parentDeclaration := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranType >> parentDeclarationGroup [
 	<generated>
 	<navigation: 'ParentDeclaration'>
 	^ MooseSpecializedGroup with: self parentDeclaration
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranType >> parentImplicitRule [
 	"Relation named: #parentImplicitRule type: #FASTFortranImplicitTypingRule opposite: #type"
 
@@ -75,21 +77,21 @@ FASTFortranType >> parentImplicitRule [
 	^ parentImplicitRule
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranType >> parentImplicitRule: anObject [
 
 	<generated>
 	parentImplicitRule := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranType >> parentImplicitRuleGroup [
 	<generated>
 	<navigation: 'ParentImplicitRule'>
 	^ MooseSpecializedGroup with: self parentImplicitRule
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranType >> size [
 	"Relation named: #size type: #FASTFortranIntegerLiteral opposite: #parentTypeSize"
 
@@ -98,21 +100,21 @@ FASTFortranType >> size [
 	^ size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranType >> size: anObject [
 
 	<generated>
 	size := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranType >> sizeGroup [
 	<generated>
 	<navigation: 'Size'>
 	^ MooseSpecializedGroup with: self size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranType >> typedFunctions [
 	"Relation named: #typedFunctions type: #FASTFortranFunction opposite: #returnType"
 
@@ -122,14 +124,14 @@ FASTFortranType >> typedFunctions [
 	^ typedFunctions
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranType >> typedFunctions: anObject [
 
 	<generated>
 	typedFunctions := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranType >> typedFunctionsGroup [
 	<generated>
 	<navigation: 'TypedFunctions'>

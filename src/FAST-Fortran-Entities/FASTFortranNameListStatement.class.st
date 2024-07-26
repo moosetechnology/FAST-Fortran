@@ -4,12 +4,14 @@ I represent Fortran NameList statement
 
 "
 Class {
-	#name : #FASTFortranNameListStatement,
-	#superclass : #FASTFortranAbstractStatement,
-	#category : #'FAST-Fortran-Entities-Entities'
+	#name : 'FASTFortranNameListStatement',
+	#superclass : 'FASTFortranAbstractStatement',
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranNameListStatement class >> annotation [
 
 	<FMClass: #NameListStatement super: #FASTFortranAbstractStatement>

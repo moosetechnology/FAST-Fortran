@@ -11,8 +11,8 @@ I am the super class of all Fortran expressions
 | `assignedIn` | `FASTTExpression` | `expression` | `FASTTAssignment` | Optional assignment where this expression is used|
 | `assignementExpressionOwner` | `FASTFortranAbstractExpression` | `expression` | `FASTFortranFunctionStatement` | The AssignementExpression owner (if possible)|
 | `expressionStatementOwner` | `FASTTExpression` | `expression` | `FASTTExpressionStatement` | The expression statement that own me (if it's the case|
-| `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `upperBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
 | `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `lowerBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
+| `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `upperBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
 | `parentArrayExpression` | `FASTFortranAbstractExpression` | `indices` | `FASTFortranArrayVariable` | an ArrayVariable expression of which I am an indice|
 | `parentConditionalStatement` | `FASTFortranAbstractExpression` | `condition` | `FASTFortranConditionalStatement` | Parent conditional statement (if-block, if-logical, ...)|
 | `parentDataStatement` | `FASTFortranAbstractExpression` | `dataConstants` | `FASTFortranDataGroup` | |
@@ -37,8 +37,8 @@ I am the super class of all Fortran expressions
 
 "
 Class {
-	#name : #FASTFortranAbstractExpression,
-	#superclass : #FASTFortranEntity,
+	#name : 'FASTFortranAbstractExpression',
+	#superclass : 'FASTFortranEntity',
 	#traits : 'FASTTExpression',
 	#classTraits : 'FASTTExpression classTrait',
 	#instVars : [
@@ -53,10 +53,12 @@ Class {
 		'#parentLoopControlIncrement => FMOne type: #FASTFortranLoopControlExpression opposite: #increment',
 		'#parentLoopControlLimit => FMOne type: #FASTFortranLoopControlExpression opposite: #limit'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranAbstractExpression class >> annotation [
 
 	<FMClass: #AbstractExpression super: #FASTFortranEntity>
@@ -65,7 +67,7 @@ FASTFortranAbstractExpression class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> assignementExpressionOwner [
 	"Relation named: #assignementExpressionOwner type: #FASTFortranFunctionStatement opposite: #expression"
 
@@ -76,21 +78,21 @@ FASTFortranAbstractExpression >> assignementExpressionOwner [
 	^ assignementExpressionOwner
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> assignementExpressionOwner: anObject [
 
 	<generated>
 	assignementExpressionOwner := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranAbstractExpression >> assignementExpressionOwnerGroup [
 	<generated>
 	<navigation: 'AssignementExpressionOwner'>
 	^ MooseSpecializedGroup with: self assignementExpressionOwner
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> parentArrayDimensionDeclarator [
 	"Relation named: #parentArrayDimensionDeclarator type: #FASTFortranArrayRange opposite: #upperBound"
 
@@ -101,21 +103,21 @@ FASTFortranAbstractExpression >> parentArrayDimensionDeclarator [
 	^ parentArrayDimensionDeclarator
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> parentArrayDimensionDeclarator: anObject [
 
 	<generated>
 	parentArrayDimensionDeclarator := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranAbstractExpression >> parentArrayDimensionDeclaratorGroup [
 	<generated>
 	<navigation: 'ParentArrayDimensionDeclarator'>
 	^ MooseSpecializedGroup with: self parentArrayDimensionDeclarator
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> parentArrayExpression [
 	"Relation named: #parentArrayExpression type: #FASTFortranArrayVariable opposite: #indices"
 
@@ -125,21 +127,21 @@ FASTFortranAbstractExpression >> parentArrayExpression [
 	^ parentArrayExpression
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> parentArrayExpression: anObject [
 
 	<generated>
 	parentArrayExpression := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranAbstractExpression >> parentArrayExpressionGroup [
 	<generated>
 	<navigation: 'ParentArrayExpression'>
 	^ MooseSpecializedGroup with: self parentArrayExpression
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> parentConditionalStatement [
 	"Relation named: #parentConditionalStatement type: #FASTFortranConditionalStatement opposite: #condition"
 
@@ -150,21 +152,21 @@ FASTFortranAbstractExpression >> parentConditionalStatement [
 	^ parentConditionalStatement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> parentConditionalStatement: anObject [
 
 	<generated>
 	parentConditionalStatement := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranAbstractExpression >> parentConditionalStatementGroup [
 	<generated>
 	<navigation: 'ParentConditionalStatement'>
 	^ MooseSpecializedGroup with: self parentConditionalStatement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> parentDataStatement [
 	"Relation named: #parentDataStatement type: #FASTFortranDataGroup opposite: #dataConstants"
 
@@ -173,21 +175,21 @@ FASTFortranAbstractExpression >> parentDataStatement [
 	^ parentDataStatement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> parentDataStatement: anObject [
 
 	<generated>
 	parentDataStatement := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranAbstractExpression >> parentDataStatementGroup [
 	<generated>
 	<navigation: 'ParentDataStatement'>
 	^ MooseSpecializedGroup with: self parentDataStatement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> parentGotoAssignedStatement [
 	"Relation named: #parentGotoAssignedStatement type: #FASTFortranGoToAssignedStatement opposite: #selectorExpression"
 
@@ -197,21 +199,21 @@ FASTFortranAbstractExpression >> parentGotoAssignedStatement [
 	^ parentGotoAssignedStatement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> parentGotoAssignedStatement: anObject [
 
 	<generated>
 	parentGotoAssignedStatement := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranAbstractExpression >> parentGotoAssignedStatementGroup [
 	<generated>
 	<navigation: 'ParentGotoAssignedStatement'>
 	^ MooseSpecializedGroup with: self parentGotoAssignedStatement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> parentGotoComputedStatement [
 	"Relation named: #parentGotoComputedStatement type: #FASTFortranGoToComputedStatement opposite: #selectorExpression"
 
@@ -221,21 +223,21 @@ FASTFortranAbstractExpression >> parentGotoComputedStatement [
 	^ parentGotoComputedStatement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> parentGotoComputedStatement: anObject [
 
 	<generated>
 	parentGotoComputedStatement := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranAbstractExpression >> parentGotoComputedStatementGroup [
 	<generated>
 	<navigation: 'ParentGotoComputedStatement'>
 	^ MooseSpecializedGroup with: self parentGotoComputedStatement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> parentLoopControlIncrement [
 	"Relation named: #parentLoopControlIncrement type: #FASTFortranLoopControlExpression opposite: #increment"
 
@@ -245,21 +247,21 @@ FASTFortranAbstractExpression >> parentLoopControlIncrement [
 	^ parentLoopControlIncrement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> parentLoopControlIncrement: anObject [
 
 	<generated>
 	parentLoopControlIncrement := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranAbstractExpression >> parentLoopControlIncrementGroup [
 	<generated>
 	<navigation: 'ParentLoopControlIncrement'>
 	^ MooseSpecializedGroup with: self parentLoopControlIncrement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> parentLoopControlLimit [
 	"Relation named: #parentLoopControlLimit type: #FASTFortranLoopControlExpression opposite: #limit"
 
@@ -269,21 +271,21 @@ FASTFortranAbstractExpression >> parentLoopControlLimit [
 	^ parentLoopControlLimit
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> parentLoopControlLimit: anObject [
 
 	<generated>
 	parentLoopControlLimit := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranAbstractExpression >> parentLoopControlLimitGroup [
 	<generated>
 	<navigation: 'ParentLoopControlLimit'>
 	^ MooseSpecializedGroup with: self parentLoopControlLimit
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> variableDeclaratorOwner [
 	"Relation named: #variableDeclaratorOwner type: #FASTFortranVariableDeclarator opposite: #expression"
 
@@ -293,14 +295,14 @@ FASTFortranAbstractExpression >> variableDeclaratorOwner [
 	^ variableDeclaratorOwner
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractExpression >> variableDeclaratorOwner: anObject [
 
 	<generated>
 	variableDeclaratorOwner := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranAbstractExpression >> variableDeclaratorOwnerGroup [
 	<generated>
 	<navigation: 'VariableDeclaratorOwner'>

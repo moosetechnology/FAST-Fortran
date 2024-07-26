@@ -14,14 +14,16 @@ I represent Fortran Print statement
 
 "
 Class {
-	#name : #FASTFortranPrintStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranPrintStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTFortranTWithFormat + FASTTWithArguments',
 	#classTraits : 'FASTFortranTWithFormat classTrait + FASTTWithArguments classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranPrintStatement class >> annotation [
 
 	<FMClass: #PrintStatement super: #FASTFortranAbstractStatement>

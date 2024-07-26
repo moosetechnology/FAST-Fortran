@@ -32,14 +32,16 @@ I represent Fortran assignment made without ASSIGN statement
 
 "
 Class {
-	#name : #FASTFortranAssignmentStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranAssignmentStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTTAssignment',
 	#classTraits : 'FASTTAssignment classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranAssignmentStatement class >> annotation [
 
 	<FMClass: #AssignmentStatement super: #FASTFortranAbstractStatement>

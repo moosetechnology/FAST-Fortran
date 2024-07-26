@@ -26,17 +26,19 @@ I represent Fortran Entry statement
 
 "
 Class {
-	#name : #FASTFortranEntryStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranEntryStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTTNamedEntity',
 	#classTraits : 'FASTTNamedEntity classTrait',
 	#instVars : [
 		'#entryArguments => FMMany type: #FASTFortranTEntryArgument opposite: #entryStatement'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranEntryStatement class >> annotation [
 
 	<FMClass: #EntryStatement super: #FASTFortranAbstractStatement>
@@ -45,13 +47,13 @@ FASTFortranEntryStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 FASTFortranEntryStatement >> addEntryArgument: anObject [
 	<generated>
 	^ self entryArguments add: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranEntryStatement >> entryArguments [
 	"Relation named: #entryArguments type: #FASTFortranTEntryArgument opposite: #entryStatement"
 
@@ -60,14 +62,14 @@ FASTFortranEntryStatement >> entryArguments [
 	^ entryArguments
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranEntryStatement >> entryArguments: anObject [
 
 	<generated>
 	entryArguments value: anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranEntryStatement >> entryArgumentsGroup [
 	<generated>
 	<navigation: 'EntryArguments'>

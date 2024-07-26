@@ -13,14 +13,16 @@ I represent Fortran Go To (unconditional) statement
 
 "
 Class {
-	#name : #FASTFortranGoToStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranGoToStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTFortranTWithLabelReferences',
 	#classTraits : 'FASTFortranTWithLabelReferences classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranGoToStatement class >> annotation [
 
 	<FMClass: #GoToStatement super: #FASTFortranAbstractStatement>

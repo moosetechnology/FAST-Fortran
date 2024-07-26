@@ -13,14 +13,16 @@ I represent a Fortran Data statement
 
 "
 Class {
-	#name : #FASTFortranDataStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranDataStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTFortranTWithVariableGroups',
 	#classTraits : 'FASTFortranTWithVariableGroups classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranDataStatement class >> annotation [
 
 	<FMClass: #DataStatement super: #FASTFortranAbstractStatement>

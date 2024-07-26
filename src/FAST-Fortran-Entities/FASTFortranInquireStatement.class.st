@@ -4,12 +4,14 @@ I represent Fortran Inquire statement
 
 "
 Class {
-	#name : #FASTFortranInquireStatement,
-	#superclass : #FASTFortranAbstractIOStatement,
-	#category : #'FAST-Fortran-Entities-Entities'
+	#name : 'FASTFortranInquireStatement',
+	#superclass : 'FASTFortranAbstractIOStatement',
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranInquireStatement class >> annotation [
 
 	<FMClass: #InquireStatement super: #FASTFortranAbstractIOStatement>

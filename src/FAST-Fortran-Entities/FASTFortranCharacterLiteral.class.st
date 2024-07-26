@@ -29,14 +29,16 @@ I represent Fortran Character Literal (Constant)
 
 "
 Class {
-	#name : #FASTFortranCharacterLiteral,
-	#superclass : #FASTFortranAbstractLiteral,
+	#name : 'FASTFortranCharacterLiteral',
+	#superclass : 'FASTFortranAbstractLiteral',
 	#traits : 'FASTFortranTFormat + FASTTCharacterLiteral',
 	#classTraits : 'FASTFortranTFormat classTrait + FASTTCharacterLiteral classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranCharacterLiteral class >> annotation [
 
 	<FMClass: #CharacterLiteral super: #FASTFortranAbstractLiteral>

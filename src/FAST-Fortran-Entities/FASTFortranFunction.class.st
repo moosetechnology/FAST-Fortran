@@ -13,15 +13,17 @@ I represent a Fortran Function
 
 "
 Class {
-	#name : #FASTFortranFunction,
-	#superclass : #FASTFortranProcedure,
+	#name : 'FASTFortranFunction',
+	#superclass : 'FASTFortranProcedure',
 	#instVars : [
 		'#returnType => FMOne type: #FASTFortranType opposite: #typedFunctions'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranFunction class >> annotation [
 
 	<FMClass: #Function super: #FASTFortranProcedure>
@@ -30,7 +32,7 @@ FASTFortranFunction class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranFunction >> returnType [
 	"Relation named: #returnType type: #FASTFortranType opposite: #typedFunctions"
 
@@ -38,14 +40,14 @@ FASTFortranFunction >> returnType [
 	^ returnType
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranFunction >> returnType: anObject [
 
 	<generated>
 	returnType := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranFunction >> returnTypeGroup [
 	<generated>
 	<navigation: 'ReturnType'>

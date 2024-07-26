@@ -19,17 +19,19 @@ I represent a Fortran Data group in a Data statement
 
 "
 Class {
-	#name : #FASTFortranDataGroup,
-	#superclass : #FASTFortranEntity,
+	#name : 'FASTFortranDataGroup',
+	#superclass : 'FASTFortranEntity',
 	#traits : 'FASTFortranTVariableGroup',
 	#classTraits : 'FASTFortranTVariableGroup classTrait',
 	#instVars : [
 		'#dataConstants => FMMany type: #FASTFortranAbstractExpression opposite: #parentDataStatement'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranDataGroup class >> annotation [
 
 	<FMClass: #DataGroup super: #FASTFortranEntity>
@@ -38,13 +40,13 @@ FASTFortranDataGroup class >> annotation [
 	^ self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 FASTFortranDataGroup >> addDataConstant: anObject [
 	<generated>
 	^ self dataConstants add: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranDataGroup >> dataConstants [
 	"Relation named: #dataConstants type: #FASTFortranAbstractExpression opposite: #parentDataStatement"
 
@@ -53,14 +55,14 @@ FASTFortranDataGroup >> dataConstants [
 	^ dataConstants
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranDataGroup >> dataConstants: anObject [
 
 	<generated>
 	dataConstants value: anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranDataGroup >> dataConstantsGroup [
 	<generated>
 	<navigation: 'DataConstants'>

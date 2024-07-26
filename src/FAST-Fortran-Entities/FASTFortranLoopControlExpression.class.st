@@ -20,18 +20,20 @@ a Fortran Loop Control Expression
 
 "
 Class {
-	#name : #FASTFortranLoopControlExpression,
-	#superclass : #FASTFortranEntity,
+	#name : 'FASTFortranLoopControlExpression',
+	#superclass : 'FASTFortranEntity',
 	#instVars : [
 		'#parentLoop => FMOne type: #FASTFortranTWithLoopControl opposite: #loopControl',
 		'#init => FMOne type: #FASTFortranAssignmentExpression opposite: #parentLoopControlInitialization',
 		'#increment => FMOne type: #FASTFortranAbstractExpression opposite: #parentLoopControlIncrement',
 		'#limit => FMOne type: #FASTFortranAbstractExpression opposite: #parentLoopControlLimit'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranLoopControlExpression class >> annotation [
 
 	<FMClass: #LoopControlExpression super: #FASTFortranEntity>
@@ -40,7 +42,7 @@ FASTFortranLoopControlExpression class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLoopControlExpression >> increment [
 	"Relation named: #increment type: #FASTFortranAbstractExpression opposite: #parentLoopControlIncrement"
 
@@ -49,21 +51,21 @@ FASTFortranLoopControlExpression >> increment [
 	^ increment
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLoopControlExpression >> increment: anObject [
 
 	<generated>
 	increment := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranLoopControlExpression >> incrementGroup [
 	<generated>
 	<navigation: 'Increment'>
 	^ MooseSpecializedGroup with: self increment
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLoopControlExpression >> init [
 	"Relation named: #init type: #FASTFortranAssignmentExpression opposite: #parentLoopControlInitialization"
 
@@ -72,21 +74,21 @@ FASTFortranLoopControlExpression >> init [
 	^ init
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLoopControlExpression >> init: anObject [
 
 	<generated>
 	init := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranLoopControlExpression >> initGroup [
 	<generated>
 	<navigation: 'Init'>
 	^ MooseSpecializedGroup with: self init
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLoopControlExpression >> limit [
 	"Relation named: #limit type: #FASTFortranAbstractExpression opposite: #parentLoopControlLimit"
 
@@ -95,21 +97,21 @@ FASTFortranLoopControlExpression >> limit [
 	^ limit
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLoopControlExpression >> limit: anObject [
 
 	<generated>
 	limit := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranLoopControlExpression >> limitGroup [
 	<generated>
 	<navigation: 'Limit'>
 	^ MooseSpecializedGroup with: self limit
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLoopControlExpression >> parentLoop [
 	"Relation named: #parentLoop type: #FASTFortranTWithLoopControl opposite: #loopControl"
 
@@ -120,14 +122,14 @@ FASTFortranLoopControlExpression >> parentLoop [
 	^ parentLoop
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLoopControlExpression >> parentLoop: anObject [
 
 	<generated>
 	parentLoop := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranLoopControlExpression >> parentLoopGroup [
 	<generated>
 	<navigation: 'ParentLoop'>

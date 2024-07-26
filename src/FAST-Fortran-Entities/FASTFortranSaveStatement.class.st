@@ -4,12 +4,14 @@ I represent Fortran Save statement
 
 "
 Class {
-	#name : #FASTFortranSaveStatement,
-	#superclass : #FASTFortranAbstractStatement,
-	#category : #'FAST-Fortran-Entities-Entities'
+	#name : 'FASTFortranSaveStatement',
+	#superclass : 'FASTFortranAbstractStatement',
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranSaveStatement class >> annotation [
 
 	<FMClass: #SaveStatement super: #FASTFortranAbstractStatement>

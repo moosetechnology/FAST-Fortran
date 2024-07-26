@@ -26,17 +26,19 @@ a Fortran Return Statement
 
 "
 Class {
-	#name : #FASTFortranReturnStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranReturnStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTTReturnStatement',
 	#classTraits : 'FASTTReturnStatement classTrait',
 	#instVars : [
 		'#alternateReturnLabel => FMProperty'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranReturnStatement class >> annotation [
 
 	<FMClass: #ReturnStatement super: #FASTFortranAbstractStatement>
@@ -45,7 +47,7 @@ FASTFortranReturnStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranReturnStatement >> alternateReturnLabel [
 
 	<FMProperty: #alternateReturnLabel type: #String>
@@ -54,7 +56,7 @@ FASTFortranReturnStatement >> alternateReturnLabel [
 	^ alternateReturnLabel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranReturnStatement >> alternateReturnLabel: anObject [
 	<generated>
 	alternateReturnLabel := anObject

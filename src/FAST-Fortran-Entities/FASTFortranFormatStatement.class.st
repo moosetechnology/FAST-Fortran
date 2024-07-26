@@ -19,17 +19,19 @@ I represent Fortran Format statement
 
 "
 Class {
-	#name : #FASTFortranFormatStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranFormatStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTFortranTWithFormat',
 	#classTraits : 'FASTFortranTWithFormat classTrait',
 	#instVars : [
 		'#formatDescription => FMProperty'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranFormatStatement class >> annotation [
 
 	<FMClass: #FormatStatement super: #FASTFortranAbstractStatement>
@@ -38,7 +40,7 @@ FASTFortranFormatStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranFormatStatement >> formatDescription [
 
 	<FMProperty: #formatDescription type: #String>
@@ -46,7 +48,7 @@ FASTFortranFormatStatement >> formatDescription [
 	^ formatDescription
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranFormatStatement >> formatDescription: anObject [
 	<generated>
 	formatDescription := anObject

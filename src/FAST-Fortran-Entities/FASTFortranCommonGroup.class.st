@@ -27,17 +27,19 @@ I represent Common group inside a Common statement
 
 "
 Class {
-	#name : #FASTFortranCommonGroup,
-	#superclass : #FASTFortranEntity,
+	#name : 'FASTFortranCommonGroup',
+	#superclass : 'FASTFortranEntity',
 	#traits : 'FASTFortranTWithDeclarators + FASTTNamedEntity',
 	#classTraits : 'FASTFortranTWithDeclarators classTrait + FASTTNamedEntity classTrait',
 	#instVars : [
 		'#parentCommonStatement => FMOne type: #FASTFortranCommonStatement opposite: #groups'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranCommonGroup class >> annotation [
 
 	<FMClass: #CommonGroup super: #FASTFortranEntity>
@@ -46,7 +48,7 @@ FASTFortranCommonGroup class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranCommonGroup >> parentCommonStatement [
 	"Relation named: #parentCommonStatement type: #FASTFortranCommonStatement opposite: #groups"
 
@@ -56,14 +58,14 @@ FASTFortranCommonGroup >> parentCommonStatement [
 	^ parentCommonStatement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranCommonGroup >> parentCommonStatement: anObject [
 
 	<generated>
 	parentCommonStatement := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranCommonGroup >> parentCommonStatementGroup [
 	<generated>
 	<navigation: 'ParentCommonStatement'>

@@ -13,14 +13,16 @@ I represent a statement with variable groups like a DataStatement or an Equivale
 
 "
 Trait {
-	#name : #FASTFortranTWithVariableGroups,
+	#name : 'FASTFortranTWithVariableGroups',
 	#instVars : [
 		'#variableGroups => FMMany type: #FASTFortranTVariableGroup opposite: #withVariableGroups'
 	],
-	#category : #'FAST-Fortran-Entities-Traits'
+	#category : 'FAST-Fortran-Entities-Traits',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Traits'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranTWithVariableGroups classSide >> annotation [
 
 	<FMClass: #TWithVariableGroups super: #Object>
@@ -29,13 +31,13 @@ FASTFortranTWithVariableGroups classSide >> annotation [
 	^ self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 FASTFortranTWithVariableGroups >> addVariableGroup: anObject [
 	<generated>
 	^ self variableGroups add: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTWithVariableGroups >> variableGroups [
 	"Relation named: #variableGroups type: #FASTFortranTVariableGroup opposite: #withVariableGroups"
 
@@ -44,14 +46,14 @@ FASTFortranTWithVariableGroups >> variableGroups [
 	^ variableGroups
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTWithVariableGroups >> variableGroups: anObject [
 
 	<generated>
 	variableGroups value: anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranTWithVariableGroups >> variableGroupsGroup [
 	<generated>
 	<navigation: 'VariableGroups'>

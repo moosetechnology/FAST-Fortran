@@ -34,17 +34,19 @@ I represent an assignment expression as a part of assignment statement
 
 "
 Class {
-	#name : #FASTFortranAssignmentExpression,
-	#superclass : #FASTFortranAbstractExpression,
+	#name : 'FASTFortranAssignmentExpression',
+	#superclass : 'FASTFortranAbstractExpression',
 	#traits : 'FASTFortranTIOParameter + FASTTAssignment',
 	#classTraits : 'FASTFortranTIOParameter classTrait + FASTTAssignment classTrait',
 	#instVars : [
 		'#parentLoopControlInitialization => FMOne type: #FASTFortranLoopControlExpression opposite: #init'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranAssignmentExpression class >> annotation [
 
 	<FMClass: #AssignmentExpression super: #FASTFortranAbstractExpression>
@@ -53,7 +55,7 @@ FASTFortranAssignmentExpression class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAssignmentExpression >> parentLoopControlInitialization [
 	"Relation named: #parentLoopControlInitialization type: #FASTFortranLoopControlExpression opposite: #init"
 
@@ -63,14 +65,14 @@ FASTFortranAssignmentExpression >> parentLoopControlInitialization [
 	^ parentLoopControlInitialization
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAssignmentExpression >> parentLoopControlInitialization: anObject [
 
 	<generated>
 	parentLoopControlInitialization := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranAssignmentExpression >> parentLoopControlInitializationGroup [
 	<generated>
 	<navigation: 'ParentLoopControlInitialization'>
