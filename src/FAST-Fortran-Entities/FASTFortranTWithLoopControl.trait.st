@@ -13,14 +13,16 @@ I represent a loop control: initialization/limit/increment
 
 "
 Trait {
-	#name : #FASTFortranTWithLoopControl,
+	#name : 'FASTFortranTWithLoopControl',
 	#instVars : [
 		'#loopControl => FMOne type: #FASTFortranLoopControlExpression opposite: #parentLoop'
 	],
-	#category : #'FAST-Fortran-Entities-Traits'
+	#category : 'FAST-Fortran-Entities-Traits',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Traits'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranTWithLoopControl classSide >> annotation [
 
 	<FMClass: #TWithLoopControl super: #Object>
@@ -29,7 +31,7 @@ FASTFortranTWithLoopControl classSide >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTWithLoopControl >> loopControl [
 	"Relation named: #loopControl type: #FASTFortranLoopControlExpression opposite: #parentLoop"
 
@@ -38,14 +40,14 @@ FASTFortranTWithLoopControl >> loopControl [
 	^ loopControl
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTWithLoopControl >> loopControl: anObject [
 
 	<generated>
 	loopControl := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranTWithLoopControl >> loopControlGroup [
 	<generated>
 	<navigation: 'LoopControl'>

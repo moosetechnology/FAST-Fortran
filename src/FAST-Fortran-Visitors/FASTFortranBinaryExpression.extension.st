@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranBinaryExpression }
+Extension { #name : 'FASTFortranBinaryExpression' }
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FASTFortranBinaryExpression >> accept: aVisitor [
 	<generated>
 	^aVisitor visitFASTFortranBinaryExpression: self.

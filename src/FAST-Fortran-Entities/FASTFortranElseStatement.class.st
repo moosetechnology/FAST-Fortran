@@ -4,12 +4,14 @@ I represent Fortran Else statement
 
 "
 Class {
-	#name : #FASTFortranElseStatement,
-	#superclass : #FASTFortranAbstractStatement,
-	#category : #'FAST-Fortran-Entities-Entities'
+	#name : 'FASTFortranElseStatement',
+	#superclass : 'FASTFortranAbstractStatement',
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranElseStatement class >> annotation [
 
 	<FMClass: #ElseStatement super: #FASTFortranAbstractStatement>

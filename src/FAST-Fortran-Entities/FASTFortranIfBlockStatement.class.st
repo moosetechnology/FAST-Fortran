@@ -14,16 +14,18 @@ I represent Fortran If (BLock) statement
 
 "
 Class {
-	#name : #FASTFortranIfBlockStatement,
-	#superclass : #FASTFortranConditionalStatement,
+	#name : 'FASTFortranIfBlockStatement',
+	#superclass : 'FASTFortranConditionalStatement',
 	#instVars : [
 		'#thenStatementBlock => FMOne type: #FASTFortranStatementBlock opposite: #parentIfBlock',
 		'#elseStatementBlock => FMOne type: #FASTFortranStatementBlock opposite: #parentIfBlock'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranIfBlockStatement class >> annotation [
 
 	<FMClass: #IfBlockStatement super: #FASTFortranConditionalStatement>
@@ -32,7 +34,7 @@ FASTFortranIfBlockStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranIfBlockStatement >> elseStatementBlock [
 	"Relation named: #elseStatementBlock type: #FASTFortranStatementBlock opposite: #parentIfBlock"
 
@@ -41,21 +43,21 @@ FASTFortranIfBlockStatement >> elseStatementBlock [
 	^ elseStatementBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranIfBlockStatement >> elseStatementBlock: anObject [
 
 	<generated>
 	elseStatementBlock := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranIfBlockStatement >> elseStatementBlockGroup [
 	<generated>
 	<navigation: 'ElseStatementBlock'>
 	^ MooseSpecializedGroup with: self elseStatementBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranIfBlockStatement >> thenStatementBlock [
 	"Relation named: #thenStatementBlock type: #FASTFortranStatementBlock opposite: #parentIfBlock"
 
@@ -64,14 +66,14 @@ FASTFortranIfBlockStatement >> thenStatementBlock [
 	^ thenStatementBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranIfBlockStatement >> thenStatementBlock: anObject [
 
 	<generated>
 	thenStatementBlock := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranIfBlockStatement >> thenStatementBlockGroup [
 	<generated>
 	<navigation: 'ThenStatementBlock'>

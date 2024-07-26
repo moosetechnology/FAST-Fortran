@@ -10,15 +10,17 @@ I represent Fortran Stop statement
 
 "
 Class {
-	#name : #FASTFortranStopStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranStopStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#instVars : [
 		'#displayArgument => FMProperty'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranStopStatement class >> annotation [
 
 	<FMClass: #StopStatement super: #FASTFortranAbstractStatement>
@@ -27,7 +29,7 @@ FASTFortranStopStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranStopStatement >> displayArgument [
 
 	<FMProperty: #displayArgument type: #String>
@@ -36,7 +38,7 @@ FASTFortranStopStatement >> displayArgument [
 	^ displayArgument
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranStopStatement >> displayArgument: anObject [
 	<generated>
 	displayArgument := anObject

@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranBackspaceStatement }
+Extension { #name : 'FASTFortranBackspaceStatement' }
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FASTFortranBackspaceStatement >> accept: aVisitor [
 	<generated>
 	^aVisitor visitFASTFortranBackspaceStatement: self.

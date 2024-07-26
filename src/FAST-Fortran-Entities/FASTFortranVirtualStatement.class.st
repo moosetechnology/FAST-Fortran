@@ -4,12 +4,14 @@ I represent Fortran Virtual statement
 
 "
 Class {
-	#name : #FASTFortranVirtualStatement,
-	#superclass : #FASTFortranAbstractStatement,
-	#category : #'FAST-Fortran-Entities-Entities'
+	#name : 'FASTFortranVirtualStatement',
+	#superclass : 'FASTFortranAbstractStatement',
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranVirtualStatement class >> annotation [
 
 	<FMClass: #VirtualStatement super: #FASTFortranAbstractStatement>

@@ -4,12 +4,14 @@ I represent Fortran Decode statement
 
 "
 Class {
-	#name : #FASTFortranDecodeStatement,
-	#superclass : #FASTFortranAbstractIOStatement,
-	#category : #'FAST-Fortran-Entities-Entities'
+	#name : 'FASTFortranDecodeStatement',
+	#superclass : 'FASTFortranAbstractIOStatement',
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranDecodeStatement class >> annotation [
 
 	<FMClass: #DecodeStatement super: #FASTFortranAbstractIOStatement>

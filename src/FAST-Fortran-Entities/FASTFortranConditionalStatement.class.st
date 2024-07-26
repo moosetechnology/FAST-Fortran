@@ -13,15 +13,17 @@ I represent a fortran statement with a condition: if-block, if-logical
 
 "
 Class {
-	#name : #FASTFortranConditionalStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranConditionalStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#instVars : [
 		'#condition => FMOne type: #FASTFortranAbstractExpression opposite: #parentConditionalStatement'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranConditionalStatement class >> annotation [
 
 	<FMClass: #ConditionalStatement super: #FASTFortranAbstractStatement>
@@ -30,7 +32,7 @@ FASTFortranConditionalStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranConditionalStatement >> condition [
 	"Relation named: #condition type: #FASTFortranAbstractExpression opposite: #parentConditionalStatement"
 
@@ -39,14 +41,14 @@ FASTFortranConditionalStatement >> condition [
 	^ condition
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranConditionalStatement >> condition: anObject [
 
 	<generated>
 	condition := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranConditionalStatement >> conditionGroup [
 	<generated>
 	<navigation: 'Condition'>

@@ -4,12 +4,14 @@ I represent Fortran Encode statement
 
 "
 Class {
-	#name : #FASTFortranEncodeStatement,
-	#superclass : #FASTFortranAbstractIOStatement,
-	#category : #'FAST-Fortran-Entities-Entities'
+	#name : 'FASTFortranEncodeStatement',
+	#superclass : 'FASTFortranAbstractIOStatement',
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranEncodeStatement class >> annotation [
 
 	<FMClass: #EncodeStatement super: #FASTFortranAbstractIOStatement>

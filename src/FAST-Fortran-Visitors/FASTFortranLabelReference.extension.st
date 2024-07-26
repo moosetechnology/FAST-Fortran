@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranLabelReference }
+Extension { #name : 'FASTFortranLabelReference' }
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FASTFortranLabelReference >> accept: aVisitor [
 
 	^aVisitor visitFASTFortranLabelReference: self

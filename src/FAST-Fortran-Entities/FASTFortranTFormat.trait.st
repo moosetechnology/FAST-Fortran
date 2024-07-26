@@ -14,16 +14,18 @@ I represent a format description (eg. in Format or Print statement)
 
 "
 Trait {
-	#name : #FASTFortranTFormat,
+	#name : 'FASTFortranTFormat',
 	#instVars : [
 		'#parentFormatedStatement => FMOne type: #FASTFortranTWithFormat opposite: #format'
 	],
 	#traits : 'FASTFortranTIOParameter',
 	#classTraits : 'FASTFortranTIOParameter classTrait',
-	#category : #'FAST-Fortran-Entities-Traits'
+	#category : 'FAST-Fortran-Entities-Traits',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Traits'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranTFormat classSide >> annotation [
 
 	<FMClass: #TFormat super: #Object>
@@ -32,7 +34,7 @@ FASTFortranTFormat classSide >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTFormat >> parentFormatedStatement [
 	"Relation named: #parentFormatedStatement type: #FASTFortranTWithFormat opposite: #format"
 
@@ -43,14 +45,14 @@ FASTFortranTFormat >> parentFormatedStatement [
 	^ parentFormatedStatement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTFormat >> parentFormatedStatement: anObject [
 
 	<generated>
 	parentFormatedStatement := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranTFormat >> parentFormatedStatementGroup [
 	<generated>
 	<navigation: 'ParentFormatedStatement'>

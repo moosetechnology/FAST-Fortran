@@ -20,17 +20,19 @@ I represent a range of characters in an Implicit statement
 
 "
 Class {
-	#name : #FASTFortranImplicitRange,
-	#superclass : #FASTFortranEntity,
+	#name : 'FASTFortranImplicitRange',
+	#superclass : 'FASTFortranEntity',
 	#instVars : [
 		'#from => FMProperty',
 		'#to => FMProperty',
 		'#parentImplicitRule => FMOne type: #FASTFortranImplicitTypingRule opposite: #ranges'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranImplicitRange class >> annotation [
 
 	<FMClass: #ImplicitRange super: #FASTFortranEntity>
@@ -39,7 +41,7 @@ FASTFortranImplicitRange class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranImplicitRange >> from [
 
 	<FMProperty: #from type: #String>
@@ -48,13 +50,13 @@ FASTFortranImplicitRange >> from [
 	^ from
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranImplicitRange >> from: anObject [
 	<generated>
 	from := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranImplicitRange >> parentImplicitRule [
 	"Relation named: #parentImplicitRule type: #FASTFortranImplicitTypingRule opposite: #ranges"
 
@@ -63,21 +65,21 @@ FASTFortranImplicitRange >> parentImplicitRule [
 	^ parentImplicitRule
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranImplicitRange >> parentImplicitRule: anObject [
 
 	<generated>
 	parentImplicitRule := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranImplicitRange >> parentImplicitRuleGroup [
 	<generated>
 	<navigation: 'ParentImplicitRule'>
 	^ MooseSpecializedGroup with: self parentImplicitRule
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranImplicitRange >> to [
 
 	<FMProperty: #to type: #String>
@@ -86,7 +88,7 @@ FASTFortranImplicitRange >> to [
 	^ to
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranImplicitRange >> to: anObject [
 	<generated>
 	to := anObject

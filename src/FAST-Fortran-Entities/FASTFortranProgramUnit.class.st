@@ -29,17 +29,19 @@ A fortran program unit is a sequence of statements, terminated by an END stateme
 
 "
 Class {
-	#name : #FASTFortranProgramUnit,
-	#superclass : #FASTFortranEntity,
+	#name : 'FASTFortranProgramUnit',
+	#superclass : 'FASTFortranEntity',
 	#traits : 'FASTTBehaviouralEntity + FASTTEntity + FASTTNamedEntity + FASTTWithComments',
 	#classTraits : 'FASTTBehaviouralEntity classTrait + FASTTEntity classTrait + FASTTNamedEntity classTrait + FASTTWithComments classTrait',
 	#instVars : [
 		'#parentProgramFile => FMOne type: #FASTFortranProgramFile opposite: #programUnit'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranProgramUnit class >> annotation [
 
 	<FMClass: #ProgramUnit super: #FASTFortranEntity>
@@ -48,7 +50,7 @@ FASTFortranProgramUnit class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranProgramUnit >> parentProgramFile [
 	"Relation named: #parentProgramFile type: #FASTFortranProgramFile opposite: #programUnit"
 
@@ -58,14 +60,14 @@ FASTFortranProgramUnit >> parentProgramFile [
 	^ parentProgramFile
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranProgramUnit >> parentProgramFile: anObject [
 
 	<generated>
 	parentProgramFile := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranProgramUnit >> parentProgramFileGroup [
 	<generated>
 	<navigation: 'ParentProgramFile'>

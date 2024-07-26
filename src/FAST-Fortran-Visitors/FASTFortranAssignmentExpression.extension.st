@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranAssignmentExpression }
+Extension { #name : 'FASTFortranAssignmentExpression' }
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FASTFortranAssignmentExpression >> accept: aVisitor [
 
 	^aVisitor visitFASTFortranAssignmentExpression: self.

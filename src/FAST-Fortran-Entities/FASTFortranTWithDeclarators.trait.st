@@ -13,14 +13,16 @@ I represent a declaration with several variable declarators
 
 "
 Trait {
-	#name : #FASTFortranTWithDeclarators,
+	#name : 'FASTFortranTWithDeclarators',
 	#instVars : [
 		'#declarators => FMMany type: #FASTFortranVariableDeclarator opposite: #parentDeclaration'
 	],
-	#category : #'FAST-Fortran-Entities-Traits'
+	#category : 'FAST-Fortran-Entities-Traits',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Traits'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranTWithDeclarators classSide >> annotation [
 
 	<FMClass: #TWithDeclarators super: #Object>
@@ -29,13 +31,13 @@ FASTFortranTWithDeclarators classSide >> annotation [
 	^ self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 FASTFortranTWithDeclarators >> addDeclarator: anObject [
 	<generated>
 	^ self declarators add: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTWithDeclarators >> declarators [
 	"Relation named: #declarators type: #FASTFortranVariableDeclarator opposite: #parentDeclaration"
 
@@ -45,14 +47,14 @@ FASTFortranTWithDeclarators >> declarators [
 	^ declarators
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTWithDeclarators >> declarators: anObject [
 
 	<generated>
 	declarators value: anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranTWithDeclarators >> declaratorsGroup [
 	<generated>
 	<navigation: 'Declarators'>

@@ -4,12 +4,14 @@ The PROGRAM statement identifies the program unit as a main program. program. Fo
 
 "
 Class {
-	#name : #FASTFortranProgramMain,
-	#superclass : #FASTFortranProgramUnit,
-	#category : #'FAST-Fortran-Entities-Entities'
+	#name : 'FASTFortranProgramMain',
+	#superclass : 'FASTFortranProgramUnit',
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranProgramMain class >> annotation [
 
 	<FMClass: #ProgramMain super: #FASTFortranProgramUnit>

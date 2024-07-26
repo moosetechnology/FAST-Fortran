@@ -14,17 +14,19 @@ An entity that can contain fortran program units and comments
 
 "
 Class {
-	#name : #FASTFortranProgramFile,
-	#superclass : #FASTFortranEntity,
+	#name : 'FASTFortranProgramFile',
+	#superclass : 'FASTFortranEntity',
 	#traits : 'FASTTWithComments',
 	#classTraits : 'FASTTWithComments classTrait',
 	#instVars : [
 		'#programUnit => FMMany type: #FASTFortranProgramUnit opposite: #parentProgramFile'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranProgramFile class >> annotation [
 
 	<FMClass: #ProgramFile super: #FASTFortranEntity>
@@ -33,13 +35,13 @@ FASTFortranProgramFile class >> annotation [
 	^ self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 FASTFortranProgramFile >> addProgramUnit: anObject [
 	<generated>
 	^ self programUnit add: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranProgramFile >> programUnit [
 	"Relation named: #programUnit type: #FASTFortranProgramUnit opposite: #parentProgramFile"
 
@@ -49,14 +51,14 @@ FASTFortranProgramFile >> programUnit [
 	^ programUnit
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranProgramFile >> programUnit: anObject [
 
 	<generated>
 	programUnit value: anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranProgramFile >> programUnitGroup [
 	<generated>
 	<navigation: 'ProgramUnit'>

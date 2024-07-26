@@ -32,14 +32,16 @@ a Fortran Unary Expression (arithmetic, logical, character)
 
 "
 Class {
-	#name : #FASTFortranUnaryExpression,
-	#superclass : #FASTFortranAbstractExpression,
+	#name : 'FASTFortranUnaryExpression',
+	#superclass : 'FASTFortranAbstractExpression',
 	#traits : 'FASTTUnaryExpression',
 	#classTraits : 'FASTTUnaryExpression classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranUnaryExpression class >> annotation [
 
 	<FMClass: #UnaryExpression super: #FASTFortranAbstractExpression>

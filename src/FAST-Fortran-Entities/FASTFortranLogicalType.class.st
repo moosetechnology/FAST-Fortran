@@ -4,12 +4,14 @@ I represent Fortran boolean type
 
 "
 Class {
-	#name : #FASTFortranLogicalType,
-	#superclass : #FASTFortranType,
-	#category : #'FAST-Fortran-Entities-Entities'
+	#name : 'FASTFortranLogicalType',
+	#superclass : 'FASTFortranType',
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranLogicalType class >> annotation [
 
 	<FMClass: #LogicalType super: #FASTFortranType>

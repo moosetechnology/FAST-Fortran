@@ -1,18 +1,20 @@
 Class {
-	#name : #FASTFortranModel,
-	#superclass : #MooseModel,
+	#name : 'FASTFortranModel',
+	#superclass : 'MooseModel',
 	#traits : 'FASTFortranTEntityCreator + FASTTEntityCreator',
 	#classTraits : 'FASTFortranTEntityCreator classTrait + FASTTEntityCreator classTrait',
-	#category : #'FAST-Fortran-Entities-Model'
+	#category : 'FAST-Fortran-Entities-Model',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Model'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranModel class >> allSubmetamodelsPackagesNames [
 	<generated>
 	^ #(#'Moose-Query' #'Famix-Traits' #'FAST-Core-Model')
 ]
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranModel class >> annotation [
 	<FMClass: #FASTFortranModel super: #MooseModel>
 	<package: #'FAST-Fortran-Entities'>

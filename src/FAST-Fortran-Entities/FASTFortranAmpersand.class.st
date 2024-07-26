@@ -27,14 +27,16 @@ I represent an Ampersand Character Literal (Constant) that is often used in para
 
 "
 Class {
-	#name : #FASTFortranAmpersand,
-	#superclass : #FASTFortranAbstractLiteral,
+	#name : 'FASTFortranAmpersand',
+	#superclass : 'FASTFortranAbstractLiteral',
 	#traits : 'FASTTCharacterLiteral',
 	#classTraits : 'FASTTCharacterLiteral classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranAmpersand class >> annotation [
 
 	<FMClass: #Ampersand super: #FASTFortranAbstractLiteral>

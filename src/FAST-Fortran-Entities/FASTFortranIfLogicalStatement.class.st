@@ -13,15 +13,17 @@ The logical IF statement executes one single statement, or does not execute it, 
 
 "
 Class {
-	#name : #FASTFortranIfLogicalStatement,
-	#superclass : #FASTFortranConditionalStatement,
+	#name : 'FASTFortranIfLogicalStatement',
+	#superclass : 'FASTFortranConditionalStatement',
 	#instVars : [
 		'#statement => FMOne type: #FASTFortranAbstractStatement opposite: #parentIfStatement'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranIfLogicalStatement class >> annotation [
 
 	<FMClass: #IfLogicalStatement super: #FASTFortranConditionalStatement>
@@ -30,7 +32,7 @@ FASTFortranIfLogicalStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranIfLogicalStatement >> statement [
 	"Relation named: #statement type: #FASTFortranAbstractStatement opposite: #parentIfStatement"
 
@@ -39,14 +41,14 @@ FASTFortranIfLogicalStatement >> statement [
 	^ statement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranIfLogicalStatement >> statement: anObject [
 
 	<generated>
 	statement := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranIfLogicalStatement >> statementGroup [
 	<generated>
 	<navigation: 'Statement'>

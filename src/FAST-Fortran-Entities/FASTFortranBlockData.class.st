@@ -4,12 +4,14 @@ The BLOCK DATA statement identifies a subprogram that initializes variables and 
 
 "
 Class {
-	#name : #FASTFortranBlockData,
-	#superclass : #FASTFortranSubprogram,
-	#category : #'FAST-Fortran-Entities-Entities'
+	#name : 'FASTFortranBlockData',
+	#superclass : 'FASTFortranSubprogram',
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranBlockData class >> annotation [
 
 	<FMClass: #BlockData super: #FASTFortranSubprogram>

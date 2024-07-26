@@ -13,14 +13,16 @@ I represent an argument in an entry statement: it can be a variable name, array 
 
 "
 Trait {
-	#name : #FASTFortranTEntryArgument,
+	#name : 'FASTFortranTEntryArgument',
 	#instVars : [
 		'#entryStatement => FMOne type: #FASTFortranEntryStatement opposite: #entryArguments'
 	],
-	#category : #'FAST-Fortran-Entities-Traits'
+	#category : 'FAST-Fortran-Entities-Traits',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Traits'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranTEntryArgument classSide >> annotation [
 
 	<FMClass: #TEntryArgument super: #Object>
@@ -29,7 +31,7 @@ FASTFortranTEntryArgument classSide >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTEntryArgument >> entryStatement [
 	"Relation named: #entryStatement type: #FASTFortranEntryStatement opposite: #entryArguments"
 
@@ -38,14 +40,14 @@ FASTFortranTEntryArgument >> entryStatement [
 	^ entryStatement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranTEntryArgument >> entryStatement: anObject [
 
 	<generated>
 	entryStatement := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranTEntryArgument >> entryStatementGroup [
 	<generated>
 	<navigation: 'EntryStatement'>

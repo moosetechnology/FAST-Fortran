@@ -13,14 +13,16 @@ I represent Fortran Write statement
 
 "
 Class {
-	#name : #FASTFortranWriteStatement,
-	#superclass : #FASTFortranAbstractIOStatement,
+	#name : 'FASTFortranWriteStatement',
+	#superclass : 'FASTFortranAbstractIOStatement',
 	#traits : 'FASTTWithArguments',
 	#classTraits : 'FASTTWithArguments classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranWriteStatement class >> annotation [
 
 	<FMClass: #WriteStatement super: #FASTFortranAbstractIOStatement>

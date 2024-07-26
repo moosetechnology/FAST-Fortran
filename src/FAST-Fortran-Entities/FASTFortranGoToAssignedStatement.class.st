@@ -14,17 +14,19 @@ I represent Fortran Go To( Assigned) statement
 
 "
 Class {
-	#name : #FASTFortranGoToAssignedStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranGoToAssignedStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTFortranTWithLabelReferences',
 	#classTraits : 'FASTFortranTWithLabelReferences classTrait',
 	#instVars : [
 		'#selectorExpression => FMOne type: #FASTFortranAbstractExpression opposite: #parentGotoAssignedStatement'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranGoToAssignedStatement class >> annotation [
 
 	<FMClass: #GoToAssignedStatement super: #FASTFortranAbstractStatement>
@@ -33,7 +35,7 @@ FASTFortranGoToAssignedStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranGoToAssignedStatement >> selectorExpression [
 	"Relation named: #selectorExpression type: #FASTFortranAbstractExpression opposite: #parentGotoAssignedStatement"
 
@@ -42,14 +44,14 @@ FASTFortranGoToAssignedStatement >> selectorExpression [
 	^ selectorExpression
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranGoToAssignedStatement >> selectorExpression: anObject [
 
 	<generated>
 	selectorExpression := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranGoToAssignedStatement >> selectorExpressionGroup [
 	<generated>
 	<navigation: 'SelectorExpression'>

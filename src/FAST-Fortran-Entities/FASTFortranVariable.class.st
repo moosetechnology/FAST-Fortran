@@ -28,17 +28,19 @@ an abstract Fortran Variable, could be an array or a scalar
 
 "
 Class {
-	#name : #FASTFortranVariable,
-	#superclass : #FASTFortranAbstractExpression,
+	#name : 'FASTFortranVariable',
+	#superclass : 'FASTFortranAbstractExpression',
 	#traits : 'FASTFortranTEntryArgument + FASTFortranTFormat + FASTTVariableEntity',
 	#classTraits : 'FASTFortranTEntryArgument classTrait + FASTFortranTFormat classTrait + FASTTVariableEntity classTrait',
 	#instVars : [
 		'#parentVariableGroup => FMOne type: #FASTFortranTVariableGroup opposite: #variables'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranVariable class >> annotation [
 
 	<FMClass: #Variable super: #FASTFortranAbstractExpression>
@@ -47,7 +49,7 @@ FASTFortranVariable class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranVariable >> parentVariableGroup [
 	"Relation named: #parentVariableGroup type: #FASTFortranTVariableGroup opposite: #variables"
 
@@ -56,14 +58,14 @@ FASTFortranVariable >> parentVariableGroup [
 	^ parentVariableGroup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranVariable >> parentVariableGroup: anObject [
 
 	<generated>
 	parentVariableGroup := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranVariable >> parentVariableGroupGroup [
 	<generated>
 	<navigation: 'ParentVariableGroup'>

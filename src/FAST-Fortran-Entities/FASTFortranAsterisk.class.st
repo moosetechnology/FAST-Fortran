@@ -15,14 +15,16 @@ I represent an Asterisk Character Literal (Constant) that is often used as a for
 
 "
 Class {
-	#name : #FASTFortranAsterisk,
-	#superclass : #FASTFortranIntegerLiteral,
+	#name : 'FASTFortranAsterisk',
+	#superclass : 'FASTFortranIntegerLiteral',
 	#traits : 'FASTFortranTEntryArgument + FASTFortranTFormat',
 	#classTraits : 'FASTFortranTEntryArgument classTrait + FASTFortranTFormat classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranAsterisk class >> annotation [
 
 	<FMClass: #Asterisk super: #FASTFortranIntegerLiteral>

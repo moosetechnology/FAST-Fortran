@@ -13,14 +13,16 @@ I represent Fortran Read statement
 
 "
 Class {
-	#name : #FASTFortranReadStatement,
-	#superclass : #FASTFortranAbstractIOStatement,
+	#name : 'FASTFortranReadStatement',
+	#superclass : 'FASTFortranAbstractIOStatement',
 	#traits : 'FASTTWithArguments',
 	#classTraits : 'FASTTWithArguments classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranReadStatement class >> annotation [
 
 	<FMClass: #ReadStatement super: #FASTFortranAbstractIOStatement>

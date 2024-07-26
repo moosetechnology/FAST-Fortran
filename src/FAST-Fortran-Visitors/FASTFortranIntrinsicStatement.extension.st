@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranIntrinsicStatement }
+Extension { #name : 'FASTFortranIntrinsicStatement' }
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FASTFortranIntrinsicStatement >> accept: aVisitor [
 	<generated>
 	^aVisitor visitFASTFortranIntrinsicStatement: self.

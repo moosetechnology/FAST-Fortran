@@ -4,12 +4,14 @@ I represent Fortran Character Literal
 
 "
 Class {
-	#name : #FASTFortranCharacterType,
-	#superclass : #FASTFortranType,
-	#category : #'FAST-Fortran-Entities-Entities'
+	#name : 'FASTFortranCharacterType',
+	#superclass : 'FASTFortranType',
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranCharacterType class >> annotation [
 
 	<FMClass: #CharacterType super: #FASTFortranType>

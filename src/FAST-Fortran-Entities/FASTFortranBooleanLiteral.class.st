@@ -27,14 +27,16 @@ I represent Fortran Boolean Literal (Constant)
 
 "
 Class {
-	#name : #FASTFortranBooleanLiteral,
-	#superclass : #FASTFortranAbstractLiteral,
+	#name : 'FASTFortranBooleanLiteral',
+	#superclass : 'FASTFortranAbstractLiteral',
 	#traits : 'FASTTBooleanLiteral',
 	#classTraits : 'FASTTBooleanLiteral classTrait',
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranBooleanLiteral class >> annotation [
 
 	<FMClass: #BooleanLiteral super: #FASTFortranAbstractLiteral>

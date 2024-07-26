@@ -15,17 +15,19 @@ I represent Fortran Do statement
 
 "
 Class {
-	#name : #FASTFortranDoStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranDoStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTFortranTWithLabelReferences + FASTFortranTWithLoopControl',
 	#classTraits : 'FASTFortranTWithLabelReferences classTrait + FASTFortranTWithLoopControl classTrait',
 	#instVars : [
 		'#statementBlock => FMOne type: #FASTFortranStatementBlock opposite: #parentDoStatement'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranDoStatement class >> annotation [
 
 	<FMClass: #DoStatement super: #FASTFortranAbstractStatement>
@@ -34,7 +36,7 @@ FASTFortranDoStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranDoStatement >> statementBlock [
 	"Relation named: #statementBlock type: #FASTFortranStatementBlock opposite: #parentDoStatement"
 
@@ -43,14 +45,14 @@ FASTFortranDoStatement >> statementBlock [
 	^ statementBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranDoStatement >> statementBlock: anObject [
 
 	<generated>
 	statementBlock := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranDoStatement >> statementBlockGroup [
 	<generated>
 	<navigation: 'StatementBlock'>

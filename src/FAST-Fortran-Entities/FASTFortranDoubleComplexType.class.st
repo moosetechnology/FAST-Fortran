@@ -4,12 +4,14 @@ I represent Fortran Double type
 
 "
 Class {
-	#name : #FASTFortranDoubleComplexType,
-	#superclass : #FASTFortranType,
-	#category : #'FAST-Fortran-Entities-Entities'
+	#name : 'FASTFortranDoubleComplexType',
+	#superclass : 'FASTFortranType',
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranDoubleComplexType class >> annotation [
 
 	<FMClass: #DoubleComplexType super: #FASTFortranType>

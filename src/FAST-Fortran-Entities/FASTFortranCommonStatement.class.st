@@ -13,15 +13,17 @@ I represent Fortran Common statement
 
 "
 Class {
-	#name : #FASTFortranCommonStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranCommonStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#instVars : [
 		'#groups => FMMany type: #FASTFortranCommonGroup opposite: #parentCommonStatement'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranCommonStatement class >> annotation [
 
 	<FMClass: #CommonStatement super: #FASTFortranAbstractStatement>
@@ -30,13 +32,13 @@ FASTFortranCommonStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 FASTFortranCommonStatement >> addGroup: anObject [
 	<generated>
 	^ self groups add: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranCommonStatement >> groups [
 	"Relation named: #groups type: #FASTFortranCommonGroup opposite: #parentCommonStatement"
 
@@ -46,14 +48,14 @@ FASTFortranCommonStatement >> groups [
 	^ groups
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranCommonStatement >> groups: anObject [
 
 	<generated>
 	groups value: anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranCommonStatement >> groupsGroup [
 	<generated>
 	<navigation: 'Groups'>

@@ -27,17 +27,19 @@ I represent a function statement - a function-like declaration, made in a single
 
 "
 Class {
-	#name : #FASTFortranFunctionStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranFunctionStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTTNamedEntity + FASTTWithArguments',
 	#classTraits : 'FASTTNamedEntity classTrait + FASTTWithArguments classTrait',
 	#instVars : [
 		'#expression => FMOne type: #FASTFortranAbstractExpression opposite: #assignementExpressionOwner'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranFunctionStatement class >> annotation [
 
 	<FMClass: #FunctionStatement super: #FASTFortranAbstractStatement>
@@ -46,7 +48,7 @@ FASTFortranFunctionStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranFunctionStatement >> expression [
 	"Relation named: #expression type: #FASTFortranAbstractExpression opposite: #assignementExpressionOwner"
 
@@ -55,14 +57,14 @@ FASTFortranFunctionStatement >> expression [
 	^ expression
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranFunctionStatement >> expression: anObject [
 
 	<generated>
 	expression := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranFunctionStatement >> expressionGroup [
 	<generated>
 	<navigation: 'Expression'>

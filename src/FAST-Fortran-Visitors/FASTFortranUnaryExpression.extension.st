@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranUnaryExpression }
+Extension { #name : 'FASTFortranUnaryExpression' }
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FASTFortranUnaryExpression >> accept: aVisitor [
 	<generated>
 	^aVisitor visitFASTFortranUnaryExpression: self.

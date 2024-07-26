@@ -15,24 +15,26 @@ A fortran comment
 
 | Name | Type | Default value | Comment |
 |---|
-| `content` | `String` | nil | Content of the comment as a String|
 | `content` | `String` | nil | Determines a content of a comment|
+| `content` | `String` | nil | Content of the comment as a String|
 | `endPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
 Class {
-	#name : #FASTFortranComment,
-	#superclass : #FASTFortranEntity,
+	#name : 'FASTFortranComment',
+	#superclass : 'FASTFortranEntity',
 	#traits : 'FASTTComment + FASTTEntity',
 	#classTraits : 'FASTTComment classTrait + FASTTEntity classTrait',
 	#instVars : [
 		'#content => FMProperty'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranComment class >> annotation [
 
 	<FMClass: #Comment super: #FASTFortranEntity>
@@ -41,7 +43,7 @@ FASTFortranComment class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranComment >> content [
 
 	<FMProperty: #content type: #String>
@@ -50,7 +52,7 @@ FASTFortranComment >> content [
 	^ content
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranComment >> content: anObject [
 	<generated>
 	content := anObject

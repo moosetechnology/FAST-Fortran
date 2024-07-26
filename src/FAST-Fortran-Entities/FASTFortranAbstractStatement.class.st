@@ -22,18 +22,20 @@ I am the super class of all Fortran statements
 
 "
 Class {
-	#name : #FASTFortranAbstractStatement,
-	#superclass : #FASTFortranEntity,
+	#name : 'FASTFortranAbstractStatement',
+	#superclass : 'FASTFortranEntity',
 	#traits : 'FASTTStatement',
 	#classTraits : 'FASTTStatement classTrait',
 	#instVars : [
 		'#label => FMProperty',
 		'#parentIfStatement => FMOne type: #FASTFortranIfLogicalStatement opposite: #statement'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranAbstractStatement class >> annotation [
 
 	<FMClass: #AbstractStatement super: #FASTFortranEntity>
@@ -42,7 +44,7 @@ FASTFortranAbstractStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractStatement >> label [
 
 	<FMProperty: #label type: #String>
@@ -51,13 +53,13 @@ FASTFortranAbstractStatement >> label [
 	^ label
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractStatement >> label: anObject [
 	<generated>
 	label := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractStatement >> parentIfStatement [
 	"Relation named: #parentIfStatement type: #FASTFortranIfLogicalStatement opposite: #statement"
 
@@ -68,14 +70,14 @@ FASTFortranAbstractStatement >> parentIfStatement [
 	^ parentIfStatement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractStatement >> parentIfStatement: anObject [
 
 	<generated>
 	parentIfStatement := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranAbstractStatement >> parentIfStatementGroup [
 	<generated>
 	<navigation: 'ParentIfStatement'>

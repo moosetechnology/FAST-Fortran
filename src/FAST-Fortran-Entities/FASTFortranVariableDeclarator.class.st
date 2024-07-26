@@ -28,8 +28,8 @@ Part of a variable declaration: name of the variable + optional initial value
 
 "
 Class {
-	#name : #FASTFortranVariableDeclarator,
-	#superclass : #FASTFortranEntity,
+	#name : 'FASTFortranVariableDeclarator',
+	#superclass : 'FASTFortranEntity',
 	#traits : 'FASTTNamedEntity',
 	#classTraits : 'FASTTNamedEntity classTrait',
 	#instVars : [
@@ -37,10 +37,12 @@ Class {
 		'#parentDeclaration => FMOne type: #FASTFortranTWithDeclarators opposite: #declarators',
 		'#expression => FMOne type: #FASTFortranAbstractExpression opposite: #variableDeclaratorOwner'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranVariableDeclarator class >> annotation [
 
 	<FMClass: #VariableDeclarator super: #FASTFortranEntity>
@@ -49,13 +51,13 @@ FASTFortranVariableDeclarator class >> annotation [
 	^ self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 FASTFortranVariableDeclarator >> addDimension: anObject [
 	<generated>
 	^ self dimensions add: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranVariableDeclarator >> dimensions [
 	"Relation named: #dimensions type: #FASTFortranArrayRange opposite: #parentVariableDeclarator"
 
@@ -65,21 +67,21 @@ FASTFortranVariableDeclarator >> dimensions [
 	^ dimensions
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranVariableDeclarator >> dimensions: anObject [
 
 	<generated>
 	dimensions value: anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranVariableDeclarator >> dimensionsGroup [
 	<generated>
 	<navigation: 'Dimensions'>
 	^ MooseSpecializedGroup withAll: self dimensions asSet
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranVariableDeclarator >> expression [
 	"Relation named: #expression type: #FASTFortranAbstractExpression opposite: #variableDeclaratorOwner"
 
@@ -88,21 +90,21 @@ FASTFortranVariableDeclarator >> expression [
 	^ expression
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranVariableDeclarator >> expression: anObject [
 
 	<generated>
 	expression := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranVariableDeclarator >> expressionGroup [
 	<generated>
 	<navigation: 'Expression'>
 	^ MooseSpecializedGroup with: self expression
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranVariableDeclarator >> parentDeclaration [
 	"Relation named: #parentDeclaration type: #FASTFortranTWithDeclarators opposite: #declarators"
 
@@ -111,14 +113,14 @@ FASTFortranVariableDeclarator >> parentDeclaration [
 	^ parentDeclaration
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranVariableDeclarator >> parentDeclaration: anObject [
 
 	<generated>
 	parentDeclaration := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranVariableDeclarator >> parentDeclarationGroup [
 	<generated>
 	<navigation: 'ParentDeclaration'>

@@ -14,17 +14,19 @@ I represent a type declaration for one or many scalar variables or arrays
 
 "
 Class {
-	#name : #FASTFortranVariableDeclarationStatement,
-	#superclass : #FASTFortranAbstractStatement,
+	#name : 'FASTFortranVariableDeclarationStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTFortranTWithDeclarators',
 	#classTraits : 'FASTFortranTWithDeclarators classTrait',
 	#instVars : [
 		'#type => FMOne type: #FASTFortranType opposite: #parentDeclaration'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranVariableDeclarationStatement class >> annotation [
 
 	<FMClass: #VariableDeclarationStatement super: #FASTFortranAbstractStatement>
@@ -33,7 +35,7 @@ FASTFortranVariableDeclarationStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranVariableDeclarationStatement >> type [
 	"Relation named: #type type: #FASTFortranType opposite: #parentDeclaration"
 
@@ -42,14 +44,14 @@ FASTFortranVariableDeclarationStatement >> type [
 	^ type
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranVariableDeclarationStatement >> type: anObject [
 
 	<generated>
 	type := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranVariableDeclarationStatement >> typeGroup [
 	<generated>
 	<navigation: 'Type'>

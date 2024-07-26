@@ -15,17 +15,19 @@ I represent Fortran If (Arithmetic) statement
 
 "
 Class {
-	#name : #FASTFortranIfArithmeticStatement,
-	#superclass : #FASTFortranConditionalStatement,
+	#name : 'FASTFortranIfArithmeticStatement',
+	#superclass : 'FASTFortranConditionalStatement',
 	#instVars : [
 		'#lessLabel => FMOne type: #FASTFortranLabelReference opposite: #parentIfArithmeticLessBranch',
 		'#equalLabel => FMOne type: #FASTFortranLabelReference opposite: #parentIfArithmeticEqualBranch',
 		'#greaterLabel => FMOne type: #FASTFortranLabelReference opposite: #parentIfArithmeticMoreBranch'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranIfArithmeticStatement class >> annotation [
 
 	<FMClass: #IfArithmeticStatement super: #FASTFortranConditionalStatement>
@@ -34,7 +36,7 @@ FASTFortranIfArithmeticStatement class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranIfArithmeticStatement >> equalLabel [
 	"Relation named: #equalLabel type: #FASTFortranLabelReference opposite: #parentIfArithmeticEqualBranch"
 
@@ -42,21 +44,21 @@ FASTFortranIfArithmeticStatement >> equalLabel [
 	^ equalLabel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranIfArithmeticStatement >> equalLabel: anObject [
 
 	<generated>
 	equalLabel := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranIfArithmeticStatement >> equalLabelGroup [
 	<generated>
 	<navigation: 'EqualLabel'>
 	^ MooseSpecializedGroup with: self equalLabel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranIfArithmeticStatement >> greaterLabel [
 	"Relation named: #greaterLabel type: #FASTFortranLabelReference opposite: #parentIfArithmeticMoreBranch"
 
@@ -64,21 +66,21 @@ FASTFortranIfArithmeticStatement >> greaterLabel [
 	^ greaterLabel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranIfArithmeticStatement >> greaterLabel: anObject [
 
 	<generated>
 	greaterLabel := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranIfArithmeticStatement >> greaterLabelGroup [
 	<generated>
 	<navigation: 'GreaterLabel'>
 	^ MooseSpecializedGroup with: self greaterLabel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranIfArithmeticStatement >> lessLabel [
 	"Relation named: #lessLabel type: #FASTFortranLabelReference opposite: #parentIfArithmeticLessBranch"
 
@@ -86,14 +88,14 @@ FASTFortranIfArithmeticStatement >> lessLabel [
 	^ lessLabel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranIfArithmeticStatement >> lessLabel: anObject [
 
 	<generated>
 	lessLabel := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranIfArithmeticStatement >> lessLabelGroup [
 	<generated>
 	<navigation: 'LessLabel'>

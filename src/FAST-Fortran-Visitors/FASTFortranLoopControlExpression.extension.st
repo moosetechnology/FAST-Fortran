@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranLoopControlExpression }
+Extension { #name : 'FASTFortranLoopControlExpression' }
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FASTFortranLoopControlExpression >> accept: aVisitor [
 	<generated>
 	^aVisitor visitFASTFortranLoopControlExpression: self.

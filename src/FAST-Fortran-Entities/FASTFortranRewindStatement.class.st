@@ -4,12 +4,14 @@ I represent Fortran Rewind statement
 
 "
 Class {
-	#name : #FASTFortranRewindStatement,
-	#superclass : #FASTFortranAbstractIOStatement,
-	#category : #'FAST-Fortran-Entities-Entities'
+	#name : 'FASTFortranRewindStatement',
+	#superclass : 'FASTFortranAbstractIOStatement',
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranRewindStatement class >> annotation [
 
 	<FMClass: #RewindStatement super: #FASTFortranAbstractIOStatement>

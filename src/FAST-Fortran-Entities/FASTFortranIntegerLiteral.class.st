@@ -15,17 +15,19 @@ I represent Fortran Arithmetic Integer Literal (Constant)
 
 "
 Class {
-	#name : #FASTFortranIntegerLiteral,
-	#superclass : #FASTFortranNumericalConstant,
+	#name : 'FASTFortranIntegerLiteral',
+	#superclass : 'FASTFortranNumericalConstant',
 	#traits : 'FASTFortranTFormat',
 	#classTraits : 'FASTFortranTFormat classTrait',
 	#instVars : [
 		'#parentTypeSize => FMOne type: #FASTFortranType opposite: #size'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranIntegerLiteral class >> annotation [
 
 	<FMClass: #IntegerLiteral super: #FASTFortranNumericalConstant>
@@ -34,7 +36,7 @@ FASTFortranIntegerLiteral class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranIntegerLiteral >> parentTypeSize [
 	"Relation named: #parentTypeSize type: #FASTFortranType opposite: #size"
 
@@ -44,14 +46,14 @@ FASTFortranIntegerLiteral >> parentTypeSize [
 	^ parentTypeSize
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranIntegerLiteral >> parentTypeSize: anObject [
 
 	<generated>
 	parentTypeSize := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranIntegerLiteral >> parentTypeSizeGroup [
 	<generated>
 	<navigation: 'ParentTypeSize'>

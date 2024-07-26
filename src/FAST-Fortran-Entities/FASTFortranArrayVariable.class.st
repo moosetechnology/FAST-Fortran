@@ -13,15 +13,17 @@ An array Fortran Variable, accessed in the code
 
 "
 Class {
-	#name : #FASTFortranArrayVariable,
-	#superclass : #FASTFortranVariable,
+	#name : 'FASTFortranArrayVariable',
+	#superclass : 'FASTFortranVariable',
 	#instVars : [
 		'#indices => FMMany type: #FASTFortranAbstractExpression opposite: #parentArrayExpression'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranArrayVariable class >> annotation [
 
 	<FMClass: #ArrayVariable super: #FASTFortranVariable>
@@ -30,13 +32,13 @@ FASTFortranArrayVariable class >> annotation [
 	^ self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 FASTFortranArrayVariable >> addIndice: anObject [
 	<generated>
 	^ self indices add: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranArrayVariable >> indices [
 	"Relation named: #indices type: #FASTFortranAbstractExpression opposite: #parentArrayExpression"
 
@@ -46,14 +48,14 @@ FASTFortranArrayVariable >> indices [
 	^ indices
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranArrayVariable >> indices: anObject [
 
 	<generated>
 	indices value: anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranArrayVariable >> indicesGroup [
 	<generated>
 	<navigation: 'Indices'>

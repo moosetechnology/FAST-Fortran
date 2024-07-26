@@ -23,8 +23,8 @@ I contain the value of the label referred to
 
 "
 Class {
-	#name : #FASTFortranLabelReference,
-	#superclass : #FASTFortranEntity,
+	#name : 'FASTFortranLabelReference',
+	#superclass : 'FASTFortranEntity',
 	#instVars : [
 		'#label => FMProperty',
 		'#parentIfArithmeticLessBranch => FMOne type: #FASTFortranIfArithmeticStatement opposite: #lessLabel',
@@ -32,10 +32,12 @@ Class {
 		'#parentIfArithmeticMoreBranch => FMOne type: #FASTFortranIfArithmeticStatement opposite: #greaterLabel',
 		'#referencer => FMOne type: #FASTFortranTWithLabelReferences opposite: #labelReferences'
 	],
-	#category : #'FAST-Fortran-Entities-Entities'
+	#category : 'FAST-Fortran-Entities-Entities',
+	#package : 'FAST-Fortran-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FASTFortranLabelReference class >> annotation [
 
 	<FMClass: #LabelReference super: #FASTFortranEntity>
@@ -44,7 +46,7 @@ FASTFortranLabelReference class >> annotation [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLabelReference >> label [
 
 	<FMProperty: #label type: #String>
@@ -53,13 +55,13 @@ FASTFortranLabelReference >> label [
 	^ label
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLabelReference >> label: anObject [
 	<generated>
 	label := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLabelReference >> parentIfArithmeticEqualBranch [
 	"Relation named: #parentIfArithmeticEqualBranch type: #FASTFortranIfArithmeticStatement opposite: #equalLabel"
 
@@ -69,21 +71,21 @@ FASTFortranLabelReference >> parentIfArithmeticEqualBranch [
 	^ parentIfArithmeticEqualBranch
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLabelReference >> parentIfArithmeticEqualBranch: anObject [
 
 	<generated>
 	parentIfArithmeticEqualBranch := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranLabelReference >> parentIfArithmeticEqualBranchGroup [
 	<generated>
 	<navigation: 'ParentIfArithmeticEqualBranch'>
 	^ MooseSpecializedGroup with: self parentIfArithmeticEqualBranch
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLabelReference >> parentIfArithmeticLessBranch [
 	"Relation named: #parentIfArithmeticLessBranch type: #FASTFortranIfArithmeticStatement opposite: #lessLabel"
 
@@ -93,21 +95,21 @@ FASTFortranLabelReference >> parentIfArithmeticLessBranch [
 	^ parentIfArithmeticLessBranch
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLabelReference >> parentIfArithmeticLessBranch: anObject [
 
 	<generated>
 	parentIfArithmeticLessBranch := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranLabelReference >> parentIfArithmeticLessBranchGroup [
 	<generated>
 	<navigation: 'ParentIfArithmeticLessBranch'>
 	^ MooseSpecializedGroup with: self parentIfArithmeticLessBranch
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLabelReference >> parentIfArithmeticMoreBranch [
 	"Relation named: #parentIfArithmeticMoreBranch type: #FASTFortranIfArithmeticStatement opposite: #greaterLabel"
 
@@ -117,21 +119,21 @@ FASTFortranLabelReference >> parentIfArithmeticMoreBranch [
 	^ parentIfArithmeticMoreBranch
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLabelReference >> parentIfArithmeticMoreBranch: anObject [
 
 	<generated>
 	parentIfArithmeticMoreBranch := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranLabelReference >> parentIfArithmeticMoreBranchGroup [
 	<generated>
 	<navigation: 'ParentIfArithmeticMoreBranch'>
 	^ MooseSpecializedGroup with: self parentIfArithmeticMoreBranch
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLabelReference >> referencer [
 	"Relation named: #referencer type: #FASTFortranTWithLabelReferences opposite: #labelReferences"
 
@@ -141,14 +143,14 @@ FASTFortranLabelReference >> referencer [
 	^ referencer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranLabelReference >> referencer: anObject [
 
 	<generated>
 	referencer := anObject
 ]
 
-{ #category : #navigation }
+{ #category : 'navigation' }
 FASTFortranLabelReference >> referencerGroup [
 	<generated>
 	<navigation: 'Referencer'>

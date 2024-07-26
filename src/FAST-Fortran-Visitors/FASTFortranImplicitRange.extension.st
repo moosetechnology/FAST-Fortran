@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranImplicitRange }
+Extension { #name : 'FASTFortranImplicitRange' }
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FASTFortranImplicitRange >> accept: aVisitor [
 
 	^aVisitor visitFASTFortranImplicitRange: self
