@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranDoublePrecisionLiteral }
+Extension { #name : 'FASTFortranDoublePrecisionLiteral' }
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FASTFortranDoublePrecisionLiteral >> accept: aVisitor [
 	<generated>
 	^aVisitor visitFASTFortranDoublePrecisionLiteral: self.

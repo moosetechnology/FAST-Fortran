@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranLogicalType }
+Extension { #name : 'FASTFortranLogicalType' }
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FASTFortranLogicalType >> accept: aVisitor [
 	<generated>
 	^aVisitor visitFASTFortranLogicalType: self.

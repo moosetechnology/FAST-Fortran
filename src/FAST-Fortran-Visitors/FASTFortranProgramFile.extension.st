@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranProgramFile }
+Extension { #name : 'FASTFortranProgramFile' }
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FASTFortranProgramFile >> accept: aVisitor [
 	<generated>
 	^aVisitor visitFASTFortranProgramFile: self.

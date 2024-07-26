@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranScalarVariable }
+Extension { #name : 'FASTFortranScalarVariable' }
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FASTFortranScalarVariable >> accept: aVisitor [
 	<generated>
 	^aVisitor visitFASTFortranScalarVariable: self.

@@ -1,16 +1,16 @@
-Extension { #name : #FortranProjectImporter }
+Extension { #name : 'FortranProjectImporter' }
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FortranProjectImporter >> defaultFASTSource [
 	^(self ensureFolder: self fastSrcFolder) / 'tmpFASTSource.f'
 ]
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FortranProjectImporter >> fastSrcFolder [
 	^'FastTmp'
 ]
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FortranProjectImporter >> getFASTFor: sourceCode [
 
 	"Remove TAB at state of lines ???? "
@@ -27,7 +27,7 @@ FortranProjectImporter >> getFASTFor: sourceCode [
 	^self jsonASTToFAST 
 ]
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FortranProjectImporter >> jsonASTToFAST [
 
 	| fortranFile jsonAST |

@@ -2,12 +2,14 @@
 A Generator of a CopyVisitor specialized for FAST Fortran
 "
 Class {
-	#name : #FASTFortranCopyVisitorCodeGenerator,
-	#superclass : #FASTCopyVisitorCodeGenerator,
-	#category : #'FAST-Fortran-Visitors-Tools'
+	#name : 'FASTFortranCopyVisitorCodeGenerator',
+	#superclass : 'FASTCopyVisitorCodeGenerator',
+	#category : 'FAST-Fortran-Visitors-Tools',
+	#package : 'FAST-Fortran-Visitors',
+	#tag : 'Tools'
 }
 
-{ #category : #'code generation' }
+{ #category : 'code generation' }
 FASTFortranCopyVisitorCodeGenerator >> shouldCopyProperty: property for: aModelClass [
 
 	"Dealing with some special cases (errors in the meta-model, they should be marked #isContainer)"

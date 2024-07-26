@@ -1,10 +1,12 @@
 Class {
-	#name : #FASTFortranModelComparator,
-	#superclass : #FamixModelComparator,
-	#category : #'FAST-Fortran-Visitors-Tools'
+	#name : 'FASTFortranModelComparator',
+	#superclass : 'FamixModelComparator',
+	#category : 'FAST-Fortran-Visitors-Tools',
+	#package : 'FAST-Fortran-Visitors',
+	#tag : 'Tools'
 }
 
-{ #category : #comparison }
+{ #category : 'comparison' }
 FASTFortranModelComparator >> ast: node1 acceptableDifferenceTo: node2 [
 	"import not complete:
 	 - close statement
@@ -13,7 +15,7 @@ FASTFortranModelComparator >> ast: node1 acceptableDifferenceTo: node2 [
 	^{FASTFortranCloseStatement }	 includes: node1 class
 ]
 
-{ #category : #comparison }
+{ #category : 'comparison' }
 FASTFortranModelComparator >> ast: node1 acceptableDifferenceTo: node2 property: property [
 	"returns nil if the difference is not acceptable
 	 otherwise, must return  a block testing where the comparison process might resume"
@@ -29,7 +31,7 @@ FASTFortranModelComparator >> ast: node1 acceptableDifferenceTo: node2 property:
 	^nil
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 FASTFortranModelComparator >> reExportAST: ast [
 	^(ast accept: FASTFortranExporterVisitor new) outputStream contents
 ]

@@ -1,21 +1,23 @@
 Class {
-	#name : #FASTFortranJsonVisitor,
-	#superclass : #FortranAbstractJsonVisitor,
+	#name : 'FASTFortranJsonVisitor',
+	#superclass : 'FortranAbstractJsonVisitor',
 	#instVars : [
 		'lineSizes',
 		'model',
 		'nestedDoEndLabel'
 	],
-	#category : #'FAST-Fortran-Visitors-Importer'
+	#category : 'FAST-Fortran-Visitors-Importer',
+	#package : 'FAST-Fortran-Visitors',
+	#tag : 'Importer'
 }
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> checkLabel: label forStatement: statement [
 
 	label ifNotNil: [ statement label: label primitiveValue ]
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> createContinueStatement: endLabel [
 
 	| lastStatement |
@@ -27,7 +29,7 @@ FASTFortranJsonVisitor >> createContinueStatement: endLabel [
 	^ lastStatement
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 FASTFortranJsonVisitor >> functionCallToArrayVariable: invocation [
 
 	^ FASTFortranArrayVariable new
@@ -38,13 +40,13 @@ FASTFortranJsonVisitor >> functionCallToArrayVariable: invocation [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 FASTFortranJsonVisitor >> initLineSizes: fortranSource [
 
 	lineSizes := fortranSource lines collect: #size
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 FASTFortranJsonVisitor >> initialize [
 
 	super initialize.
@@ -53,7 +55,7 @@ FASTFortranJsonVisitor >> initialize [
 	nestedDoEndLabel := Stack new: 5
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 FASTFortranJsonVisitor >> integerLiteralToLabelRef: literal [
 
 	^ FASTFortranLabelReference new
@@ -63,7 +65,7 @@ FASTFortranJsonVisitor >> integerLiteralToLabelRef: literal [
 		  yourself
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 FASTFortranJsonVisitor >> invertLiteral: aFASTFortranLiteral class: class [
 
 	| number |
@@ -76,19 +78,19 @@ FASTFortranJsonVisitor >> invertLiteral: aFASTFortranLiteral class: class [
 	^aFASTFortranLiteral
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranJsonVisitor >> model [
 
 	^ model
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranJsonVisitor >> model: anObject [
 
 	model := anObject
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 FASTFortranJsonVisitor >> newEntity: aFASTFortranClass atPosition: aPoint [
 
 	| node |
@@ -98,7 +100,7 @@ FASTFortranJsonVisitor >> newEntity: aFASTFortranClass atPosition: aPoint [
 	^ node
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 FASTFortranJsonVisitor >> pointToPosition: lineColumn [
 
 	| position |
@@ -108,7 +110,7 @@ FASTFortranJsonVisitor >> pointToPosition: lineColumn [
 	^ position + lineColumn y
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 FASTFortranJsonVisitor >> putMembers: entities inBody: stmtBlock [
 
 	| start end |
@@ -130,7 +132,7 @@ FASTFortranJsonVisitor >> putMembers: entities inBody: stmtBlock [
 	stmtBlock endPos: end
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 FASTFortranJsonVisitor >> set: aFASTFortranNode startEnd: startEndPoints [
 
 	aFASTFortranNode
@@ -138,7 +140,7 @@ FASTFortranJsonVisitor >> set: aFASTFortranNode startEnd: startEndPoints [
 		endPos: (self pointToPosition: startEndPoints second) - 1
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 FASTFortranJsonVisitor >> setBodyPosition: aProgramUnit fromProgramUnitPosition: startEndPoints [
 
 	"sets a reasonnable start/end position for a statementBlock:
@@ -159,13 +161,13 @@ FASTFortranJsonVisitor >> setBodyPosition: aProgramUnit fromProgramUnitPosition:
 
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitAddition: anAdditionOperatorNode [
 
 	^'+'
 ]
 
-{ #category : #'visiting prog-unit' }
+{ #category : 'visiting prog-unit' }
 FASTFortranJsonVisitor >> visitArgument: anArgumentNode [
 	"used for argument in subprogram calls and parameter in subprogram definition"
 
@@ -177,7 +179,7 @@ FASTFortranJsonVisitor >> visitArgument: anArgumentNode [
 	^ data
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitArrayDeclarationDim: arrayDeclarationDim [
 
 	| data |
@@ -189,7 +191,7 @@ FASTFortranJsonVisitor >> visitArrayDeclarationDim: arrayDeclarationDim [
 		yourself
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitAssign_expression: anAssignExpressionNode [
 	"The assignment statement assigns a value to a variable, substring, array element, record, or record field"
 
@@ -203,7 +205,7 @@ FASTFortranJsonVisitor >> visitAssign_expression: anAssignExpressionNode [
 		  yourself
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitBinary: aBinaryExpressionNode [
 
 	| data expr |
@@ -217,7 +219,7 @@ FASTFortranJsonVisitor >> visitBinary: aBinaryExpressionNode [
 	^ expr
 ]
 
-{ #category : #'visiting prog-unit' }
+{ #category : 'visiting prog-unit' }
 FASTFortranJsonVisitor >> visitBlock_data: aBlockDataNode [
 
 	| data |
@@ -229,7 +231,7 @@ FASTFortranJsonVisitor >> visitBlock_data: aBlockDataNode [
 		  yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitBody: aNode [
 
 	| data stmtBlock |
@@ -244,7 +246,7 @@ FASTFortranJsonVisitor >> visitBody: aNode [
 
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitCallStatement: aCallNode [
 	"The CALL statement branches to the specified subroutine, executes the subroutine, and returns to the calling program after finishing the subroutine.
 
@@ -259,7 +261,7 @@ CALL sub [([ar[, ar]])] where sub is a name of the subroutine to be called, ar i
 		  yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitCharacterBaseType: aString [
 
 	^FASTFortranCharacterType new
@@ -267,7 +269,7 @@ FASTFortranJsonVisitor >> visitCharacterBaseType: aString [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitCloseStatement: aCloseNode [
 
 	| data |
@@ -277,7 +279,7 @@ FASTFortranJsonVisitor >> visitCloseStatement: aCloseNode [
 
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitCommonGroup: aCommonGroupNode [
 	"#(span name varList)"
 
@@ -290,7 +292,7 @@ FASTFortranJsonVisitor >> visitCommonGroup: aCommonGroupNode [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitCommonStatement: aCommonStatementNode [
 	"creates common statement which defines a block of main memory storage so that different program units can share the same data without using arguments.
 
@@ -306,7 +308,7 @@ nlist: List of variable names, array names, and array declarators  "
 		yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitComplexBaseType: aString [
 
 	^FASTFortranComplexType new
@@ -314,7 +316,7 @@ FASTFortranJsonVisitor >> visitComplexBaseType: aString [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitConditions: aConditionList [
 	"a list of {condition . thenPart}, each element being an elseif of the preceding element"
 
@@ -349,7 +351,7 @@ FASTFortranJsonVisitor >> visitConditions: aConditionList [
 	^ firstIf
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitContinueStatement: aContinueStatementNode [
 
 	| data |
@@ -358,7 +360,7 @@ FASTFortranJsonVisitor >> visitContinueStatement: aContinueStatementNode [
 	^ self newEntity: FASTFortranContinueStatement atPosition: data
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitDataGroup: aDataGroup [
 
 	| data |
@@ -370,7 +372,7 @@ FASTFortranJsonVisitor >> visitDataGroup: aDataGroup [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitDataStatement: aDataStatement [
 
 	| data stmt |
@@ -384,7 +386,7 @@ FASTFortranJsonVisitor >> visitDataStatement: aDataStatement [
 	^stmt
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitDeclarationStatement: aDeclarationStatementNode [
 
 	| data |
@@ -397,7 +399,7 @@ FASTFortranJsonVisitor >> visitDeclarationStatement: aDeclarationStatementNode [
 		yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitDeclarator: aDeclaratorNode [
 	"#(span initial length dims variable)"
 
@@ -411,7 +413,7 @@ FASTFortranJsonVisitor >> visitDeclarator: aDeclaratorNode [
 	^declarator
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitDeclaratorVariable: aDeclaratorVariableNode [
 
 	| data |
@@ -422,13 +424,13 @@ FASTFortranJsonVisitor >> visitDeclaratorVariable: aDeclaratorVariableNode [
 		yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitDeclarators: aDeclaratorsList [
 
 	^ (super visitDeclarators: aDeclaratorsList) second
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitDimensionStatement: aDimensionStatementNode [
 	"#(span declarators)"
 
@@ -440,13 +442,13 @@ FASTFortranJsonVisitor >> visitDimensionStatement: aDimensionStatementNode [
 		yourself
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitDivision: aDivisionOperatorNode [
 
 	^'/'
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitDo: aDoNode [
 	"The visiting order in the super class is: #(span label do_spec target body end_label)
 	We change it here do deal with nested loops
@@ -501,7 +503,7 @@ FASTFortranJsonVisitor >> visitDo: aDoNode [
 	^ doStatement
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitDo_spec: aDoSpecNode [
 	"#(span initial limit increment)
 	 'init' is an AssignementStatement, need to convert it to an AssignementExpression"
@@ -525,7 +527,7 @@ FASTFortranJsonVisitor >> visitDo_spec: aDoSpecNode [
 		  yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitDouble_precisionBaseType: aString [
 
 	^FASTFortranDoublePrecisionType new
@@ -533,7 +535,7 @@ FASTFortranJsonVisitor >> visitDouble_precisionBaseType: aString [
 		yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitEnd_label: endLabel [
 	"label target in a DO statement. If not nil, we store it in #nestedDoEndLabel because
 	 there is a difficulty in parsing some nested loop with the same target label.
@@ -545,7 +547,7 @@ FASTFortranJsonVisitor >> visitEnd_label: endLabel [
 	^data
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitEntryStatement: anEntryNode [
 	"#(span name args return)"
 
@@ -559,7 +561,7 @@ FASTFortranJsonVisitor >> visitEntryStatement: anEntryNode [
 	
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitEquivalenceGroup: anEquivalenceGroup [
 
 	| data variables |
@@ -577,7 +579,7 @@ FASTFortranJsonVisitor >> visitEquivalenceGroup: anEquivalenceGroup [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitEquivalenceStatement: anEquivalenceStatement [
 
 	| data |
@@ -588,7 +590,7 @@ FASTFortranJsonVisitor >> visitEquivalenceStatement: anEquivalenceStatement [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitExitStatement: anExitNode [
 
 	| data |
@@ -596,13 +598,13 @@ FASTFortranJsonVisitor >> visitExitStatement: anExitNode [
 	^ self newEntity: FASTFortranExitStatement atPosition: data first
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitExponentiation: aExponentiationOperatorNode [
 
 	^'**'
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitExternalStatement: anExternalStatementNode [
 
 	| data |
@@ -614,7 +616,7 @@ FASTFortranJsonVisitor >> visitExternalStatement: anExternalStatementNode [
 		  yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitFormatStatement: aFormatStatement [
 
 	| data |
@@ -625,7 +627,7 @@ FASTFortranJsonVisitor >> visitFormatStatement: aFormatStatement [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitFortranComment: aCommentNode [
 
 	| data |
@@ -635,19 +637,19 @@ FASTFortranJsonVisitor >> visitFortranComment: aCommentNode [
 		yourself
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitFunctionAsValue: aFunctionNode [
 
 	^ (super visitFunctionAsValue: aFunctionNode) second
 ]
 
-{ #category : #'visiting prog-unit' }
+{ #category : 'visiting prog-unit' }
 FASTFortranJsonVisitor >> visitFunctionParameters: aParameterList [
 
 	^ super visitFunctionParameters: aParameterList
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitFunctionStatement: aFunctionStatementNode [
 	"FunctionStatement have a quite different representation than regular functions..."
 	| data |
@@ -660,7 +662,7 @@ FASTFortranJsonVisitor >> visitFunctionStatement: aFunctionStatementNode [
 		yourself
 ]
 
-{ #category : #'visiting prog-unit' }
+{ #category : 'visiting prog-unit' }
 FASTFortranJsonVisitor >> visitFunctionWithBlocks: aFunctionNode [
 	"#(span name type arguments blocks result subprograms)"
 
@@ -684,7 +686,7 @@ FASTFortranJsonVisitor >> visitFunctionWithBlocks: aFunctionNode [
 	^function
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitFunction_call: aFunctionCallNode [
 
 	| data |
@@ -696,7 +698,7 @@ FASTFortranJsonVisitor >> visitFunction_call: aFunctionCallNode [
 		  yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitGotoStatement: aGotoStatementNode [
 	"so far only unconditional case is processed"
 
@@ -708,7 +710,7 @@ FASTFortranJsonVisitor >> visitGotoStatement: aGotoStatementNode [
 		  yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitGoto_computedStatement: aGotoComputedStatementNode [
 	"#(span labels target)"
 
@@ -721,7 +723,7 @@ FASTFortranJsonVisitor >> visitGoto_computedStatement: aGotoComputedStatementNod
 		yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitIOParameter: anIOParameterNode [
 	"#(span name expr)"
 
@@ -742,13 +744,13 @@ FASTFortranJsonVisitor >> visitIOParameter: anIOParameterNode [
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitIOParameters: anIOParametersCollection [
 
 	^(super visitIOParameters: anIOParametersCollection) reject: #isNil
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitIf: anIfNode [
 	"ifNode has 'conditionals' and 'blocks'
 	- 'conditionals' is an array of pairs where
@@ -774,7 +776,7 @@ FASTFortranJsonVisitor >> visitIf: anIfNode [
 	^ data third
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitIf_arithmeticStatement: anIfArithmeticStatement [ 
 	"span expression less equal greater"
 	
@@ -789,7 +791,7 @@ FASTFortranJsonVisitor >> visitIf_arithmeticStatement: anIfArithmeticStatement [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitIf_logicalStatement: anIfNode [
 
 	"self visitJsonMap: anIfNode keys: #( span condition statement )"
@@ -803,7 +805,7 @@ FASTFortranJsonVisitor >> visitIf_logicalStatement: anIfNode [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitImplicitStatement: anImplicitStatementNode [
 	"#(span items)
 	 If 'items' is nil, correspond to the statement 'implicit none'"
@@ -817,7 +819,7 @@ FASTFortranJsonVisitor >> visitImplicitStatement: anImplicitStatementNode [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitImplicitStatementRange: anImplicitStatementRangeNode [
 	"#(span from to)"
 
@@ -830,7 +832,7 @@ FASTFortranJsonVisitor >> visitImplicitStatementRange: anImplicitStatementRangeN
 		yourself
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitImplied_do:  anImpliedDoListsNode [ 
 	"span do_spec expressions"
 
@@ -843,7 +845,7 @@ FASTFortranJsonVisitor >> visitImplied_do:  anImpliedDoListsNode [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitInquireStatement: anInquireStatement [ 
 	"#(span specification)"
 
@@ -855,7 +857,7 @@ FASTFortranJsonVisitor >> visitInquireStatement: anInquireStatement [
 		yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitIntegerBaseType: aString [
 
 	^FASTFortranIntegerType new
@@ -863,7 +865,7 @@ FASTFortranJsonVisitor >> visitIntegerBaseType: aString [
 		yourself
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitIntegerLiteralValue: anIntegerLiteralValueNode [
 
 	^FASTFortranIntegerLiteral new
@@ -872,7 +874,7 @@ FASTFortranJsonVisitor >> visitIntegerLiteralValue: anIntegerLiteralValueNode [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitIntrinsicStatement: anIntrinsicStatement [
 
 	| data |
@@ -883,7 +885,7 @@ FASTFortranJsonVisitor >> visitIntrinsicStatement: anIntrinsicStatement [
 		yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitItems: anImplicitItemsNode [
 	"#(span type elements)"
 
@@ -901,7 +903,7 @@ FASTFortranJsonVisitor >> visitItems: anImplicitItemsNode [
 	]
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitLabelReference: aLabelReference [
 	| data |
 	data := super visitJsonElement: aLabelReference.
@@ -913,7 +915,7 @@ FASTFortranJsonVisitor >> visitLabelReference: aLabelReference [
 		yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitLogicalBaseType: aString [
 
 	^FASTFortranLogicalType new
@@ -921,7 +923,7 @@ FASTFortranJsonVisitor >> visitLogicalBaseType: aString [
 		yourself
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitLogicalLiteralValue: aLogicalLiteralValue [
 
 	^FASTFortranBooleanLiteral new
@@ -930,7 +932,7 @@ FASTFortranJsonVisitor >> visitLogicalLiteralValue: aLogicalLiteralValue [
 		yourself
 ]
 
-{ #category : #'visiting prog-unit' }
+{ #category : 'visiting prog-unit' }
 FASTFortranJsonVisitor >> visitMain: aMainProgramNode [
 	"#(span name blocks subprograms)"
 
@@ -947,7 +949,7 @@ FASTFortranJsonVisitor >> visitMain: aMainProgramNode [
 	^main
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitMessage: aMessageNode [
 	"STOP or PAUSE message: kept as a simple string
 	+ small hack to differentiate integer values from Strings"
@@ -960,7 +962,7 @@ FASTFortranJsonVisitor >> visitMessage: aMessageNode [
 	^'''' , data primitiveValue , ''''
 ]
 
-{ #category : #'visiting prog-unit' }
+{ #category : 'visiting prog-unit' }
 FASTFortranJsonVisitor >> visitMiFilename: aString [
 
 	lineSizes ifEmpty: [
@@ -968,13 +970,13 @@ FASTFortranJsonVisitor >> visitMiFilename: aString [
 	^ aString
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitMultiplication: anOperatorNode [
 
 	^'*'
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitOp: anOperatorNode [
 
 	^FASTFortranBinaryExpression new
@@ -983,7 +985,7 @@ FASTFortranJsonVisitor >> visitOp: anOperatorNode [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitOpenStatement: anOpenStatement [ 
 	"#(span specification)"
 
@@ -995,7 +997,7 @@ FASTFortranJsonVisitor >> visitOpenStatement: anOpenStatement [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitParameterStatement: aParameterStatementNode [ 
 
 	| data |
@@ -1006,7 +1008,7 @@ FASTFortranJsonVisitor >> visitParameterStatement: aParameterStatementNode [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitPauseStatement: aPauseStatementNode [
 
 	| data |
@@ -1017,7 +1019,7 @@ FASTFortranJsonVisitor >> visitPauseStatement: aPauseStatementNode [
 		  yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitPrintStatement: aPrintStatementNode [
 
 	| data |
@@ -1029,13 +1031,13 @@ FASTFortranJsonVisitor >> visitPrintStatement: aPrintStatementNode [
 		yourself
 ]
 
-{ #category : #'visiting prog-unit' }
+{ #category : 'visiting prog-unit' }
 FASTFortranJsonVisitor >> visitProgramFile: aProgramFileNode [
 	model := FASTFortranModel new.
 	^ (super visitProgramFile: aProgramFileNode) second
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitRange: aRangeNode [
 	"span lower upper stride"
 
@@ -1048,7 +1050,7 @@ FASTFortranJsonVisitor >> visitRange: aRangeNode [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitReadStatement: aReadStatementNode [
 	"see #visitWriteStatement:
 	visited keys are: #(span ioParameters arguments)"
@@ -1063,7 +1065,7 @@ FASTFortranJsonVisitor >> visitReadStatement: aReadStatementNode [
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitRealBaseType: aString [
 
 	^FASTFortranRealType new
@@ -1071,7 +1073,7 @@ FASTFortranJsonVisitor >> visitRealBaseType: aString [
 		yourself
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitRealLiteralValue: aRealLiteralValueNode [
 
 	| data |
@@ -1082,7 +1084,7 @@ FASTFortranJsonVisitor >> visitRealLiteralValue: aRealLiteralValueNode [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitReturnStatement: aReturnStatementNode [
 
 	| data |
@@ -1090,13 +1092,13 @@ FASTFortranJsonVisitor >> visitReturnStatement: aReturnStatementNode [
 	^self newEntity: FASTFortranReturnStatement atPosition: data first
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitReturn_spec: aReturn_specNode [
 
 	^ (super visitReturn_spec: aReturn_specNode) second
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitRewind2Statement: aRewindStatementNode [
 
 	| data |
@@ -1108,7 +1110,7 @@ FASTFortranJsonVisitor >> visitRewind2Statement: aRewindStatementNode [
 
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitRewindStatement: aRewindStatementNode [
 
 	| data |
@@ -1120,7 +1122,7 @@ FASTFortranJsonVisitor >> visitRewindStatement: aRewindStatementNode [
 
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitSaveStatement: aSaveNode [
 
 	| data |
@@ -1130,7 +1132,7 @@ FASTFortranJsonVisitor >> visitSaveStatement: aSaveNode [
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitSelector: aSelectorNode [
 	"#(span kind length)"
 
@@ -1142,7 +1144,7 @@ FASTFortranJsonVisitor >> visitSelector: aSelectorNode [
 	^data third
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitSingle: anArraySingleIndexNode [
 	"#(span index)"
 
@@ -1151,7 +1153,7 @@ FASTFortranJsonVisitor >> visitSingle: anArraySingleIndexNode [
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitStar: anObject [
 
 	^FASTFortranAsterisk new
@@ -1159,7 +1161,7 @@ FASTFortranJsonVisitor >> visitStar: anObject [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitStatement: aStatementNode [
 	"#(span label statement)"
 
@@ -1170,14 +1172,14 @@ FASTFortranJsonVisitor >> visitStatement: aStatementNode [
 	^ data third
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitStatementBlock: anASTStatementBlock [
 
 	^ anASTStatementBlock collect: [ :astStatement |
 		  self visitJsonMap: astStatement ] "FASTFortranStatementBlock new statements:"
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitStopStatement: aStopStatementNode [
 
 	| data |
@@ -1188,7 +1190,7 @@ FASTFortranJsonVisitor >> visitStopStatement: aStopStatementNode [
 		  yourself
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitStringLiteralValue: aString [
 
 	^FASTFortranCharacterLiteral new
@@ -1197,7 +1199,7 @@ FASTFortranJsonVisitor >> visitStringLiteralValue: aString [
 		yourself
 ]
 
-{ #category : #'visiting prog-unit' }
+{ #category : 'visiting prog-unit' }
 FASTFortranJsonVisitor >> visitSubroutine: aSubroutineNode [
 	"#(span name arguments blocks)"
 
@@ -1220,7 +1222,7 @@ FASTFortranJsonVisitor >> visitSubroutine: aSubroutineNode [
 	^routine
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitSubscript: aSubscriptNode [
 
 	| data |
@@ -1232,12 +1234,12 @@ FASTFortranJsonVisitor >> visitSubscript: aSubscriptNode [
 		yourself
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitSubtraction: aSubtractionOperatorNode [
 	^'-'
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranJsonVisitor >> visitType: aTypeNode [
 	"#(span base_type selector)"
 
@@ -1255,7 +1257,7 @@ FASTFortranJsonVisitor >> visitType: aTypeNode [
 	^data second
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitUnary: aUnaryNode [
 	"possible negative number, if so invert it and forget about the unaryOperator"
 
@@ -1276,7 +1278,7 @@ FASTFortranJsonVisitor >> visitUnary: aUnaryNode [
 		yourself
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitValue: aValueNode [
 
 	| data val |
@@ -1287,7 +1289,7 @@ FASTFortranJsonVisitor >> visitValue: aValueNode [
 	^ val
 ]
 
-{ #category : #'visiting expression' }
+{ #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitVariable: aVariableNode [
 
 	| data |
@@ -1299,7 +1301,7 @@ FASTFortranJsonVisitor >> visitVariable: aVariableNode [
 		yourself
 ]
 
-{ #category : #'visiting statement' }
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitWriteStatement: aWriteStatementNode [
 	"write statement. should follow the pattern: 
 	WRITE([UNIT=] u [, [FMT=] f] [, IOSTAT=ios] [, REC=rn] [, ERR=s]) iolist

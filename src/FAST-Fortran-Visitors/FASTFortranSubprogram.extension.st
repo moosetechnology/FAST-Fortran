@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranSubprogram }
+Extension { #name : 'FASTFortranSubprogram' }
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FASTFortranSubprogram >> accept: aVisitor [
 	<generated>
 	^aVisitor visitFASTFortranSubprogram: self.

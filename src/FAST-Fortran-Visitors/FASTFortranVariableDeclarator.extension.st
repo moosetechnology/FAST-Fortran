@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranVariableDeclarator }
+Extension { #name : 'FASTFortranVariableDeclarator' }
 
-{ #category : #'*FAST-Fortran-Visitors' }
+{ #category : '*FAST-Fortran-Visitors' }
 FASTFortranVariableDeclarator >> accept: aVisitor [
 
 	^aVisitor visitFASTFortranVariableDeclarator: self

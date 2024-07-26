@@ -2,8 +2,8 @@
 Avisitor on FASTFortran that exports the AST as Fortran code
 "
 Class {
-	#name : #FASTFortranExporterVisitor,
-	#superclass : #FASTFortranVisitor,
+	#name : 'FASTFortranExporterVisitor',
+	#superclass : 'FASTFortranVisitor',
 	#traits : 'FASTTExporter',
 	#classTraits : 'FASTTExporter classTrait',
 	#instVars : [
@@ -11,10 +11,12 @@ Class {
 		'breakLongCommentLines',
 		'breakLongLines'
 	],
-	#category : #'FAST-Fortran-Visitors-Visitor'
+	#category : 'FAST-Fortran-Visitors-Visitor',
+	#package : 'FAST-Fortran-Visitors',
+	#tag : 'Visitor'
 }
 
-{ #category : #api }
+{ #category : 'api' }
 FASTFortranExporterVisitor class >> export: aFASTNode [
 
 	| visitor |
@@ -23,20 +25,20 @@ FASTFortranExporterVisitor class >> export: aFASTNode [
 	^visitor outputStream contents
 ]
 
-{ #category : #outputting }
+{ #category : 'outputting' }
 FASTFortranExporterVisitor >> breakLongCommentLines: aBoolean [
 
 	breakLongCommentLines := aBoolean
 ]
 
-{ #category : #outputting }
+{ #category : 'outputting' }
 FASTFortranExporterVisitor >> breakLongLines: aBoolean [
 
 	breakLongLines := aBoolean.
 	breakLongLines ifFalse: [ self breakLongCommentLines: false ]
 ]
 
-{ #category : #outputting }
+{ #category : 'outputting' }
 FASTFortranExporterVisitor >> continuationLine: line [
 
 	breakLongLines ifFalse: [ ^self ].
@@ -51,31 +53,31 @@ FASTFortranExporterVisitor >> continuationLine: line [
 		<< '& '
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 FASTFortranExporterVisitor >> doBreakLongCommentLines [
 
 	self breakLongCommentLines: true
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 FASTFortranExporterVisitor >> doBreakLongLines [
 
 	self breakLongLines: true
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 FASTFortranExporterVisitor >> dontBreakLongCommentLines [
 
 	self breakLongCommentLines: false
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 FASTFortranExporterVisitor >> dontBreakLongLines [
 
 	self breakLongLines: false
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 FASTFortranExporterVisitor >> initialize [
 	super initialize.
 
@@ -84,13 +86,13 @@ FASTFortranExporterVisitor >> initialize [
 	breakLongCommentLines := false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FASTFortranExporterVisitor >> isComment: aLine [
 
 	^( #($c $C $*) includes: aLine first) and: [ column = 0 ]
 ]
 
-{ #category : #precedence }
+{ #category : 'precedence' }
 FASTFortranExporterVisitor >> languageOperatorsPrecedence [
 	"redefined to introduce fortran operators
 	
@@ -126,7 +128,7 @@ FASTFortranExporterVisitor >> languageOperatorsPrecedence [
 
 ]
 
-{ #category : #outputting }
+{ #category : 'outputting' }
 FASTFortranExporterVisitor >> newLine [
 	"redefines to deal with line length
 	 writes directly to the outputStream so that the return does not count for one column"
@@ -135,7 +137,7 @@ FASTFortranExporterVisitor >> newLine [
 	self outputStream cr.
 ]
 
-{ #category : #outputting }
+{ #category : 'outputting' }
 FASTFortranExporterVisitor >> output: aString [
 	"redefines to deal with line length"
 
@@ -146,14 +148,14 @@ FASTFortranExporterVisitor >> output: aString [
 	column := column + aString size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranExporterVisitor >> rootEntitiesIn: aFASTFortranModel [
 	^aFASTFortranModel entities select: [ :entity |
 		entity parents isEmpty
 	]
 ]
 
-{ #category : #outputting }
+{ #category : 'outputting' }
 FASTFortranExporterVisitor >> sixSpaces [
 	"mandatory six spaces at the begining of line + optional indent (2 spaces per level)"
 
@@ -161,7 +163,7 @@ FASTFortranExporterVisitor >> sixSpaces [
 	
 ]
 
-{ #category : #outputting }
+{ #category : 'outputting' }
 FASTFortranExporterVisitor >> upToSixSpaces: preceedingSize [
 	"mandatory six spaces at the begining of line + optional indent (2 spaces per level)"
 
@@ -171,7 +173,7 @@ FASTFortranExporterVisitor >> upToSixSpaces: preceedingSize [
 	
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranAbstractIOStatement: aFASTFortranIOStatement named: aString [
 
 	self
@@ -183,7 +185,7 @@ FASTFortranExporterVisitor >> visitFASTFortranAbstractIOStatement: aFASTFortranI
 		newLine
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranAbstractStatement: aFASTFortranAbstractStatement [
 	"main role is to print the 'header' of the line:
 	 - six spaces, or
@@ -197,7 +199,7 @@ FASTFortranExporterVisitor >> visitFASTFortranAbstractStatement: aFASTFortranAbs
 				upToSixSpaces: label size ]
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranExporterVisitor >> visitFASTFortranArrayRange: aFASTFortranArrayDimension [
 
 	self outputTopLevelExpression: [
@@ -209,7 +211,7 @@ FASTFortranExporterVisitor >> visitFASTFortranArrayRange: aFASTFortranArrayDimen
 			aFASTFortranArrayDimension upperBound ]
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranExporterVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariable [
 	"call to #outputExpression:inParentheses: is oportunistic.
 	 It is not an operator precedence case"
@@ -222,7 +224,7 @@ FASTFortranExporterVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVa
 		inParentheses: true
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranAssignmentStatement: aFASTFortranAssignmentStatement [
 
 	self visitFASTFortranAbstractStatement:
@@ -232,13 +234,13 @@ FASTFortranExporterVisitor >> visitFASTFortranAssignmentStatement: aFASTFortranA
 	self newLine
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranExporterVisitor >> visitFASTFortranAsterisk: aFASTFortranAsterisk [
 
 	self << '*'
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranExporterVisitor >> visitFASTFortranBinaryExpression: aFASTFortranBinaryExpression [
 
 	self
@@ -252,7 +254,7 @@ FASTFortranExporterVisitor >> visitFASTFortranBinaryExpression: aFASTFortranBina
 		withOperator: aFASTFortranBinaryExpression operator
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranCallStatement: aFASTFortranCallStatement [
 	"call to #outputExpression:inParentheses: is oportunistic.
 	 It is not an operator precedence case"
@@ -270,14 +272,14 @@ FASTFortranExporterVisitor >> visitFASTFortranCallStatement: aFASTFortranCallSta
 	self newLine
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitFASTFortranCharacterType: aFASTFortranType [
 
 	self << 'character'.
 	self visitFASTFortranType: aFASTFortranType
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitFASTFortranCommonGroup: aFASTFortranCommonGroup [
 
 	aFASTFortranCommonGroup name ifNotNil: [ :name |
@@ -291,7 +293,7 @@ FASTFortranExporterVisitor >> visitFASTFortranCommonGroup: aFASTFortranCommonGro
 		visitNodeListSeparatedByCommas: aFASTFortranCommonGroup declarators
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranCommonStatement: aFASTFortranCommonStatement [
 
 	self
@@ -302,7 +304,7 @@ FASTFortranExporterVisitor >> visitFASTFortranCommonStatement: aFASTFortranCommo
 	self newLine
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranContinueStatement: aFASTFortranContinueStatement [
 
 	self
@@ -311,7 +313,7 @@ FASTFortranExporterVisitor >> visitFASTFortranContinueStatement: aFASTFortranCon
 		newLine
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitFASTFortranDataGroup: aFASTFortranDataGroup [
 
 	self
@@ -321,7 +323,7 @@ FASTFortranExporterVisitor >> visitFASTFortranDataGroup: aFASTFortranDataGroup [
 		<< '/ '
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranDataStatement: aFASTFortranDataStatement [
 
 	self
@@ -332,7 +334,7 @@ FASTFortranExporterVisitor >> visitFASTFortranDataStatement: aFASTFortranDataSta
 		newLine
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranDimensionStatement: aFASTFortranDimensionStatement [
 
 	self
@@ -343,7 +345,7 @@ FASTFortranExporterVisitor >> visitFASTFortranDimensionStatement: aFASTFortranDi
 		newLine
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
 	"FASTFortranDoStatement uses TWithLabelReferences, but it makes only one such reference"
 
@@ -365,14 +367,14 @@ FASTFortranExporterVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStateme
 			newLine ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitFASTFortranDoublePrecisionType: aFASTFortranType [
 
 	self << 'double precision'.
 	self visitFASTFortranType: aFASTFortranType
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranEntryStatement: aFASTFortranEntryStatementNode [
 	"call to #outputExpression:inParentheses: is oportunistic.
 	 It is not an operator precedence case"
@@ -388,7 +390,7 @@ FASTFortranExporterVisitor >> visitFASTFortranEntryStatement: aFASTFortranEntryS
 		newLine
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitFASTFortranEquivalenceGroup: aFASTFortranEquivalenceGroup [
 	"call to #outputExpression:inParentheses: is oportunistic.
 	 It is not an operator precedence case"
@@ -401,7 +403,7 @@ FASTFortranExporterVisitor >> visitFASTFortranEquivalenceGroup: aFASTFortranEqui
 		inParentheses: true
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranEquivalenceStatement: aFASTFortranEquivalenceStatement [
 
 	self
@@ -412,7 +414,7 @@ FASTFortranExporterVisitor >> visitFASTFortranEquivalenceStatement: aFASTFortran
 		newLine
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranExitStatement: aFASTFortranExitStatement [
 
 	self
@@ -421,7 +423,7 @@ FASTFortranExporterVisitor >> visitFASTFortranExitStatement: aFASTFortranExitSta
 		newLine
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranExternalStatement: aFASTFortranExternalStatement [
 
 	self
@@ -431,7 +433,7 @@ FASTFortranExporterVisitor >> visitFASTFortranExternalStatement: aFASTFortranExt
 		newLine
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranFormatStatement: aFASTFortranFormatStatement [
 
 	self
@@ -446,7 +448,7 @@ FASTFortranExporterVisitor >> visitFASTFortranFormatStatement: aFASTFortranForma
 	self newLine
 ]
 
-{ #category : #'visiting - programUnits' }
+{ #category : 'visiting - programUnits' }
 FASTFortranExporterVisitor >> visitFASTFortranFunction: aFASTFortranFunction [
 
 	self sixSpaces.
@@ -461,7 +463,7 @@ FASTFortranExporterVisitor >> visitFASTFortranFunction: aFASTFortranFunction [
 	self visitFASTFortranTBehaviouralEntity: aFASTFortranFunction
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranExporterVisitor >> visitFASTFortranFunctionCall: aFASTFortranFunctionCall [
 
 	self outputTopLevelExpression: [
@@ -472,7 +474,7 @@ FASTFortranExporterVisitor >> visitFASTFortranFunctionCall: aFASTFortranFunction
 			self << ')' ] ]
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranFunctionStatement: aFASTFortranFunctionStatement [
 	"call to #outputExpression:inParentheses: is oportunistic.
 	 It is not an operator precedence case"
@@ -490,7 +492,7 @@ FASTFortranExporterVisitor >> visitFASTFortranFunctionStatement: aFASTFortranFun
 	self newLine
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranGoToComputedStatement: aFASTFortranGoToComputedStatement [
 	"note: an unconditional goto use TWithLabelReferences, but it actually has only one"
 
@@ -507,7 +509,7 @@ FASTFortranExporterVisitor >> visitFASTFortranGoToComputedStatement: aFASTFortra
 	self newLine
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranGoToStatement: aFASTFortranGoToStatement [
 	"note: an unconditional goto use TWithLabelReferences, but it actually has only one"
 
@@ -519,7 +521,7 @@ FASTFortranExporterVisitor >> visitFASTFortranGoToStatement: aFASTFortranGoToSta
 	self newLine
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortranIfArithmeticStatementNode [
 
 	self
@@ -541,7 +543,7 @@ FASTFortranExporterVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortra
 	self newLine
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranIfBlockStatement: aFASTFortranIfBlockStatement [
 	"note: can we have a label on an else line ?"
 
@@ -567,7 +569,7 @@ FASTFortranExporterVisitor >> visitFASTFortranIfBlockStatement: aFASTFortranIfBl
 		newLine
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranIfLogicalStatement: aFASTFortranIfLogicalStatement [
 	"Need to fiddle with indentationLevel because THEN statement is on the same line
 	 as IfLogical
@@ -590,7 +592,7 @@ FASTFortranExporterVisitor >> visitFASTFortranIfLogicalStatement: aFASTFortranIf
 	indentLevel := tmp
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitFASTFortranImplicitRange: aFASTFortranImplicitRange [
 
 	self << aFASTFortranImplicitRange from.
@@ -600,7 +602,7 @@ FASTFortranExporterVisitor >> visitFASTFortranImplicitRange: aFASTFortranImplici
 			<< to ]
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranImplicitStatement: aFASTFortranImplicitStatement [
 
 	self
@@ -614,7 +616,7 @@ FASTFortranExporterVisitor >> visitFASTFortranImplicitStatement: aFASTFortranImp
 	self newLine
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitFASTFortranImplicitTypingRule: aFortranImplicitTypingRule [
 	"call to #outputExpression:inParentheses: is oportunistic.
 	 It is not an operator precedence case"
@@ -629,7 +631,7 @@ FASTFortranExporterVisitor >> visitFASTFortranImplicitTypingRule: aFortranImplic
 		inParentheses: true
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranExporterVisitor >> visitFASTFortranImpliedDo: aFASTFortranImpliedDo [
 
 	self
@@ -641,7 +643,7 @@ FASTFortranExporterVisitor >> visitFASTFortranImpliedDo: aFASTFortranImpliedDo [
 		inParentheses: true
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranInquireStatement: aFASTFortranInquireStatement [
 
 	self
@@ -654,14 +656,14 @@ FASTFortranExporterVisitor >> visitFASTFortranInquireStatement: aFASTFortranInqu
 		newLine
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitFASTFortranIntegerType: aFASTFortranType [
 
 	self << 'integer'.
 	self visitFASTFortranType: aFASTFortranType
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranIntrinsicStatement: aFASTFortranIntrinsicStatement [
 
 	self
@@ -672,20 +674,20 @@ FASTFortranExporterVisitor >> visitFASTFortranIntrinsicStatement: aFASTFortranIn
 		newLine
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitFASTFortranLabelReference: aFASTFortranLabelReference [
 
 	self << aFASTFortranLabelReference label
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitFASTFortranLogicalType: aFASTFortranType [
 
 	self << 'logical'.
 	self visitFASTFortranType: aFASTFortranType
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitFASTFortranLoopControlExpression: aFASTFortranLoopControlExpression [
 
 	aFASTFortranLoopControlExpression init accept: self.
@@ -699,7 +701,7 @@ FASTFortranExporterVisitor >> visitFASTFortranLoopControlExpression: aFASTFortra
 		self outputTopLevelExpression: [ incr accept: self ] ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitFASTFortranModel: aFASTFortranModel [
 
 	1 halt.  "never called?"
@@ -708,7 +710,7 @@ FASTFortranExporterVisitor >> visitFASTFortranModel: aFASTFortranModel [
 	^ self outputStream
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranOpenStatement: aFASTFortranOpenStatement [
 
 	self
@@ -721,7 +723,7 @@ FASTFortranExporterVisitor >> visitFASTFortranOpenStatement: aFASTFortranOpenSta
 		newLine
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranParameterStatement: aFASTFortranParameterStatement [
 
 	self
@@ -734,7 +736,7 @@ FASTFortranExporterVisitor >> visitFASTFortranParameterStatement: aFASTFortranPa
 		newLine
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranPauseStatement: aFASTFortranPausetStatement [
 
 	self
@@ -745,7 +747,7 @@ FASTFortranExporterVisitor >> visitFASTFortranPauseStatement: aFASTFortranPauset
 	self newLine
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranPrintStatement: aFASTFortranPrintStatement [
 
 	self
@@ -757,7 +759,7 @@ FASTFortranExporterVisitor >> visitFASTFortranPrintStatement: aFASTFortranPrintS
 		newLine
 ]
 
-{ #category : #'visiting - programUnits' }
+{ #category : 'visiting - programUnits' }
 FASTFortranExporterVisitor >> visitFASTFortranProgramMain: aFASTFortranProgramMain [
 
 	self
@@ -768,7 +770,7 @@ FASTFortranExporterVisitor >> visitFASTFortranProgramMain: aFASTFortranProgramMa
 	self visitFASTFortranTBehaviouralEntity: aFASTFortranProgramMain
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranReadStatement: aFASTFortranReadStatement [
 
 	self
@@ -776,14 +778,14 @@ FASTFortranExporterVisitor >> visitFASTFortranReadStatement: aFASTFortranReadSta
 		named: 'read'
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitFASTFortranRealType: aFASTFortranType [
 
 	self << 'real'.
 	self visitFASTFortranType: aFASTFortranType
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranRewindStatement: aFASTFortranRewindStatement [
 
 	self
@@ -796,13 +798,13 @@ FASTFortranExporterVisitor >> visitFASTFortranRewindStatement: aFASTFortranRewin
 		newLine
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranExporterVisitor >> visitFASTFortranScalarVariable: aFASTFortranScalarVariable [
 
 	self << aFASTFortranScalarVariable name
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBlock [
 	"must output statements and comments in the right order"
 
@@ -816,7 +818,7 @@ FASTFortranExporterVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatem
 	self unindent
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranStopStatement: aFASTFortranStoptStatement [
 
 	self
@@ -827,7 +829,7 @@ FASTFortranExporterVisitor >> visitFASTFortranStopStatement: aFASTFortranStoptSt
 	self newLine
 ]
 
-{ #category : #'visiting - programUnits' }
+{ #category : 'visiting - programUnits' }
 FASTFortranExporterVisitor >> visitFASTFortranSubroutine: aFASTFortranSubroutine [
 
 	self
@@ -839,7 +841,7 @@ FASTFortranExporterVisitor >> visitFASTFortranSubroutine: aFASTFortranSubroutine
 	self visitFASTFortranTBehaviouralEntity: aFASTFortranSubroutine
 ]
 
-{ #category : #'visiting - traits' }
+{ #category : 'visiting - traits' }
 FASTFortranExporterVisitor >> visitFASTFortranTAssignment: aFASTFortranTAssignment [
 
 	aFASTFortranTAssignment variable accept: self.
@@ -848,7 +850,7 @@ FASTFortranExporterVisitor >> visitFASTFortranTAssignment: aFASTFortranTAssignme
 		aFASTFortranTAssignment expression accept: self ]
 ]
 
-{ #category : #'visiting - traits' }
+{ #category : 'visiting - traits' }
 FASTFortranExporterVisitor >> visitFASTFortranTBehaviouralEntity: aFASTFortranTBehaviouralEntity [
 
 	aFASTFortranTBehaviouralEntity statementBlock accept: self.
@@ -858,14 +860,14 @@ FASTFortranExporterVisitor >> visitFASTFortranTBehaviouralEntity: aFASTFortranTB
 		newLine
 ]
 
-{ #category : #'visiting - traits' }
+{ #category : 'visiting - traits' }
 FASTFortranExporterVisitor >> visitFASTFortranTCharacterLiteral: aFASTFortranTLiteral [
 	"note: the ' are part of the text, cannot split line on them"
 
 	self << ('''' , aFASTFortranTLiteral primitiveValue , '''')
 ]
 
-{ #category : #'visiting - traits' }
+{ #category : 'visiting - traits' }
 FASTFortranExporterVisitor >> visitFASTFortranTComment: aFASTFortranTComment [
 
 	self
@@ -873,13 +875,13 @@ FASTFortranExporterVisitor >> visitFASTFortranTComment: aFASTFortranTComment [
 		newLine
 ]
 
-{ #category : #'visiting - traits' }
+{ #category : 'visiting - traits' }
 FASTFortranExporterVisitor >> visitFASTFortranTLiteral: aFASTFortranTLiteral [
 
 	self << aFASTFortranTLiteral primitiveValue
 ]
 
-{ #category : #'visiting - traits' }
+{ #category : 'visiting - traits' }
 FASTFortranExporterVisitor >> visitFASTFortranTReturnStatement: aFASTFortranTReturnStatement [
 
 	self
@@ -890,14 +892,14 @@ FASTFortranExporterVisitor >> visitFASTFortranTReturnStatement: aFASTFortranTRet
 	self newLine
 ]
 
-{ #category : #'visiting - traits' }
+{ #category : 'visiting - traits' }
 FASTFortranExporterVisitor >> visitFASTFortranTWithArguments: aFASTFortranTWithArguments [
 
 	self visitNodeListSeparatedByCommas:
 		aFASTFortranTWithArguments arguments
 ]
 
-{ #category : #'visiting - traits' }
+{ #category : 'visiting - traits' }
 FASTFortranExporterVisitor >> visitFASTFortranTWithFormat: aFASTFortranTWithFormatIdentifier [
 	"call to #outputExpression:inParentheses: is oportunistic.
 	 It is not an operator precedence case"
@@ -911,7 +913,7 @@ FASTFortranExporterVisitor >> visitFASTFortranTWithFormat: aFASTFortranTWithForm
 		inParentheses: true
 ]
 
-{ #category : #'visiting - traits' }
+{ #category : 'visiting - traits' }
 FASTFortranExporterVisitor >> visitFASTFortranTWithIOParameters: anIOParametersCollection [
 	"call to #outputExpression:inParentheses: is oportunistic.
 	 It is not an operator precedence case"
@@ -924,7 +926,7 @@ FASTFortranExporterVisitor >> visitFASTFortranTWithIOParameters: anIOParametersC
 		space
 ]
 
-{ #category : #'visiting - traits' }
+{ #category : 'visiting - traits' }
 FASTFortranExporterVisitor >> visitFASTFortranTWithParameters: aFASTFortranTWithParameters [
 	"call to #outputExpression:inParentheses: is oportunistic.
 	 It is not an operator precedence case"
@@ -936,7 +938,7 @@ FASTFortranExporterVisitor >> visitFASTFortranTWithParameters: aFASTFortranTWith
 		inParentheses: true
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitFASTFortranType: aFASTFortranType [
 
 	aFASTFortranType size ifNotNil: [ :length |
@@ -946,7 +948,7 @@ FASTFortranExporterVisitor >> visitFASTFortranType: aFASTFortranType [
 			ifFalse: [ length accept: self ] ]
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranExporterVisitor >> visitFASTFortranUnaryExpression: aFASTFortranUnaryExpression [
 
 	self
@@ -958,7 +960,7 @@ FASTFortranExporterVisitor >> visitFASTFortranUnaryExpression: aFASTFortranUnary
 		withOperator: aFASTFortranUnaryExpression operator
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFortranVariableDeclarationStatement [
 
 	self visitFASTFortranAbstractStatement:
@@ -970,7 +972,7 @@ FASTFortranExporterVisitor >> visitFASTFortranVariableDeclarationStatement: aFAS
 	self newLine
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitFASTFortranVariableDeclarator: aFASTFortranVariableDeclarator [
 	"call to #outputExpression:inParentheses: is oportunistic.
 	 It is not an operator precedence case"
@@ -988,7 +990,7 @@ FASTFortranExporterVisitor >> visitFASTFortranVariableDeclarator: aFASTFortranVa
 		self outputTopLevelExpression: [ expression accept: self ] ]
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranWriteStatement: aFASTFortranWriteStatement [
 
 	self
@@ -996,13 +998,13 @@ FASTFortranExporterVisitor >> visitFASTFortranWriteStatement: aFASTFortranWriteS
 		named: 'write'
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitFASTTEntity: aFASTTEntity [
 	"all children visit are explicit, so don't do anything here"
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranExporterVisitor >> visitNodeListSeparatedByCommas: aCollection [
 
 	aCollection
