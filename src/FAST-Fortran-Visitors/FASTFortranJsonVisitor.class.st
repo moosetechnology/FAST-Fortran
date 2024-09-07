@@ -78,6 +78,17 @@ FASTFortranJsonVisitor >> invertLiteral: aFASTFortranLiteral class: class [
 	^aFASTFortranLiteral
 ]
 
+{ #category : 'private' }
+FASTFortranJsonVisitor >> isEsopeDimensionSize: marker and: div [
+	"For an Esope dimension size 'operator'
+	 the marker should be S__ and the div should be '/'"
+
+	^(marker class = FASTFortranScalarVariable)
+	and: [ (marker name = 'S__')
+		and: [ (div class = FASTFortranBinaryExpression) 
+			and: [ div operator = '/' ] ] ]
+]
+
 { #category : 'accessing' }
 FASTFortranJsonVisitor >> model [
 
@@ -120,12 +131,13 @@ FASTFortranJsonVisitor >> putMembers: entities inBody: stmtBlock [
 	end   := entities first endPos.
 
 	entities do: [ :each |
+		each isCollection ifFalse: [
 		start := start min: each startPos.
 		end   := end max: each endPos.
 
 		each isStatement
 			ifTrue: [ stmtBlock addStatement: each ]
-			ifFalse: [ stmtBlock addComment: each ]
+			ifFalse: [ stmtBlock addComment: each ]]
 	].
 
 	stmtBlock startPos: start.
@@ -211,12 +223,19 @@ FASTFortranJsonVisitor >> visitBinary: aBinaryExpressionNode [
 	| data expr |
 	data := super visitBinary: aBinaryExpressionNode.
 
-	expr := data third.
-	self set: expr startEnd: data first.
-	expr
-		leftOperand: data second;
-		rightOperand: data fourth.
-	^ expr
+	^(self isEsopeDimensionSize: data second and: data third)
+		ifTrue: [ 
+			FASTEsopeDimensionSize new
+				mooseModel: model
+		]
+		ifFalse: [
+			expr := data third.
+			self set: expr startEnd: data first.
+			expr
+				leftOperand: data second ;
+				rightOperand: data fourth ;
+				yourself
+		]
 ]
 
 { #category : 'visiting prog-unit' }
@@ -428,6 +447,20 @@ FASTFortranJsonVisitor >> visitDeclaratorVariable: aDeclaratorVariableNode [
 FASTFortranJsonVisitor >> visitDeclarators: aDeclaratorsList [
 
 	^ (super visitDeclarators: aDeclaratorsList) second
+]
+
+{ #category : 'visiting expression' }
+FASTFortranJsonVisitor >> visitDeref: aDerefNode [
+	"span expression field"
+
+	| data |
+
+	data := super visitDeref: aDerefNode.
+	^FASTEsopeQualifiedAttribute new
+		mooseModel: model ;
+		name: data third name ;
+		qualifier: data second ;
+		yourself
 ]
 
 { #category : 'visiting statement' }
@@ -1224,14 +1257,23 @@ FASTFortranJsonVisitor >> visitSubroutine: aSubroutineNode [
 
 { #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitSubscript: aSubscriptNode [
+	"span expression indices
+	
+	 note: in the case of `ptr.att(S__/1)` , we get a 'subscript' with
+	 - expression = lb.ref -> returns a FASTEsopeQualifiedAttribute
+	 - indices = S__/1 -> returns a FASTEsopeDimensionSize"
 
 	| data |
 	data := super visitSubscript: aSubscriptNode.
 
-	^(self newEntity: FASTFortranArrayVariable atPosition: data first)
-		name: data second name ;
-		indices: data third ;
-		yourself
+	^(data second class = FASTEsopeQualifiedAttribute)
+		ifTrue: [ data second ]
+		ifFalse: 	[
+			(self newEntity: FASTFortranArrayVariable atPosition: data first)
+				name: data second name ;
+				indices: data third ;
+				yourself
+		]
 ]
 
 { #category : 'visiting expression' }

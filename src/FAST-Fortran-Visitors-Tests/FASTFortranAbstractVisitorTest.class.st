@@ -1,14 +1,16 @@
 Class {
-	#name : #FASTFortranAbstractVisitorTest,
-	#superclass : #TestCase,
+	#name : 'FASTFortranAbstractVisitorTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'ast',
 		'visitor'
 	],
-	#category : #'FAST-Fortran-Visitors-Tests-Visitor'
+	#category : 'FAST-Fortran-Visitors-Tests-Visitor',
+	#package : 'FAST-Fortran-Visitors-Tests',
+	#tag : 'Visitor'
 }
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> aFunctionWithConditional [
 	"
 	CHARACTER*20 FUNCTION fctBigSmall( x, y)
@@ -62,7 +64,7 @@ FASTFortranAbstractVisitorTest >> aFunctionWithConditional [
 
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> add: statementBlock statement: aStatement [
 
 	aStatement startPos: (statementBlock statements size + 1).
@@ -72,7 +74,7 @@ FASTFortranAbstractVisitorTest >> add: statementBlock statement: aStatement [
 
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> addParameter: name type: typeDescription [
 	"assume #ast contains a function definition"
 
@@ -83,14 +85,14 @@ FASTFortranAbstractVisitorTest >> addParameter: name type: typeDescription [
 	^ self addStatement: (self declarationStatement: name type: typeDescription)
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> addStatement: aStatement [
 
 	^self add: ast statementBlock statement: aStatement
 
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> array: name access: aCollection [
 
 	^FASTFortranArrayVariable new
@@ -100,7 +102,7 @@ FASTFortranAbstractVisitorTest >> array: name access: aCollection [
 
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> arrayDeclaration: variable dimensions: aCollection [
 
 	^ FASTFortranVariableDeclarationStatement new
@@ -111,7 +113,7 @@ FASTFortranAbstractVisitorTest >> arrayDeclaration: variable dimensions: aCollec
 		  yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> arrayDeclarator: variable dimensions: aCollection [
 
 	| declarator |
@@ -128,7 +130,7 @@ FASTFortranAbstractVisitorTest >> arrayDeclarator: variable dimensions: aCollect
 	^ declarator
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> arrayVariable: aName indice: anInteger [
 	^FASTFortranArrayVariable new
 		name: aName ;
@@ -136,7 +138,7 @@ FASTFortranAbstractVisitorTest >> arrayVariable: aName indice: anInteger [
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> assignementExpression: aName value: value [
 
 	^FASTFortranAssignmentExpression new
@@ -145,7 +147,7 @@ FASTFortranAbstractVisitorTest >> assignementExpression: aName value: value [
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> assignementStatement: aName value: rhs [
 
 	^FASTFortranAssignmentStatement new
@@ -154,13 +156,13 @@ FASTFortranAbstractVisitorTest >> assignementStatement: aName value: rhs [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractVisitorTest >> ast [
 
 	^ast
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> binary: op left: lhs right: rhs [
 
 	^FASTFortranBinaryExpression new
@@ -170,7 +172,7 @@ FASTFortranAbstractVisitorTest >> binary: op left: lhs right: rhs [
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> callStatement: aName arguments: aCollection [	
 	"end position is approximate, test should adjust if a real value is needed"
 
@@ -182,21 +184,21 @@ FASTFortranAbstractVisitorTest >> callStatement: aName arguments: aCollection [
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> characterLiteral: value [
 	^FASTFortranCharacterLiteral new
 		primitiveValue: value ;
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> characterType: dimension [
 	^FASTFortranCharacterType new
 		size: (self typeSize: dimension) ;
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> comment: text [
 	^FASTFortranComment new
 		content: text asString ;
@@ -205,13 +207,13 @@ FASTFortranAbstractVisitorTest >> comment: text [
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> declarationStatement: name type: typeDescription [
 
 	^self declarationStatement: name type: typeDescription init: nil
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> declarationStatement: aName type: typeDescription init: expression [
 
 	| decl |
@@ -223,7 +225,7 @@ FASTFortranAbstractVisitorTest >> declarationStatement: aName type: typeDescript
 		
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> declarationStatement: typeDescription variables: aCollection [
 	"Bulk declaration of several variables"
 
@@ -235,7 +237,7 @@ FASTFortranAbstractVisitorTest >> declarationStatement: typeDescription variable
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> doStatement: control statements: stmtBlock [
 	"control is a collection of:
 	 - #variable
@@ -258,14 +260,14 @@ FASTFortranAbstractVisitorTest >> doStatement: control statements: stmtBlock [
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> entity: owner parameters: aCollection [
 	^owner
 		parameters: (self scalarVariables: aCollection) ;
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> exitStatement: label [
 
 	^FASTFortranExitStatement new
@@ -273,7 +275,7 @@ FASTFortranAbstractVisitorTest >> exitStatement: label [
 		yourself"
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> externalStatement: aName [
 	^FASTFortranExternalStatement new
 		name: aName ;
@@ -282,7 +284,7 @@ FASTFortranAbstractVisitorTest >> externalStatement: aName [
 		yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranAbstractVisitorTest >> findBasicBlocks: aClass with: aPharoBooleanBlock [
 
 	^visitor basicBlocks
@@ -292,7 +294,7 @@ FASTFortranAbstractVisitorTest >> findBasicBlocks: aClass with: aPharoBooleanBlo
 		]
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> function: name type: typeDescription [
 
 	ast := self functionDeclaration: name.
@@ -302,7 +304,7 @@ FASTFortranAbstractVisitorTest >> function: name type: typeDescription [
 
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> functionCall: aName arguments: aCollection [
 
 	^FASTFortranFunctionCall new
@@ -311,7 +313,7 @@ FASTFortranAbstractVisitorTest >> functionCall: aName arguments: aCollection [
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> functionDeclaration: aName [
 	"end position is approximate, test should adjust if a real value is needed"
 
@@ -323,7 +325,7 @@ FASTFortranAbstractVisitorTest >> functionDeclaration: aName [
 		yourself.
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> gotoComputedStatement: labels expression: expr [
 
 	^FASTFortranGoToComputedStatement new
@@ -332,7 +334,7 @@ FASTFortranAbstractVisitorTest >> gotoComputedStatement: labels expression: expr
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> gotoStatement: label [
 
 	^FASTFortranGoToStatement new
@@ -340,7 +342,7 @@ FASTFortranAbstractVisitorTest >> gotoStatement: label [
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> ifArithmetic: condition negative: negativeLabel  null: nullLabel  positive: positiveLabel [ 
 	^FASTFortranIfArithmeticStatement new
 		condition: (self makeSimpleExpression: condition) ;
@@ -349,7 +351,7 @@ FASTFortranAbstractVisitorTest >> ifArithmetic: condition negative: negativeLabe
 		greaterLabel: (self labelReference: positiveLabel asString).
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> ifBlock: condition then: thenBlock else: elseBlock [
 	^FASTFortranIfBlockStatement new
 		condition: (self makeSimpleExpression: condition) ;
@@ -358,7 +360,7 @@ FASTFortranAbstractVisitorTest >> ifBlock: condition then: thenBlock else: elseB
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> implicitRange: from to: to [
 
 	^FASTFortranImplicitRange new
@@ -367,7 +369,7 @@ FASTFortranAbstractVisitorTest >> implicitRange: from to: to [
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> implicitStatement [
 	^FASTFortranImplicitStatement new
 		startPos: 1 ;
@@ -377,21 +379,21 @@ FASTFortranAbstractVisitorTest >> implicitStatement [
 
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> integerLiteral: value [
 	^FASTFortranIntegerLiteral new
 		primitiveValue: value ;
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> integerType: dimension [
 	^FASTFortranIntegerType new
 		size: (self typeSize: dimension) ;
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> ioStatement: aClass ioParams: params arguments: args [
 
 	^aClass new
@@ -402,7 +404,7 @@ FASTFortranAbstractVisitorTest >> ioStatement: aClass ioParams: params arguments
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> labelReference: aString [
 
 	^FASTFortranLabelReference new
@@ -410,7 +412,7 @@ FASTFortranAbstractVisitorTest >> labelReference: aString [
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> labelled: label statement: aStatement [
 
 	^aStatement
@@ -418,7 +420,7 @@ FASTFortranAbstractVisitorTest >> labelled: label statement: aStatement [
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> logicalIf: condition statement: statement [
 
 	^ FASTFortranIfLogicalStatement new
@@ -427,19 +429,19 @@ FASTFortranAbstractVisitorTest >> logicalIf: condition statement: statement [
 		  yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> logicalLiteral: value [
 	^FASTFortranBooleanLiteral new
 		primitiveValue: value ;
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> logicalType: dimension [
 	^FASTFortranLogicalType new
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> loopControlInit: init increment: incr limit: limit [
 	"#init is a pair:
 	 - #variable name
@@ -458,7 +460,7 @@ FASTFortranAbstractVisitorTest >> loopControlInit: init increment: incr limit: l
 	^entity
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> makeSimpleExpression: description [
 
 	description ifNil: [ ^nil ].
@@ -473,7 +475,7 @@ FASTFortranAbstractVisitorTest >> makeSimpleExpression: description [
 	
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> makeType: typeDescription [
 	"typeDescription can be a symbol (eg. #integer) or a pair: #(character '*')"
 
@@ -489,13 +491,13 @@ FASTFortranAbstractVisitorTest >> makeType: typeDescription [
 	^self perform: helper with: pair second.	
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranAbstractVisitorTest >> newVisitor [
 
 	self subclassResponsibility
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> printStatement: aCollection [
 
 	^FASTFortranPrintStatement new
@@ -506,33 +508,33 @@ FASTFortranAbstractVisitorTest >> printStatement: aCollection [
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> readStatement: aCollection [
 
 	^self readStatement: aCollection ioParams: #( * * )
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> readStatement: args ioParams: params [
 
 	^self ioStatement: FASTFortranReadStatement ioParams: params arguments: args
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> realLiteral: value [
 	^FASTFortranRealLiteral new
 		primitiveValue: value ;
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> realType: dimension [
 	^FASTFortranRealType new
 		size: (self typeSize: dimension) ;
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> returnStatement: expressionDescription [
 
 	^FASTFortranReturnStatement new
@@ -542,26 +544,26 @@ FASTFortranAbstractVisitorTest >> returnStatement: expressionDescription [
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> scalarVariable: aName [
 	^FASTFortranScalarVariable new
 		name: aName ;
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> scalarVariables: aCollectionOfString [
 	^aCollectionOfString collect: [ :aString | self scalarVariable: aString ]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranAbstractVisitorTest >> setUp [
 	super setUp.
 
 	visitor := self newVisitor
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> statementBlock: aCollection [
 	aCollection withIndexDo: [ :stmt :i | stmt startPos: i ].
 	^FASTFortranStatementBlock new
@@ -571,7 +573,7 @@ FASTFortranAbstractVisitorTest >> statementBlock: aCollection [
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> subroutine: aName [
 
 	ast := FASTFortranSubroutine new
@@ -584,14 +586,14 @@ FASTFortranAbstractVisitorTest >> subroutine: aName [
 	^ast
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> typeSize: dimension [
 	dimension isNumber ifTrue: [ ^self integerLiteral: dimension asString ].
 	dimension = '*' ifTrue: [ ^FASTFortranAsterisk new ].
 	^nil
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> unary: op operand: operand [
 
 	^FASTFortranUnaryExpression new
@@ -600,25 +602,25 @@ FASTFortranAbstractVisitorTest >> unary: op operand: operand [
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> variableDeclarator: aName [
 	^FASTFortranVariableDeclarator new
 		name: aName ;
 		yourself
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> variableDeclarators: aCollectionOfString [
 	^aCollectionOfString collect: [ :aString | self variableDeclarator: aString ]
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> writeStatement: aCollection [
 
 	^self writeStatement: aCollection ioParams: #( * * )
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> writeStatement: args ioParams: params [
 
 	^self ioStatement: FASTFortranWriteStatement ioParams: params arguments: args

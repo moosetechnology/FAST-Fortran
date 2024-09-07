@@ -2,12 +2,14 @@
 A FASTFortranExporterVisitorTest is a test class for testing the behavior of FASTFortranExporterVisitor
 "
 Class {
-	#name : #FASTFortranExporterVisitorTest,
-	#superclass : #FASTFortranAbstractVisitorTest,
-	#category : #'FAST-Fortran-Visitors-Tests-Visitor'
+	#name : 'FASTFortranExporterVisitorTest',
+	#superclass : 'FASTFortranAbstractVisitorTest',
+	#category : 'FAST-Fortran-Visitors-Tests-Visitor',
+	#package : 'FAST-Fortran-Visitors-Tests',
+	#tag : 'Visitor'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranExporterVisitorTest >> assertExport: anEntity equals: expectedString [
 	| generated |
 	anEntity accept: visitor.
@@ -15,13 +17,13 @@ FASTFortranExporterVisitorTest >> assertExport: anEntity equals: expectedString 
 	self assert: generated equals: expectedString
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranExporterVisitorTest >> newVisitor [
 
 	^FASTFortranExporterVisitor new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranExporterVisitorTest >> testArrayDeclaration [
 	| stmt |
 	stmt := self arrayDeclaration: 'v' dimensions: #( #('1' '10') ).
@@ -33,7 +35,7 @@ FASTFortranExporterVisitorTest >> testArrayDeclaration [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testArrayDeclarationImplicitLowerBound [
 	| stmt |
 	stmt := self arrayDeclaration: 'v' dimensions: #( #('1' '10') ).
@@ -46,7 +48,7 @@ FASTFortranExporterVisitorTest >> testArrayDeclarationImplicitLowerBound [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testArrayDeclarationMultipleDimensions [
 	| stmt |
 	stmt := self arrayDeclaration: 'v' dimensions: #( #('1' '10') #('-10' '-1') ).
@@ -58,7 +60,7 @@ FASTFortranExporterVisitorTest >> testArrayDeclarationMultipleDimensions [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranExporterVisitorTest >> testArrayRange [
 	| stmt |
 	stmt := FASTFortranArrayVariable new
@@ -74,7 +76,7 @@ FASTFortranExporterVisitorTest >> testArrayRange [
 'arr(1:max)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranExporterVisitorTest >> testArrayVariable [
 	| stmt |
 	stmt := FASTFortranArrayVariable new
@@ -86,7 +88,7 @@ FASTFortranExporterVisitorTest >> testArrayVariable [
 'arr()'
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testAssignementFunctionCall [
 
 	| stmt |
@@ -105,7 +107,7 @@ FASTFortranExporterVisitorTest >> testAssignementFunctionCall [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testAssignementStatementArrayAssigned [
 	| stmt |
 	stmt := self
@@ -120,7 +122,7 @@ FASTFortranExporterVisitorTest >> testAssignementStatementArrayAssigned [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testAssignementStatementLiteralValue [
 	| stmt |
 	stmt := self assignementStatement: #aVar value: (self logicalLiteral: '.true.').
@@ -132,7 +134,7 @@ FASTFortranExporterVisitorTest >> testAssignementStatementLiteralValue [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testAssignementStatementVariable [
 	| stmt |
 	stmt := self assignementStatement: #a value: #b.
@@ -144,7 +146,7 @@ FASTFortranExporterVisitorTest >> testAssignementStatementVariable [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranExporterVisitorTest >> testBinaryExpression [
 	| expr |
 	expr := FASTFortranBinaryExpression new
@@ -157,7 +159,7 @@ FASTFortranExporterVisitorTest >> testBinaryExpression [
 		equals: 'a + 5'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranExporterVisitorTest >> testBinaryExpressionNe [
 	| expr |
 	expr := FASTFortranBinaryExpression new
@@ -170,7 +172,7 @@ FASTFortranExporterVisitorTest >> testBinaryExpressionNe [
 		equals: 'a .ne. 5'
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testBlockStatementWithCommentAndStatement [
 	"note: positions are approximate, all we need is that the assignement is after the comment"
 	| stmt cmt block |
@@ -194,7 +196,7 @@ FASTFortranExporterVisitorTest >> testBlockStatementWithCommentAndStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testCallStatementExpressionArg [
 	| stmt |
 	stmt := self callStatement: 'subrtn' arguments: {
@@ -207,7 +209,7 @@ FASTFortranExporterVisitorTest >> testCallStatementExpressionArg [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testCallStatementNoArgs [
 	| stmt |
 	stmt := self callStatement: 'subrtn' arguments: #().
@@ -219,7 +221,7 @@ FASTFortranExporterVisitorTest >> testCallStatementNoArgs [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testCallStatementWithArgs [
 	| stmt |
 	stmt := self callStatement: 'subrtn' arguments: {
@@ -233,7 +235,7 @@ FASTFortranExporterVisitorTest >> testCallStatementWithArgs [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranExporterVisitorTest >> testComment [
 	| cmt |
 	cmt := self comment: 'C This is a comment'.
@@ -245,7 +247,7 @@ FASTFortranExporterVisitorTest >> testComment [
 '.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranExporterVisitorTest >> testComment72Characters [
 	| cmt |
 	cmt := self comment: 'C 3456789 123456789 123456789 123456789 123456789 123456789 123456789 12'.
@@ -257,7 +259,7 @@ FASTFortranExporterVisitorTest >> testComment72Characters [
 '.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testCommonStatement [
 
 	| stmt |
@@ -280,7 +282,7 @@ FASTFortranExporterVisitorTest >> testCommonStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testContinueStatement [
 	| stmt |
 	stmt := FASTFortranContinueStatement new
@@ -293,7 +295,7 @@ FASTFortranExporterVisitorTest >> testContinueStatement [
 '.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testDataStatement [
 
 	| stmt |
@@ -317,7 +319,7 @@ FASTFortranExporterVisitorTest >> testDataStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testDimensionStatement [
 
 	| stmt |
@@ -335,7 +337,7 @@ FASTFortranExporterVisitorTest >> testDimensionStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testDoStatement [
 	| stmt |
 
@@ -349,7 +351,7 @@ FASTFortranExporterVisitorTest >> testDoStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testDoStatementNoIncrement [
 	| stmt |
 
@@ -363,7 +365,7 @@ FASTFortranExporterVisitorTest >> testDoStatementNoIncrement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testDoStatementWithLabel [
 	| stmt |
 
@@ -380,7 +382,7 @@ FASTFortranExporterVisitorTest >> testDoStatementWithLabel [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranExporterVisitorTest >> testEmptySubroutineNoParameters [
 	| sub |
 	sub := self subroutine: 'blah'.
@@ -393,7 +395,7 @@ FASTFortranExporterVisitorTest >> testEmptySubroutineNoParameters [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranExporterVisitorTest >> testEmptySubroutineTwoParameters [
 	| sub |
 	sub := self subroutine: 'blah'.
@@ -409,7 +411,7 @@ FASTFortranExporterVisitorTest >> testEmptySubroutineTwoParameters [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testEntryStatement [
 
 	| stmt |
@@ -425,7 +427,7 @@ FASTFortranExporterVisitorTest >> testEntryStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testEquivalenceStatement [
 
 	| stmt |
@@ -450,7 +452,7 @@ FASTFortranExporterVisitorTest >> testEquivalenceStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testExitStatement [
 	| stmt |
 	stmt := self exitStatement: nil.
@@ -462,7 +464,7 @@ FASTFortranExporterVisitorTest >> testExitStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testExternalStatement [
 	| stmt |
 	stmt := self externalStatement: 'aVar'.
@@ -474,7 +476,7 @@ FASTFortranExporterVisitorTest >> testExternalStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testFormatStatement [
 	| stmt |
 	stmt := FASTFortranFormatStatement new
@@ -489,7 +491,7 @@ FASTFortranExporterVisitorTest >> testFormatStatement [
 '.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testFunctionNoParameterNoStatement [
 	| node |
 	node := self functionDeclaration: 'BLAH'.
@@ -502,7 +504,7 @@ FASTFortranExporterVisitorTest >> testFunctionNoParameterNoStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testFunctionNoParameterWithStatement [
 	| node stmt |
 	stmt := self returnStatement: (self scalarVariable: 'i').
@@ -519,7 +521,7 @@ FASTFortranExporterVisitorTest >> testFunctionNoParameterWithStatement [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranExporterVisitorTest >> testFunctionNoReturnType [
 	| fct |
 	fct := self functionDeclaration: 'blah'.
@@ -533,7 +535,7 @@ FASTFortranExporterVisitorTest >> testFunctionNoReturnType [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testFunctionStatement [
 	| node |
 	node := FASTFortranFunctionStatement new.
@@ -548,7 +550,7 @@ FASTFortranExporterVisitorTest >> testFunctionStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testFunctionWithParameterNoStatement [
 	| node |
 	node := self functionDeclaration: 'BLAH'.
@@ -562,7 +564,7 @@ FASTFortranExporterVisitorTest >> testFunctionWithParameterNoStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testGotoComputedStatement [
 	| stmt |
 	stmt := FASTFortranGoToComputedStatement new
@@ -577,7 +579,7 @@ FASTFortranExporterVisitorTest >> testGotoComputedStatement [
 '.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testGotoStatement [
 	| stmt |
 	stmt := self gotoStatement: '110'.
@@ -589,7 +591,7 @@ FASTFortranExporterVisitorTest >> testGotoStatement [
 '.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testIfArithmeticStatement [
 	| stmt |
 
@@ -602,7 +604,7 @@ FASTFortranExporterVisitorTest >> testIfArithmeticStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testIfBlockStatementEmpty [
 	| stmt |
 	stmt := self ifBlock: (self scalarVariable: 'bool') then: #() else: nil.
@@ -615,7 +617,7 @@ FASTFortranExporterVisitorTest >> testIfBlockStatementEmpty [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testIfBlockStatementEmptyBinaryCondition [
 	| stmt cond |
 	cond := self binary: '.gt.' left: #a right: 0.
@@ -629,7 +631,7 @@ FASTFortranExporterVisitorTest >> testIfBlockStatementEmptyBinaryCondition [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testIfBlockStatementNested [
 	| stmt |
 	stmt := self
@@ -650,7 +652,7 @@ FASTFortranExporterVisitorTest >> testIfBlockStatementNested [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testIfBlockStatementWithElseBlock [
 	| stmt |
 	stmt := self
@@ -668,7 +670,7 @@ FASTFortranExporterVisitorTest >> testIfBlockStatementWithElseBlock [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testIfBlockStatementWithThenBlock [
 	| stmt |
 	stmt := self
@@ -685,7 +687,7 @@ FASTFortranExporterVisitorTest >> testIfBlockStatementWithThenBlock [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testIfLogicalStatementEmpty [
 	| stmt |
 	stmt := FASTFortranIfLogicalStatement new
@@ -700,7 +702,7 @@ FASTFortranExporterVisitorTest >> testIfLogicalStatementEmpty [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testImplicitStatement [
 	| stmt |
 	stmt := self implicitStatement.
@@ -712,7 +714,7 @@ FASTFortranExporterVisitorTest >> testImplicitStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testImplicitStatementSeveralRules [
 	| stmt |
 	stmt := self implicitStatement.
@@ -731,7 +733,7 @@ FASTFortranExporterVisitorTest >> testImplicitStatementSeveralRules [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testImpliedDoExpression [
 	| expr init |
 
@@ -745,7 +747,7 @@ FASTFortranExporterVisitorTest >> testImpliedDoExpression [
 '(v,i,i = 1,max,1)'
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testInquireStatement [
 	| stmt |
 	stmt := FASTFortranInquireStatement new
@@ -762,7 +764,7 @@ FASTFortranExporterVisitorTest >> testInquireStatement [
 '.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testIntrinsicStatement [
 
 	| stmt |
@@ -778,7 +780,7 @@ FASTFortranExporterVisitorTest >> testIntrinsicStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testLabelledStatement [
 	| stmt |
 	stmt := self returnStatement: nil.
@@ -791,7 +793,7 @@ FASTFortranExporterVisitorTest >> testLabelledStatement [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranExporterVisitorTest >> testLongDataStatementLine [
 
 	| stmt |
@@ -815,7 +817,7 @@ FASTFortranExporterVisitorTest >> testLongDataStatementLine [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranExporterVisitorTest >> testLongFormatLine [
 
 	| stmt |
@@ -833,7 +835,7 @@ FASTFortranExporterVisitorTest >> testLongFormatLine [
 '.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranExporterVisitorTest >> testLongLine [
 	| stmt |
 	stmt := self declarationStatement: #character variables: #(abc1 abc2 abc3 abc4 abc5 abc6 abc7 abc8 abc9 abc10 abc11 abc12 abc13 abc14 abc15 abc16 abc17 abc18 abc19 abc20 abc21 abc22 abc23 abc24 abc25).
@@ -847,7 +849,7 @@ FASTFortranExporterVisitorTest >> testLongLine [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranExporterVisitorTest >> testLongLineDontBreak [
 	| stmt |
 	stmt := self declarationStatement: #character variables: #(abc1 abc2 abc3 abc4 abc5 abc6 abc7 abc8 abc9 abc10 abc11 abc12 abc13 abc14 abc15 abc16 abc17 abc18 abc19 abc20 abc21 abc22 abc23 abc24 abc25).
@@ -861,7 +863,7 @@ FASTFortranExporterVisitorTest >> testLongLineDontBreak [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testMainProgram [
 	| node |
 	node := FASTFortranProgramMain new
@@ -877,7 +879,7 @@ FASTFortranExporterVisitorTest >> testMainProgram [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testOneDeclarationCharacterType [
 	| stmt |
 	stmt := self declarationStatement: #character variables: #(r).
@@ -889,7 +891,7 @@ FASTFortranExporterVisitorTest >> testOneDeclarationCharacterType [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testOneDeclarationCharacterTypeStarSize [
 	| stmt |
 	stmt := self declarationStatement: #(character *) variables: #(str).
@@ -901,7 +903,7 @@ FASTFortranExporterVisitorTest >> testOneDeclarationCharacterTypeStarSize [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testOneDeclarationCharacterTypeWithSize [
 	| stmt |
 	stmt := self declarationStatement: #(character 10) variables: #(str).
@@ -913,7 +915,7 @@ FASTFortranExporterVisitorTest >> testOneDeclarationCharacterTypeWithSize [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testOneDeclarationDoublePrecisionType [
 	| stmt |
 	stmt := self declarationStatement: (FASTFortranDoublePrecisionType new) variables: #(r).
@@ -925,7 +927,7 @@ FASTFortranExporterVisitorTest >> testOneDeclarationDoublePrecisionType [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testOneDeclarationIntegerTypeWithSize [
 	| stmt |
 	stmt := self declarationStatement: #(integer 8) variables: #(i).
@@ -937,7 +939,7 @@ FASTFortranExporterVisitorTest >> testOneDeclarationIntegerTypeWithSize [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testOneDeclarationLogicalType [
 	| stmt |
 	stmt := self declarationStatement: #logical variables: #(r).
@@ -949,7 +951,7 @@ FASTFortranExporterVisitorTest >> testOneDeclarationLogicalType [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testOneDeclarationRealType [
 	| stmt |
 	stmt := self declarationStatement: #real variables: #(r).
@@ -961,7 +963,7 @@ FASTFortranExporterVisitorTest >> testOneDeclarationRealType [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testOneDeclarationTwoVariables [
 	| stmt |
 	stmt := self declarationStatement: #integer variables: #(i j).
@@ -973,7 +975,7 @@ FASTFortranExporterVisitorTest >> testOneDeclarationTwoVariables [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testOpenStatement [
 	| stmt |
 	stmt := FASTFortranOpenStatement new
@@ -990,7 +992,7 @@ FASTFortranExporterVisitorTest >> testOpenStatement [
 '.
 ]
 
-{ #category : #'tests - operator precedence' }
+{ #category : 'tests - operator precedence' }
 FASTFortranExporterVisitorTest >> testOperatorsPrecedenceNoParentheses [
 	
 	| expr |
@@ -1000,7 +1002,7 @@ FASTFortranExporterVisitorTest >> testOperatorsPrecedenceNoParentheses [
 		equals: 'v + 5'
 ]
 
-{ #category : #'tests - operator precedence' }
+{ #category : 'tests - operator precedence' }
 FASTFortranExporterVisitorTest >> testOperatorsPrecedenceSubHasHigherPrecedence [
 	
 	| expr |
@@ -1011,7 +1013,7 @@ FASTFortranExporterVisitorTest >> testOperatorsPrecedenceSubHasHigherPrecedence 
 		equals: 'i + j * 5'
 ]
 
-{ #category : #'tests - operator precedence' }
+{ #category : 'tests - operator precedence' }
 FASTFortranExporterVisitorTest >> testOperatorsPrecedenceSubHasLowerPrecedence [
 	
 	| expr |
@@ -1022,7 +1024,7 @@ FASTFortranExporterVisitorTest >> testOperatorsPrecedenceSubHasLowerPrecedence [
 		equals: 'i * (j + 5)'
 ]
 
-{ #category : #'tests - operator precedence' }
+{ #category : 'tests - operator precedence' }
 FASTFortranExporterVisitorTest >> testOperatorsPrecedenceSubUnary [
 	
 	| expr |
@@ -1033,7 +1035,7 @@ FASTFortranExporterVisitorTest >> testOperatorsPrecedenceSubUnary [
 		equals: 'logical1 .and. .not. logical2'
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testPauseStatementEmpty [
 	| stmt |
 	stmt := FASTFortranPauseStatement new.
@@ -1045,7 +1047,7 @@ FASTFortranExporterVisitorTest >> testPauseStatementEmpty [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testPauseStatementWithInteger [
 	| stmt |
 	stmt := FASTFortranParameterStatement new
@@ -1061,7 +1063,7 @@ FASTFortranExporterVisitorTest >> testPauseStatementWithInteger [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testPauseStatementWithString [
 	| stmt |
 	stmt := FASTFortranPauseStatement new
@@ -1075,7 +1077,7 @@ FASTFortranExporterVisitorTest >> testPauseStatementWithString [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testPrintStatement [
 	| stmt |
 	stmt := self printStatement: { self characterLiteral: 'message' }.
@@ -1087,7 +1089,7 @@ FASTFortranExporterVisitorTest >> testPrintStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testReadStatement [
 	| stmt |
 	stmt := self
@@ -1106,7 +1108,7 @@ FASTFortranExporterVisitorTest >> testReadStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testReturnStatementEmpty [
 	| stmt |
 	stmt :=  self returnStatement: nil.
@@ -1118,7 +1120,7 @@ FASTFortranExporterVisitorTest >> testReturnStatementEmpty [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testReturnStatementLiteralValue [
 	| stmt |
 	stmt := self returnStatement: (self realLiteral: '3.5').
@@ -1130,7 +1132,7 @@ FASTFortranExporterVisitorTest >> testReturnStatementLiteralValue [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testRewindStatement [
 	| stmt |
 	stmt := FASTFortranRewindStatement new
@@ -1147,7 +1149,7 @@ FASTFortranExporterVisitorTest >> testRewindStatement [
 '.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testStopStatementEmpty [
 	| stmt |
 	stmt := FASTFortranStopStatement new.
@@ -1159,7 +1161,7 @@ FASTFortranExporterVisitorTest >> testStopStatementEmpty [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testStopStatementWithInteger [
 	| stmt |
 	stmt := FASTFortranStopStatement new
@@ -1173,7 +1175,7 @@ FASTFortranExporterVisitorTest >> testStopStatementWithInteger [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testStopStatementWithString [
 	| stmt |
 	stmt := FASTFortranStopStatement new
@@ -1187,7 +1189,7 @@ FASTFortranExporterVisitorTest >> testStopStatementWithString [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranExporterVisitorTest >> testStringConcatOperator [
 	| stmt |
 	stmt := self binary: '//' left: #texte right: ' a string'.
@@ -1198,7 +1200,7 @@ FASTFortranExporterVisitorTest >> testStringConcatOperator [
 'texte // '' a string'''
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testStringLiteralWithQuote [
 	| expr |
 	expr := self characterLiteral: 'a ''''string'''' with quotes'.
@@ -1209,7 +1211,7 @@ FASTFortranExporterVisitorTest >> testStringLiteralWithQuote [
 '''a ''''string'''' with quotes'''
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testTwoDeclarationsTwoVariables [
 	| sub stmt |
 	sub := self subroutine: 'blah'.
@@ -1236,7 +1238,7 @@ FASTFortranExporterVisitorTest >> testTwoDeclarationsTwoVariables [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testWriteStatement [
 	| stmt |
 	stmt := self writeStatement: #( 'message' ).
