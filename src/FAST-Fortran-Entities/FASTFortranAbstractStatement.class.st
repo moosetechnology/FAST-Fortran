@@ -24,8 +24,8 @@ I am the super class of all Fortran statements
 Class {
 	#name : 'FASTFortranAbstractStatement',
 	#superclass : 'FASTFortranEntity',
-	#traits : 'FASTTStatement',
-	#classTraits : 'FASTTStatement classTrait',
+	#traits : 'FASTTStatement + TEntityMetaLevelDependency',
+	#classTraits : 'FASTTStatement classTrait + TEntityMetaLevelDependency classTrait',
 	#instVars : [
 		'#label => FMProperty',
 		'#parentIfStatement => FMOne type: #FASTFortranIfLogicalStatement opposite: #statement'
