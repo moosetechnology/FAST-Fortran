@@ -438,7 +438,6 @@ FASTFortranGenerator >> defineHierarchy [
 	comment --|> tComment. 
 
 	"FORTRAN STATEMENTS"
-	abstractStatement --|> #TEntityMetaLevelDependency.
 	abstractStatement --|> tStatement.
 	abstractIOStatement --|> abstractStatement.
 	acceptStatement  --|> abstractStatement.
