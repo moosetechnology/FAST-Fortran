@@ -1603,20 +1603,22 @@ FortranToFASTTests >> testExit [
 FortranToFASTTests >> testExternalStatement [
 
 	| result stmt |
-	fortranCode := '      program main
-      external mypnt
-      end
+	fortranCode := '      PROGRAM TESTALT
+       EXTERNAL fct
+      END 
 '.
-	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./fortran77.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:20)","statement":{"anno":[],"span":"(2:7)-(2:20)","tag":"external","vars":{"anno":[],"list":[{"anno":[],"span":"(2:16)-(2:20)","tag":"value","value":{"contents":"mypnt","tag":"variable"}}],"span":"(2:16)-(2:20)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"/home/anquetil/Pharo/images/crf-fortran/srcCode.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:19)","statement":{"anno":[],"span":"(2:8)-(2:19)","tag":"external","vars":{"anno":[],"list":[{"anno":[],"span":"(2:17)-(2:19)","tag":"value","value":{"contents":"fct","tag":"variable"}}],"span":"(2:17)-(2:19)"}},"tag":"statement"}],"name":"testalt","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
 	result := self visitJsonCode.
+
+	self assert: result first class equals: FASTFortranProgramMain.
 
 	self assert: result first statementBlock statements size equals: 1.
 
-	stmt := result first statementBlock statements first.	
+	stmt := result first statementBlock statements anyOne.
 	self assert: stmt class equals: FASTFortranExternalStatement.
-	self assert: stmt name equals: 'mypnt'.
-	self assert: stmt startPos equals: 26.
-	self assert: stmt endPos equals: 39.
+	self assert: stmt name equals: 'fct'.
+	self assert: stmt startPos equals: 30.
+	self assert: stmt endPos equals: 41
 
 ]
 
