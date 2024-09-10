@@ -1600,6 +1600,37 @@ FortranToFASTTests >> testExit [
 ]
 
 { #category : 'tests-statement' }
+FortranToFASTTests >> testExternalFunctionDeclarationStatement [
+
+	| result stmt |
+	fortranCode := '      PROGRAM TESTALT
+       EXTERNAL fct
+       INTEGER fct
+      END 
+'.
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"/home/anquetil/Pharo/images/crf-fortran/srcCode.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:19)","statement":{"anno":[],"span":"(2:8)-(2:19)","tag":"external","vars":{"anno":[],"list":[{"anno":[],"span":"(2:17)-(2:19)","tag":"value","value":{"contents":"fct","tag":"variable"}}],"span":"(2:17)-(2:19)"}},"tag":"statement"},{"anno":[],"label":null,"span":"(3:8)-(3:18)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(3:16)-(3:18)","type":"scalar","variable":{"anno":[],"span":"(3:16)-(3:18)","tag":"value","value":{"contents":"fct","tag":"variable"}}}],"span":"(3:16)-(3:18)"},"span":"(3:8)-(3:18)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(3:8)-(3:14)"}},"tag":"statement"}],"name":"testalt","span":"(1:7)-(4:9)","subprograms":null,"tag":"main"}]}'.
+	result := self visitJsonCode.
+
+	self assert: result first class equals: FASTFortranProgramMain.
+
+	self assert: result first statementBlock statements size equals: 2.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranExternalStatement.
+
+	stmt := result first statementBlock statements second.
+	self assert: stmt class equals: FASTFortranFunction.
+	self assert: stmt name equals: 'fct'.
+	self assert: stmt parameters isEmpty.
+	self assert: stmt statementBlock statements isEmpty.
+	self assert: stmt startPos equals: 50.
+
+	self assert: stmt returnType class equals: FASTFortranIntegerType.
+	self assert: stmt returnType startPos equals: 50
+
+]
+
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testExternalStatement [
 
 	| result stmt |
@@ -1665,7 +1696,6 @@ FortranToFASTTests >> testFunctionNoParameter [
 
 	self assert: fct returnType class equals: FASTFortranIntegerType.
 	self assert: fct returnType startPos equals: 7.
-	
 
 ]
 
