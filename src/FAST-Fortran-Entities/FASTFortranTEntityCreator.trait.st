@@ -336,6 +336,13 @@ FASTFortranTEntityCreator >> newExitStatement [
 ]
 
 { #category : 'entity creation' }
+FASTFortranTEntityCreator >> newExternalFunctionDeclarationStatement [
+
+	<generated>
+	^ self add: FASTFortranExternalFunctionDeclarationStatement new
+]
+
+{ #category : 'entity creation' }
 FASTFortranTEntityCreator >> newExternalStatement [
 
 	<generated>

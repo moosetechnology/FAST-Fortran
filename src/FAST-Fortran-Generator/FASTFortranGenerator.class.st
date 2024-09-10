@@ -132,7 +132,9 @@ Class {
 		'tUnaryExpression',
 		'tBinaryExpression',
 		'tVariableEntity',
-		'entity'
+		'entity',
+		'externalFunctionDeclarationStatement',
+		'tTypedFunction'
 	],
 	#category : 'FAST-Fortran-Generator',
 	#package : 'FAST-Fortran-Generator'
@@ -428,6 +430,7 @@ FASTFortranGenerator >> defineHierarchy [
 	procedure --|> tWithParameters.
 	blockData --|> subprogram.
 	function --|> procedure.
+	function --|> tTypedFunction.
 	subroutine --|> procedure.
 
 	programFile --|> tWithComments.
@@ -470,6 +473,9 @@ FASTFortranGenerator >> defineHierarchy [
 	exitStatement --|> abstractStatement.
 	externalStatement --|> abstractStatement.
 	externalStatement --|> tNamedEntity.
+	externalFunctionDeclarationStatement --|> abstractStatement.
+	externalFunctionDeclarationStatement --|> tNamedEntity.
+	externalFunctionDeclarationStatement --|> tTypedFunction.
 	formatStatement --|> abstractStatement.
 	formatStatement --|> tWithFormat.
 	functionStatement --|> abstractStatement.
@@ -683,7 +689,7 @@ FASTFortranGenerator >> defineRelations [
 	(entryStatement property: #entryArguments)
 	<>-* (tEntryArgument property: #entryStatement).
 
-	(function property: #returnType)
+	(tTypedFunction property: #returnType)
 	<>- (type property: #typedFunctions).
 
 	((functionStatement property: #expression) comment:
@@ -816,10 +822,7 @@ FASTFortranGenerator >> defineStatements [
 		                 comment: 'I represent a Fortran Data group in a Data statement'.
 	decodeStatement := self
 		                   newClassNamed: #DecodeStatement
-		                   comment: 'I represent Fortran Decode statement'.
-	encodeStatement := self
-		                   newClassNamed: #EncodeStatement
-		                   comment: 'I represent Fortran Encode statement'.
+		                   comment: 'I represent Fortran DECODE statement'.
 	dimensionStatement := self
 		                      newClassNamed: #DimensionStatement
 		                      comment:
@@ -834,6 +837,9 @@ FASTFortranGenerator >> defineStatements [
 	elseStatement := self
 		                 newClassNamed: #ElseStatement
 		                 comment: 'I represent Fortran Else statement'.
+	encodeStatement := self
+		                   newClassNamed: #EncodeStatement
+		                   comment: 'I represent Fortran ENCODE statement'.
 	endFileStatement := self
 		                    newClassNamed: #EndFileStatement
 		                    comment:
@@ -854,6 +860,11 @@ FASTFortranGenerator >> defineStatements [
 		                     newClassNamed: #ExternalStatement
 		                     comment:
 		                     'I represent Fortran External statement'.
+	externalFunctionDeclarationStatement := self
+		                     newClassNamed: #ExternalFunctionDeclarationStatement
+		                     comment:
+		                     'I represent the declaration of the function after an ExternalStatement
+(usually appears right after the EXTERNAL statement)'.
 	formatStatement := self
 		                   newClassNamed: #FormatStatement
 		                   comment: 'I represent Fortran Format statement'.
@@ -1014,6 +1025,7 @@ FASTFortranGenerator >> defineTraits [
 	tEntryArgument := self newTraitNamed: #TEntryArgument comment: 'I represent an argument in an entry statement: it can be a variable name, array name, formal procedure name, or an asterisk'.
 	tFormat := self newTraitNamed: #TFormat comment: 'I represent a format description (eg. in Format or Print statement)'.
 	tIOParameter := self newTraitNamed: #TIOParameter comment: 'I represent a parameter to an IO-statement (read or write)'.
+	tTypedFunction := self newTraitNamed: #TTypedFunction comment: 'I represent a function entity which is typed'.
 	tVariableGroup := self newTraitNamed: #TVariableGroup comment: 'I represent an entity with several variables like in a DataStatement or an EquivalenceStatement'.
 	tWithDeclarators := self newTraitNamed: #TWithDeclarators comment: 'I represent a declaration with several variable declarators'.
 	tWithFormat := self newTraitNamed: #TWithFormat comment: 'I represent a statement with a format (format, print)'.

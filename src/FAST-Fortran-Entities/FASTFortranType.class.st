@@ -9,7 +9,7 @@ I represent Fortran Type statement
 |---|
 | `parentDeclaration` | `FASTFortranType` | `type` | `FASTFortranVariableDeclarationStatement` | Parent declaration|
 | `parentImplicitRule` | `FASTFortranType` | `type` | `FASTFortranImplicitTypingRule` | |
-| `typedFunctions` | `FASTFortranType` | `returnType` | `FASTFortranFunction` | |
+| `typedFunctions` | `FASTFortranType` | `returnType` | `FASTFortranTTypedFunction` | |
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
@@ -24,7 +24,7 @@ Class {
 	#superclass : 'FASTFortranEntity',
 	#instVars : [
 		'#parentDeclaration => FMOne type: #FASTFortranVariableDeclarationStatement opposite: #type',
-		'#typedFunctions => FMOne type: #FASTFortranFunction opposite: #returnType',
+		'#typedFunctions => FMOne type: #FASTFortranTTypedFunction opposite: #returnType',
 		'#parentImplicitRule => FMOne type: #FASTFortranImplicitTypingRule opposite: #type',
 		'#size => FMOne type: #FASTFortranIntegerLiteral opposite: #parentTypeSize'
 	],
@@ -116,7 +116,7 @@ FASTFortranType >> sizeGroup [
 
 { #category : 'accessing' }
 FASTFortranType >> typedFunctions [
-	"Relation named: #typedFunctions type: #FASTFortranFunction opposite: #returnType"
+	"Relation named: #typedFunctions type: #FASTFortranTTypedFunction opposite: #returnType"
 
 	<generated>
 	<container>
