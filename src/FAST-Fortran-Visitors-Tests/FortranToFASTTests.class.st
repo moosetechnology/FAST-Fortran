@@ -1619,10 +1619,8 @@ FortranToFASTTests >> testExternalFunctionDeclarationStatement [
 	self assert: stmt class equals: FASTFortranExternalStatement.
 
 	stmt := result first statementBlock statements second.
-	self assert: stmt class equals: FASTFortranFunction.
+	self assert: stmt class equals: FASTFortranExternalFunctionDeclarationStatement.
 	self assert: stmt name equals: 'fct'.
-	self assert: stmt parameters isEmpty.
-	self assert: stmt statementBlock statements isEmpty.
 	self assert: stmt startPos equals: 50.
 
 	self assert: stmt returnType class equals: FASTFortranIntegerType.

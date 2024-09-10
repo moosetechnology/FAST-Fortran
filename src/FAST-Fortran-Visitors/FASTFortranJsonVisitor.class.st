@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'lineSizes',
 		'model',
-		'nestedDoEndLabel'
+		'nestedDoEndLabel',
+		'externalFunctions'
 	],
 	#category : 'FAST-Fortran-Visitors-Importer',
 	#package : 'FAST-Fortran-Visitors',
@@ -27,6 +28,12 @@ FASTFortranJsonVisitor >> createContinueStatement: endLabel [
 		endLabel startPos + endLabel primitiveValue size - 1.
 	lastStatement label: endLabel primitiveValue.
 	^ lastStatement
+]
+
+{ #category : 'accessing' }
+FASTFortranJsonVisitor >> externalFunctions [
+
+	^externalFunctions ifNil: [ externalFunctions := OrderedCollection new ]
 ]
 
 { #category : 'private' }
@@ -52,7 +59,7 @@ FASTFortranJsonVisitor >> initialize [
 	super initialize.
 
 	lineSizes := #(  ).
-	nestedDoEndLabel := Stack new: 5
+
 ]
 
 { #category : 'private' }
@@ -90,6 +97,14 @@ FASTFortranJsonVisitor >> isEsopeDimensionSize: marker and: div [
 ]
 
 { #category : 'accessing' }
+FASTFortranJsonVisitor >> isExternalFunction: aName [
+
+	^externalFunctions
+		ifNil: [ false ]
+		ifNotNil: [ externalFunctions includes: aName ]
+]
+
+{ #category : 'accessing' }
 FASTFortranJsonVisitor >> model [
 
 	^ model
@@ -99,6 +114,12 @@ FASTFortranJsonVisitor >> model [
 FASTFortranJsonVisitor >> model: anObject [
 
 	model := anObject
+]
+
+{ #category : 'accessing' }
+FASTFortranJsonVisitor >> nestedDoEndLabel [
+
+	^ nestedDoEndLabel ifNil: [ nestedDoEndLabel := Stack new ]
 ]
 
 { #category : 'private' }
@@ -142,6 +163,12 @@ FASTFortranJsonVisitor >> putMembers: entities inBody: stmtBlock [
 
 	stmtBlock startPos: start.
 	stmtBlock endPos: end
+]
+
+{ #category : 'accessing' }
+FASTFortranJsonVisitor >> resetExternalFunctions [
+
+	externalFunctions := nil
 ]
 
 { #category : 'private' }
@@ -242,6 +269,8 @@ FASTFortranJsonVisitor >> visitBinary: aBinaryExpressionNode [
 FASTFortranJsonVisitor >> visitBlock_data: aBlockDataNode [
 
 	| data |
+	self resetExternalFunctions.
+
 	data := super visitBlock_data: aBlockDataNode.
 
 	^ (self newEntity: FASTFortranBlockData atPosition: data first)
@@ -408,14 +437,22 @@ FASTFortranJsonVisitor >> visitDataStatement: aDataStatement [
 { #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitDeclarationStatement: aDeclarationStatementNode [
 
-	| data |
+	| data name |
 	data := super visitDeclarationStatement: aDeclarationStatementNode.
 
-	^(self newEntity: FASTFortranVariableDeclarationStatement atPosition: data first)
-		type: data second ;
-		  "attributes: data third ;"
-		declarators: data fourth ;
-		yourself
+	name := data fourth anyOne name.
+
+	^(self isExternalFunction: name)
+		ifTrue: [ (self newEntity: FASTFortranExternalFunctionDeclarationStatement atPosition: data first)
+			name: name ;
+			returnType: data second ;
+			yourself ]
+		ifFalse: [ (self newEntity: FASTFortranVariableDeclarationStatement atPosition: data first)
+			type: data second ;
+			"attributes: data third ;"
+			declarators: data fourth ;
+			yourself ].
+
 ]
 
 { #category : 'visiting' }
@@ -512,11 +549,11 @@ FASTFortranJsonVisitor >> visitDo: aDoNode [
 	ifNil: [ inNestedLoop := false ]
 	ifNotNil: [ :target |
 		"the same 'target' was also pushed on top of #nestedDoEndLabel"
-		nestedDoEndLabel pop.
+		self nestedDoEndLabel pop.
 		doStatement labelReferences: { (self integerLiteralToLabelRef: target) }.
 		"if the target is still on top of #nestedDoEndLabel, then we have nested loops
 		with the same end_label"
-		inNestedLoop := nestedDoEndLabel notEmpty and: [nestedDoEndLabel top = target primitiveValue]
+		inNestedLoop := self nestedDoEndLabel notEmpty and: [ self nestedDoEndLabel top = target primitiveValue ]
 	].
 
 	body := data sixth.
@@ -576,7 +613,7 @@ FASTFortranJsonVisitor >> visitEnd_label: endLabel [
 
 	| data |
 	data := super visitEnd_label: endLabel.
-	data ifNotNil: [ nestedDoEndLabel push: data primitiveValue ].
+	data ifNotNil: [ self nestedDoEndLabel push: data primitiveValue ].
 	^data
 ]
 
@@ -640,12 +677,16 @@ FASTFortranJsonVisitor >> visitExponentiation: aExponentiationOperatorNode [
 { #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitExternalStatement: anExternalStatementNode [
 
-	| data |
+	| data name |
 	data := super visitExternalStatement: anExternalStatementNode.
+
+	name := data second first name.
+	self externalFunctions add: name.
+
 	^ (self
 		   newEntity: FASTFortranExternalStatement
 		   atPosition: data first)
-		  name: data second first name;
+		  name: name;
 		  yourself
 ]
 
@@ -970,6 +1011,8 @@ FASTFortranJsonVisitor >> visitMain: aMainProgramNode [
 	"#(span name blocks subprograms)"
 
 	| data main |
+	self resetExternalFunctions.
+
 	data := super visitMain: aMainProgramNode.
 
 	main := (self newEntity: FASTFortranProgramMain atPosition: data first)
@@ -1237,6 +1280,8 @@ FASTFortranJsonVisitor >> visitSubroutine: aSubroutineNode [
 	"#(span name arguments blocks)"
 
 	| data routine |
+	self resetExternalFunctions.
+
 	data := super visitSubroutine: aSubroutineNode.
 
 	routine := (self newEntity: FASTFortranSubroutine atPosition: data first)
