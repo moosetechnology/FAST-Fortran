@@ -1,5 +1,5 @@
 "
-I represent Fortran Encode statement
+I represent Fortran ENCODE statement
 
 
 "
