@@ -464,6 +464,7 @@ FASTFortranJsonVisitor >> visitDeclarator: aDeclaratorNode [
 
 	declarator := data fifth.
 	data second ifNotNil: [ :initialization | declarator expression: initialization ].
+	data third ifNotNil: [ :length | declarator dimensions: { length } ].
 	data fourth ifNotNil: [ :dimensions | declarator dimensions: dimensions ].
 
 	^declarator
@@ -986,6 +987,17 @@ FASTFortranJsonVisitor >> visitLabelReference: aLabelReference [
 		label: data primitiveValue ;
 		startPos: data startPos ;
 		endPos: data endPos ;
+		yourself
+]
+
+{ #category : 'visiting statement' }
+FASTFortranJsonVisitor >> visitLength: aNode [
+
+	| data |
+	data := super visitLength: aNode.
+
+	^FASTFortranArrayRange new
+		upperBound: data ;
 		yourself
 ]
 
