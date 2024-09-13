@@ -1,6 +1,6 @@
 Class {
-	#name : #FASTFortranGenerator,
-	#superclass : #FamixMetamodelGenerator,
+	#name : 'FASTFortranGenerator',
+	#superclass : 'FamixMetamodelGenerator',
 	#instVars : [
 		'acceptStatement',
 		'assignmentStatement',
@@ -132,12 +132,14 @@ Class {
 		'tUnaryExpression',
 		'tBinaryExpression',
 		'tVariableEntity',
-		'entity'
+		'entity',
+		'segment'
 	],
-	#category : #'FAST-Fortran-Generator'
+	#category : 'FAST-Fortran-Generator',
+	#package : 'FAST-Fortran-Generator'
 }
 
-{ #category : #generating }
+{ #category : 'generating' }
 FASTFortranGenerator class >> generate [
 
 	"TODO: can it be removed? As FamixMetamodelGenerator class has generate"
@@ -146,25 +148,50 @@ FASTFortranGenerator class >> generate [
 	^ super generate
 ]
 
-{ #category : #generating }
+{ #category : 'generating' }
 FASTFortranGenerator class >> packageName [
 
 	^ #'FAST-Fortran-Entities'
 ]
 
-{ #category : #generating }
+{ #category : 'generating' }
 FASTFortranGenerator class >> prefix [
 
 	^ #FASTFortran
 ]
 
-{ #category : #generating }
+{ #category : 'generating' }
 FASTFortranGenerator class >> submetamodels [
 
 	^ { FASTMetamodelGenerator }
 ]
 
-{ #category : #definition }
+{ #category : 'definition' }
+FASTFortranGenerator >> commentForSegment [
+
+	^ '
+	```st
+	FASTFortranSegment new 
+		name: ''toto'';
+		statements: { 
+			FASTFortranVariableDeclarationStatement new 
+				type: (FASTFortranIntegerType new 
+					size: (FASTFortranScalarVariable new name: ''m'')
+				); 
+				declarators: { 
+					FASTFortranVariableDeclarator new 
+						name: ''x''; 
+						dimensions: { 
+							FASTFortranArrayRange new 
+								upperBound: (FASTFortranScalarVariable new name: ''n'') 
+						}
+				} 
+		}	
+	```
+	'
+]
+
+{ #category : 'definition' }
 FASTFortranGenerator >> defineClasses [
 
 	super defineClasses.
@@ -174,7 +201,7 @@ FASTFortranGenerator >> defineClasses [
 	self defineData
 ]
 
-{ #category : #definition }
+{ #category : 'definition' }
 FASTFortranGenerator >> defineData [
 	"sorted alphabetically, please keep the order"
 
@@ -346,11 +373,13 @@ I contain the value of the label referred to'.
 
 ]
 
-{ #category : #definition }
+{ #category : 'definition' }
 FASTFortranGenerator >> defineFASTClasses [
 	"FAMIX-level classes (might be removed later)"
 
 	entity  := self newClassNamed: #Entity.
+
+	segment := self newClassNamed: #Segment comment: self commentForSegment.
 
 	programFile := self
 		               newClassNamed: #ProgramFile
@@ -411,7 +440,7 @@ FASTFortranGenerator >> defineFASTClasses [
 
 ]
 
-{ #category : #definition }
+{ #category : 'definition' }
 FASTFortranGenerator >> defineHierarchy [
 
 	super defineHierarchy.
@@ -571,6 +600,10 @@ FASTFortranGenerator >> defineHierarchy [
 	integerType --|> type.
 	logicalType --|> type.
 	realType --|> type.
+	
+	segment --|> type.
+	segment --|> #TStatementBlock.
+	segment --|> tNamedEntity.
 
 	asterisk --|> integerConstant.  "used as type size"
 	asterisk --|> tEntryArgument.
@@ -579,7 +612,7 @@ FASTFortranGenerator >> defineHierarchy [
 	tFormat --|> tIOParameter
 ]
 
-{ #category : #definition }
+{ #category : 'definition' }
 FASTFortranGenerator >> defineProperties [
 
 	super defineProperties.
@@ -620,7 +653,7 @@ FASTFortranGenerator >> defineProperties [
 
 ]
 
-{ #category : #definition }
+{ #category : 'definition' }
 FASTFortranGenerator >> defineRelations [
 
 	super defineRelations.
@@ -752,7 +785,7 @@ FASTFortranGenerator >> defineRelations [
 			 'Parent program file').
 
 	((type property: #size) comment: 'a data size in bytes')
-	<>- (integerConstant property: #parentTypeSize).
+	<>- (abstractExpression property: #parentTypeSize).
 
 	((tWithFormat property: #format) comment: 'The description of the format')
 	<>- ((tFormat property: #parentFormatedStatement) comment: 'A format description in a Format/Print/Read/Write statement').
@@ -764,7 +797,7 @@ FASTFortranGenerator >> defineRelations [
 
 ]
 
-{ #category : #definition }
+{ #category : 'definition' }
 FASTFortranGenerator >> defineStatements [
 	"A statement consists of zero or more key words, symbolic names, literal constants, statement labels, operators, and special characters."
 
@@ -985,7 +1018,7 @@ FASTFortranGenerator >> defineStatements [
 		                 comment: 'I represent Fortran90 Exit statement'
 ]
 
-{ #category : #definition }
+{ #category : 'definition' }
 FASTFortranGenerator >> defineTraits [
 
 	super defineTraits.
