@@ -160,7 +160,9 @@ Class {
 		'targetVariable',
 		'tPointerAssignment',
 		'importStatement',
-		'classDeclarationStatement'
+		'classDeclarationStatement',
+		'sourceCodeString',
+		'formattedCodeString'
 	],
 	#classInstVars : [
 		'typeBoundProcedure'
@@ -199,7 +201,7 @@ FASTFortran2kGenerator >> defineClasses [
 	self defineClasses2k.
 ]
 
-{ #category : 'definition' }
+{ #category : 'as yet unclassified' }
 FASTFortran2kGenerator >> defineClasses2k [
 
 	nameEntity := self
@@ -270,6 +272,9 @@ FASTFortran2kGenerator >> defineClasses2k [
 	privateStatement := self
 		                    newClassNamed: #PrivateStatement
 		                    comment: 'Im a private statement'.
+		
+	sourceCodeString := self newClassNamed: #SourceCodeString comment: ''.
+	formattedCodeString := self newClassNamed: #FormattedCodeString comment: ''.
 
 
 	targetVariable := self newClassNamed: #TargetVariable comment: ''.
@@ -709,7 +714,7 @@ FASTFortran2kGenerator >> defineHierarchy [
 	self defineHierarchy2k.
 ]
 
-{ #category : 'definition' }
+{ #category : 'as yet unclassified' }
 FASTFortran2kGenerator >> defineHierarchy2k [
 
 	nameEntity --|> tNamedEntity.
@@ -749,6 +754,9 @@ FASTFortran2kGenerator >> defineHierarchy2k [
 	
 	privateStatement --|> abstractStatement.
 	publicStatement --|> abstractStatement.
+	
+	sourceCodeString --|> abstractStatement.
+	formattedCodeString --|> sourceCodeString.
 	
 	targetVariable --|> ptVariable.
 	
@@ -813,7 +821,7 @@ FASTFortran2kGenerator >> defineProperties [
 	self defineProperties2k.
 ]
 
-{ #category : 'definition' }
+{ #category : 'as yet unclassified' }
 FASTFortran2kGenerator >> defineProperties2k [
 
 	(derivedType property: #superType type: #String) comment:
@@ -822,6 +830,11 @@ FASTFortran2kGenerator >> defineProperties2k [
 	(interface property: #isAbstractInterface type: #Boolean)
 		comment: 'Im abstract ?'.
 		
+	(sourceCodeString property: #content type: #String)
+		comment: 'The source code string to export'.
+	(formattedCodeString property: #values type: #Object)
+		comment: 'Values of the variables to format the string'.
+	
 	(typeBoundProcedure property: #alias type: #String)
 		comment: 'I represent the alias name of the procedure'.
 		
@@ -830,6 +843,7 @@ FASTFortran2kGenerator >> defineProperties2k [
 		
 	(useRenamedStatement property: #alias type: #String)
 		comment: 'I represent the alias of the used entity'.
+		
 ]
 
 { #category : 'definition' }
@@ -979,7 +993,7 @@ FASTFortran2kGenerator >> defineRelations [
 
 ]
 
-{ #category : 'definition' }
+{ #category : 'as yet unclassified' }
 FASTFortran2kGenerator >> defineRelations2k [
 
 	derivedType <>-* derivedTypeComponent.
@@ -1276,7 +1290,7 @@ FASTFortran2kGenerator >> defineTraits [
 
 ]
 
-{ #category : 'definition' }
+{ #category : 'as yet unclassified' }
 FASTFortran2kGenerator >> defineTraits2k [
 
 	tHasBindingAttribute := self

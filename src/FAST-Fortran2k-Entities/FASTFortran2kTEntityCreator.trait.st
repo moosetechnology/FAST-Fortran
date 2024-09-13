@@ -378,6 +378,13 @@ FASTFortran2kTEntityCreator >> newFormatStatement [
 ]
 
 { #category : 'entity creation' }
+FASTFortran2kTEntityCreator >> newFormattedCodeString [
+
+	<generated>
+	^ self add: FASTFortran2kFormattedCodeString new
+]
+
+{ #category : 'entity creation' }
 FASTFortran2kTEntityCreator >> newFunction [
 
 	<generated>
@@ -739,6 +746,13 @@ FASTFortran2kTEntityCreator >> newScalarVariable [
 
 	<generated>
 	^ self add: FASTFortran2kScalarVariable new
+]
+
+{ #category : 'entity creation' }
+FASTFortran2kTEntityCreator >> newSourceCodeString [
+
+	<generated>
+	^ self add: FASTFortran2kSourceCodeString new
 ]
 
 { #category : 'entity creation' }
