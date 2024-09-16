@@ -201,7 +201,7 @@ FASTFortran2kGenerator >> defineClasses [
 	self defineClasses2k.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'definition' }
 FASTFortran2kGenerator >> defineClasses2k [
 
 	nameEntity := self
@@ -714,7 +714,7 @@ FASTFortran2kGenerator >> defineHierarchy [
 	self defineHierarchy2k.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'definition' }
 FASTFortran2kGenerator >> defineHierarchy2k [
 
 	nameEntity --|> tNamedEntity.
@@ -821,7 +821,7 @@ FASTFortran2kGenerator >> defineProperties [
 	self defineProperties2k.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'definition' }
 FASTFortran2kGenerator >> defineProperties2k [
 
 	(derivedType property: #superType type: #String) comment:
@@ -993,7 +993,7 @@ FASTFortran2kGenerator >> defineRelations [
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'definition' }
 FASTFortran2kGenerator >> defineRelations2k [
 
 	derivedType <>-* derivedTypeComponent.
@@ -1290,7 +1290,7 @@ FASTFortran2kGenerator >> defineTraits [
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'definition' }
 FASTFortran2kGenerator >> defineTraits2k [
 
 	tHasBindingAttribute := self
