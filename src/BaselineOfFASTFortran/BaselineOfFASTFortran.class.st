@@ -1,10 +1,11 @@
 Class {
-	#name : #BaselineOfFASTFortran,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfFASTFortran
+	#name : 'BaselineOfFASTFortran',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfFASTFortran',
+	#package : 'BaselineOfFASTFortran'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfFASTFortran >> baseline: spec [
 
 	<baseline>
@@ -14,7 +15,7 @@ BaselineOfFASTFortran >> baseline: spec [
 		self defineDependencies: spec ]
 ]
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfFASTFortran >> defineDependencies: spec [
 
 	spec
@@ -29,13 +30,15 @@ BaselineOfFASTFortran >> defineDependencies: spec [
 				repository: 'github://moosetechnology/Esope' ]
 ]
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfFASTFortran >> definePackages: spec [
 	spec
 		repository: 'https://github.com/moosetechnology/FAST-Fortran';
 		package: 'FAST-Fortran-Generator' with: [ spec requires: #(FAST Esope) ] ;
 		package: 'FAST-Fortran-Entities' with: [ spec requires: #(FAST Esope) ];
-		package: 'FAST-Fortran-Visitors' with: [ spec requires: #('FAST-Fortran-Entities') ];
+		package: 'FAST-Fortran2k-Generator' with: [ spec requires: #('FAST-Fortran-Generator') ] ;
+		package: 'FAST-Fortran2k-Entities' with: [ spec requires: #('FAST-Fortran-Entities') ];
+		package: 'FAST-Fortran-Visitors' with: [ spec requires: #('FAST-Fortran-Entities' 'FAST-Fortran2k-Entities') ];
 		package: 'FAST-Fortran-Visitors-Tests' with: [ spec requires: #('FAST-Fortran-Visitors') ] ;
 		package: 'FAST-Fortran-Analyses' with: [ spec requires: #('FAST-Fortran-Visitors') ] ; 
 		package: 'FAST-Fortran-Analyses-Tests' with: [ spec requires: #('FAST-Fortran-Visitors' 'FAST-Fortran-Visitors-Tests') ]
