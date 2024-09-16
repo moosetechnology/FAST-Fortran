@@ -1,1 +1,1 @@
-Package { #name : #BaselineOfFASTFortran }
+Package { #name : 'BaselineOfFASTFortran' }
