@@ -15,7 +15,7 @@ I represent Fortran Type statement
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `size` | `FASTFortran2kType` | `parentTypeSize` | `FASTFortran2kIntegerLiteral` | a data size in bytes|
+| `size` | `FASTFortran2kType` | `parentTypeSize` | `FASTFortran2kAbstractExpression` | a data size in bytes|
 
 
 
@@ -25,9 +25,9 @@ Class {
 	#superclass : 'FASTFortran2kEntity',
 	#instVars : [
 		'#parentDeclaration => FMOne type: #FASTFortran2kVariableDeclarationStatement opposite: #type',
-		'#typedFunctions => FMOne type: #FASTFortran2kFunction opposite: #returnType',
 		'#parentImplicitRule => FMOne type: #FASTFortran2kImplicitTypingRule opposite: #type',
-		'#size => FMOne type: #FASTFortran2kIntegerLiteral opposite: #parentTypeSize'
+		'#size => FMOne type: #FASTFortran2kAbstractExpression opposite: #parentTypeSize',
+		'#typedFunctions => FMOne type: #FASTFortran2kFunction opposite: #returnType'
 	],
 	#category : 'FAST-Fortran2k-Entities-Entities',
 	#package : 'FAST-Fortran2k-Entities',
@@ -94,7 +94,7 @@ FASTFortran2kType >> parentImplicitRuleGroup [
 
 { #category : 'accessing' }
 FASTFortran2kType >> size [
-	"Relation named: #size type: #FASTFortran2kIntegerLiteral opposite: #parentTypeSize"
+	"Relation named: #size type: #FASTFortran2kAbstractExpression opposite: #parentTypeSize"
 
 	<generated>
 	<FMComment: 'a data size in bytes'>

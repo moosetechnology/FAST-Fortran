@@ -30,8 +30,8 @@ Class {
 	#classTraits : 'FASTTNamedEntity classTrait',
 	#instVars : [
 		'#importStatement => FMOne type: #FASTFortran2kImportStatement opposite: #nameEntities',
-		'#privateStatement => FMOne type: #FASTFortran2kPrivateStatement opposite: #nameEntities',
-		'#publicStatement => FMOne type: #FASTFortran2kPublicStatement opposite: #nameEntities'
+		'#publicStatement => FMOne type: #FASTFortran2kPublicStatement opposite: #nameEntities',
+		'#privateStatement => FMOne type: #FASTFortran2kPrivateStatement opposite: #nameEntities'
 	],
 	#category : 'FAST-Fortran2k-Entities-Entities',
 	#package : 'FAST-Fortran2k-Entities',

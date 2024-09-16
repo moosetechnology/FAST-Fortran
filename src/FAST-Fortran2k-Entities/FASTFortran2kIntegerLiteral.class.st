@@ -9,7 +9,6 @@ I represent Fortran Arithmetic Integer Literal (Constant)
 |---|
 | `parentFormatedStatement` | `FASTFortran2kTFormat` | `format` | `FASTFortran2kTWithFormat` | A format description in a Format/Print/Read/Write statement|
 | `parentIOStatement` | `FASTFortran2kTIOParameter` | `ioParameters` | `FASTFortran2kAbstractIOStatement` | |
-| `parentTypeSize` | `FASTFortran2kIntegerLiteral` | `size` | `FASTFortran2kType` | |
 
 
 
@@ -19,9 +18,6 @@ Class {
 	#superclass : 'FASTFortran2kNumericalConstant',
 	#traits : 'FASTFortran2kTFormat',
 	#classTraits : 'FASTFortran2kTFormat classTrait',
-	#instVars : [
-		'#parentTypeSize => FMOne type: #FASTFortran2kType opposite: #size'
-	],
 	#category : 'FAST-Fortran2k-Entities-Entities',
 	#package : 'FAST-Fortran2k-Entities',
 	#tag : 'Entities'
@@ -34,28 +30,4 @@ FASTFortran2kIntegerLiteral class >> annotation [
 	<package: #'FAST-Fortran2k-Entities'>
 	<generated>
 	^ self
-]
-
-{ #category : 'accessing' }
-FASTFortran2kIntegerLiteral >> parentTypeSize [
-	"Relation named: #parentTypeSize type: #FASTFortran2kType opposite: #size"
-
-	<generated>
-	<container>
-	<derived>
-	^ parentTypeSize
-]
-
-{ #category : 'accessing' }
-FASTFortran2kIntegerLiteral >> parentTypeSize: anObject [
-
-	<generated>
-	parentTypeSize := anObject
-]
-
-{ #category : 'navigation' }
-FASTFortran2kIntegerLiteral >> parentTypeSizeGroup [
-	<generated>
-	<navigation: 'ParentTypeSize'>
-	^ MooseSpecializedGroup with: self parentTypeSize
 ]

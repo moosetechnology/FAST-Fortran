@@ -978,8 +978,7 @@ FASTFortran2kGenerator >> defineRelations [
 			 'Parent program file').
 
 	((type property: #size) comment: 'a data size in bytes')
-	"<>- (abstractExpression property: #parentTypeSize)."
-	<>- (integerConstant property: #parentTypeSize).
+	<>- (abstractExpression property: #parentTypeSize).
 
 	((tWithFormat property: #format) comment: 'The description of the format')
 	<>- ((tFormat property: #parentFormatedStatement) comment: 'A format description in a Format/Print/Read/Write statement').

@@ -32,8 +32,8 @@ Class {
 	#traits : 'FASTTNamedEntity',
 	#classTraits : 'FASTTNamedEntity classTrait',
 	#instVars : [
-		'#interfaceProcedures => FMMany type: #FASTFortran2kInterfaceProcedure opposite: #interface',
-		'#isAbstractInterface => FMProperty'
+		'#isAbstractInterface => FMProperty',
+		'#interfaceProcedures => FMMany type: #FASTFortran2kInterfaceProcedure opposite: #interface'
 	],
 	#category : 'FAST-Fortran2k-Entities-Entities',
 	#package : 'FAST-Fortran2k-Entities',

@@ -1,24 +1,3 @@
-"
-## Relations
-======================
-
-### Parents
-| Relation | Origin | Opposite | Type | Comment |
-|---|
-| `interface` | `FASTFortran2kIModuleProcedureSummary` | `interfaceProcedure` | `FASTFortran2kInterface` | |
-| `invokedIn` | `FASTTNamedEntity` | `invoked` | `FASTTInvocation` | Optional invocation where this name is used|
-
-
-## Properties
-======================
-
-| Name | Type | Default value | Comment |
-|---|
-| `endPos` | `Number` | nil | |
-| `name` | `String` | nil | |
-| `startPos` | `Number` | nil | |
-
-"
 Class {
 	#name : 'FASTFortran2kIModuleProcedureSummary',
 	#superclass : 'FASTFortran2kInterfaceProcedure',
