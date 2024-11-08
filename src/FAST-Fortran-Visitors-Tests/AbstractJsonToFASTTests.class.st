@@ -1,19 +1,21 @@
 Class {
-	#name : #AbstractJsonToFASTTests,
-	#superclass : #TestCase,
+	#name : 'AbstractJsonToFASTTests',
+	#superclass : 'TestCase',
 	#instVars : [
 		'fortranCode',
 		'jsonCode'
 	],
-	#category : #'FAST-Fortran-Visitors-Tests-Visitor'
+	#category : 'FAST-Fortran-Visitors-Tests-Visitor',
+	#package : 'FAST-Fortran-Visitors-Tests',
+	#tag : 'Visitor'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 AbstractJsonToFASTTests >> jsonVisitor [
 	self subclassResponsibility 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 AbstractJsonToFASTTests >> visitJsonCode [
 
 	| visitor |

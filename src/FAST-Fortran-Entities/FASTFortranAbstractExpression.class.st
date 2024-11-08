@@ -23,6 +23,7 @@ I am the super class of all Fortran expressions
 | `parentGotoComputedStatement` | `FASTFortranAbstractExpression` | `selectorExpression` | `FASTFortranGoToComputedStatement` | |
 | `parentLoopControlIncrement` | `FASTFortranAbstractExpression` | `increment` | `FASTFortranLoopControlExpression` | |
 | `parentLoopControlLimit` | `FASTFortranAbstractExpression` | `limit` | `FASTFortranLoopControlExpression` | |
+| `parentTypeSize` | `FASTFortranAbstractExpression` | `size` | `FASTFortranType` | |
 | `returnOwner` | `FASTTExpression` | `expression` | `FASTTReturnStatement` | The return statement that own the expression (if it's the case)|
 | `variableDeclaratorOwner` | `FASTFortranAbstractExpression` | `expression` | `FASTFortranVariableDeclarator` | |
 
@@ -42,16 +43,17 @@ Class {
 	#traits : 'FASTTExpression',
 	#classTraits : 'FASTTExpression classTrait',
 	#instVars : [
+		'#assignementExpressionOwner => FMOne type: #FASTFortranFunctionStatement opposite: #expression',
 		'#parentArrayDimensionDeclarator => FMOne type: #FASTFortranArrayRange opposite: #upperBound',
 		'#parentArrayExpression => FMOne type: #FASTFortranArrayVariable opposite: #indices',
-		'#parentDataStatement => FMOne type: #FASTFortranDataGroup opposite: #dataConstants',
-		'#variableDeclaratorOwner => FMOne type: #FASTFortranVariableDeclarator opposite: #expression',
-		'#assignementExpressionOwner => FMOne type: #FASTFortranFunctionStatement opposite: #expression',
-		'#parentGotoComputedStatement => FMOne type: #FASTFortranGoToComputedStatement opposite: #selectorExpression',
-		'#parentGotoAssignedStatement => FMOne type: #FASTFortranGoToAssignedStatement opposite: #selectorExpression',
 		'#parentConditionalStatement => FMOne type: #FASTFortranConditionalStatement opposite: #condition',
+		'#parentDataStatement => FMOne type: #FASTFortranDataGroup opposite: #dataConstants',
+		'#parentGotoAssignedStatement => FMOne type: #FASTFortranGoToAssignedStatement opposite: #selectorExpression',
+		'#parentGotoComputedStatement => FMOne type: #FASTFortranGoToComputedStatement opposite: #selectorExpression',
 		'#parentLoopControlIncrement => FMOne type: #FASTFortranLoopControlExpression opposite: #increment',
-		'#parentLoopControlLimit => FMOne type: #FASTFortranLoopControlExpression opposite: #limit'
+		'#parentLoopControlLimit => FMOne type: #FASTFortranLoopControlExpression opposite: #limit',
+		'#parentTypeSize => FMOne type: #FASTFortranType opposite: #size',
+		'#variableDeclaratorOwner => FMOne type: #FASTFortranVariableDeclarator opposite: #expression'
 	],
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
@@ -283,6 +285,30 @@ FASTFortranAbstractExpression >> parentLoopControlLimitGroup [
 	<generated>
 	<navigation: 'ParentLoopControlLimit'>
 	^ MooseSpecializedGroup with: self parentLoopControlLimit
+]
+
+{ #category : 'accessing' }
+FASTFortranAbstractExpression >> parentTypeSize [
+	"Relation named: #parentTypeSize type: #FASTFortranType opposite: #size"
+
+	<generated>
+	<container>
+	<derived>
+	^ parentTypeSize
+]
+
+{ #category : 'accessing' }
+FASTFortranAbstractExpression >> parentTypeSize: anObject [
+
+	<generated>
+	parentTypeSize := anObject
+]
+
+{ #category : 'navigation' }
+FASTFortranAbstractExpression >> parentTypeSizeGroup [
+	<generated>
+	<navigation: 'ParentTypeSize'>
+	^ MooseSpecializedGroup with: self parentTypeSize
 ]
 
 { #category : 'accessing' }

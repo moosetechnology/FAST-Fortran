@@ -14,6 +14,7 @@ A fortran program unit is a sequence of statements, terminated by an END stateme
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `comments` | `FASTTWithComments` | `container` | `FASTTComment` | list of comments defined in the entity|
+| `declarations` | `FASTFortranTWithDeclarations` | `fortranDeclarationOwner` | `FASTFortranTDeclaration` | The elements I declare|
 | `parameters` | `FASTTWithParameters` | `parameterOwner` | `FASTTVariableEntity` | My parameters|
 | `statementBlock` | `FASTTBehaviouralEntity` | `fastBehaviouralParent` | `FASTTStatementBlock` | Statements block of the behavioural entity|
 
@@ -31,8 +32,8 @@ A fortran program unit is a sequence of statements, terminated by an END stateme
 Class {
 	#name : 'FASTFortranProgramUnit',
 	#superclass : 'FASTFortranEntity',
-	#traits : 'FASTTBehaviouralEntity + FASTTEntity + FASTTNamedEntity + FASTTWithComments',
-	#classTraits : 'FASTTBehaviouralEntity classTrait + FASTTEntity classTrait + FASTTNamedEntity classTrait + FASTTWithComments classTrait',
+	#traits : 'FASTFortranTWithDeclarations + FASTTBehaviouralEntity + FASTTEntity + FASTTNamedEntity + FASTTWithComments',
+	#classTraits : 'FASTFortranTWithDeclarations classTrait + FASTTBehaviouralEntity classTrait + FASTTEntity classTrait + FASTTNamedEntity classTrait + FASTTWithComments classTrait',
 	#instVars : [
 		'#parentProgramFile => FMOne type: #FASTFortranProgramFile opposite: #programUnit'
 	],

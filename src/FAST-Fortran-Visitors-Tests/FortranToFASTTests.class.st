@@ -1,16 +1,18 @@
 Class {
-	#name : #FortranToFASTTests,
-	#superclass : #AbstractJsonToFASTTests,
-	#category : #'FAST-Fortran-Visitors-Tests-Visitor'
+	#name : 'FortranToFASTTests',
+	#superclass : 'AbstractJsonToFASTTests',
+	#category : 'FAST-Fortran-Visitors-Tests-Visitor',
+	#package : 'FAST-Fortran-Visitors-Tests',
+	#tag : 'Visitor'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 FortranToFASTTests >> jsonVisitor [
 
 	^ FASTFortranJsonVisitor
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testArrayAccess [
 	
 	| result stmt arrayAccess |
@@ -34,7 +36,7 @@ FortranToFASTTests >> testArrayAccess [
 	self assert: arrayAccess indices second class equals: FASTFortranScalarVariable.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testArrayDeclaration [
 	
 	| result stmt declarator |
@@ -58,7 +60,7 @@ FortranToFASTTests >> testArrayDeclaration [
 	self assert: declarator dimensions first upperBound primitiveValue equals: '10'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testArrayDeclarationDimensionsWithOperation [
 	
 	| result stmt declarator |
@@ -88,7 +90,7 @@ FortranToFASTTests >> testArrayDeclarationDimensionsWithOperation [
 	self assert: declarator dimensions first upperBound rightOperand primitiveValue equals: '1'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testArrayDeclarationImplicitLower [
 	
 	| result stmt declarator |
@@ -112,7 +114,7 @@ FortranToFASTTests >> testArrayDeclarationImplicitLower [
 	self assert: declarator dimensions first upperBound primitiveValue equals: '5'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testArrayDeclarationMultipleDimensions [
 	
 	| result stmt declarator |
@@ -138,7 +140,7 @@ FortranToFASTTests >> testArrayDeclarationMultipleDimensions [
 	self assert: declarator dimensions second upperBound primitiveValue equals: '5'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testArrayDeclarationVariableBound [
 	
 	| result stmt declarator |
@@ -162,7 +164,7 @@ FortranToFASTTests >> testArrayDeclarationVariableBound [
 	self assert: declarator dimensions first upperBound name equals: 'max'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testAssignement [
 
 	| result stmt |
@@ -182,7 +184,7 @@ FortranToFASTTests >> testAssignement [
 	self assert: stmt variable name equals: 'c'.
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testAssignementBooleanLiteral [
 
 	| stmt main result |
@@ -207,7 +209,7 @@ FortranToFASTTests >> testAssignementBooleanLiteral [
 
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testAssignementFunctionCall [
 
 	| stmt main result |
@@ -232,7 +234,7 @@ FortranToFASTTests >> testAssignementFunctionCall [
 
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testAssignementIntegerLiteral [
 
 	| stmt main result |
@@ -257,7 +259,7 @@ FortranToFASTTests >> testAssignementIntegerLiteral [
 
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testAssignementNegativeIntegerLiteral [
 
 	| stmt result |
@@ -275,7 +277,7 @@ FortranToFASTTests >> testAssignementNegativeIntegerLiteral [
 
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testAssignementNegativeRealLiteral [
 
 	| result stmt |
@@ -293,7 +295,7 @@ FortranToFASTTests >> testAssignementNegativeRealLiteral [
 	self assert: stmt expression primitiveValue equals: '-2.12'
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testAssignementRealLiteral [
 
 	| result stmt |
@@ -315,7 +317,7 @@ FortranToFASTTests >> testAssignementRealLiteral [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testAssignementScientificNotation [
 
 	| result stmt |
@@ -336,7 +338,7 @@ FortranToFASTTests >> testAssignementScientificNotation [
 	self assert: stmt expression primitiveValue equals: '1.0e-30'.
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testAssignementStringLiteral [
 
 	| result stmt |
@@ -357,7 +359,7 @@ FortranToFASTTests >> testAssignementStringLiteral [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testAssignementToArrayRange [
 
 	| result stmt var |
@@ -385,7 +387,7 @@ FortranToFASTTests >> testAssignementToArrayRange [
 	self assert: var indices first endPos equals: 37.
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testBinaryExpressionDivision [
 	
 	| result asnmt expr |
@@ -411,7 +413,7 @@ FortranToFASTTests >> testBinaryExpressionDivision [
 	self assert: expr rightOperand startPos equals: 37.
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testBinaryExpressionEqKeyword [
 	
 	| result asnmt expr |
@@ -440,7 +442,7 @@ FortranToFASTTests >> testBinaryExpressionEqKeyword [
 	self assert: expr rightOperand startPos equals: 41.
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testBinaryExpressionExponentiation [
 	
 	| result asnmt expr |
@@ -467,7 +469,7 @@ FortranToFASTTests >> testBinaryExpressionExponentiation [
 	
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testBinaryExpressionGtKeyword [
 	
 	| result asnmt expr |
@@ -496,7 +498,7 @@ FortranToFASTTests >> testBinaryExpressionGtKeyword [
 	self assert: expr rightOperand startPos equals: 41.
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testBinaryExpressionGtSymbol [
 	"Note: not valid in Fortran 77"
 
@@ -526,7 +528,7 @@ FortranToFASTTests >> testBinaryExpressionGtSymbol [
 	self assert: expr rightOperand startPos equals: 38.
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testBinaryExpressionGteKeyword [
 	
 	| result asnmt expr |
@@ -555,7 +557,7 @@ FortranToFASTTests >> testBinaryExpressionGteKeyword [
 	self assert: expr rightOperand startPos equals: 41.
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testBinaryExpressionLtKeyword [
 	
 	| result asnmt expr |
@@ -584,7 +586,7 @@ FortranToFASTTests >> testBinaryExpressionLtKeyword [
 	self assert: expr rightOperand startPos equals: 41.
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testBinaryExpressionLtSymbol [
 	"Note: not valid in Fortran 77"
 
@@ -614,7 +616,7 @@ FortranToFASTTests >> testBinaryExpressionLtSymbol [
 	self assert: expr rightOperand startPos equals: 38
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testBinaryExpressionLteKeyword [
 	
 	| result asnmt expr |
@@ -643,7 +645,7 @@ FortranToFASTTests >> testBinaryExpressionLteKeyword [
 	self assert: expr rightOperand startPos equals: 41.
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testBinaryExpressionMultiplication [
 
 	| result asnmt expr |
@@ -669,7 +671,7 @@ FortranToFASTTests >> testBinaryExpressionMultiplication [
 	self assert: expr rightOperand startPos equals: 37.
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testBinaryExpressionNeKeyword [
 	
 	| result asnmt expr |
@@ -698,7 +700,7 @@ FortranToFASTTests >> testBinaryExpressionNeKeyword [
 	self assert: expr rightOperand startPos equals: 41.
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testBinaryExpressionSubstraction [
 	
 	| result expr |
@@ -725,7 +727,7 @@ FortranToFASTTests >> testBinaryExpressionSubstraction [
 
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testBinaryExpressionUnaryMinus [
 	
 	| result asnmt expr |
@@ -749,7 +751,7 @@ FortranToFASTTests >> testBinaryExpressionUnaryMinus [
 
 ]
 
-{ #category : #'tests-programUnit' }
+{ #category : 'tests-programUnit' }
 FortranToFASTTests >> testBlockData [
 	| result bd |
 
@@ -767,7 +769,7 @@ FortranToFASTTests >> testBlockData [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testCallSubroutine [
 
 	| result call arg |
@@ -801,7 +803,7 @@ FortranToFASTTests >> testCallSubroutine [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FortranToFASTTests >> testComment [
 
 	| result cmt |
@@ -818,7 +820,7 @@ C comment in a function''s body
 	self assert: cmt endPos equals: 60.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testCommonStatementMultipleGroups [
 
 	| result stmt commonGroup |
@@ -848,7 +850,7 @@ FortranToFASTTests >> testCommonStatementMultipleGroups [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testCommonStatementNamed [
 
 	| result stmt commonGroup |
@@ -876,7 +878,7 @@ FortranToFASTTests >> testCommonStatementNamed [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testCommonStatementNoName [
 
 	| result stmt commonGroup |
@@ -910,7 +912,7 @@ FortranToFASTTests >> testCommonStatementNoName [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testContinueStatement [
 
 	| result stmt |
@@ -930,7 +932,7 @@ FortranToFASTTests >> testContinueStatement [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testDataStatement [
 
 	| result stmt dataGroup |
@@ -974,7 +976,7 @@ FortranToFASTTests >> testDataStatement [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testDeclarationIntegerWithInitializer [
 
 	| result stmt declarator |
@@ -1002,7 +1004,7 @@ FortranToFASTTests >> testDeclarationIntegerWithInitializer [
 	self assert: stmt type startPos equals: 26.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testDimensionStatementAsterisk [
 
 	| result stmt decl |
@@ -1037,7 +1039,7 @@ FortranToFASTTests >> testDimensionStatementAsterisk [
 	self assert: decl dimensions second upperBound class equals: FASTFortranAsterisk.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testDimensionStatementExpression [
 
 	| result stmt decl |
@@ -1066,7 +1068,7 @@ FortranToFASTTests >> testDimensionStatementExpression [
 	self assert: decl dimensions second upperBound class equals: FASTFortranBinaryExpression.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testDimensionStatementMultipleDim [
 
 	| result stmt decl |
@@ -1095,7 +1097,7 @@ FortranToFASTTests >> testDimensionStatementMultipleDim [
 	self assert: decl dimensions second upperBound class equals: FASTFortranIntegerLiteral.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testDimensionStatementMultipleVariables [
 
 	| result stmt decl |
@@ -1124,7 +1126,7 @@ FortranToFASTTests >> testDimensionStatementMultipleVariables [
 	self assert: decl dimensions size equals: 1.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testDimensionStatementRange [
 
 	| result stmt decl |
@@ -1158,7 +1160,7 @@ FortranToFASTTests >> testDimensionStatementRange [
 	self assert: decl dimensions third upperBound class equals: FASTFortranIntegerLiteral.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testDimensionStatementSimple [
 
 	| result stmt decl |
@@ -1186,7 +1188,7 @@ FortranToFASTTests >> testDimensionStatementSimple [
 	self assert: decl dimensions anyOne upperBound primitiveValue equals: '1000'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testDimensionStatementVarDims [
 
 	| result stmt decl |
@@ -1215,7 +1217,7 @@ FortranToFASTTests >> testDimensionStatementVarDims [
 	self assert: decl dimensions second upperBound name equals: 'n'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testDoStatementEmptyInitIncrementLimit [
 
 	| result stmt control |
@@ -1252,7 +1254,7 @@ FortranToFASTTests >> testDoStatementEmptyInitIncrementLimit [
 	self assert: control limit primitiveValue equals: '1'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testDoStatementEmptyNoIncrement [
 
 	| result stmt control |
@@ -1292,7 +1294,7 @@ FortranToFASTTests >> testDoStatementEmptyNoIncrement [
 	self assert: control init expression startPos equals: 31.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testDoStatementNestedOneContinue [
 
 	| result stmt |
@@ -1341,7 +1343,7 @@ FortranToFASTTests >> testDoStatementNestedOneContinue [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testDoStatementWithComment [
 
 	| result stmt |
@@ -1366,7 +1368,7 @@ C comment in loop
 	self assert: stmt statementBlock comments size equals: 1.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testDoStatementWithLabelAndContinue [
 
 	| result stmt |
@@ -1401,7 +1403,7 @@ FortranToFASTTests >> testDoStatementWithLabelAndContinue [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testDoStatementWithLabelAndTerminalStatement [
 
 	| result stmt |
@@ -1430,7 +1432,7 @@ FortranToFASTTests >> testDoStatementWithLabelAndTerminalStatement [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testEntryStatement [
 
 	| result stmt |
@@ -1460,7 +1462,7 @@ FortranToFASTTests >> testEntryStatement [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testEquivalenceStatementOneGroupArrayVariables [
 
 	| result stmt grp |
@@ -1490,7 +1492,7 @@ FortranToFASTTests >> testEquivalenceStatementOneGroupArrayVariables [
 	self assert: grp variables third class equals: FASTFortranArrayVariable.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testEquivalenceStatementOneGroupScalarVariables [
 
 	| result stmt grp |
@@ -1523,7 +1525,7 @@ FortranToFASTTests >> testEquivalenceStatementOneGroupScalarVariables [
 	]
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testEquivalenceStatementSeveralGroups [
 
 	| result stmt grp |
@@ -1555,7 +1557,7 @@ FortranToFASTTests >> testEquivalenceStatementSeveralGroups [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testExit [
 
 	| result stmt |
@@ -1575,7 +1577,7 @@ FortranToFASTTests >> testExit [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testExternalStatement [
 
 	| result stmt |
@@ -1596,7 +1598,7 @@ FortranToFASTTests >> testExternalStatement [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testFormatStatement [
 
 	| result stmt |
@@ -1618,7 +1620,7 @@ FortranToFASTTests >> testFormatStatement [
 
 ]
 
-{ #category : #'tests-programUnit' }
+{ #category : 'tests-programUnit' }
 FortranToFASTTests >> testFunctionNoParameter [
 
 	| result fct |
@@ -1643,7 +1645,7 @@ FortranToFASTTests >> testFunctionNoParameter [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testFunctionStatement [
 
 	| result stmt |
@@ -1669,7 +1671,7 @@ FortranToFASTTests >> testFunctionStatement [
 
 ]
 
-{ #category : #'tests-programUnit' }
+{ #category : 'tests-programUnit' }
 FortranToFASTTests >> testFunctionWithParameter [
 
 	| result fct param |
@@ -1700,7 +1702,7 @@ FortranToFASTTests >> testFunctionWithParameter [
 
 ]
 
-{ #category : #'tests-programUnit' }
+{ #category : 'tests-programUnit' }
 FortranToFASTTests >> testFunctionWithStatement [
 
 	| result fct |
@@ -1726,7 +1728,7 @@ FortranToFASTTests >> testFunctionWithStatement [
 	self assert: fct returnType class equals: FASTFortranIntegerType.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testGoto [
 
 	| result stmt |
@@ -1751,7 +1753,7 @@ FortranToFASTTests >> testGoto [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testGotoComputed [
 
 	| result stmt |
@@ -1783,7 +1785,7 @@ FortranToFASTTests >> testGotoComputed [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testIfArithmetic [
 
 	| result conditional |
@@ -1816,7 +1818,7 @@ FortranToFASTTests >> testIfArithmetic [
 	self assert: conditional greaterLabel startPos equals: 48
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testIfElseIf [
 	"note: starting and ending position of else block are approximate"
 
@@ -1863,7 +1865,7 @@ FortranToFASTTests >> testIfElseIf [
 	self assert: conditional class equals: FASTFortranAssignmentStatement.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testIfElseWithComment [
 
 	| result conditional |
@@ -1885,7 +1887,7 @@ C comment in else part
 	self assert: conditional elseStatementBlock comments size equals: 1.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testIfElseWithStatement [
 
 	| result conditional |
@@ -1907,7 +1909,7 @@ FortranToFASTTests >> testIfElseWithStatement [
 	self assert: conditional elseStatementBlock statements first class equals: FASTFortranAssignmentStatement.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testIfEmpty [
 
 	| result conditional |
@@ -1931,7 +1933,7 @@ FortranToFASTTests >> testIfEmpty [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testIfThenWithComment [
 
 	| result conditional |
@@ -1953,7 +1955,7 @@ C comment in then part
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testIfThenWithStatement [
 
 	| result conditional |
@@ -1974,7 +1976,7 @@ FortranToFASTTests >> testIfThenWithStatement [
 	self assert: conditional thenStatementBlock endPos equals: 55.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testIfThenWithTwoStatements [
 
 	| result conditional thenStatements|
@@ -1998,7 +2000,7 @@ FortranToFASTTests >> testIfThenWithTwoStatements [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testImplicitNoneStatement [
 
 	| result stmt |
@@ -2018,7 +2020,7 @@ FortranToFASTTests >> testImplicitNoneStatement [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testImplicitStatement [
 
 	| result stmt rule |
@@ -2047,7 +2049,7 @@ FortranToFASTTests >> testImplicitStatement [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testImplicitStatementCharacterSize [
 
 	| result stmt rule |
@@ -2074,7 +2076,7 @@ FortranToFASTTests >> testImplicitStatementCharacterSize [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testImplicitStatementNoRange [
 
 	| result stmt rule |
@@ -2103,7 +2105,7 @@ FortranToFASTTests >> testImplicitStatementNoRange [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testImplicitStatementSeveralItems [
 
 	| result stmt |
@@ -2129,7 +2131,7 @@ FortranToFASTTests >> testImplicitStatementSeveralItems [
 
 ]
 
-{ #category : #'tests-expression' }
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testImpliedDoExpression [
 
 	| result stmt control |
@@ -2170,7 +2172,7 @@ FortranToFASTTests >> testImpliedDoExpression [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testInquireStatement [
 
 	| stmt result |
@@ -2203,7 +2205,7 @@ FortranToFASTTests >> testInquireStatement [
 	self assert: stmt ioParameters fourth variable name equals: 'iostat'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testInquireStatementFilename [
 
 	| stmt result |
@@ -2230,7 +2232,7 @@ FortranToFASTTests >> testInquireStatementFilename [
 	self assert: stmt ioParameters second class equals: FASTFortranAssignmentExpression.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testInquireStatementImplicitUnit [
 
 	| stmt result |
@@ -2258,7 +2260,7 @@ FortranToFASTTests >> testInquireStatementImplicitUnit [
 	self assert: stmt ioParameters fourth class equals: FASTFortranAssignmentExpression.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testIntrinsicStatement [
 
 	| result stmt |
@@ -2286,7 +2288,7 @@ FortranToFASTTests >> testIntrinsicStatement [
 	self assert: stmt variables second name equals: 'cos'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testLabeledDoStatement [
 
 	| result stmt |
@@ -2306,7 +2308,7 @@ FortranToFASTTests >> testLabeledDoStatement [
 	self assert: stmt label equals: '10'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testLabeledIfBlockStatement [
 
 	| result stmt |
@@ -2326,7 +2328,7 @@ FortranToFASTTests >> testLabeledIfBlockStatement [
 	self assert: stmt label equals: '10'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testLabeledStatement [
 
 	| result stmt |
@@ -2344,7 +2346,7 @@ FortranToFASTTests >> testLabeledStatement [
 	self assert: stmt label equals: '10'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testLogicalIfEmpty [
 
 	| result conditional |
@@ -2369,7 +2371,7 @@ FortranToFASTTests >> testLogicalIfEmpty [
 
 ]
 
-{ #category : #'tests-programUnit' }
+{ #category : 'tests-programUnit' }
 FortranToFASTTests >> testMainProgram [
 	| result body |
 
@@ -2394,7 +2396,7 @@ c23456789 123456789 123456789 123456789 123456789 123456789 12
 	self assert: body comments first content equals: 'C23456789 123456789 123456789 123456789 123456789 123456789 12'.
 ]
 
-{ #category : #'tests-programUnit' }
+{ #category : 'tests-programUnit' }
 FortranToFASTTests >> testMainProgramAndSubroutine [
 
 	| result progUnit |
@@ -2420,7 +2422,7 @@ FortranToFASTTests >> testMainProgramAndSubroutine [
 	self assert: progUnit name equals: 'rank'.
 ]
 
-{ #category : #'tests-programUnit' }
+{ #category : 'tests-programUnit' }
 FortranToFASTTests >> testMainProgramEmpty [
 
 	| result |
@@ -2436,7 +2438,7 @@ FortranToFASTTests >> testMainProgramEmpty [
 	self assert: result first name equals: 'main'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testOpenStatement [
 
 	| stmt result |
@@ -2470,7 +2472,7 @@ FortranToFASTTests >> testOpenStatement [
 	self assert: stmt ioParameters third variable name equals: 'err'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testParameterStatement [
 
 	| result stmt var |
@@ -2513,7 +2515,7 @@ FortranToFASTTests >> testParameterStatement [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testPauseStatementEmpty [
 
 	| stmt result |
@@ -2534,7 +2536,7 @@ FortranToFASTTests >> testPauseStatementEmpty [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testPauseStatementWithInteger [
 
 	| stmt result |
@@ -2555,7 +2557,7 @@ FortranToFASTTests >> testPauseStatementWithInteger [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testPauseStatementWithString [
 
 	| stmt result |
@@ -2576,7 +2578,7 @@ FortranToFASTTests >> testPauseStatementWithString [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testPrintMultipleVariables [
 
 	| stmt result  var arguments |
@@ -2610,7 +2612,7 @@ FortranToFASTTests >> testPrintMultipleVariables [
 	self assert: var name equals: 'z'
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testPrintOneVariable [
 
 	| stmt result arguments |
@@ -2634,7 +2636,7 @@ FortranToFASTTests >> testPrintOneVariable [
 	self assert: arguments first name equals: 'x'
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testReadWithFormat [
 
 	| stmt result |
@@ -2663,7 +2665,7 @@ FortranToFASTTests >> testReadWithFormat [
 	self assert: stmt arguments first startPos equals: 53.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testReturnStatementEmpty [
 
 	| stmt result |
@@ -2682,7 +2684,7 @@ FortranToFASTTests >> testReturnStatementEmpty [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testRewindStatementIOParameters [
 
 	| stmt result |
@@ -2715,7 +2717,7 @@ FortranToFASTTests >> testRewindStatementIOParameters [
 	self assert: stmt ioParameters third variable name equals: 'err'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testRewindStatementUnit [
 
 	| stmt result |
@@ -2738,7 +2740,55 @@ FortranToFASTTests >> testRewindStatementUnit [
 	self assert: stmt ioParameters first primitiveValue equals: '3'
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests' }
+FortranToFASTTests >> testSegment [
+
+	| result seg declaration declarator |
+	fortranCode := '      subroutine hello
+c@_   segment, foo
+        integer bar(n, m)
+c@_   end segment
+      end
+'.
+
+	jsonCode :=  '{"meta":{"miVersion":"fortran77","miFilename":"<stdin>"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"comment":"@_   segment, foo","span":"(2:1)-(2:18)","tag":"comment"},{"anno":[],"label":null,"span":"(3:9)-(3:25)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(3:21)-(3:21)","upper":{"anno":[],"span":"(3:21)-(3:21)","tag":"value","value":{"contents":"n","tag":"variable"}}},{"anno":[],"lower":null,"span":"(3:24)-(3:24)","upper":{"anno":[],"span":"(3:24)-(3:24)","tag":"value","value":{"contents":"m","tag":"variable"}}}],"span":"(3:21)-(3:24)"},"initial":null,"length":null,"span":"(3:17)-(3:25)","type":"array","variable":{"anno":[],"span":"(3:17)-(3:19)","tag":"value","value":{"contents":"bar","tag":"variable"}}}],"span":"(3:17)-(3:25)"},"span":"(3:9)-(3:25)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(3:9)-(3:15)"}},"tag":"statement"},{"anno":[],"comment":"@_   end segment","span":"(4:1)-(4:17)","tag":"comment"}],"name":"hello","options":[null,null],"span":"(1:7)-(5:9)","subprograms":null,"tag":"subroutine"}]}'.
+
+	result := self visitJsonCode.
+
+	self assert: result first declarations size equals: 1.
+	seg := result first declarations anyOne.
+
+	self assert: seg statements size equals: 1.
+	
+	declaration := seg statements anyOne.
+	self assert: declaration class equals: FASTFortranVariableDeclarationStatement.
+	
+	self assert: declaration type class equals: FASTFortranIntegerType.
+	
+	
+	self assert: declaration declarators size equals: 1.
+	declarator := declaration declarators anyOne.
+	self assert: declarator class equals: FASTFortranVariableDeclarator.
+	self assert: declarator name equals: 'bar'.
+	
+	
+	self assert: declarator dimensions size equals: 2.
+	self assert: declarator dimensions first class equals: FASTFortranArrayRange. 
+	self assert: declarator dimensions first lowerBound equals: nil. 
+	self assert: declarator dimensions first upperBound class equals: FASTFortranScalarVariable.
+	self assert: declarator dimensions first upperBound name equals: 'n'.
+	
+	self assert: declarator dimensions second class equals: FASTFortranArrayRange. 
+	self assert: declarator dimensions second lowerBound equals: nil. 
+	self assert: declarator dimensions second upperBound class equals: FASTFortranScalarVariable.
+	self assert: declarator dimensions second upperBound name equals: 'm'.
+	
+	"
+	self assert: seg startPos equals: 31.
+	self assert: seg endPos equals: 60."
+]
+
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testStopStatementEmpty [
 
 	| stmt result |
@@ -2759,7 +2809,7 @@ FortranToFASTTests >> testStopStatementEmpty [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testStopStatementWithInteger [
 
 	| stmt result |
@@ -2780,7 +2830,7 @@ FortranToFASTTests >> testStopStatementWithInteger [
 
 ]
 
-{ #category : #'tests-programUnit' }
+{ #category : 'tests-programUnit' }
 FortranToFASTTests >> testSubroutineEmpty [
 
 	| result rtn |
@@ -2801,7 +2851,7 @@ FortranToFASTTests >> testSubroutineEmpty [
 	self assert: rtn endPos equals: 31
 ]
 
-{ #category : #'tests-programUnit' }
+{ #category : 'tests-programUnit' }
 FortranToFASTTests >> testSubroutineWithParameters [
 
 	| result rtn param |
@@ -2836,7 +2886,7 @@ FortranToFASTTests >> testSubroutineWithParameters [
 
 ]
 
-{ #category : #'tests-programUnit' }
+{ #category : 'tests-programUnit' }
 FortranToFASTTests >> testSubroutineWithParametersOnTwoLines [
 
 	| result rtn |
@@ -2864,7 +2914,7 @@ FortranToFASTTests >> testSubroutineWithParametersOnTwoLines [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FortranToFASTTests >> testTokenPosition [
 
 	| result stmnts stmt |
@@ -2891,7 +2941,7 @@ FortranToFASTTests >> testTokenPosition [
 	self assert: stmt endPos equals: 60.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testVariableDeclarationCharacter [
 
 	| result stmt var |
@@ -2917,7 +2967,7 @@ FortranToFASTTests >> testVariableDeclarationCharacter [
 	self assert: var name equals: 'astring'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testVariableDeclarationInteger [
 
 	| result stmt var |
@@ -2942,7 +2992,7 @@ FortranToFASTTests >> testVariableDeclarationInteger [
 	self assert: var name equals: 'i'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testVariableDeclarationIntegerWithLength [
 
 	| result stmt |
@@ -2964,7 +3014,7 @@ FortranToFASTTests >> testVariableDeclarationIntegerWithLength [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testVariableDeclarationLogical [
 
 	| result stmt var |
@@ -2989,7 +3039,7 @@ FortranToFASTTests >> testVariableDeclarationLogical [
 	self assert: var name equals: 'b'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testVariableDeclarationReal [
 
 	| result stmt var |
@@ -3014,7 +3064,7 @@ FortranToFASTTests >> testVariableDeclarationReal [
 	self assert: var name equals: 'c'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testVariableDeclarationWithLength [
 
 	| result stmt var |
@@ -3040,7 +3090,7 @@ FortranToFASTTests >> testVariableDeclarationWithLength [
 	self assert: var name equals: 'astring'.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testVariableDeclarationWithStarSize [
 
 	| result stmt |
@@ -3063,7 +3113,7 @@ FortranToFASTTests >> testVariableDeclarationWithStarSize [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testWriteArrayIOParameter [
 
 	| stmt result |
@@ -3090,7 +3140,7 @@ FortranToFASTTests >> testWriteArrayIOParameter [
 
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testWriteComplexFormat [
 
 	| stmt result |
@@ -3119,7 +3169,7 @@ FortranToFASTTests >> testWriteComplexFormat [
 	self assert: stmt arguments first startPos equals: 54.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testWriteFullIOParameters [
 
 	| stmt result |
@@ -3156,7 +3206,7 @@ FortranToFASTTests >> testWriteFullIOParameters [
 	self assert: stmt arguments second startPos equals: 74.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testWriteStarStarIOParameters [
 
 	| stmt result |
@@ -3185,7 +3235,7 @@ FortranToFASTTests >> testWriteStarStarIOParameters [
 	self assert: stmt arguments first startPos equals: 47.
 ]
 
-{ #category : #'tests-statement' }
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testWriteToInternalFile [
 	"Write Internal File seems to be just a String variable"
 
