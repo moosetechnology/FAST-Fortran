@@ -26,6 +26,7 @@
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `fastBehaviouralParent` | `FASTTStatementBlock` | `statementBlock` | `FASTTBehaviouralEntity` | Behavioural entity containing the statement block.|
+| `fortranDeclarationOwner` | `FASTFortranTDeclaration` | `declarations` | `FASTFortranTWithDeclarations` | The element that declares me|
 | `invokedIn` | `FASTTNamedEntity` | `invoked` | `FASTTInvocation` | Optional invocation where this name is used|
 | `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
 
@@ -48,8 +49,8 @@
 Class {
 	#name : 'FASTFortranSegment',
 	#superclass : 'FASTFortranType',
-	#traits : 'FASTTNamedEntity + FASTTStatementBlock',
-	#classTraits : 'FASTTNamedEntity classTrait + FASTTStatementBlock classTrait',
+	#traits : 'FASTFortranTDeclaration + FASTTNamedEntity + FASTTStatementBlock',
+	#classTraits : 'FASTFortranTDeclaration classTrait + FASTTNamedEntity classTrait + FASTTStatementBlock classTrait',
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
 	#tag : 'Entities'

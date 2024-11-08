@@ -4,12 +4,22 @@ Class {
 	#instVars : [
 		'lineSizes',
 		'model',
-		'nestedDoEndLabel'
+		'nestedDoEndLabel',
+		'inSegmentDeclaration',
+		'segmentDeclarations'
 	],
 	#category : 'FAST-Fortran-Visitors-Importer',
 	#package : 'FAST-Fortran-Visitors',
 	#tag : 'Importer'
 }
+
+{ #category : 'visiting prog-unit' }
+FASTFortranJsonVisitor >> addSegmentDeclarationsTo: tWithDeclarations [
+
+	tWithDeclarations declarations: segmentDeclarations.
+
+	segmentDeclarations removeAll
+]
 
 { #category : 'visiting statement' }
 FASTFortranJsonVisitor >> checkLabel: label forStatement: statement [
@@ -52,7 +62,9 @@ FASTFortranJsonVisitor >> initialize [
 	super initialize.
 
 	lineSizes := #(  ).
-	nestedDoEndLabel := Stack new: 5
+	nestedDoEndLabel := Stack new: 5.
+	inSegmentDeclaration := false.
+	segmentDeclarations := OrderedCollection new
 ]
 
 { #category : 'private' }
@@ -240,7 +252,7 @@ FASTFortranJsonVisitor >> visitBody: aNode [
 		ifNotNil: [ super visitBody: aNode ].
 
 	stmtBlock := FASTFortranStatementBlock new.
-	self putMembers: data inBody: stmtBlock.
+	self putMembers: (data reject:#isNil) inBody: stmtBlock.
 	
 	^stmtBlock 
 
@@ -389,14 +401,21 @@ FASTFortranJsonVisitor >> visitDataStatement: aDataStatement [
 { #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitDeclarationStatement: aDeclarationStatementNode [
 
-	| data |
+	| data declaration |
 	data := super visitDeclarationStatement: aDeclarationStatementNode.
 
-	^(self newEntity: FASTFortranVariableDeclarationStatement atPosition: data first)
+	declaration := (self newEntity: FASTFortranVariableDeclarationStatement atPosition: data first)
 		type: data second ;
 		  "attributes: data third ;"
 		declarators: data fourth ;
-		yourself
+		yourself.
+	
+	^inSegmentDeclaration 
+		ifTrue: [
+			segmentDeclarations last addStatement: declaration.
+			nil
+		]
+		ifFalse: [ declaration ]
 ]
 
 { #category : 'visiting' }
@@ -590,6 +609,31 @@ FASTFortranJsonVisitor >> visitEquivalenceStatement: anEquivalenceStatement [
 		yourself
 ]
 
+{ #category : 'visiting' }
+FASTFortranJsonVisitor >> visitEsopeEndsegmentComment: anEsopeCommentNode [
+
+	inSegmentDeclaration := false.
+	^nil
+	
+]
+
+{ #category : 'visiting' }
+FASTFortranJsonVisitor >> visitEsopeSegmentComment: anEsopeCommentNode [
+	"Source anchor for the segment is wrong,
+	 endLine/endColumn will be updated in #visitEsopeEndsegmentComment:"
+
+	| data |
+	data := super visitEsopeSegmentComment: anEsopeCommentNode.
+
+	inSegmentDeclaration := true.
+	segmentDeclarations add: ((self newEntity: FASTFortranSegment atPosition: data second)
+		name: data fourth ;
+		yourself).
+	
+	^nil
+	
+]
+
 { #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitExitStatement: anExitNode [
 
@@ -675,6 +719,8 @@ FASTFortranJsonVisitor >> visitFunctionWithBlocks: aFunctionNode [
 		parameters: data fourth ;
 		statementBlock: data fifth ;
 		yourself.
+	
+	self addSegmentDeclarationsTo: function.
 
 	data fifth statements ifEmpty: [
 		"only useful for the tests ?"
@@ -943,6 +989,8 @@ FASTFortranJsonVisitor >> visitMain: aMainProgramNode [
 		name: data second;
 		statementBlock: data third ;
 		yourself.
+	
+	self addSegmentDeclarationsTo: main.
 
 	self setBodyPosition: main fromProgramUnitPosition: data first.
 
@@ -1211,6 +1259,8 @@ FASTFortranJsonVisitor >> visitSubroutine: aSubroutineNode [
 		parameters: data third;
 		statementBlock: data fourth;
 		yourself.
+
+	self addSegmentDeclarationsTo: routine.
 
 	data fourth statements ifEmpty: [
 		"only useful for the tests ?"

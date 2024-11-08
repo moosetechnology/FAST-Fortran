@@ -133,7 +133,9 @@ Class {
 		'tBinaryExpression',
 		'tVariableEntity',
 		'entity',
-		'segment'
+		'segment',
+		'tDeclaration',
+		'tWithDeclarations'
 	],
 	#category : 'FAST-Fortran-Generator',
 	#package : 'FAST-Fortran-Generator'
@@ -449,6 +451,7 @@ FASTFortranGenerator >> defineHierarchy [
 
 	programUnit --|> tEntity.
 	programUnit --|> tBehaviouralEntity.
+	programUnit --|> tWithDeclarations.
 	programUnit --|> tNamedEntity.
 	subprogram --|> programUnit.
 	mainprogram --|> programUnit.
@@ -459,6 +462,7 @@ FASTFortranGenerator >> defineHierarchy [
 	subroutine --|> procedure.
 
 	programFile --|> tWithComments.
+	programFile --|> tWithDeclarations.
 	programUnit --|> tWithComments.
 
 	"other entities"
@@ -603,6 +607,7 @@ FASTFortranGenerator >> defineHierarchy [
 	
 	segment --|> type.
 	segment --|> #TStatementBlock.
+	segment --|> tDeclaration.
 	segment --|> tNamedEntity.
 
 	asterisk --|> integerConstant.  "used as type size"
@@ -683,6 +688,13 @@ FASTFortranGenerator >> defineRelations [
 
 	(impliedDoExpression property: #variables)
 	<>-* (tVariableEntity property: #parentImpliedExpression).
+	
+	
+	((tWithDeclarations property: #declarations) comment:
+		 'The elements I declare')
+	<>-* ((tDeclaration property: #fortranDeclarationOwner) comment:
+			 'The element that declares me').
+	
 
 	(tVariableGroup property: #variables)
 	<>-* (variable property: #parentVariableGroup).
@@ -1031,6 +1043,7 @@ FASTFortranGenerator >> defineTraits [
 	tBooleanLiteral := self remoteTrait: #TBooleanLiteral withPrefix: #FAST.
 	tCharacterLiteral := self remoteTrait: #TCharacterLiteral withPrefix: #FAST.
 	tComment := self remoteTrait: #TComment withPrefix: #FAST.
+	tDeclaration := builder newTraitNamed: #TDeclaration comment: 'I am a declaration in fortran'.
 	tExpression := self remoteTrait: #TExpression withPrefix: #FAST. 
 	tNamedEntity := self remoteTrait: #TNamedEntity withPrefix: #FAST.
 	tNumericalLiteral := self remoteTrait: #TNumericalLiteral withPrefix: #FAST.
@@ -1047,6 +1060,7 @@ FASTFortranGenerator >> defineTraits [
 	tFormat := self newTraitNamed: #TFormat comment: 'I represent a format description (eg. in Format or Print statement)'.
 	tIOParameter := self newTraitNamed: #TIOParameter comment: 'I represent a parameter to an IO-statement (read or write)'.
 	tVariableGroup := self newTraitNamed: #TVariableGroup comment: 'I represent an entity with several variables like in a DataStatement or an EquivalenceStatement'.
+	tWithDeclarations := builder newTraitNamed: #TWithDeclarations comment: 'I have declarations'.
 	tWithDeclarators := self newTraitNamed: #TWithDeclarators comment: 'I represent a declaration with several variable declarators'.
 	tWithFormat := self newTraitNamed: #TWithFormat comment: 'I represent a statement with a format (format, print)'.
 	tWithLabelReferences := self newTraitNamed: #TWithLabelReferences comment: 'I represent a statement (various kind of goto) that can have label references'.
