@@ -1,1 +1,1 @@
-Package { #name : #'FAST-Fortran-Analyses-Tests' }
+Package { #name : 'FAST-Fortran-Analyses-Tests' }

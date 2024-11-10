@@ -1,7 +1,7 @@
 Extension { #name : 'FASTFortranStatementBlock' }
 
 { #category : '*FAST-Fortran-Visitors' }
-FASTFortranStatementBlock >> accept: aVisitor [
-	<generated>
-	^aVisitor visitFASTFortranStatementBlock: self.
+FASTFortranStatementBlock >> accept: aVisitor [	<generated>
+	^ aVisitor visitFASTFortranStatementBlock: self.
+
 ]

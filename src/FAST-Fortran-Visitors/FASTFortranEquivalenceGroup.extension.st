@@ -1,7 +1,7 @@
 Extension { #name : 'FASTFortranEquivalenceGroup' }
 
 { #category : '*FAST-Fortran-Visitors' }
-FASTFortranEquivalenceGroup >> accept: aVisitor [
+FASTFortranEquivalenceGroup >> accept: aVisitor [	<generated>
+	^ aVisitor visitFASTFortranEquivalenceGroup: self.
 
-	^aVisitor visitFASTFortranEquivalenceGroup: self
 ]

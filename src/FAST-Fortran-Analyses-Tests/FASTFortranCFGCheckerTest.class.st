@@ -1,14 +1,16 @@
 Class {
-	#name : #FASTFortranCFGCheckerTest,
-	#superclass : #TestCase,
+	#name : 'FASTFortranCFGCheckerTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'cfg',
 		'blocks'
 	],
-	#category : #'FAST-Fortran-Analyses-Tests-CFG'
+	#category : 'FAST-Fortran-Analyses-Tests-CFG',
+	#package : 'FAST-Fortran-Analyses-Tests',
+	#tag : 'CFG'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranCFGCheckerTest >> block: blockName [
 
 	^blocks
@@ -16,7 +18,7 @@ FASTFortranCFGCheckerTest >> block: blockName [
 		ifAbsentPut: [ self newBlock: blockName ]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranCFGCheckerTest >> chain: block next: next [
 
 	next isAssociation
@@ -24,7 +26,7 @@ FASTFortranCFGCheckerTest >> chain: block next: next [
 		ifFalse: [ block nextBlock: (self block: next)  ]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranCFGCheckerTest >> makeCFG: desc [
 
 	desc do: [ :assoc |
@@ -32,7 +34,7 @@ FASTFortranCFGCheckerTest >> makeCFG: desc [
 	]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranCFGCheckerTest >> newBlock: blockName [
 
 	| block |
@@ -46,7 +48,7 @@ FASTFortranCFGCheckerTest >> newBlock: blockName [
 	^block
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranCFGCheckerTest >> setUp [
 	super setUp.
 
@@ -54,7 +56,7 @@ FASTFortranCFGCheckerTest >> setUp [
 	blocks := Dictionary new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCFGCheckerTest >> testCFGDeadBlock [
 
 	| check |
@@ -70,7 +72,7 @@ FASTFortranCFGCheckerTest >> testCFGDeadBlock [
 	self assert: check anyOne equals: (blocks at: #b3).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCFGCheckerTest >> testCFGLinear [
 
 	self makeCFG: { 
@@ -82,7 +84,7 @@ FASTFortranCFGCheckerTest >> testCFGLinear [
 	self assert: (FASTFortranCFGChecker on: cfg) size equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCFGCheckerTest >> testCFGWithBranch [
 
 	self makeCFG: { 

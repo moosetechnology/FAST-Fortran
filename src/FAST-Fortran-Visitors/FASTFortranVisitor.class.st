@@ -407,11 +407,11 @@ FASTFortranVisitor >> visitFASTFortranImplicitTypingRule: aFortranImplicitTyping
 	aFortranImplicitTypingRule ranges do: [ :range | range accept: self ]
 ]
 
-{ #category : 'visiting - expressions' }
-FASTFortranVisitor >> visitFASTFortranImpliedDo: aFASTFortranImpliedDo [
+{ #category : 'visiting' }
+FASTFortranVisitor >> visitFASTFortranImpliedDoExpression: aFASTFortranImpliedDoExpression [ 
 
-	aFASTFortranImpliedDo variables do: [ :var | var accept: self ].
-	aFASTFortranImpliedDo loopControl accept: self
+	aFASTFortranImpliedDoExpression variables do: [ :var | var accept: self ].
+	aFASTFortranImpliedDoExpression loopControl accept: self
 ]
 
 { #category : 'visiting - statements' }

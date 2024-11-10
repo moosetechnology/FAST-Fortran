@@ -1,25 +1,27 @@
 Class {
-	#name : #FASTFortranSSAVariablePhiVersion,
-	#superclass : #FASTFortranSSAVariableVersion,
+	#name : 'FASTFortranSSAVariablePhiVersion',
+	#superclass : 'FASTFortranSSAVariableVersion',
 	#instVars : [
 		'choices'
 	],
-	#category : #'FAST-Fortran-Analyses-SSA'
+	#category : 'FAST-Fortran-Analyses-SSA',
+	#package : 'FAST-Fortran-Analyses',
+	#tag : 'SSA'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 FASTFortranSSAVariablePhiVersion >> addChoiceToPhi: aPhiVersion [
 
 	choices do: [ :v | v addChoiceToPhi: aPhiVersion ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranSSAVariablePhiVersion >> choices [
 
 	^choices
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FASTFortranSSAVariablePhiVersion >> for: aCollection [
 
 	localDeclaration := aCollection anyOne localDeclaration.
@@ -30,7 +32,7 @@ FASTFortranSSAVariablePhiVersion >> for: aCollection [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranSSAVariablePhiVersion >> name [
 
 	^'phi(' ,
@@ -38,13 +40,13 @@ FASTFortranSSAVariablePhiVersion >> name [
 	')'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranSSAVariablePhiVersion >> version [
 
 	^(choices collect: #version) max
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranSSAVariablePhiVersion >> version: anObject [
 
 	self shouldNotImplement

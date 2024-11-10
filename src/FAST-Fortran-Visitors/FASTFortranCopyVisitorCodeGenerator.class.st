@@ -1,5 +1,7 @@
 "
 A Generator of a CopyVisitor specialized for FAST Fortran
+
+See comment in my super-class for details and usage
 "
 Class {
 	#name : 'FASTFortranCopyVisitorCodeGenerator',

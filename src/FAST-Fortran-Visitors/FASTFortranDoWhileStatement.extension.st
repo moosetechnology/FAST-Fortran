@@ -1,7 +1,7 @@
 Extension { #name : 'FASTFortranDoWhileStatement' }
 
 { #category : '*FAST-Fortran-Visitors' }
-FASTFortranDoWhileStatement >> accept: aVisitor [
-	<generated>
-	^aVisitor visitFASTFortranDoWhileStatement: self.
+FASTFortranDoWhileStatement >> accept: aVisitor [	<generated>
+	^ aVisitor visitFASTFortranDoWhileStatement: self.
+
 ]

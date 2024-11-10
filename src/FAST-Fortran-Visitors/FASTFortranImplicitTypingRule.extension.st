@@ -1,7 +1,7 @@
 Extension { #name : 'FASTFortranImplicitTypingRule' }
 
 { #category : '*FAST-Fortran-Visitors' }
-FASTFortranImplicitTypingRule >> accept: aVisitor [
+FASTFortranImplicitTypingRule >> accept: aVisitor [	<generated>
+	^ aVisitor visitFASTFortranImplicitTypingRule: self.
 
-	^aVisitor visitFASTFortranImplicitTypingRule: self
 ]

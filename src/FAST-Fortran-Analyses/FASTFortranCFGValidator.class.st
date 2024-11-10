@@ -2,20 +2,22 @@
 Calls `FASTFortranCFGChecker` on all Fortran files in a directory and reports errors
 "
 Class {
-	#name : #FASTFortranCFGValidator,
-	#superclass : #FASTAbstractValidator,
+	#name : 'FASTFortranCFGValidator',
+	#superclass : 'FASTAbstractValidator',
 	#instVars : [
 		'importer'
 	],
-	#category : #'FAST-Fortran-Analyses-CFG'
+	#category : 'FAST-Fortran-Analyses-CFG',
+	#package : 'FAST-Fortran-Analyses',
+	#tag : 'CFG'
 }
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 FASTFortranCFGValidator >> getASTFromString: string [
 	^(importer getFASTFor: string) first
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 FASTFortranCFGValidator >> initialize [
 
 	super initialize.
@@ -23,14 +25,14 @@ FASTFortranCFGValidator >> initialize [
 	importer := FortranProjectImporter new
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FASTFortranCFGValidator >> isSourceFile: aFileReference [
 	"for lack of a better idea"
 
 	^ #(f F FOR) includes: aFileReference extension
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FASTFortranCFGValidator >> runOnSourceFile: aFileReference [
 
 	| ast |

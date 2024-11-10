@@ -4,42 +4,44 @@ A ""virtual"" block representing a forced end of the control flow.
 NullBlock are not added in the list of blocks of the CFG, they appear only as #nextBlock of a final block
 "
 Class {
-	#name : #FASTFortranNullBlock,
-	#superclass : #FASTFortranAbstractBasicBlock,
-	#category : #'FAST-Fortran-Analyses-CFG'
+	#name : 'FASTFortranNullBlock',
+	#superclass : 'FASTFortranAbstractBasicBlock',
+	#category : 'FAST-Fortran-Analyses-CFG',
+	#package : 'FAST-Fortran-Analyses',
+	#tag : 'CFG'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranNullBlock >> isEmpty [
 
 	^false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranNullBlock >> isFinal [
 
 	^false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranNullBlock >> isNullBlock [
 
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranNullBlock >> isStart [ 
 
 	^false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranNullBlock >> nextBlocks [
 
 	^#()
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 FASTFortranNullBlock >> sourceCode [
 
 	^''

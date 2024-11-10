@@ -4,50 +4,52 @@ I represent a FASTNonLocalDeclaration in Fortran where it can be an implicitDecl
 I a more a marker than a real class
 "
 Class {
-	#name : #FASTFortranImplicitLocalDeclaration,
-	#superclass : #FASTFortranEntity,
+	#name : 'FASTFortranImplicitLocalDeclaration',
+	#superclass : 'FASTFortranEntity',
 	#classTraits : 'FASTTEntity classTrait',
-	#category : #'FAST-Fortran-Analyses-Resolver'
+	#category : 'FAST-Fortran-Analyses-Resolver',
+	#package : 'FAST-Fortran-Analyses',
+	#tag : 'Resolver'
 }
 
-{ #category : #'private - ssa' }
+{ #category : 'private - ssa' }
 FASTFortranImplicitLocalDeclaration >> activeVersion [
 
 	^self firstUse activeVersion
 ]
 
-{ #category : #'private - ssa' }
+{ #category : 'private - ssa' }
 FASTFortranImplicitLocalDeclaration >> activeVersion: aSSAVersion [
 
 	^self firstUse activeVersion: aSSAVersion
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranImplicitLocalDeclaration >> firstUse [
 	"For an implicit declaration, the firstUse is considered the 'declaration' "
 
 	^self localUses first
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FASTFortranImplicitLocalDeclaration >> isImplicitDeclaration [
 
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranImplicitLocalDeclaration >> name [
 
 	^self firstUse name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranImplicitLocalDeclaration >> name: aName [
 
 	"not needed"
 ]
 
-{ #category : #'private - ssa' }
+{ #category : 'private - ssa' }
 FASTFortranImplicitLocalDeclaration >> ssaVersion: aSSAVersion [
 
 	^self firstUse ssaVersion: aSSAVersion
@@ -55,7 +57,7 @@ FASTFortranImplicitLocalDeclaration >> ssaVersion: aSSAVersion [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranImplicitLocalDeclaration >> variable [
 
 	self flag: 'should not exist. Due to'.

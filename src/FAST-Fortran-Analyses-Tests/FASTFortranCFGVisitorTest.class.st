@@ -1,16 +1,18 @@
 Class {
-	#name : #FASTFortranCFGVisitorTest,
-	#superclass : #FASTFortranAbstractVisitorTest,
-	#category : #'FAST-Fortran-Analyses-Tests-CFG'
+	#name : 'FASTFortranCFGVisitorTest',
+	#superclass : 'FASTFortranAbstractVisitorTest',
+	#category : 'FAST-Fortran-Analyses-Tests-CFG',
+	#package : 'FAST-Fortran-Analyses-Tests',
+	#tag : 'CFG'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranCFGVisitorTest >> newVisitor [
 
 	^FASTFortranCFGVisitor new
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testArithmeticGotoAfterLabel [
 
 	| blocks |
@@ -49,7 +51,7 @@ FASTFortranCFGVisitorTest >> testArithmeticGotoAfterLabel [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testBlockAfterConditionalBlock [
 
 	| conditional |
@@ -65,7 +67,7 @@ FASTFortranCFGVisitorTest >> testBlockAfterConditionalBlock [
 	
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testBlockAfterGotoIsNotNext [
 
 	| blocks doLoop block |
@@ -99,7 +101,7 @@ FASTFortranCFGVisitorTest >> testBlockAfterGotoIsNotNext [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testBlockChainingAfterIfLogical [
 
 	| conditional blocks |
@@ -131,7 +133,7 @@ FASTFortranCFGVisitorTest >> testBlockChainingAfterIfLogical [
 	
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testBlockChainingBeforeConditionalBlock [
 
 	| blocks |
@@ -146,7 +148,7 @@ FASTFortranCFGVisitorTest >> testBlockChainingBeforeConditionalBlock [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testBlockChainingForDoLoopConditional [
 
 	| conditional basicBlock loop |
@@ -189,7 +191,7 @@ FASTFortranCFGVisitorTest >> testBlockChainingForDoLoopConditional [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testCallStatement [
 
 	"
@@ -235,7 +237,7 @@ FASTFortranCFGVisitorTest >> testCallStatement [
 	self assert: callGetent isFinal
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testChainingArithmeticGotoWhenBeforeLabel [
 
 	| blocks |
@@ -267,7 +269,7 @@ FASTFortranCFGVisitorTest >> testChainingArithmeticGotoWhenBeforeLabel [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testChainingGotoWhenBeforeLabelledBlock [
 
 	| blocks |
@@ -306,7 +308,7 @@ FASTFortranCFGVisitorTest >> testChainingGotoWhenBeforeLabelledBlock [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testDoLoopCreatesConditionalBlock [
 
 	| conditional blocks loop |
@@ -342,7 +344,7 @@ FASTFortranCFGVisitorTest >> testDoLoopCreatesConditionalBlock [
 	self assert: conditional nextBlocks size equals: 2
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testExitInLoop [
 
 	| blocks loopBlock exitBlock returnBlock |
@@ -387,7 +389,7 @@ FASTFortranCFGVisitorTest >> testExitInLoop [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testFirstStatementIsConditional [
 
 	| blocks conditional |
@@ -418,7 +420,7 @@ FASTFortranCFGVisitorTest >> testFirstStatementIsConditional [
 	self assert: (blocks first nextBlockForValue: false) isFinal.
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testFirstStatementIsIfArithmetic [
 
 	| blocks |
@@ -444,7 +446,7 @@ FASTFortranCFGVisitorTest >> testFirstStatementIsIfArithmetic [
 	self assert: blocks anyOne isFinal
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testFirstStatementIsLoop [
 
 	| blocks conditional |
@@ -479,7 +481,7 @@ FASTFortranCFGVisitorTest >> testFirstStatementIsLoop [
 	self assert: (blocks first nextBlockForValue: false) isFinal.
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testFirstStatementOfBlockIsLabelled [
 
 	| blocks |
@@ -503,7 +505,7 @@ FASTFortranCFGVisitorTest >> testFirstStatementOfBlockIsLabelled [
 	self assert: blocks anyOne statements size equals: 1
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testGotoAfterLabelledBlock [
 
 	| blocks |
@@ -539,7 +541,7 @@ FASTFortranCFGVisitorTest >> testGotoAfterLabelledBlock [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testGotoAfterLabelledIfStatement [
 
 	| blocks conditional jump |
@@ -571,7 +573,7 @@ FASTFortranCFGVisitorTest >> testGotoAfterLabelledIfStatement [
 	self assert: jump nextBlock equals: conditional
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testGotoBeforeLabelledIfStatement [
 
 	| blocks conditional jump |
@@ -603,7 +605,7 @@ FASTFortranCFGVisitorTest >> testGotoBeforeLabelledIfStatement [
 	self assert: jump nextBlock equals: conditional
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testGotoComputedBeforeLabels [
 
 	| blocks labeledBlock |
@@ -651,7 +653,7 @@ FASTFortranCFGVisitorTest >> testGotoComputedBeforeLabels [
 	self assert: labeledBlock isFinal.
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testIOStatementWithEndAndErr [
 
 	| blocks readStatement |
@@ -696,7 +698,7 @@ FASTFortranCFGVisitorTest >> testIOStatementWithEndAndErr [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testIOStatementWithEndLabel [
 
 	| blocks readStatement |
@@ -735,7 +737,7 @@ FASTFortranCFGVisitorTest >> testIOStatementWithEndLabel [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testIOStatementWithErrLabel [
 
 	| blocks readStatement |
@@ -774,7 +776,7 @@ FASTFortranCFGVisitorTest >> testIOStatementWithErrLabel [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testIfStatementCreatesConditionalBlock [
 
 	| blocks  conditional |
@@ -790,7 +792,7 @@ FASTFortranCFGVisitorTest >> testIfStatementCreatesConditionalBlock [
 	self assert: conditional nextBlocks size equals: 2
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testIfStatementElsePartIsABasicBlock [
 
 	| aBlock |
@@ -811,7 +813,7 @@ FASTFortranCFGVisitorTest >> testIfStatementElsePartIsABasicBlock [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testIfStatementFollowedByABasicBlock [
 
 	| blocks |
@@ -825,7 +827,7 @@ FASTFortranCFGVisitorTest >> testIfStatementFollowedByABasicBlock [
 	self assert: blocks anyOne statements size equals: 1.
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testIfStatementThenPartIsABasicBlock [
 
 	| aBlock |
@@ -846,7 +848,7 @@ FASTFortranCFGVisitorTest >> testIfStatementThenPartIsABasicBlock [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testIfStatementWithoutElsePart [
 
 	| conditional blocks then last |
@@ -887,7 +889,7 @@ FASTFortranCFGVisitorTest >> testIfStatementWithoutElsePart [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testLabelledDoStatementAfterGoto [
 
 	| blocks doLoop block |
@@ -925,7 +927,7 @@ FASTFortranCFGVisitorTest >> testLabelledDoStatementAfterGoto [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testLabelledDoStatementBeforeGoto [
 
 	| blocks doLoop block |
@@ -962,7 +964,7 @@ FASTFortranCFGVisitorTest >> testLabelledDoStatementBeforeGoto [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testLabelledIfStatementStartsNewBlock [
 
 	| blocks |
@@ -998,7 +1000,7 @@ FASTFortranCFGVisitorTest >> testLabelledIfStatementStartsNewBlock [
 	self assert: blocks fourth firstStatement class equals: FASTFortranReturnStatement.
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testLabelledStatementFollowingLabelledStatement [
 
 	| blocks |
@@ -1029,7 +1031,7 @@ FASTFortranCFGVisitorTest >> testLabelledStatementFollowingLabelledStatement [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testLabelledStatementStartsNewBlock [
 
 	| blocks |
@@ -1052,7 +1054,7 @@ FASTFortranCFGVisitorTest >> testLabelledStatementStartsNewBlock [
 	self assert: blocks second firstStatement class equals: FASTFortranReturnStatement.
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testLastStatementIsConditional [
 
 	| blocks conditional |
@@ -1080,7 +1082,7 @@ FASTFortranCFGVisitorTest >> testLastStatementIsConditional [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testProgramUnitBodyStartsABasicBlock [
 
 	| blocks |
@@ -1097,7 +1099,7 @@ FASTFortranCFGVisitorTest >> testProgramUnitBodyStartsABasicBlock [
 	self assert: blocks anyOne lastStatement variable name equals: 'x'.
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testReadStatementNoLabel [
 
 	| blocks readStatement |
@@ -1130,7 +1132,7 @@ FASTFortranCFGVisitorTest >> testReadStatementNoLabel [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testReturnDoesNotHaveNextBlock [
 
 	| blocks |
@@ -1164,7 +1166,7 @@ FASTFortranCFGVisitorTest >> testReturnDoesNotHaveNextBlock [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testReturnInThen [
 
 	| blocks |
@@ -1207,7 +1209,7 @@ FASTFortranCFGVisitorTest >> testReturnInThen [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testReturnInThenFollowedByStatement [
 
 	| blocks |
@@ -1250,7 +1252,7 @@ FASTFortranCFGVisitorTest >> testReturnInThenFollowedByStatement [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testReturnIntroducesNullBlock [
 
 	| blocks |
@@ -1277,7 +1279,7 @@ FASTFortranCFGVisitorTest >> testReturnIntroducesNullBlock [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCFGVisitorTest >> testSourceCode [
 
 	| blocks |
@@ -1302,7 +1304,7 @@ FASTFortranCFGVisitorTest >> testSourceCode [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCFGVisitorTest >> testSourceCodeIfBlock [
 
 	| blocks |
@@ -1333,7 +1335,7 @@ FASTFortranCFGVisitorTest >> testSourceCodeIfBlock [
 	self assert: blocks second sourceCode equals: 'if (x .lt. 5)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCFGVisitorTest >> testSourceCodeIfLogical [
 
 	| blocks |
@@ -1360,7 +1362,7 @@ FASTFortranCFGVisitorTest >> testSourceCodeIfLogical [
 	self assert: blocks second sourceCode equals: 'if (x .lt. 5)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCFGVisitorTest >> testStartFinalBlocks [
 
 	| blocks |
@@ -1388,7 +1390,7 @@ FASTFortranCFGVisitorTest >> testStartFinalBlocks [
 
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testThenWithConditionalAndBasicBlock [
 
 	"
@@ -1445,7 +1447,7 @@ FASTFortranCFGVisitorTest >> testThenWithConditionalAndBasicBlock [
 	self assert: callGetobj isFinal
 ]
 
-{ #category : #'tests - cfg' }
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testTwoSuccessiveLogicalIfs [
 
 	| blocks condX condY |

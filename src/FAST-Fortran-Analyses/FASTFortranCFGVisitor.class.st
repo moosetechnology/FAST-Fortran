@@ -4,8 +4,8 @@ A FASTFortranVisitor that computes ConftrolFlowGraph on the statements
 It is based on the algorithm to compute basic blocks from [https://en.wikipedia.org/wiki/Basic_block](https://en.wikipedia.org/wiki/Basic_block)
 "
 Class {
-	#name : #FASTFortranCFGVisitor,
-	#superclass : #FASTFortranVisitor,
+	#name : 'FASTFortranCFGVisitor',
+	#superclass : 'FASTFortranVisitor',
 	#instVars : [
 		'basicBlocks',
 		'currentBlock',
@@ -13,10 +13,12 @@ Class {
 		'parentLoopBlocks',
 		'pendingNextBlock'
 	],
-	#category : #'FAST-Fortran-Analyses-CFG'
+	#category : 'FAST-Fortran-Analyses-CFG',
+	#package : 'FAST-Fortran-Analyses',
+	#tag : 'CFG'
 }
 
-{ #category : #basicBlocks }
+{ #category : 'basicBlocks' }
 FASTFortranCFGVisitor >> addPendingNextBlockAction: settingAction [
 	"settingAction is a pharo block with one argument (a BasicBlock) and is used to set the successor of another block
 	 when we will know it
@@ -26,13 +28,13 @@ FASTFortranCFGVisitor >> addPendingNextBlockAction: settingAction [
 	pendingNextBlock add: settingAction
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranCFGVisitor >> basicBlocks [
 
 	^basicBlocks
 ]
 
-{ #category : #basicBlocks }
+{ #category : 'basicBlocks' }
 FASTFortranCFGVisitor >> chainPendingBlocksTo: newBlock [
 
 	pendingNextBlock copy do: [ :settingAction |
@@ -40,7 +42,7 @@ FASTFortranCFGVisitor >> chainPendingBlocksTo: newBlock [
 
 ]
 
-{ #category : #basicBlocks }
+{ #category : 'basicBlocks' }
 FASTFortranCFGVisitor >> chainRegisteredJumps: aLabel toBlock: labeledBlock [
 	"When a new label is found, check if there are pas goto statements registered for it.
 	 If so, chains the registered blocks to the new labeledBlock"
@@ -51,7 +53,7 @@ FASTFortranCFGVisitor >> chainRegisteredJumps: aLabel toBlock: labeledBlock [
 	labelReferences removeKey: aLabel ifAbsent: [ ].
 ]
 
-{ #category : #basicBlocks }
+{ #category : 'basicBlocks' }
 FASTFortranCFGVisitor >> checkLabelledConditionalStatement: aFASTFortranTStatement [
 	"simlar to #checkLabelledStatement: but does not set the #nextStatement of currentStatement"
 
@@ -62,7 +64,7 @@ FASTFortranCFGVisitor >> checkLabelledConditionalStatement: aFASTFortranTStateme
 		toBlock: currentBlock
 ]
 
-{ #category : #basicBlocks }
+{ #category : 'basicBlocks' }
 FASTFortranCFGVisitor >> checkLabelledStatement: aFASTFortranTStatement [
 	"Labelled statement start a new block (except if we are already at the start of a new one)
 	 Plus need to check whether we met a goto referring to this label earlier"
@@ -78,13 +80,13 @@ FASTFortranCFGVisitor >> checkLabelledStatement: aFASTFortranTStatement [
 		toBlock: newBlock
 ]
 
-{ #category : #basicBlocks }
+{ #category : 'basicBlocks' }
 FASTFortranCFGVisitor >> closeCurrentBlock [
 
 	currentBlock := nil
 ]
 
-{ #category : #basicBlocks }
+{ #category : 'basicBlocks' }
 FASTFortranCFGVisitor >> findLabelledBlock: label setter: settingAction [
 	"search for a block starting with this label. If none found, returns nil and
 	 register currentBlock as wanting this label"
@@ -104,7 +106,7 @@ FASTFortranCFGVisitor >> findLabelledBlock: label setter: settingAction [
 		]
 ]
 
-{ #category : #basicBlocks }
+{ #category : 'basicBlocks' }
 FASTFortranCFGVisitor >> findParentLoopBlock: aLabel [
 	"if there is no label to the EXIT, take the first loop block in the stack
 	 otherwise, search for the loop with the right label"
@@ -113,7 +115,7 @@ FASTFortranCFGVisitor >> findParentLoopBlock: aLabel [
 	^nil
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 FASTFortranCFGVisitor >> initialize [
 
 	super initialize.
@@ -124,7 +126,7 @@ FASTFortranCFGVisitor >> initialize [
 	pendingNextBlock := OrderedCollection new
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 FASTFortranCFGVisitor >> ioStatementBranches: anIOStatement [
 
 	"IO Statements are  BACKSPACE, CLOSE, DECODE, ENCODE, ENDFILE, OPEN, READ, REWIND, WRITE
@@ -136,7 +138,7 @@ FASTFortranCFGVisitor >> ioStatementBranches: anIOStatement [
 	]
 ]
 
-{ #category : #basicBlocks }
+{ #category : 'basicBlocks' }
 FASTFortranCFGVisitor >> newBasicBlock: aBasicBlockClass [
 	"creates a new BasicBlock and set it to currentBlock
 	 typically called inside: `currentBlock nextBlock: (self newBasicBlock:)` to chain the new block
@@ -152,7 +154,7 @@ FASTFortranCFGVisitor >> newBasicBlock: aBasicBlockClass [
 	^ newBlock
 ]
 
-{ #category : #basicBlocks }
+{ #category : 'basicBlocks' }
 FASTFortranCFGVisitor >> newConditionalBlock: aFASTFortranStatement [
 
 	^(self newBasicBlock: FASTFortranConditionalBasicBlock)
@@ -160,7 +162,7 @@ FASTFortranCFGVisitor >> newConditionalBlock: aFASTFortranStatement [
 		yourself
 ]
 
-{ #category : #basicBlocks }
+{ #category : 'basicBlocks' }
 FASTFortranCFGVisitor >> registerReference: setterAction toLabel: label [
 	"#setterAction is a Pharo block taking one BasicBlock as argument and seting a jump to this block when executed"
 
@@ -168,7 +170,7 @@ FASTFortranCFGVisitor >> registerReference: setterAction toLabel: label [
 		add: setterAction
 ]
 
-{ #category : #basicBlocks }
+{ #category : 'basicBlocks' }
 FASTFortranCFGVisitor >> removePendingActionFor: aBlock [
 	"pending action are pharo blocks with no clear link to the BasicBlock they modify
 	 We use #copiedValueAt: to get this information from the pharo block
@@ -180,7 +182,7 @@ FASTFortranCFGVisitor >> removePendingActionFor: aBlock [
 	]
 ]
 
-{ #category : #basicBlocks }
+{ #category : 'basicBlocks' }
 FASTFortranCFGVisitor >> runChainAction: settingAction with: aBasicBlock [
 
 	settingAction value: aBasicBlock.
@@ -188,19 +190,19 @@ FASTFortranCFGVisitor >> runChainAction: settingAction with: aBasicBlock [
 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranCFGVisitor >> visitFASTFortranBinaryExpression: aFASTFortranBinaryExpression [
 	"pruning the visit, no need to go inside expressions"
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranCFGVisitor >> visitFASTFortranCallStatement: aFASTFortranCallStatement [
 
 	^ self visitFASTFortranTStatement: aFASTFortranCallStatement
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranCFGVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
 	"basic blocks for a LOOP
 	 - ConditionalBlock that need to be chained as #nextBlock of current one
@@ -230,7 +232,7 @@ FASTFortranCFGVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
 	self closeCurrentBlock
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranCFGVisitor >> visitFASTFortranExitStatement: aFASTFortranExitStatement [
 	"looks a bit like a GOTO, but don'e need tospecify the label (goes to enclosing loop)"
 
@@ -241,7 +243,7 @@ FASTFortranCFGVisitor >> visitFASTFortranExitStatement: aFASTFortranExitStatemen
 	self closeCurrentBlock
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranCFGVisitor >> visitFASTFortranGoToComputedStatement: aFASTFortranGoToComputedStatement [
 	"GoTo with several possible target labels
 	 - new ConditionalBlock (#nextBlock of current one)
@@ -266,7 +268,7 @@ FASTFortranCFGVisitor >> visitFASTFortranGoToComputedStatement: aFASTFortranGoTo
 	self closeCurrentBlock
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranCFGVisitor >> visitFASTFortranGoToStatement: aFASTFortranGoToStatement [
 	"todo:
 	 - end currentBlock (contains this statement)
@@ -289,7 +291,7 @@ FASTFortranCFGVisitor >> visitFASTFortranGoToStatement: aFASTFortranGoToStatemen
 	self closeCurrentBlock
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranCFGVisitor >> visitFASTFortranIOStatement: aFASTFortranIOStatement [
 	"IOStatements (see #ioStatementBranches:) can be regular statements or branching statements
 	 depending on their IO-parameters.
@@ -318,7 +320,7 @@ FASTFortranCFGVisitor >> visitFASTFortranIOStatement: aFASTFortranIOStatement [
 	self closeCurrentBlock
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranCFGVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortranIfArithmeticStatement [
 	"Note: next statement after an ArithmeticIf should be labelled or there is no way it gets executed"
 
@@ -345,7 +347,7 @@ FASTFortranCFGVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortranIfAr
 	self closeCurrentBlock
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranCFGVisitor >> visitFASTFortranIfBlockStatement: aFASTFortranIfBlockStatement [
 	"basic blocks for a IF
 	 - new ConditionalBlock (#nextBlock of current one)
@@ -381,7 +383,7 @@ FASTFortranCFGVisitor >> visitFASTFortranIfBlockStatement: aFASTFortranIfBlockSt
 	self closeCurrentBlock
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranCFGVisitor >> visitFASTFortranIfLogicalStatement: aFASTFortranIfLogicalStatement [
 
 	| conditionalBlock |
@@ -404,7 +406,7 @@ FASTFortranCFGVisitor >> visitFASTFortranIfLogicalStatement: aFASTFortranIfLogic
 	self closeCurrentBlock
 ]
 
-{ #category : #'visiting - programUnits' }
+{ #category : 'visiting - programUnits' }
 FASTFortranCFGVisitor >> visitFASTFortranProgramUnit: aFASTFortranProgramUnit [
 
 	| visit |
@@ -415,13 +417,13 @@ FASTFortranCFGVisitor >> visitFASTFortranProgramUnit: aFASTFortranProgramUnit [
 	^ visit
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranCFGVisitor >> visitFASTFortranReadStatement: aFASTFortranReadStatement [
 
 	self visitFASTFortranIOStatement: aFASTFortranReadStatement
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranCFGVisitor >> visitFASTFortranReturnStatement: aFASTFortranReturnStatement [
 	"Ends the current basicBlock and has no nextBlock"
 
@@ -431,7 +433,7 @@ FASTFortranCFGVisitor >> visitFASTFortranReturnStatement: aFASTFortranReturnStat
 	self closeCurrentBlock
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranCFGVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatement [
 	"note: `super visitFASTFortranTStatementBlock:` instead of `super visitFASTFortranStatementBlock:`
 	to avoid calling #visitTStatement:"
@@ -439,7 +441,7 @@ FASTFortranCFGVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatement [
 	super visitFASTFortranTStatementBlock: aFASTFortranStatement
 ]
 
-{ #category : #'visiting - traits' }
+{ #category : 'visiting - traits' }
 FASTFortranCFGVisitor >> visitFASTFortranTStatement: aFASTFortranTStatement [
 
 	| newBlock |
@@ -455,13 +457,13 @@ FASTFortranCFGVisitor >> visitFASTFortranTStatement: aFASTFortranTStatement [
 	"super visitFASTFortranTStatement: aFASTFortranTStatement."
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranCFGVisitor >> visitFASTFortranUnaryExpression: aFASTFortranUnaryExpression [
 	"pruning the visit, no need to go inside expressions"
 
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranCFGVisitor >> visitFASTFortranWriteStatement: aFASTFortranWriteStatement [
 
 	self visitFASTFortranIOStatement: aFASTFortranWriteStatement

@@ -1,16 +1,18 @@
 Class {
-	#name : #FASTFortranSSAVisitorHelpersTest,
-	#superclass : #TestCase,
+	#name : 'FASTFortranSSAVisitorHelpersTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'variables',
 		'branchAB',
 		'branchBC',
 		'visitor'
 	],
-	#category : #'FAST-Fortran-Analyses-Tests-SSA'
+	#category : 'FAST-Fortran-Analyses-Tests-SSA',
+	#package : 'FAST-Fortran-Analyses-Tests',
+	#tag : 'SSA'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranSSAVisitorHelpersTest >> makeVariable: aName [
 
 	^FASTFortranVariable new
@@ -19,7 +21,7 @@ FASTFortranSSAVisitorHelpersTest >> makeVariable: aName [
 		yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranSSAVisitorHelpersTest >> setUp [
 	super setUp.
 
@@ -42,7 +44,7 @@ FASTFortranSSAVisitorHelpersTest >> setUp [
 
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 FASTFortranSSAVisitorHelpersTest >> testAddChoiceToPhi [
 
 	| phi |
@@ -53,7 +55,7 @@ FASTFortranSSAVisitorHelpersTest >> testAddChoiceToPhi [
 	self assertCollection: phi choices equals: branchAB asOrderedCollection
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 FASTFortranSSAVisitorHelpersTest >> testAddPhiChoiceToPhi [
 
 	| phi |
@@ -72,27 +74,27 @@ FASTFortranSSAVisitorHelpersTest >> testAddPhiChoiceToPhi [
 			with: branchBC second )
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 FASTFortranSSAVisitorHelpersTest >> testVariableVersionsEmpty1 [
 
 	self assert: (visitor variableVersionsIn: #() notIn: branchAB) size equals: 0
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 FASTFortranSSAVisitorHelpersTest >> testVariableVersionsIn1Empty2 [
 
 	self assert: (visitor variableVersionsIn: branchAB notIn: #()) size equals: 2.
 	self assertCollection: (visitor variableVersionsIn: branchAB notIn: #()) equals: branchAB.
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 FASTFortranSSAVisitorHelpersTest >> testVariableVersionsIn1NotIn2 [
 
 	self assert: (visitor variableVersionsIn: branchAB notIn: branchBC) size equals: 1.
 	self assert: (visitor variableVersionsIn: branchAB notIn: branchBC) anyOne name equals: 'varA_1'.
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 FASTFortranSSAVisitorHelpersTest >> testVariableVersionsNotIn1In2 [
 
 	self assert: (visitor variableVersionsIn: branchBC notIn: branchAB) size equals: 1.
