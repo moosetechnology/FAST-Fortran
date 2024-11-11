@@ -31,9 +31,8 @@ FASTFortranCopyVisitor >> copy: aNode [
 FASTFortranCopyVisitor >> visitFASTFortranAbstractExpression: aFASTFortranAbstractExpression [
 	<generated>
 	^FASTFortranAbstractExpression new
-		allTagAssociations: (self copy: aFASTFortranAbstractExpression allTagAssociations) ;
-		endPos: (self copy: aFASTFortranAbstractExpression endPos) ;
 		startPos: (self copy: aFASTFortranAbstractExpression startPos) ;
+		endPos: (self copy: aFASTFortranAbstractExpression endPos) ;
 		yourself
 
 ]
@@ -42,7 +41,6 @@ FASTFortranCopyVisitor >> visitFASTFortranAbstractExpression: aFASTFortranAbstra
 FASTFortranCopyVisitor >> visitFASTFortranAbstractIOStatement: aFASTFortranAbstractIOStatement [
 	<generated>
 	^FASTFortranAbstractIOStatement new
-		allTagAssociations: (self copy: aFASTFortranAbstractIOStatement allTagAssociations) ;
 		ioParameters: (self copy: aFASTFortranAbstractIOStatement ioParameters) ;
 		label: (self copy: aFASTFortranAbstractIOStatement label) ;
 		startPos: (self copy: aFASTFortranAbstractIOStatement startPos) ;
@@ -55,9 +53,8 @@ FASTFortranCopyVisitor >> visitFASTFortranAbstractIOStatement: aFASTFortranAbstr
 FASTFortranCopyVisitor >> visitFASTFortranAbstractLiteral: aFASTFortranAbstractLiteral [
 	<generated>
 	^FASTFortranAbstractLiteral new
-		allTagAssociations: (self copy: aFASTFortranAbstractLiteral allTagAssociations) ;
-		endPos: (self copy: aFASTFortranAbstractLiteral endPos) ;
 		startPos: (self copy: aFASTFortranAbstractLiteral startPos) ;
+		endPos: (self copy: aFASTFortranAbstractLiteral endPos) ;
 		yourself
 
 ]
@@ -66,7 +63,6 @@ FASTFortranCopyVisitor >> visitFASTFortranAbstractLiteral: aFASTFortranAbstractL
 FASTFortranCopyVisitor >> visitFASTFortranAbstractStatement: aFASTFortranAbstractStatement [
 	<generated>
 	^FASTFortranAbstractStatement new
-		allTagAssociations: (self copy: aFASTFortranAbstractStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranAbstractStatement label) ;
 		startPos: (self copy: aFASTFortranAbstractStatement startPos) ;
 		endPos: (self copy: aFASTFortranAbstractStatement endPos) ;
@@ -78,7 +74,6 @@ FASTFortranCopyVisitor >> visitFASTFortranAbstractStatement: aFASTFortranAbstrac
 FASTFortranCopyVisitor >> visitFASTFortranAcceptStatement: aFASTFortranAcceptStatement [
 	<generated>
 	^FASTFortranAcceptStatement new
-		allTagAssociations: (self copy: aFASTFortranAcceptStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranAcceptStatement label) ;
 		startPos: (self copy: aFASTFortranAcceptStatement startPos) ;
 		endPos: (self copy: aFASTFortranAcceptStatement endPos) ;
@@ -90,10 +85,9 @@ FASTFortranCopyVisitor >> visitFASTFortranAcceptStatement: aFASTFortranAcceptSta
 FASTFortranCopyVisitor >> visitFASTFortranAmpersand: aFASTFortranAmpersand [
 	<generated>
 	^FASTFortranAmpersand new
-		allTagAssociations: (self copy: aFASTFortranAmpersand allTagAssociations) ;
 		primitiveValue: (self copy: aFASTFortranAmpersand primitiveValue) ;
-		endPos: (self copy: aFASTFortranAmpersand endPos) ;
 		startPos: (self copy: aFASTFortranAmpersand startPos) ;
+		endPos: (self copy: aFASTFortranAmpersand endPos) ;
 		yourself
 
 ]
@@ -102,11 +96,10 @@ FASTFortranCopyVisitor >> visitFASTFortranAmpersand: aFASTFortranAmpersand [
 FASTFortranCopyVisitor >> visitFASTFortranArrayRange: aFASTFortranArrayRange [
 	<generated>
 	^FASTFortranArrayRange new
-		allTagAssociations: (self copy: aFASTFortranArrayRange allTagAssociations) ;
 		lowerBound: (self copy: aFASTFortranArrayRange lowerBound) ;
 		upperBound: (self copy: aFASTFortranArrayRange upperBound) ;
-		endPos: (self copy: aFASTFortranArrayRange endPos) ;
 		startPos: (self copy: aFASTFortranArrayRange startPos) ;
+		endPos: (self copy: aFASTFortranArrayRange endPos) ;
 		yourself
 
 ]
@@ -115,11 +108,10 @@ FASTFortranCopyVisitor >> visitFASTFortranArrayRange: aFASTFortranArrayRange [
 FASTFortranCopyVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariable [
 	<generated>
 	^FASTFortranArrayVariable new
-		allTagAssociations: (self copy: aFASTFortranArrayVariable allTagAssociations) ;
 		name: (self copy: aFASTFortranArrayVariable name) ;
 		indices: (self copy: aFASTFortranArrayVariable indices) ;
-		endPos: (self copy: aFASTFortranArrayVariable endPos) ;
 		startPos: (self copy: aFASTFortranArrayVariable startPos) ;
+		endPos: (self copy: aFASTFortranArrayVariable endPos) ;
 		yourself
 
 ]
@@ -128,11 +120,10 @@ FASTFortranCopyVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariab
 FASTFortranCopyVisitor >> visitFASTFortranAssignmentExpression: aFASTFortranAssignmentExpression [
 	<generated>
 	^FASTFortranAssignmentExpression new
-		allTagAssociations: (self copy: aFASTFortranAssignmentExpression allTagAssociations) ;
 		variable: (self copy: aFASTFortranAssignmentExpression variable) ;
 		expression: (self copy: aFASTFortranAssignmentExpression expression) ;
-		endPos: (self copy: aFASTFortranAssignmentExpression endPos) ;
 		startPos: (self copy: aFASTFortranAssignmentExpression startPos) ;
+		endPos: (self copy: aFASTFortranAssignmentExpression endPos) ;
 		yourself
 
 ]
@@ -141,7 +132,6 @@ FASTFortranCopyVisitor >> visitFASTFortranAssignmentExpression: aFASTFortranAssi
 FASTFortranCopyVisitor >> visitFASTFortranAssignmentStatement: aFASTFortranAssignmentStatement [
 	<generated>
 	^FASTFortranAssignmentStatement new
-		allTagAssociations: (self copy: aFASTFortranAssignmentStatement allTagAssociations) ;
 		variable: (self copy: aFASTFortranAssignmentStatement variable) ;
 		label: (self copy: aFASTFortranAssignmentStatement label) ;
 		expression: (self copy: aFASTFortranAssignmentStatement expression) ;
@@ -155,10 +145,9 @@ FASTFortranCopyVisitor >> visitFASTFortranAssignmentStatement: aFASTFortranAssig
 FASTFortranCopyVisitor >> visitFASTFortranAsterisk: aFASTFortranAsterisk [
 	<generated>
 	^FASTFortranAsterisk new
-		allTagAssociations: (self copy: aFASTFortranAsterisk allTagAssociations) ;
 		primitiveValue: (self copy: aFASTFortranAsterisk primitiveValue) ;
-		endPos: (self copy: aFASTFortranAsterisk endPos) ;
 		startPos: (self copy: aFASTFortranAsterisk startPos) ;
+		endPos: (self copy: aFASTFortranAsterisk endPos) ;
 		yourself
 
 ]
@@ -167,7 +156,6 @@ FASTFortranCopyVisitor >> visitFASTFortranAsterisk: aFASTFortranAsterisk [
 FASTFortranCopyVisitor >> visitFASTFortranAutomaticStatement: aFASTFortranAutomaticStatement [
 	<generated>
 	^FASTFortranAutomaticStatement new
-		allTagAssociations: (self copy: aFASTFortranAutomaticStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranAutomaticStatement label) ;
 		startPos: (self copy: aFASTFortranAutomaticStatement startPos) ;
 		endPos: (self copy: aFASTFortranAutomaticStatement endPos) ;
@@ -179,7 +167,6 @@ FASTFortranCopyVisitor >> visitFASTFortranAutomaticStatement: aFASTFortranAutoma
 FASTFortranCopyVisitor >> visitFASTFortranBackspaceStatement: aFASTFortranBackspaceStatement [
 	<generated>
 	^FASTFortranBackspaceStatement new
-		allTagAssociations: (self copy: aFASTFortranBackspaceStatement allTagAssociations) ;
 		ioParameters: (self copy: aFASTFortranBackspaceStatement ioParameters) ;
 		label: (self copy: aFASTFortranBackspaceStatement label) ;
 		startPos: (self copy: aFASTFortranBackspaceStatement startPos) ;
@@ -192,11 +179,10 @@ FASTFortranCopyVisitor >> visitFASTFortranBackspaceStatement: aFASTFortranBacksp
 FASTFortranCopyVisitor >> visitFASTFortranBinaryExpression: aFASTFortranBinaryExpression [
 	<generated>
 	^FASTFortranBinaryExpression new
-		allTagAssociations: (self copy: aFASTFortranBinaryExpression allTagAssociations) ;
 		leftOperand: (self copy: aFASTFortranBinaryExpression leftOperand) ;
 		rightOperand: (self copy: aFASTFortranBinaryExpression rightOperand) ;
-		endPos: (self copy: aFASTFortranBinaryExpression endPos) ;
 		startPos: (self copy: aFASTFortranBinaryExpression startPos) ;
+		endPos: (self copy: aFASTFortranBinaryExpression endPos) ;
 		operator: (self copy: aFASTFortranBinaryExpression operator) ;
 		yourself
 
@@ -208,7 +194,6 @@ FASTFortranCopyVisitor >> visitFASTFortranBlockData: aFASTFortranBlockData [
 	^FASTFortranBlockData new
 		declarations: (self copy: aFASTFortranBlockData declarations) ;
 		comments: (self copy: aFASTFortranBlockData comments) ;
-		allTagAssociations: (self copy: aFASTFortranBlockData allTagAssociations) ;
 		name: (self copy: aFASTFortranBlockData name) ;
 		parameters: (self copy: aFASTFortranBlockData parameters) ;
 		statementBlock: (self copy: aFASTFortranBlockData statementBlock) ;
@@ -222,10 +207,9 @@ FASTFortranCopyVisitor >> visitFASTFortranBlockData: aFASTFortranBlockData [
 FASTFortranCopyVisitor >> visitFASTFortranBooleanLiteral: aFASTFortranBooleanLiteral [
 	<generated>
 	^FASTFortranBooleanLiteral new
-		allTagAssociations: (self copy: aFASTFortranBooleanLiteral allTagAssociations) ;
 		primitiveValue: (self copy: aFASTFortranBooleanLiteral primitiveValue) ;
-		endPos: (self copy: aFASTFortranBooleanLiteral endPos) ;
 		startPos: (self copy: aFASTFortranBooleanLiteral startPos) ;
+		endPos: (self copy: aFASTFortranBooleanLiteral endPos) ;
 		yourself
 
 ]
@@ -234,7 +218,6 @@ FASTFortranCopyVisitor >> visitFASTFortranBooleanLiteral: aFASTFortranBooleanLit
 FASTFortranCopyVisitor >> visitFASTFortranByteType: aFASTFortranByteType [
 	<generated>
 	^FASTFortranByteType new
-		allTagAssociations: (self copy: aFASTFortranByteType allTagAssociations) ;
 		size: (self copy: aFASTFortranByteType size) ;
 		startPos: (self copy: aFASTFortranByteType startPos) ;
 		endPos: (self copy: aFASTFortranByteType endPos) ;
@@ -246,7 +229,6 @@ FASTFortranCopyVisitor >> visitFASTFortranByteType: aFASTFortranByteType [
 FASTFortranCopyVisitor >> visitFASTFortranCallStatement: aFASTFortranCallStatement [
 	<generated>
 	^FASTFortranCallStatement new
-		allTagAssociations: (self copy: aFASTFortranCallStatement allTagAssociations) ;
 		name: (self copy: aFASTFortranCallStatement name) ;
 		arguments: (self copy: aFASTFortranCallStatement arguments) ;
 		label: (self copy: aFASTFortranCallStatement label) ;
@@ -260,10 +242,9 @@ FASTFortranCopyVisitor >> visitFASTFortranCallStatement: aFASTFortranCallStateme
 FASTFortranCopyVisitor >> visitFASTFortranCharacterLiteral: aFASTFortranCharacterLiteral [
 	<generated>
 	^FASTFortranCharacterLiteral new
-		allTagAssociations: (self copy: aFASTFortranCharacterLiteral allTagAssociations) ;
 		primitiveValue: (self copy: aFASTFortranCharacterLiteral primitiveValue) ;
-		endPos: (self copy: aFASTFortranCharacterLiteral endPos) ;
 		startPos: (self copy: aFASTFortranCharacterLiteral startPos) ;
+		endPos: (self copy: aFASTFortranCharacterLiteral endPos) ;
 		yourself
 
 ]
@@ -272,7 +253,6 @@ FASTFortranCopyVisitor >> visitFASTFortranCharacterLiteral: aFASTFortranCharacte
 FASTFortranCopyVisitor >> visitFASTFortranCharacterType: aFASTFortranCharacterType [
 	<generated>
 	^FASTFortranCharacterType new
-		allTagAssociations: (self copy: aFASTFortranCharacterType allTagAssociations) ;
 		size: (self copy: aFASTFortranCharacterType size) ;
 		startPos: (self copy: aFASTFortranCharacterType startPos) ;
 		endPos: (self copy: aFASTFortranCharacterType endPos) ;
@@ -284,7 +264,6 @@ FASTFortranCopyVisitor >> visitFASTFortranCharacterType: aFASTFortranCharacterTy
 FASTFortranCopyVisitor >> visitFASTFortranCloseStatement: aFASTFortranCloseStatement [
 	<generated>
 	^FASTFortranCloseStatement new
-		allTagAssociations: (self copy: aFASTFortranCloseStatement allTagAssociations) ;
 		ioParameters: (self copy: aFASTFortranCloseStatement ioParameters) ;
 		label: (self copy: aFASTFortranCloseStatement label) ;
 		startPos: (self copy: aFASTFortranCloseStatement startPos) ;
@@ -297,7 +276,6 @@ FASTFortranCopyVisitor >> visitFASTFortranCloseStatement: aFASTFortranCloseState
 FASTFortranCopyVisitor >> visitFASTFortranComment: aFASTFortranComment [
 	<generated>
 	^FASTFortranComment new
-		allTagAssociations: (self copy: aFASTFortranComment allTagAssociations) ;
 		content: (self copy: aFASTFortranComment content) ;
 		startPos: (self copy: aFASTFortranComment startPos) ;
 		endPos: (self copy: aFASTFortranComment endPos) ;
@@ -309,7 +287,6 @@ FASTFortranCopyVisitor >> visitFASTFortranComment: aFASTFortranComment [
 FASTFortranCopyVisitor >> visitFASTFortranCommonGroup: aFASTFortranCommonGroup [
 	<generated>
 	^FASTFortranCommonGroup new
-		allTagAssociations: (self copy: aFASTFortranCommonGroup allTagAssociations) ;
 		name: (self copy: aFASTFortranCommonGroup name) ;
 		declarators: (self copy: aFASTFortranCommonGroup declarators) ;
 		startPos: (self copy: aFASTFortranCommonGroup startPos) ;
@@ -322,7 +299,6 @@ FASTFortranCopyVisitor >> visitFASTFortranCommonGroup: aFASTFortranCommonGroup [
 FASTFortranCopyVisitor >> visitFASTFortranCommonStatement: aFASTFortranCommonStatement [
 	<generated>
 	^FASTFortranCommonStatement new
-		allTagAssociations: (self copy: aFASTFortranCommonStatement allTagAssociations) ;
 		groups: (self copy: aFASTFortranCommonStatement groups) ;
 		label: (self copy: aFASTFortranCommonStatement label) ;
 		startPos: (self copy: aFASTFortranCommonStatement startPos) ;
@@ -335,10 +311,9 @@ FASTFortranCopyVisitor >> visitFASTFortranCommonStatement: aFASTFortranCommonSta
 FASTFortranCopyVisitor >> visitFASTFortranComplexLiteral: aFASTFortranComplexLiteral [
 	<generated>
 	^FASTFortranComplexLiteral new
-		allTagAssociations: (self copy: aFASTFortranComplexLiteral allTagAssociations) ;
 		primitiveValue: (self copy: aFASTFortranComplexLiteral primitiveValue) ;
-		endPos: (self copy: aFASTFortranComplexLiteral endPos) ;
 		startPos: (self copy: aFASTFortranComplexLiteral startPos) ;
+		endPos: (self copy: aFASTFortranComplexLiteral endPos) ;
 		yourself
 
 ]
@@ -347,7 +322,6 @@ FASTFortranCopyVisitor >> visitFASTFortranComplexLiteral: aFASTFortranComplexLit
 FASTFortranCopyVisitor >> visitFASTFortranComplexType: aFASTFortranComplexType [
 	<generated>
 	^FASTFortranComplexType new
-		allTagAssociations: (self copy: aFASTFortranComplexType allTagAssociations) ;
 		size: (self copy: aFASTFortranComplexType size) ;
 		startPos: (self copy: aFASTFortranComplexType startPos) ;
 		endPos: (self copy: aFASTFortranComplexType endPos) ;
@@ -360,7 +334,6 @@ FASTFortranCopyVisitor >> visitFASTFortranConditionalStatement: aFASTFortranCond
 	<generated>
 	^FASTFortranConditionalStatement new
 		condition: (self copy: aFASTFortranConditionalStatement condition) ;
-		allTagAssociations: (self copy: aFASTFortranConditionalStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranConditionalStatement label) ;
 		startPos: (self copy: aFASTFortranConditionalStatement startPos) ;
 		endPos: (self copy: aFASTFortranConditionalStatement endPos) ;
@@ -372,7 +345,6 @@ FASTFortranCopyVisitor >> visitFASTFortranConditionalStatement: aFASTFortranCond
 FASTFortranCopyVisitor >> visitFASTFortranContinueStatement: aFASTFortranContinueStatement [
 	<generated>
 	^FASTFortranContinueStatement new
-		allTagAssociations: (self copy: aFASTFortranContinueStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranContinueStatement label) ;
 		startPos: (self copy: aFASTFortranContinueStatement startPos) ;
 		endPos: (self copy: aFASTFortranContinueStatement endPos) ;
@@ -385,7 +357,6 @@ FASTFortranCopyVisitor >> visitFASTFortranDataGroup: aFASTFortranDataGroup [
 	<generated>
 	^FASTFortranDataGroup new
 		dataConstants: (self copy: aFASTFortranDataGroup dataConstants) ;
-		allTagAssociations: (self copy: aFASTFortranDataGroup allTagAssociations) ;
 		variables: (self copy: aFASTFortranDataGroup variables) ;
 		startPos: (self copy: aFASTFortranDataGroup startPos) ;
 		endPos: (self copy: aFASTFortranDataGroup endPos) ;
@@ -397,7 +368,6 @@ FASTFortranCopyVisitor >> visitFASTFortranDataGroup: aFASTFortranDataGroup [
 FASTFortranCopyVisitor >> visitFASTFortranDataStatement: aFASTFortranDataStatement [
 	<generated>
 	^FASTFortranDataStatement new
-		allTagAssociations: (self copy: aFASTFortranDataStatement allTagAssociations) ;
 		variableGroups: (self copy: aFASTFortranDataStatement variableGroups) ;
 		label: (self copy: aFASTFortranDataStatement label) ;
 		startPos: (self copy: aFASTFortranDataStatement startPos) ;
@@ -410,7 +380,6 @@ FASTFortranCopyVisitor >> visitFASTFortranDataStatement: aFASTFortranDataStateme
 FASTFortranCopyVisitor >> visitFASTFortranDecodeStatement: aFASTFortranDecodeStatement [
 	<generated>
 	^FASTFortranDecodeStatement new
-		allTagAssociations: (self copy: aFASTFortranDecodeStatement allTagAssociations) ;
 		ioParameters: (self copy: aFASTFortranDecodeStatement ioParameters) ;
 		label: (self copy: aFASTFortranDecodeStatement label) ;
 		startPos: (self copy: aFASTFortranDecodeStatement startPos) ;
@@ -423,7 +392,6 @@ FASTFortranCopyVisitor >> visitFASTFortranDecodeStatement: aFASTFortranDecodeSta
 FASTFortranCopyVisitor >> visitFASTFortranDimensionStatement: aFASTFortranDimensionStatement [
 	<generated>
 	^FASTFortranDimensionStatement new
-		allTagAssociations: (self copy: aFASTFortranDimensionStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranDimensionStatement label) ;
 		declarators: (self copy: aFASTFortranDimensionStatement declarators) ;
 		startPos: (self copy: aFASTFortranDimensionStatement startPos) ;
@@ -437,7 +405,6 @@ FASTFortranCopyVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
 	<generated>
 	^FASTFortranDoStatement new
 		labelReferences: (self copy: aFASTFortranDoStatement labelReferences) ;
-		allTagAssociations: (self copy: aFASTFortranDoStatement allTagAssociations) ;
 		loopControl: (self copy: aFASTFortranDoStatement loopControl) ;
 		label: (self copy: aFASTFortranDoStatement label) ;
 		statementBlock: (self copy: aFASTFortranDoStatement statementBlock) ;
@@ -452,7 +419,6 @@ FASTFortranCopyVisitor >> visitFASTFortranDoWhileStatement: aFASTFortranDoWhileS
 	<generated>
 	^FASTFortranDoWhileStatement new
 		condition: (self copy: aFASTFortranDoWhileStatement condition) ;
-		allTagAssociations: (self copy: aFASTFortranDoWhileStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranDoWhileStatement label) ;
 		startPos: (self copy: aFASTFortranDoWhileStatement startPos) ;
 		endPos: (self copy: aFASTFortranDoWhileStatement endPos) ;
@@ -464,10 +430,9 @@ FASTFortranCopyVisitor >> visitFASTFortranDoWhileStatement: aFASTFortranDoWhileS
 FASTFortranCopyVisitor >> visitFASTFortranDoubleComplexLiteral: aFASTFortranDoubleComplexLiteral [
 	<generated>
 	^FASTFortranDoubleComplexLiteral new
-		allTagAssociations: (self copy: aFASTFortranDoubleComplexLiteral allTagAssociations) ;
 		primitiveValue: (self copy: aFASTFortranDoubleComplexLiteral primitiveValue) ;
-		endPos: (self copy: aFASTFortranDoubleComplexLiteral endPos) ;
 		startPos: (self copy: aFASTFortranDoubleComplexLiteral startPos) ;
+		endPos: (self copy: aFASTFortranDoubleComplexLiteral endPos) ;
 		yourself
 
 ]
@@ -476,7 +441,6 @@ FASTFortranCopyVisitor >> visitFASTFortranDoubleComplexLiteral: aFASTFortranDoub
 FASTFortranCopyVisitor >> visitFASTFortranDoubleComplexType: aFASTFortranDoubleComplexType [
 	<generated>
 	^FASTFortranDoubleComplexType new
-		allTagAssociations: (self copy: aFASTFortranDoubleComplexType allTagAssociations) ;
 		size: (self copy: aFASTFortranDoubleComplexType size) ;
 		startPos: (self copy: aFASTFortranDoubleComplexType startPos) ;
 		endPos: (self copy: aFASTFortranDoubleComplexType endPos) ;
@@ -488,10 +452,9 @@ FASTFortranCopyVisitor >> visitFASTFortranDoubleComplexType: aFASTFortranDoubleC
 FASTFortranCopyVisitor >> visitFASTFortranDoublePrecisionLiteral: aFASTFortranDoublePrecisionLiteral [
 	<generated>
 	^FASTFortranDoublePrecisionLiteral new
-		allTagAssociations: (self copy: aFASTFortranDoublePrecisionLiteral allTagAssociations) ;
 		primitiveValue: (self copy: aFASTFortranDoublePrecisionLiteral primitiveValue) ;
-		endPos: (self copy: aFASTFortranDoublePrecisionLiteral endPos) ;
 		startPos: (self copy: aFASTFortranDoublePrecisionLiteral startPos) ;
+		endPos: (self copy: aFASTFortranDoublePrecisionLiteral endPos) ;
 		yourself
 
 ]
@@ -500,7 +463,6 @@ FASTFortranCopyVisitor >> visitFASTFortranDoublePrecisionLiteral: aFASTFortranDo
 FASTFortranCopyVisitor >> visitFASTFortranDoublePrecisionType: aFASTFortranDoublePrecisionType [
 	<generated>
 	^FASTFortranDoublePrecisionType new
-		allTagAssociations: (self copy: aFASTFortranDoublePrecisionType allTagAssociations) ;
 		size: (self copy: aFASTFortranDoublePrecisionType size) ;
 		startPos: (self copy: aFASTFortranDoublePrecisionType startPos) ;
 		endPos: (self copy: aFASTFortranDoublePrecisionType endPos) ;
@@ -512,7 +474,6 @@ FASTFortranCopyVisitor >> visitFASTFortranDoublePrecisionType: aFASTFortranDoubl
 FASTFortranCopyVisitor >> visitFASTFortranElseStatement: aFASTFortranElseStatement [
 	<generated>
 	^FASTFortranElseStatement new
-		allTagAssociations: (self copy: aFASTFortranElseStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranElseStatement label) ;
 		startPos: (self copy: aFASTFortranElseStatement startPos) ;
 		endPos: (self copy: aFASTFortranElseStatement endPos) ;
@@ -524,7 +485,6 @@ FASTFortranCopyVisitor >> visitFASTFortranElseStatement: aFASTFortranElseStateme
 FASTFortranCopyVisitor >> visitFASTFortranEncodeStatement: aFASTFortranEncodeStatement [
 	<generated>
 	^FASTFortranEncodeStatement new
-		allTagAssociations: (self copy: aFASTFortranEncodeStatement allTagAssociations) ;
 		ioParameters: (self copy: aFASTFortranEncodeStatement ioParameters) ;
 		label: (self copy: aFASTFortranEncodeStatement label) ;
 		startPos: (self copy: aFASTFortranEncodeStatement startPos) ;
@@ -537,7 +497,6 @@ FASTFortranCopyVisitor >> visitFASTFortranEncodeStatement: aFASTFortranEncodeSta
 FASTFortranCopyVisitor >> visitFASTFortranEndFileStatement: aFASTFortranEndFileStatement [
 	<generated>
 	^FASTFortranEndFileStatement new
-		allTagAssociations: (self copy: aFASTFortranEndFileStatement allTagAssociations) ;
 		ioParameters: (self copy: aFASTFortranEndFileStatement ioParameters) ;
 		label: (self copy: aFASTFortranEndFileStatement label) ;
 		startPos: (self copy: aFASTFortranEndFileStatement startPos) ;
@@ -550,7 +509,6 @@ FASTFortranCopyVisitor >> visitFASTFortranEndFileStatement: aFASTFortranEndFileS
 FASTFortranCopyVisitor >> visitFASTFortranEntity: aFASTFortranEntity [
 	<generated>
 	^FASTFortranEntity new
-		allTagAssociations: (self copy: aFASTFortranEntity allTagAssociations) ;
 		startPos: (self copy: aFASTFortranEntity startPos) ;
 		endPos: (self copy: aFASTFortranEntity endPos) ;
 		yourself
@@ -561,7 +519,6 @@ FASTFortranCopyVisitor >> visitFASTFortranEntity: aFASTFortranEntity [
 FASTFortranCopyVisitor >> visitFASTFortranEntryStatement: aFASTFortranEntryStatement [
 	<generated>
 	^FASTFortranEntryStatement new
-		allTagAssociations: (self copy: aFASTFortranEntryStatement allTagAssociations) ;
 		name: (self copy: aFASTFortranEntryStatement name) ;
 		label: (self copy: aFASTFortranEntryStatement label) ;
 		entryArguments: (self copy: aFASTFortranEntryStatement entryArguments) ;
@@ -575,7 +532,6 @@ FASTFortranCopyVisitor >> visitFASTFortranEntryStatement: aFASTFortranEntryState
 FASTFortranCopyVisitor >> visitFASTFortranEquivalenceGroup: aFASTFortranEquivalenceGroup [
 	<generated>
 	^FASTFortranEquivalenceGroup new
-		allTagAssociations: (self copy: aFASTFortranEquivalenceGroup allTagAssociations) ;
 		variables: (self copy: aFASTFortranEquivalenceGroup variables) ;
 		startPos: (self copy: aFASTFortranEquivalenceGroup startPos) ;
 		endPos: (self copy: aFASTFortranEquivalenceGroup endPos) ;
@@ -587,7 +543,6 @@ FASTFortranCopyVisitor >> visitFASTFortranEquivalenceGroup: aFASTFortranEquivale
 FASTFortranCopyVisitor >> visitFASTFortranEquivalenceStatement: aFASTFortranEquivalenceStatement [
 	<generated>
 	^FASTFortranEquivalenceStatement new
-		allTagAssociations: (self copy: aFASTFortranEquivalenceStatement allTagAssociations) ;
 		variableGroups: (self copy: aFASTFortranEquivalenceStatement variableGroups) ;
 		label: (self copy: aFASTFortranEquivalenceStatement label) ;
 		startPos: (self copy: aFASTFortranEquivalenceStatement startPos) ;
@@ -600,7 +555,6 @@ FASTFortranCopyVisitor >> visitFASTFortranEquivalenceStatement: aFASTFortranEqui
 FASTFortranCopyVisitor >> visitFASTFortranExitStatement: aFASTFortranExitStatement [
 	<generated>
 	^FASTFortranExitStatement new
-		allTagAssociations: (self copy: aFASTFortranExitStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranExitStatement label) ;
 		startPos: (self copy: aFASTFortranExitStatement startPos) ;
 		endPos: (self copy: aFASTFortranExitStatement endPos) ;
@@ -612,7 +566,6 @@ FASTFortranCopyVisitor >> visitFASTFortranExitStatement: aFASTFortranExitStateme
 FASTFortranCopyVisitor >> visitFASTFortranExternalStatement: aFASTFortranExternalStatement [
 	<generated>
 	^FASTFortranExternalStatement new
-		allTagAssociations: (self copy: aFASTFortranExternalStatement allTagAssociations) ;
 		name: (self copy: aFASTFortranExternalStatement name) ;
 		label: (self copy: aFASTFortranExternalStatement label) ;
 		startPos: (self copy: aFASTFortranExternalStatement startPos) ;
@@ -625,7 +578,6 @@ FASTFortranCopyVisitor >> visitFASTFortranExternalStatement: aFASTFortranExterna
 FASTFortranCopyVisitor >> visitFASTFortranFormatStatement: aFASTFortranFormatStatement [
 	<generated>
 	^FASTFortranFormatStatement new
-		allTagAssociations: (self copy: aFASTFortranFormatStatement allTagAssociations) ;
 		format: (self copy: aFASTFortranFormatStatement format) ;
 		label: (self copy: aFASTFortranFormatStatement label) ;
 		formatDescription: (self copy: aFASTFortranFormatStatement formatDescription) ;
@@ -641,7 +593,6 @@ FASTFortranCopyVisitor >> visitFASTFortranFunction: aFASTFortranFunction [
 	^FASTFortranFunction new
 		declarations: (self copy: aFASTFortranFunction declarations) ;
 		comments: (self copy: aFASTFortranFunction comments) ;
-		allTagAssociations: (self copy: aFASTFortranFunction allTagAssociations) ;
 		name: (self copy: aFASTFortranFunction name) ;
 		parameters: (self copy: aFASTFortranFunction parameters) ;
 		returnType: (self copy: aFASTFortranFunction returnType) ;
@@ -656,11 +607,10 @@ FASTFortranCopyVisitor >> visitFASTFortranFunction: aFASTFortranFunction [
 FASTFortranCopyVisitor >> visitFASTFortranFunctionCall: aFASTFortranFunctionCall [
 	<generated>
 	^FASTFortranFunctionCall new
-		allTagAssociations: (self copy: aFASTFortranFunctionCall allTagAssociations) ;
 		name: (self copy: aFASTFortranFunctionCall name) ;
 		arguments: (self copy: aFASTFortranFunctionCall arguments) ;
-		endPos: (self copy: aFASTFortranFunctionCall endPos) ;
 		startPos: (self copy: aFASTFortranFunctionCall startPos) ;
+		endPos: (self copy: aFASTFortranFunctionCall endPos) ;
 		yourself
 
 ]
@@ -669,7 +619,6 @@ FASTFortranCopyVisitor >> visitFASTFortranFunctionCall: aFASTFortranFunctionCall
 FASTFortranCopyVisitor >> visitFASTFortranFunctionStatement: aFASTFortranFunctionStatement [
 	<generated>
 	^FASTFortranFunctionStatement new
-		allTagAssociations: (self copy: aFASTFortranFunctionStatement allTagAssociations) ;
 		name: (self copy: aFASTFortranFunctionStatement name) ;
 		arguments: (self copy: aFASTFortranFunctionStatement arguments) ;
 		label: (self copy: aFASTFortranFunctionStatement label) ;
@@ -685,7 +634,6 @@ FASTFortranCopyVisitor >> visitFASTFortranGoToAssignedStatement: aFASTFortranGoT
 	<generated>
 	^FASTFortranGoToAssignedStatement new
 		labelReferences: (self copy: aFASTFortranGoToAssignedStatement labelReferences) ;
-		allTagAssociations: (self copy: aFASTFortranGoToAssignedStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranGoToAssignedStatement label) ;
 		selectorExpression: (self copy: aFASTFortranGoToAssignedStatement selectorExpression) ;
 		startPos: (self copy: aFASTFortranGoToAssignedStatement startPos) ;
@@ -699,7 +647,6 @@ FASTFortranCopyVisitor >> visitFASTFortranGoToComputedStatement: aFASTFortranGoT
 	<generated>
 	^FASTFortranGoToComputedStatement new
 		labelReferences: (self copy: aFASTFortranGoToComputedStatement labelReferences) ;
-		allTagAssociations: (self copy: aFASTFortranGoToComputedStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranGoToComputedStatement label) ;
 		selectorExpression: (self copy: aFASTFortranGoToComputedStatement selectorExpression) ;
 		startPos: (self copy: aFASTFortranGoToComputedStatement startPos) ;
@@ -713,7 +660,6 @@ FASTFortranCopyVisitor >> visitFASTFortranGoToStatement: aFASTFortranGoToStateme
 	<generated>
 	^FASTFortranGoToStatement new
 		labelReferences: (self copy: aFASTFortranGoToStatement labelReferences) ;
-		allTagAssociations: (self copy: aFASTFortranGoToStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranGoToStatement label) ;
 		startPos: (self copy: aFASTFortranGoToStatement startPos) ;
 		endPos: (self copy: aFASTFortranGoToStatement endPos) ;
@@ -726,7 +672,6 @@ FASTFortranCopyVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortranIfA
 	<generated>
 	^FASTFortranIfArithmeticStatement new
 		condition: (self copy: aFASTFortranIfArithmeticStatement condition) ;
-		allTagAssociations: (self copy: aFASTFortranIfArithmeticStatement allTagAssociations) ;
 		lessLabel: (self copy: aFASTFortranIfArithmeticStatement lessLabel) ;
 		label: (self copy: aFASTFortranIfArithmeticStatement label) ;
 		equalLabel: (self copy: aFASTFortranIfArithmeticStatement equalLabel) ;
@@ -742,9 +687,8 @@ FASTFortranCopyVisitor >> visitFASTFortranIfBlockStatement: aFASTFortranIfBlockS
 	<generated>
 	^FASTFortranIfBlockStatement new
 		condition: (self copy: aFASTFortranIfBlockStatement condition) ;
-		allTagAssociations: (self copy: aFASTFortranIfBlockStatement allTagAssociations) ;
-		thenStatementBlock: (self copy: aFASTFortranIfBlockStatement thenStatementBlock) ;
 		elseStatementBlock: (self copy: aFASTFortranIfBlockStatement elseStatementBlock) ;
+		thenStatementBlock: (self copy: aFASTFortranIfBlockStatement thenStatementBlock) ;
 		label: (self copy: aFASTFortranIfBlockStatement label) ;
 		startPos: (self copy: aFASTFortranIfBlockStatement startPos) ;
 		endPos: (self copy: aFASTFortranIfBlockStatement endPos) ;
@@ -757,7 +701,6 @@ FASTFortranCopyVisitor >> visitFASTFortranIfLogicalStatement: aFASTFortranIfLogi
 	<generated>
 	^FASTFortranIfLogicalStatement new
 		condition: (self copy: aFASTFortranIfLogicalStatement condition) ;
-		allTagAssociations: (self copy: aFASTFortranIfLogicalStatement allTagAssociations) ;
 		statement: (self copy: aFASTFortranIfLogicalStatement statement) ;
 		label: (self copy: aFASTFortranIfLogicalStatement label) ;
 		startPos: (self copy: aFASTFortranIfLogicalStatement startPos) ;
@@ -778,7 +721,6 @@ FASTFortranCopyVisitor >> visitFASTFortranImplicitLocalDeclaration: aFASTFortran
 FASTFortranCopyVisitor >> visitFASTFortranImplicitRange: aFASTFortranImplicitRange [
 	<generated>
 	^FASTFortranImplicitRange new
-		allTagAssociations: (self copy: aFASTFortranImplicitRange allTagAssociations) ;
 		to: (self copy: aFASTFortranImplicitRange to) ;
 		from: (self copy: aFASTFortranImplicitRange from) ;
 		startPos: (self copy: aFASTFortranImplicitRange startPos) ;
@@ -791,7 +733,6 @@ FASTFortranCopyVisitor >> visitFASTFortranImplicitRange: aFASTFortranImplicitRan
 FASTFortranCopyVisitor >> visitFASTFortranImplicitStatement: aFASTFortranImplicitStatement [
 	<generated>
 	^FASTFortranImplicitStatement new
-		allTagAssociations: (self copy: aFASTFortranImplicitStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranImplicitStatement label) ;
 		typingRules: (self copy: aFASTFortranImplicitStatement typingRules) ;
 		startPos: (self copy: aFASTFortranImplicitStatement startPos) ;
@@ -804,7 +745,6 @@ FASTFortranCopyVisitor >> visitFASTFortranImplicitStatement: aFASTFortranImplici
 FASTFortranCopyVisitor >> visitFASTFortranImplicitTypingRule: aFASTFortranImplicitTypingRule [
 	<generated>
 	^FASTFortranImplicitTypingRule new
-		allTagAssociations: (self copy: aFASTFortranImplicitTypingRule allTagAssociations) ;
 		type: (self copy: aFASTFortranImplicitTypingRule type) ;
 		ranges: (self copy: aFASTFortranImplicitTypingRule ranges) ;
 		startPos: (self copy: aFASTFortranImplicitTypingRule startPos) ;
@@ -817,11 +757,10 @@ FASTFortranCopyVisitor >> visitFASTFortranImplicitTypingRule: aFASTFortranImplic
 FASTFortranCopyVisitor >> visitFASTFortranImpliedDoExpression: aFASTFortranImpliedDoExpression [
 	<generated>
 	^FASTFortranImpliedDoExpression new
-		allTagAssociations: (self copy: aFASTFortranImpliedDoExpression allTagAssociations) ;
 		loopControl: (self copy: aFASTFortranImpliedDoExpression loopControl) ;
 		variables: (self copy: aFASTFortranImpliedDoExpression variables) ;
-		endPos: (self copy: aFASTFortranImpliedDoExpression endPos) ;
 		startPos: (self copy: aFASTFortranImpliedDoExpression startPos) ;
+		endPos: (self copy: aFASTFortranImpliedDoExpression endPos) ;
 		yourself
 
 ]
@@ -830,7 +769,6 @@ FASTFortranCopyVisitor >> visitFASTFortranImpliedDoExpression: aFASTFortranImpli
 FASTFortranCopyVisitor >> visitFASTFortranIncludeStatement: aFASTFortranIncludeStatement [
 	<generated>
 	^FASTFortranIncludeStatement new
-		allTagAssociations: (self copy: aFASTFortranIncludeStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranIncludeStatement label) ;
 		startPos: (self copy: aFASTFortranIncludeStatement startPos) ;
 		endPos: (self copy: aFASTFortranIncludeStatement endPos) ;
@@ -842,7 +780,6 @@ FASTFortranCopyVisitor >> visitFASTFortranIncludeStatement: aFASTFortranIncludeS
 FASTFortranCopyVisitor >> visitFASTFortranInquireStatement: aFASTFortranInquireStatement [
 	<generated>
 	^FASTFortranInquireStatement new
-		allTagAssociations: (self copy: aFASTFortranInquireStatement allTagAssociations) ;
 		ioParameters: (self copy: aFASTFortranInquireStatement ioParameters) ;
 		label: (self copy: aFASTFortranInquireStatement label) ;
 		startPos: (self copy: aFASTFortranInquireStatement startPos) ;
@@ -855,10 +792,9 @@ FASTFortranCopyVisitor >> visitFASTFortranInquireStatement: aFASTFortranInquireS
 FASTFortranCopyVisitor >> visitFASTFortranIntegerLiteral: aFASTFortranIntegerLiteral [
 	<generated>
 	^FASTFortranIntegerLiteral new
-		allTagAssociations: (self copy: aFASTFortranIntegerLiteral allTagAssociations) ;
 		primitiveValue: (self copy: aFASTFortranIntegerLiteral primitiveValue) ;
-		endPos: (self copy: aFASTFortranIntegerLiteral endPos) ;
 		startPos: (self copy: aFASTFortranIntegerLiteral startPos) ;
+		endPos: (self copy: aFASTFortranIntegerLiteral endPos) ;
 		yourself
 
 ]
@@ -867,7 +803,6 @@ FASTFortranCopyVisitor >> visitFASTFortranIntegerLiteral: aFASTFortranIntegerLit
 FASTFortranCopyVisitor >> visitFASTFortranIntegerType: aFASTFortranIntegerType [
 	<generated>
 	^FASTFortranIntegerType new
-		allTagAssociations: (self copy: aFASTFortranIntegerType allTagAssociations) ;
 		size: (self copy: aFASTFortranIntegerType size) ;
 		startPos: (self copy: aFASTFortranIntegerType startPos) ;
 		endPos: (self copy: aFASTFortranIntegerType endPos) ;
@@ -879,7 +814,6 @@ FASTFortranCopyVisitor >> visitFASTFortranIntegerType: aFASTFortranIntegerType [
 FASTFortranCopyVisitor >> visitFASTFortranIntrinsicStatement: aFASTFortranIntrinsicStatement [
 	<generated>
 	^FASTFortranIntrinsicStatement new
-		allTagAssociations: (self copy: aFASTFortranIntrinsicStatement allTagAssociations) ;
 		variables: (self copy: aFASTFortranIntrinsicStatement variables) ;
 		label: (self copy: aFASTFortranIntrinsicStatement label) ;
 		startPos: (self copy: aFASTFortranIntrinsicStatement startPos) ;
@@ -892,7 +826,6 @@ FASTFortranCopyVisitor >> visitFASTFortranIntrinsicStatement: aFASTFortranIntrin
 FASTFortranCopyVisitor >> visitFASTFortranLabelReference: aFASTFortranLabelReference [
 	<generated>
 	^FASTFortranLabelReference new
-		allTagAssociations: (self copy: aFASTFortranLabelReference allTagAssociations) ;
 		label: (self copy: aFASTFortranLabelReference label) ;
 		startPos: (self copy: aFASTFortranLabelReference startPos) ;
 		endPos: (self copy: aFASTFortranLabelReference endPos) ;
@@ -904,7 +837,6 @@ FASTFortranCopyVisitor >> visitFASTFortranLabelReference: aFASTFortranLabelRefer
 FASTFortranCopyVisitor >> visitFASTFortranLogicalType: aFASTFortranLogicalType [
 	<generated>
 	^FASTFortranLogicalType new
-		allTagAssociations: (self copy: aFASTFortranLogicalType allTagAssociations) ;
 		size: (self copy: aFASTFortranLogicalType size) ;
 		startPos: (self copy: aFASTFortranLogicalType startPos) ;
 		endPos: (self copy: aFASTFortranLogicalType endPos) ;
@@ -917,7 +849,6 @@ FASTFortranCopyVisitor >> visitFASTFortranLoopControlExpression: aFASTFortranLoo
 	<generated>
 	^FASTFortranLoopControlExpression new
 		increment: (self copy: aFASTFortranLoopControlExpression increment) ;
-		allTagAssociations: (self copy: aFASTFortranLoopControlExpression allTagAssociations) ;
 		limit: (self copy: aFASTFortranLoopControlExpression limit) ;
 		init: (self copy: aFASTFortranLoopControlExpression init) ;
 		startPos: (self copy: aFASTFortranLoopControlExpression startPos) ;
@@ -930,7 +861,6 @@ FASTFortranCopyVisitor >> visitFASTFortranLoopControlExpression: aFASTFortranLoo
 FASTFortranCopyVisitor >> visitFASTFortranMapStatement: aFASTFortranMapStatement [
 	<generated>
 	^FASTFortranMapStatement new
-		allTagAssociations: (self copy: aFASTFortranMapStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranMapStatement label) ;
 		startPos: (self copy: aFASTFortranMapStatement startPos) ;
 		endPos: (self copy: aFASTFortranMapStatement endPos) ;
@@ -942,7 +872,6 @@ FASTFortranCopyVisitor >> visitFASTFortranMapStatement: aFASTFortranMapStatement
 FASTFortranCopyVisitor >> visitFASTFortranNameListStatement: aFASTFortranNameListStatement [
 	<generated>
 	^FASTFortranNameListStatement new
-		allTagAssociations: (self copy: aFASTFortranNameListStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranNameListStatement label) ;
 		startPos: (self copy: aFASTFortranNameListStatement startPos) ;
 		endPos: (self copy: aFASTFortranNameListStatement endPos) ;
@@ -954,10 +883,9 @@ FASTFortranCopyVisitor >> visitFASTFortranNameListStatement: aFASTFortranNameLis
 FASTFortranCopyVisitor >> visitFASTFortranNumericalConstant: aFASTFortranNumericalConstant [
 	<generated>
 	^FASTFortranNumericalConstant new
-		allTagAssociations: (self copy: aFASTFortranNumericalConstant allTagAssociations) ;
 		primitiveValue: (self copy: aFASTFortranNumericalConstant primitiveValue) ;
-		endPos: (self copy: aFASTFortranNumericalConstant endPos) ;
 		startPos: (self copy: aFASTFortranNumericalConstant startPos) ;
+		endPos: (self copy: aFASTFortranNumericalConstant endPos) ;
 		yourself
 
 ]
@@ -966,7 +894,6 @@ FASTFortranCopyVisitor >> visitFASTFortranNumericalConstant: aFASTFortranNumeric
 FASTFortranCopyVisitor >> visitFASTFortranOpenStatement: aFASTFortranOpenStatement [
 	<generated>
 	^FASTFortranOpenStatement new
-		allTagAssociations: (self copy: aFASTFortranOpenStatement allTagAssociations) ;
 		ioParameters: (self copy: aFASTFortranOpenStatement ioParameters) ;
 		label: (self copy: aFASTFortranOpenStatement label) ;
 		startPos: (self copy: aFASTFortranOpenStatement startPos) ;
@@ -979,7 +906,6 @@ FASTFortranCopyVisitor >> visitFASTFortranOpenStatement: aFASTFortranOpenStateme
 FASTFortranCopyVisitor >> visitFASTFortranOptionsStatement: aFASTFortranOptionsStatement [
 	<generated>
 	^FASTFortranOptionsStatement new
-		allTagAssociations: (self copy: aFASTFortranOptionsStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranOptionsStatement label) ;
 		startPos: (self copy: aFASTFortranOptionsStatement startPos) ;
 		endPos: (self copy: aFASTFortranOptionsStatement endPos) ;
@@ -991,7 +917,6 @@ FASTFortranCopyVisitor >> visitFASTFortranOptionsStatement: aFASTFortranOptionsS
 FASTFortranCopyVisitor >> visitFASTFortranParameterStatement: aFASTFortranParameterStatement [
 	<generated>
 	^FASTFortranParameterStatement new
-		allTagAssociations: (self copy: aFASTFortranParameterStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranParameterStatement label) ;
 		declarators: (self copy: aFASTFortranParameterStatement declarators) ;
 		startPos: (self copy: aFASTFortranParameterStatement startPos) ;
@@ -1004,7 +929,6 @@ FASTFortranCopyVisitor >> visitFASTFortranParameterStatement: aFASTFortranParame
 FASTFortranCopyVisitor >> visitFASTFortranPauseStatement: aFASTFortranPauseStatement [
 	<generated>
 	^FASTFortranPauseStatement new
-		allTagAssociations: (self copy: aFASTFortranPauseStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranPauseStatement label) ;
 		displayArgument: (self copy: aFASTFortranPauseStatement displayArgument) ;
 		startPos: (self copy: aFASTFortranPauseStatement startPos) ;
@@ -1017,7 +941,6 @@ FASTFortranCopyVisitor >> visitFASTFortranPauseStatement: aFASTFortranPauseState
 FASTFortranCopyVisitor >> visitFASTFortranPragmaStatement: aFASTFortranPragmaStatement [
 	<generated>
 	^FASTFortranPragmaStatement new
-		allTagAssociations: (self copy: aFASTFortranPragmaStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranPragmaStatement label) ;
 		startPos: (self copy: aFASTFortranPragmaStatement startPos) ;
 		endPos: (self copy: aFASTFortranPragmaStatement endPos) ;
@@ -1029,7 +952,6 @@ FASTFortranCopyVisitor >> visitFASTFortranPragmaStatement: aFASTFortranPragmaSta
 FASTFortranCopyVisitor >> visitFASTFortranPrintStatement: aFASTFortranPrintStatement [
 	<generated>
 	^FASTFortranPrintStatement new
-		allTagAssociations: (self copy: aFASTFortranPrintStatement allTagAssociations) ;
 		format: (self copy: aFASTFortranPrintStatement format) ;
 		arguments: (self copy: aFASTFortranPrintStatement arguments) ;
 		label: (self copy: aFASTFortranPrintStatement label) ;
@@ -1045,7 +967,6 @@ FASTFortranCopyVisitor >> visitFASTFortranProcedure: aFASTFortranProcedure [
 	^FASTFortranProcedure new
 		declarations: (self copy: aFASTFortranProcedure declarations) ;
 		comments: (self copy: aFASTFortranProcedure comments) ;
-		allTagAssociations: (self copy: aFASTFortranProcedure allTagAssociations) ;
 		name: (self copy: aFASTFortranProcedure name) ;
 		parameters: (self copy: aFASTFortranProcedure parameters) ;
 		statementBlock: (self copy: aFASTFortranProcedure statementBlock) ;
@@ -1061,7 +982,6 @@ FASTFortranCopyVisitor >> visitFASTFortranProgramFile: aFASTFortranProgramFile [
 	^FASTFortranProgramFile new
 		declarations: (self copy: aFASTFortranProgramFile declarations) ;
 		comments: (self copy: aFASTFortranProgramFile comments) ;
-		allTagAssociations: (self copy: aFASTFortranProgramFile allTagAssociations) ;
 		programUnit: (self copy: aFASTFortranProgramFile programUnit) ;
 		startPos: (self copy: aFASTFortranProgramFile startPos) ;
 		endPos: (self copy: aFASTFortranProgramFile endPos) ;
@@ -1075,7 +995,6 @@ FASTFortranCopyVisitor >> visitFASTFortranProgramMain: aFASTFortranProgramMain [
 	^FASTFortranProgramMain new
 		declarations: (self copy: aFASTFortranProgramMain declarations) ;
 		comments: (self copy: aFASTFortranProgramMain comments) ;
-		allTagAssociations: (self copy: aFASTFortranProgramMain allTagAssociations) ;
 		name: (self copy: aFASTFortranProgramMain name) ;
 		parameters: (self copy: aFASTFortranProgramMain parameters) ;
 		statementBlock: (self copy: aFASTFortranProgramMain statementBlock) ;
@@ -1091,7 +1010,6 @@ FASTFortranCopyVisitor >> visitFASTFortranProgramUnit: aFASTFortranProgramUnit [
 	^FASTFortranProgramUnit new
 		declarations: (self copy: aFASTFortranProgramUnit declarations) ;
 		comments: (self copy: aFASTFortranProgramUnit comments) ;
-		allTagAssociations: (self copy: aFASTFortranProgramUnit allTagAssociations) ;
 		name: (self copy: aFASTFortranProgramUnit name) ;
 		parameters: (self copy: aFASTFortranProgramUnit parameters) ;
 		statementBlock: (self copy: aFASTFortranProgramUnit statementBlock) ;
@@ -1105,7 +1023,6 @@ FASTFortranCopyVisitor >> visitFASTFortranProgramUnit: aFASTFortranProgramUnit [
 FASTFortranCopyVisitor >> visitFASTFortranReadStatement: aFASTFortranReadStatement [
 	<generated>
 	^FASTFortranReadStatement new
-		allTagAssociations: (self copy: aFASTFortranReadStatement allTagAssociations) ;
 		ioParameters: (self copy: aFASTFortranReadStatement ioParameters) ;
 		arguments: (self copy: aFASTFortranReadStatement arguments) ;
 		label: (self copy: aFASTFortranReadStatement label) ;
@@ -1119,10 +1036,9 @@ FASTFortranCopyVisitor >> visitFASTFortranReadStatement: aFASTFortranReadStateme
 FASTFortranCopyVisitor >> visitFASTFortranRealLiteral: aFASTFortranRealLiteral [
 	<generated>
 	^FASTFortranRealLiteral new
-		allTagAssociations: (self copy: aFASTFortranRealLiteral allTagAssociations) ;
 		primitiveValue: (self copy: aFASTFortranRealLiteral primitiveValue) ;
-		endPos: (self copy: aFASTFortranRealLiteral endPos) ;
 		startPos: (self copy: aFASTFortranRealLiteral startPos) ;
+		endPos: (self copy: aFASTFortranRealLiteral endPos) ;
 		yourself
 
 ]
@@ -1131,7 +1047,6 @@ FASTFortranCopyVisitor >> visitFASTFortranRealLiteral: aFASTFortranRealLiteral [
 FASTFortranCopyVisitor >> visitFASTFortranRealType: aFASTFortranRealType [
 	<generated>
 	^FASTFortranRealType new
-		allTagAssociations: (self copy: aFASTFortranRealType allTagAssociations) ;
 		size: (self copy: aFASTFortranRealType size) ;
 		startPos: (self copy: aFASTFortranRealType startPos) ;
 		endPos: (self copy: aFASTFortranRealType endPos) ;
@@ -1143,7 +1058,6 @@ FASTFortranCopyVisitor >> visitFASTFortranRealType: aFASTFortranRealType [
 FASTFortranCopyVisitor >> visitFASTFortranReturnStatement: aFASTFortranReturnStatement [
 	<generated>
 	^FASTFortranReturnStatement new
-		allTagAssociations: (self copy: aFASTFortranReturnStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranReturnStatement label) ;
 		expression: (self copy: aFASTFortranReturnStatement expression) ;
 		alternateReturnLabel: (self copy: aFASTFortranReturnStatement alternateReturnLabel) ;
@@ -1157,7 +1071,6 @@ FASTFortranCopyVisitor >> visitFASTFortranReturnStatement: aFASTFortranReturnSta
 FASTFortranCopyVisitor >> visitFASTFortranRewindStatement: aFASTFortranRewindStatement [
 	<generated>
 	^FASTFortranRewindStatement new
-		allTagAssociations: (self copy: aFASTFortranRewindStatement allTagAssociations) ;
 		ioParameters: (self copy: aFASTFortranRewindStatement ioParameters) ;
 		label: (self copy: aFASTFortranRewindStatement label) ;
 		startPos: (self copy: aFASTFortranRewindStatement startPos) ;
@@ -1170,7 +1083,6 @@ FASTFortranCopyVisitor >> visitFASTFortranRewindStatement: aFASTFortranRewindSta
 FASTFortranCopyVisitor >> visitFASTFortranSaveStatement: aFASTFortranSaveStatement [
 	<generated>
 	^FASTFortranSaveStatement new
-		allTagAssociations: (self copy: aFASTFortranSaveStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranSaveStatement label) ;
 		startPos: (self copy: aFASTFortranSaveStatement startPos) ;
 		endPos: (self copy: aFASTFortranSaveStatement endPos) ;
@@ -1182,10 +1094,9 @@ FASTFortranCopyVisitor >> visitFASTFortranSaveStatement: aFASTFortranSaveStateme
 FASTFortranCopyVisitor >> visitFASTFortranScalarVariable: aFASTFortranScalarVariable [
 	<generated>
 	^FASTFortranScalarVariable new
-		allTagAssociations: (self copy: aFASTFortranScalarVariable allTagAssociations) ;
 		name: (self copy: aFASTFortranScalarVariable name) ;
-		endPos: (self copy: aFASTFortranScalarVariable endPos) ;
 		startPos: (self copy: aFASTFortranScalarVariable startPos) ;
+		endPos: (self copy: aFASTFortranScalarVariable endPos) ;
 		yourself
 
 ]
@@ -1194,7 +1105,6 @@ FASTFortranCopyVisitor >> visitFASTFortranScalarVariable: aFASTFortranScalarVari
 FASTFortranCopyVisitor >> visitFASTFortranSegment: aFASTFortranSegment [
 	<generated>
 	^FASTFortranSegment new
-		allTagAssociations: (self copy: aFASTFortranSegment allTagAssociations) ;
 		size: (self copy: aFASTFortranSegment size) ;
 		name: (self copy: aFASTFortranSegment name) ;
 		statements: (self copy: aFASTFortranSegment statements) ;
@@ -1209,7 +1119,6 @@ FASTFortranCopyVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementB
 	<generated>
 	^FASTFortranStatementBlock new
 		comments: (self copy: aFASTFortranStatementBlock comments) ;
-		allTagAssociations: (self copy: aFASTFortranStatementBlock allTagAssociations) ;
 		statements: (self copy: aFASTFortranStatementBlock statements) ;
 		startPos: (self copy: aFASTFortranStatementBlock startPos) ;
 		endPos: (self copy: aFASTFortranStatementBlock endPos) ;
@@ -1221,7 +1130,6 @@ FASTFortranCopyVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementB
 FASTFortranCopyVisitor >> visitFASTFortranStaticStatement: aFASTFortranStaticStatement [
 	<generated>
 	^FASTFortranStaticStatement new
-		allTagAssociations: (self copy: aFASTFortranStaticStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranStaticStatement label) ;
 		startPos: (self copy: aFASTFortranStaticStatement startPos) ;
 		endPos: (self copy: aFASTFortranStaticStatement endPos) ;
@@ -1233,7 +1141,6 @@ FASTFortranCopyVisitor >> visitFASTFortranStaticStatement: aFASTFortranStaticSta
 FASTFortranCopyVisitor >> visitFASTFortranStopStatement: aFASTFortranStopStatement [
 	<generated>
 	^FASTFortranStopStatement new
-		allTagAssociations: (self copy: aFASTFortranStopStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranStopStatement label) ;
 		displayArgument: (self copy: aFASTFortranStopStatement displayArgument) ;
 		startPos: (self copy: aFASTFortranStopStatement startPos) ;
@@ -1248,7 +1155,6 @@ FASTFortranCopyVisitor >> visitFASTFortranSubprogram: aFASTFortranSubprogram [
 	^FASTFortranSubprogram new
 		declarations: (self copy: aFASTFortranSubprogram declarations) ;
 		comments: (self copy: aFASTFortranSubprogram comments) ;
-		allTagAssociations: (self copy: aFASTFortranSubprogram allTagAssociations) ;
 		name: (self copy: aFASTFortranSubprogram name) ;
 		parameters: (self copy: aFASTFortranSubprogram parameters) ;
 		statementBlock: (self copy: aFASTFortranSubprogram statementBlock) ;
@@ -1264,7 +1170,6 @@ FASTFortranCopyVisitor >> visitFASTFortranSubroutine: aFASTFortranSubroutine [
 	^FASTFortranSubroutine new
 		declarations: (self copy: aFASTFortranSubroutine declarations) ;
 		comments: (self copy: aFASTFortranSubroutine comments) ;
-		allTagAssociations: (self copy: aFASTFortranSubroutine allTagAssociations) ;
 		name: (self copy: aFASTFortranSubroutine name) ;
 		parameters: (self copy: aFASTFortranSubroutine parameters) ;
 		statementBlock: (self copy: aFASTFortranSubroutine statementBlock) ;
@@ -1278,9 +1183,8 @@ FASTFortranCopyVisitor >> visitFASTFortranSubroutine: aFASTFortranSubroutine [
 FASTFortranCopyVisitor >> visitFASTFortranSubstring: aFASTFortranSubstring [
 	<generated>
 	^FASTFortranSubstring new
-		allTagAssociations: (self copy: aFASTFortranSubstring allTagAssociations) ;
-		endPos: (self copy: aFASTFortranSubstring endPos) ;
 		startPos: (self copy: aFASTFortranSubstring startPos) ;
+		endPos: (self copy: aFASTFortranSubstring endPos) ;
 		yourself
 
 ]
@@ -1392,7 +1296,6 @@ FASTFortranCopyVisitor >> visitFASTFortranTWithVariableGroups: aFASTFortranTWith
 FASTFortranCopyVisitor >> visitFASTFortranType: aFASTFortranType [
 	<generated>
 	^FASTFortranType new
-		allTagAssociations: (self copy: aFASTFortranType allTagAssociations) ;
 		size: (self copy: aFASTFortranType size) ;
 		startPos: (self copy: aFASTFortranType startPos) ;
 		endPos: (self copy: aFASTFortranType endPos) ;
@@ -1404,10 +1307,9 @@ FASTFortranCopyVisitor >> visitFASTFortranType: aFASTFortranType [
 FASTFortranCopyVisitor >> visitFASTFortranUnaryExpression: aFASTFortranUnaryExpression [
 	<generated>
 	^FASTFortranUnaryExpression new
-		allTagAssociations: (self copy: aFASTFortranUnaryExpression allTagAssociations) ;
 		expression: (self copy: aFASTFortranUnaryExpression expression) ;
-		endPos: (self copy: aFASTFortranUnaryExpression endPos) ;
 		startPos: (self copy: aFASTFortranUnaryExpression startPos) ;
+		endPos: (self copy: aFASTFortranUnaryExpression endPos) ;
 		operator: (self copy: aFASTFortranUnaryExpression operator) ;
 		yourself
 
@@ -1417,7 +1319,6 @@ FASTFortranCopyVisitor >> visitFASTFortranUnaryExpression: aFASTFortranUnaryExpr
 FASTFortranCopyVisitor >> visitFASTFortranUnionStatement: aFASTFortranUnionStatement [
 	<generated>
 	^FASTFortranUnionStatement new
-		allTagAssociations: (self copy: aFASTFortranUnionStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranUnionStatement label) ;
 		startPos: (self copy: aFASTFortranUnionStatement startPos) ;
 		endPos: (self copy: aFASTFortranUnionStatement endPos) ;
@@ -1429,10 +1330,9 @@ FASTFortranCopyVisitor >> visitFASTFortranUnionStatement: aFASTFortranUnionState
 FASTFortranCopyVisitor >> visitFASTFortranVariable: aFASTFortranVariable [
 	<generated>
 	^FASTFortranVariable new
-		allTagAssociations: (self copy: aFASTFortranVariable allTagAssociations) ;
 		name: (self copy: aFASTFortranVariable name) ;
-		endPos: (self copy: aFASTFortranVariable endPos) ;
 		startPos: (self copy: aFASTFortranVariable startPos) ;
+		endPos: (self copy: aFASTFortranVariable endPos) ;
 		yourself
 
 ]
@@ -1441,7 +1341,6 @@ FASTFortranCopyVisitor >> visitFASTFortranVariable: aFASTFortranVariable [
 FASTFortranCopyVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFortranVariableDeclarationStatement [
 	<generated>
 	^FASTFortranVariableDeclarationStatement new
-		allTagAssociations: (self copy: aFASTFortranVariableDeclarationStatement allTagAssociations) ;
 		type: (self copy: aFASTFortranVariableDeclarationStatement type) ;
 		label: (self copy: aFASTFortranVariableDeclarationStatement label) ;
 		declarators: (self copy: aFASTFortranVariableDeclarationStatement declarators) ;
@@ -1455,7 +1354,6 @@ FASTFortranCopyVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFor
 FASTFortranCopyVisitor >> visitFASTFortranVariableDeclarator: aFASTFortranVariableDeclarator [
 	<generated>
 	^FASTFortranVariableDeclarator new
-		allTagAssociations: (self copy: aFASTFortranVariableDeclarator allTagAssociations) ;
 		dimensions: (self copy: aFASTFortranVariableDeclarator dimensions) ;
 		name: (self copy: aFASTFortranVariableDeclarator name) ;
 		expression: (self copy: aFASTFortranVariableDeclarator expression) ;
@@ -1469,7 +1367,6 @@ FASTFortranCopyVisitor >> visitFASTFortranVariableDeclarator: aFASTFortranVariab
 FASTFortranCopyVisitor >> visitFASTFortranVirtualStatement: aFASTFortranVirtualStatement [
 	<generated>
 	^FASTFortranVirtualStatement new
-		allTagAssociations: (self copy: aFASTFortranVirtualStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranVirtualStatement label) ;
 		startPos: (self copy: aFASTFortranVirtualStatement startPos) ;
 		endPos: (self copy: aFASTFortranVirtualStatement endPos) ;
@@ -1481,7 +1378,6 @@ FASTFortranCopyVisitor >> visitFASTFortranVirtualStatement: aFASTFortranVirtualS
 FASTFortranCopyVisitor >> visitFASTFortranVolatileStatement: aFASTFortranVolatileStatement [
 	<generated>
 	^FASTFortranVolatileStatement new
-		allTagAssociations: (self copy: aFASTFortranVolatileStatement allTagAssociations) ;
 		label: (self copy: aFASTFortranVolatileStatement label) ;
 		startPos: (self copy: aFASTFortranVolatileStatement startPos) ;
 		endPos: (self copy: aFASTFortranVolatileStatement endPos) ;
@@ -1493,7 +1389,6 @@ FASTFortranCopyVisitor >> visitFASTFortranVolatileStatement: aFASTFortranVolatil
 FASTFortranCopyVisitor >> visitFASTFortranWriteStatement: aFASTFortranWriteStatement [
 	<generated>
 	^FASTFortranWriteStatement new
-		allTagAssociations: (self copy: aFASTFortranWriteStatement allTagAssociations) ;
 		ioParameters: (self copy: aFASTFortranWriteStatement ioParameters) ;
 		arguments: (self copy: aFASTFortranWriteStatement arguments) ;
 		label: (self copy: aFASTFortranWriteStatement label) ;

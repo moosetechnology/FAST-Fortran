@@ -1,7 +1,8 @@
 Extension { #name : 'FASTFortranRewindStatement' }
 
 { #category : '*FAST-Fortran-Visitors' }
-FASTFortranRewindStatement >> accept: aVisitor [	<generated>
+FASTFortranRewindStatement >> accept: aVisitor [
+	<generated>
 	^ aVisitor visitFASTFortranRewindStatement: self.
 
 ]
