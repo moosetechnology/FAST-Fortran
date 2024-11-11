@@ -5,25 +5,27 @@ Checks some well-formedness rules on a CFG
 - #dead rule: All BasicBlocks in the CFG have an ancestor except the startBlock
 "
 Class {
-	#name : #FASTFortranCFGChecker,
-	#superclass : #Object,
-	#category : #'FAST-Fortran-Analyses-CFG'
+	#name : 'FASTFortranCFGChecker',
+	#superclass : 'Object',
+	#category : 'FAST-Fortran-Analyses-CFG',
+	#package : 'FAST-Fortran-Analyses',
+	#tag : 'CFG'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FASTFortranCFGChecker class >> on: aCFG [
 
 	^self new
 		on: aCFG 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FASTFortranCFGChecker >> on: aCFGVisitor [
 
 	^self unreachableBlocks: (aCFGVisitor basicBlocks).
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FASTFortranCFGChecker >> reachableBlocks: blockCollection [
 	| reachable nbPastReachables newReachables |
 
@@ -40,7 +42,7 @@ FASTFortranCFGChecker >> reachableBlocks: blockCollection [
 	^ reachable
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FASTFortranCFGChecker >> unreachableBlocks: blockCollection [
 
 	^ blockCollection difference: (self reachableBlocks: blockCollection)

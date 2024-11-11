@@ -2,27 +2,29 @@
 A FASTFortranSSAVisitorTest is a test class for testing the behavior of FASTFortranSSAVisitor
 "
 Class {
-	#name : #FASTFortranSSAVisitorTest,
-	#superclass : #FASTFortranAbstractVisitorTest,
+	#name : 'FASTFortranSSAVisitorTest',
+	#superclass : 'FASTFortranAbstractVisitorTest',
 	#instVars : [
 		'ssa'
 	],
-	#category : #'FAST-Fortran-Analyses-Tests-SSA'
+	#category : 'FAST-Fortran-Analyses-Tests-SSA',
+	#package : 'FAST-Fortran-Analyses-Tests',
+	#tag : 'SSA'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranSSAVisitorTest >> newVisitor [
 
 	^FASTFortranSSAVisitor new
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranSSAVisitorTest >> runVisitor [
 
 	^ssa := visitor visit: ast
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testDoLoopCreatesConditionalBlock [
 
 	| loopStmt varAccess |
@@ -51,7 +53,7 @@ FASTFortranSSAVisitorTest >> testDoLoopCreatesConditionalBlock [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testIfBlockAssignedAndUsedInThenOnly [
 	"
 	SUBROUTINE something()
@@ -88,7 +90,7 @@ FASTFortranSSAVisitorTest >> testIfBlockAssignedAndUsedInThenOnly [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testIfBlockAssignedBeforeInElse [
 	"
 	SUBROUTINE something()
@@ -121,7 +123,7 @@ FASTFortranSSAVisitorTest >> testIfBlockAssignedBeforeInElse [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testIfBlockAssignedBeforeInThen [
 	"
 	SUBROUTINE something()
@@ -153,7 +155,7 @@ FASTFortranSSAVisitorTest >> testIfBlockAssignedBeforeInThen [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testIfBlockAssignedBeforeInThenInElse [
 	"
 	SUBROUTINE something()
@@ -193,7 +195,7 @@ FASTFortranSSAVisitorTest >> testIfBlockAssignedBeforeInThenInElse [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testIfBlockAssignedInElseOnly [
 	"
 	SUBROUTINE something()
@@ -221,7 +223,7 @@ FASTFortranSSAVisitorTest >> testIfBlockAssignedInElseOnly [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testIfBlockAssignedInThenOnly [
 	"
 	SUBROUTINE something()
@@ -248,7 +250,7 @@ FASTFortranSSAVisitorTest >> testIfBlockAssignedInThenOnly [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testIfBlockFourBranches [
 	"
 	SUBROUTINE something()
@@ -304,7 +306,7 @@ FASTFortranSSAVisitorTest >> testIfBlockFourBranches [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testIfLogicalAssignedBeforeAndAfter [
 	"
 	SUBROUTINE something()
@@ -338,7 +340,7 @@ FASTFortranSSAVisitorTest >> testIfLogicalAssignedBeforeAndAfter [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testIfLogicalAssignedBeforeAndInside [
 	"
 	SUBROUTINE something()
@@ -370,7 +372,7 @@ FASTFortranSSAVisitorTest >> testIfLogicalAssignedBeforeAndInside [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testIfLogicalAssignedBeforeAndInsideAndUsedAfter [
 	"
 	SUBROUTINE something()
@@ -398,7 +400,7 @@ FASTFortranSSAVisitorTest >> testIfLogicalAssignedBeforeAndInsideAndUsedAfter [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testIfLogicalAssignedInsideOnly [
 	"
 	SUBROUTINE something()
@@ -422,7 +424,7 @@ FASTFortranSSAVisitorTest >> testIfLogicalAssignedInsideOnly [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testIfLogicalNotAssignedInside [
 	"
 	SUBROUTINE something()
@@ -451,7 +453,7 @@ FASTFortranSSAVisitorTest >> testIfLogicalNotAssignedInside [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testSingleAssignement [
 	"
 	SUBROUTINE something()
@@ -477,7 +479,7 @@ FASTFortranSSAVisitorTest >> testSingleAssignement [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testUnAssigned [
 	"
 	SUBROUTINE something()
@@ -503,7 +505,7 @@ FASTFortranSSAVisitorTest >> testUnAssigned [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testVariableAssignedTwice [
 	"
 	SUBROUTINE something()
@@ -533,7 +535,7 @@ FASTFortranSSAVisitorTest >> testVariableAssignedTwice [
 		equals: ssa statementBlock statements third  variable ssaVersion localDeclaration
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testVariableReassigned [
 	"
 	SUBROUTINE something()

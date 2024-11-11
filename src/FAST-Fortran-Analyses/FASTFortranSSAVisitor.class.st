@@ -1,20 +1,22 @@
 Class {
-	#name : #FASTFortranSSAVisitor,
-	#superclass : #FASTFortranVisitor,
+	#name : 'FASTFortranSSAVisitor',
+	#superclass : 'FASTFortranVisitor',
 	#instVars : [
 		'variableVersions'
 	],
-	#category : #'FAST-Fortran-Analyses-SSA'
+	#category : 'FAST-Fortran-Analyses-SSA',
+	#package : 'FAST-Fortran-Analyses',
+	#tag : 'SSA'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranSSAVisitor class >> visit: anAST [
 
 	^self new
 		visit: anAST 
 ]
 
-{ #category : #'private - ssa' }
+{ #category : 'private - ssa' }
 FASTFortranSSAVisitor >> createVariableVersion: aFASTFortranVariable [
 
 	| ssaVersion |
@@ -26,7 +28,7 @@ FASTFortranSSAVisitor >> createVariableVersion: aFASTFortranVariable [
 	^ssaVersion 
 ]
 
-{ #category : #'private - ssa' }
+{ #category : 'private - ssa' }
 FASTFortranSSAVisitor >> threeWaysPhiVersions: preVersions branch1: branch1 branch2: branch2 [
 	"compares the current versions of variables (in #branch1 and branch2) with the one that were
 	 before the conditional statement (#preVersion)
@@ -44,7 +46,7 @@ FASTFortranSSAVisitor >> threeWaysPhiVersions: preVersions branch1: branch1 bran
 	self twoWaysPhiVersions: (branch1 difference: only1) branch: (branch2 difference: only2)
 ]
 
-{ #category : #'private - ssa' }
+{ #category : 'private - ssa' }
 FASTFortranSSAVisitor >> twoWaysPhiVersions: preVersions branch: branch [
 	"compares the current versions of variables (in #variableVersions) with the one that were
 	 before (the conditional statement)
@@ -65,7 +67,7 @@ FASTFortranSSAVisitor >> twoWaysPhiVersions: preVersions branch: branch [
 	]
 ]
 
-{ #category : #'private - ssa' }
+{ #category : 'private - ssa' }
 FASTFortranSSAVisitor >> useVariableVersion: aFASTFortranVariable [
 
 	^aFASTFortranVariable localDeclaration activeVersion
@@ -73,7 +75,7 @@ FASTFortranSSAVisitor >> useVariableVersion: aFASTFortranVariable [
 
 ]
 
-{ #category : #'private - ssa' }
+{ #category : 'private - ssa' }
 FASTFortranSSAVisitor >> variableVersionsIn: versions1 notIn: versions2 [
 
 	^versions1 select: [ :v1 |
@@ -83,7 +85,7 @@ FASTFortranSSAVisitor >> variableVersionsIn: versions1 notIn: versions2 [
 	]
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 FASTFortranSSAVisitor >> visit: anAST [
 
 	| copy |
@@ -97,27 +99,27 @@ FASTFortranSSAVisitor >> visit: anAST [
 	^ copy
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranSSAVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariable [
 
 	^ self visitFASTFortranVariable: aFASTFortranArrayVariable
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranSSAVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
 
 	aFASTFortranDoStatement loopControl accept: self.
 	aFASTFortranDoStatement statementBlock accept: self
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranSSAVisitor >> visitFASTFortranDoWhileStatement: aFASTFortranDoWhileStatement [
 
 	self flag: 'DoWhile not correctly modelled yet'.
 	^ self shouldBeImplemented
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranSSAVisitor >> visitFASTFortranIfBlockStatement: aFASTFortranIfBlockStatement [
 	"For conditional statements, we record the variableVersions before the conditional and compare
 	 them to versions after the conditional.
@@ -143,7 +145,7 @@ FASTFortranSSAVisitor >> visitFASTFortranIfBlockStatement: aFASTFortranIfBlockSt
 		branch2: afterElse
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranSSAVisitor >> visitFASTFortranIfLogicalStatement: aFASTFortranIfLogicalStatement [
 	"For conditional statements, we record the variableVersions before the conditional and compare
 	 them to versions after the conditional.
@@ -161,7 +163,7 @@ FASTFortranSSAVisitor >> visitFASTFortranIfLogicalStatement: aFASTFortranIfLogic
 		branch: (variableVersions collect: #activeVersion)
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranSSAVisitor >> visitFASTFortranLoopControlExpression: aFASTFortranLoopControlExpression [
 
 	aFASTFortranLoopControlExpression init accept: self.
@@ -170,19 +172,19 @@ FASTFortranSSAVisitor >> visitFASTFortranLoopControlExpression: aFASTFortranLoop
 	aFASTFortranLoopControlExpression limit accept: self
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranSSAVisitor >> visitFASTFortranScalarVariable: aFASTFortranScalarVariable [
 
 	^ self visitFASTFortranVariable: aFASTFortranScalarVariable
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranSSAVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBlock [
 
 	self visitFASTFortranTStatementBlock: aFASTFortranStatementBlock
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranSSAVisitor >> visitFASTFortranTAssignment: aFASTFortranTAssignment [
 
 	| fastVariable |
@@ -192,7 +194,7 @@ FASTFortranSSAVisitor >> visitFASTFortranTAssignment: aFASTFortranTAssignment [
 	aFASTFortranTAssignment expression accept: self
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranSSAVisitor >> visitFASTFortranVariable: aFASTFortranVariable [
 
 	aFASTFortranVariable ssaVersion:

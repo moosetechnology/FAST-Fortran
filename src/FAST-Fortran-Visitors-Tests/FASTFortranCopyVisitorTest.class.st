@@ -1,10 +1,12 @@
 Class {
-	#name : #FASTFortranCopyVisitorTest,
-	#superclass : #FASTFortranAbstractVisitorTest,
-	#category : #'FAST-Fortran-Analyses-Tests-SSA'
+	#name : 'FASTFortranCopyVisitorTest',
+	#superclass : 'FASTFortranAbstractVisitorTest',
+	#category : 'FAST-Fortran-Visitors-Tests-Visitor',
+	#package : 'FAST-Fortran-Visitors-Tests',
+	#tag : 'Visitor'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranCopyVisitorTest >> assertExportCopy: stmt equals: string [
 	"raising explicit error to remember which tests have not been reimplemented yet"
 
@@ -12,13 +14,13 @@ FASTFortranCopyVisitorTest >> assertExportCopy: stmt equals: string [
 	self shouldNotImplement 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranCopyVisitorTest >> newVisitor [
 
 	^FASTFortranCopyVisitor new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCopyVisitorTest >> testArrayDeclaration [
 	| stmt |
 	stmt := self arrayDeclaration: 'v' dimensions: #( #('1' '10') ).
@@ -30,7 +32,7 @@ FASTFortranCopyVisitorTest >> testArrayDeclaration [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testArrayDeclarationImplicitLowerBound [
 	| stmt |
 	stmt := self arrayDeclaration: 'v' dimensions: #( #('1' '10') ).
@@ -43,7 +45,7 @@ FASTFortranCopyVisitorTest >> testArrayDeclarationImplicitLowerBound [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testArrayDeclarationMultipleDimensions [
 	| stmt |
 	stmt := self arrayDeclaration: 'v' dimensions: #( #('1' '10') #('-10' '-1') ).
@@ -55,7 +57,7 @@ FASTFortranCopyVisitorTest >> testArrayDeclarationMultipleDimensions [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCopyVisitorTest >> testArrayRange [
 	| stmt |
 	stmt := FASTFortranArrayVariable new
@@ -71,7 +73,7 @@ FASTFortranCopyVisitorTest >> testArrayRange [
 'arr(1:max)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCopyVisitorTest >> testArrayVariable [
 	| stmt copy |
 	stmt := FASTFortranArrayVariable new
@@ -83,7 +85,7 @@ FASTFortranCopyVisitorTest >> testArrayVariable [
 	self assert: copy name equals: stmt name.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testAssignementFunctionCall [
 	"a = fct(5,b)"
 
@@ -116,7 +118,7 @@ FASTFortranCopyVisitorTest >> testAssignementFunctionCall [
 
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testAssignementStatementArrayAssigned [
 	| stmt |
 	stmt := self
@@ -131,7 +133,7 @@ FASTFortranCopyVisitorTest >> testAssignementStatementArrayAssigned [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testAssignementStatementLiteralValue [
 	"aVar = .true."
 
@@ -147,7 +149,7 @@ FASTFortranCopyVisitorTest >> testAssignementStatementLiteralValue [
 
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testAssignementStatementVariable [
 	"a = b"
 
@@ -166,7 +168,7 @@ FASTFortranCopyVisitorTest >> testAssignementStatementVariable [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCopyVisitorTest >> testBinaryExpression [
 	"a + 5"
 
@@ -193,7 +195,7 @@ FASTFortranCopyVisitorTest >> testBinaryExpression [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCopyVisitorTest >> testBinaryExpressionNe [
 	"a .ne. 5"
 
@@ -220,7 +222,7 @@ FASTFortranCopyVisitorTest >> testBinaryExpressionNe [
 
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testBlockStatementWithCommentAndStatement [
 	"note: positions are approximate, all we need is that the assignement is after the comment"
 	| stmt cmt block |
@@ -244,7 +246,7 @@ FASTFortranCopyVisitorTest >> testBlockStatementWithCommentAndStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testCallStatementExpressionArg [
 	"call subrtn(a * 5)"
 
@@ -265,7 +267,7 @@ FASTFortranCopyVisitorTest >> testCallStatementExpressionArg [
 
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testCallStatementNoArgs [
 	"call subrtn"
 
@@ -281,7 +283,7 @@ FASTFortranCopyVisitorTest >> testCallStatementNoArgs [
 
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testCallStatementWithArgs [
 	"call subrtn(a,5)"
 
@@ -305,7 +307,7 @@ FASTFortranCopyVisitorTest >> testCallStatementWithArgs [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCopyVisitorTest >> testComment [
 	| cmt |
 	cmt := self comment: 'C This is a comment'.
@@ -317,7 +319,7 @@ FASTFortranCopyVisitorTest >> testComment [
 '.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCopyVisitorTest >> testComment72Characters [
 	| cmt |
 	cmt := self comment: 'C 3456789 123456789 123456789 123456789 123456789 123456789 123456789 12'.
@@ -329,7 +331,7 @@ FASTFortranCopyVisitorTest >> testComment72Characters [
 '.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testCommonStatement [
 
 	| stmt |
@@ -352,7 +354,7 @@ FASTFortranCopyVisitorTest >> testCommonStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testContinueStatement [
 	| stmt |
 	stmt := FASTFortranContinueStatement new
@@ -365,7 +367,7 @@ FASTFortranCopyVisitorTest >> testContinueStatement [
 '.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testDataStatement [
 
 	| stmt |
@@ -389,7 +391,7 @@ FASTFortranCopyVisitorTest >> testDataStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testDimensionStatement [
 
 	| stmt |
@@ -407,7 +409,7 @@ FASTFortranCopyVisitorTest >> testDimensionStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testDoStatement [
 	| stmt |
 
@@ -421,7 +423,7 @@ FASTFortranCopyVisitorTest >> testDoStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testDoStatementNoIncrement [
 	| stmt |
 
@@ -435,7 +437,7 @@ FASTFortranCopyVisitorTest >> testDoStatementNoIncrement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testDoStatementWithLabel [
 	| stmt |
 
@@ -452,7 +454,7 @@ FASTFortranCopyVisitorTest >> testDoStatementWithLabel [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCopyVisitorTest >> testEmptySubroutineNoParameters [
 	| sub |
 	sub := self subroutine: 'blah'.
@@ -465,7 +467,7 @@ FASTFortranCopyVisitorTest >> testEmptySubroutineNoParameters [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCopyVisitorTest >> testEmptySubroutineTwoParameters [
 	| sub |
 	sub := self subroutine: 'blah'.
@@ -481,7 +483,7 @@ FASTFortranCopyVisitorTest >> testEmptySubroutineTwoParameters [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testEntryStatement [
 
 	| stmt |
@@ -497,7 +499,7 @@ FASTFortranCopyVisitorTest >> testEntryStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testEquivalenceStatement [
 
 	| stmt |
@@ -522,7 +524,7 @@ FASTFortranCopyVisitorTest >> testEquivalenceStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testExitStatement [
 	| stmt |
 	stmt := self exitStatement: nil.
@@ -534,7 +536,7 @@ FASTFortranCopyVisitorTest >> testExitStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testExternalStatement [
 	| stmt |
 	stmt := self externalStatement: 'aVar'.
@@ -546,7 +548,7 @@ FASTFortranCopyVisitorTest >> testExternalStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testFormatStatement [
 	| stmt |
 	stmt := FASTFortranFormatStatement new
@@ -561,7 +563,7 @@ FASTFortranCopyVisitorTest >> testFormatStatement [
 '.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testFunctionNoParameterNoStatement [
 	| node copy |
 	node := self functionDeclaration: 'BLAH'.
@@ -575,7 +577,7 @@ FASTFortranCopyVisitorTest >> testFunctionNoParameterNoStatement [
 
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testFunctionNoParameterWithStatement [
 	"real function BLAH()
   	return i
@@ -603,7 +605,7 @@ FASTFortranCopyVisitorTest >> testFunctionNoParameterWithStatement [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCopyVisitorTest >> testFunctionNoReturnType [
 	"function blah()
       end
@@ -619,7 +621,7 @@ FASTFortranCopyVisitorTest >> testFunctionNoReturnType [
 	self assert: copy name equals: fct name.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testFunctionStatement [
 	| node |
 	node := FASTFortranFunctionStatement new.
@@ -634,7 +636,7 @@ FASTFortranCopyVisitorTest >> testFunctionStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testFunctionWithParameterNoStatement [
 	"real function BLAH(i,j)
       end"
@@ -657,7 +659,7 @@ FASTFortranCopyVisitorTest >> testFunctionWithParameterNoStatement [
 
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testGotoComputedStatement [
 	| stmt |
 	stmt := FASTFortranGoToComputedStatement new
@@ -672,7 +674,7 @@ FASTFortranCopyVisitorTest >> testGotoComputedStatement [
 '.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testGotoStatement [
 	| stmt |
 	stmt := self gotoStatement: '110'.
@@ -684,7 +686,7 @@ FASTFortranCopyVisitorTest >> testGotoStatement [
 '.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testIfArithmeticStatement [
 	| stmt |
 
@@ -697,7 +699,7 @@ FASTFortranCopyVisitorTest >> testIfArithmeticStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testIfBlockStatementEmpty [
 	"if (bool) then
       end if"
@@ -720,7 +722,7 @@ FASTFortranCopyVisitorTest >> testIfBlockStatementEmpty [
 	self assert: copy elseStatementBlock equals: node elseStatementBlock.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testIfBlockStatementEmptyBinaryCondition [
 	"if (a .gt. 0) then
       end if"
@@ -745,7 +747,7 @@ FASTFortranCopyVisitorTest >> testIfBlockStatementEmptyBinaryCondition [
 	self assert: copy elseStatementBlock equals: node elseStatementBlock.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testIfBlockStatementNested [
 	"if (bool1) then
         if (bool2) then
@@ -782,7 +784,7 @@ FASTFortranCopyVisitorTest >> testIfBlockStatementNested [
 	self assert: copyIf elseStatementBlock equals: nodeIf elseStatementBlock.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testIfBlockStatementWithElseBlock [
 	"if (bool) then
       else
@@ -809,7 +811,7 @@ FASTFortranCopyVisitorTest >> testIfBlockStatementWithElseBlock [
 
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testIfBlockStatementWithThenBlock [
 	"if (bool) then
         return 
@@ -833,7 +835,7 @@ FASTFortranCopyVisitorTest >> testIfBlockStatementWithThenBlock [
 	self assert: copy elseStatementBlock equals: node elseStatementBlock.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testIfLogicalStatementEmpty [
 	| stmt |
 	stmt := FASTFortranIfLogicalStatement new
@@ -848,7 +850,7 @@ FASTFortranCopyVisitorTest >> testIfLogicalStatementEmpty [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testImplicitStatement [
 	| stmt |
 	stmt := self implicitStatement.
@@ -860,7 +862,7 @@ FASTFortranCopyVisitorTest >> testImplicitStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testImplicitStatementSeveralRules [
 	| stmt |
 	stmt := self implicitStatement.
@@ -879,7 +881,7 @@ FASTFortranCopyVisitorTest >> testImplicitStatementSeveralRules [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testImpliedDoExpression [
 	| expr |
 
@@ -893,7 +895,7 @@ FASTFortranCopyVisitorTest >> testImpliedDoExpression [
 '(v,i,i = 1,max,1)'
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testInquireStatement [
 	| stmt |
 	stmt := FASTFortranInquireStatement new
@@ -910,7 +912,7 @@ FASTFortranCopyVisitorTest >> testInquireStatement [
 '.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testIntrinsicStatement [
 
 	| stmt |
@@ -926,7 +928,7 @@ FASTFortranCopyVisitorTest >> testIntrinsicStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testLabelledStatement [
 	| stmt |
 	stmt := self returnStatement: nil.
@@ -939,7 +941,7 @@ FASTFortranCopyVisitorTest >> testLabelledStatement [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCopyVisitorTest >> testLongDataStatementLine [
 
 	| stmt |
@@ -963,7 +965,7 @@ FASTFortranCopyVisitorTest >> testLongDataStatementLine [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCopyVisitorTest >> testLongFormatLine [
 
 	| stmt |
@@ -981,7 +983,7 @@ FASTFortranCopyVisitorTest >> testLongFormatLine [
 '.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCopyVisitorTest >> testLongLine [
 	| stmt |
 	stmt := self declarationStatement: #character variables: #(abc1 abc2 abc3 abc4 abc5 abc6 abc7 abc8 abc9 abc10 abc11 abc12 abc13 abc14 abc15 abc16 abc17 abc18 abc19 abc20 abc21 abc22 abc23 abc24 abc25).
@@ -995,7 +997,7 @@ FASTFortranCopyVisitorTest >> testLongLine [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCopyVisitorTest >> testLongLineDontBreak [
 	| stmt |
 	self skip.
@@ -1011,7 +1013,7 @@ FASTFortranCopyVisitorTest >> testLongLineDontBreak [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testMainProgram [
 	| node |
 	node := FASTFortranProgramMain new
@@ -1027,7 +1029,7 @@ FASTFortranCopyVisitorTest >> testMainProgram [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testOneDeclarationCharacterType [
 	"character* str"
 
@@ -1050,7 +1052,7 @@ FASTFortranCopyVisitorTest >> testOneDeclarationCharacterType [
 
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testOneDeclarationCharacterTypeStarSize [
 	"character*(*) str"
 
@@ -1067,7 +1069,7 @@ FASTFortranCopyVisitorTest >> testOneDeclarationCharacterTypeStarSize [
 	self assert: copy type size class equals: node type size class.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testOneDeclarationCharacterTypeWithSize [
 	"character*10 str"
 
@@ -1087,7 +1089,7 @@ FASTFortranCopyVisitorTest >> testOneDeclarationCharacterTypeWithSize [
 	self assert: copy type size primitiveValue equals: node type size primitiveValue
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testOneDeclarationDoublePrecisionType [
 	"double precision r"
 
@@ -1110,7 +1112,7 @@ FASTFortranCopyVisitorTest >> testOneDeclarationDoublePrecisionType [
 
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testOneDeclarationIntegerTypeWithSize [
 	"integer*8 i"
 
@@ -1130,7 +1132,7 @@ FASTFortranCopyVisitorTest >> testOneDeclarationIntegerTypeWithSize [
 	self assert: copy type size primitiveValue equals: node type size primitiveValue
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testOneDeclarationLogicalType [
 	"logical r"
 
@@ -1153,7 +1155,7 @@ FASTFortranCopyVisitorTest >> testOneDeclarationLogicalType [
 
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testOneDeclarationRealType [
 	| node copy |
 	node := self declarationStatement: #real variables: #(r).
@@ -1174,7 +1176,7 @@ FASTFortranCopyVisitorTest >> testOneDeclarationRealType [
 
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testOneDeclarationTwoVariables [
 	"integer i,j"
 
@@ -1200,7 +1202,7 @@ FASTFortranCopyVisitorTest >> testOneDeclarationTwoVariables [
 
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testOpenStatement [
 	| stmt |
 	stmt := FASTFortranOpenStatement new
@@ -1217,7 +1219,7 @@ FASTFortranCopyVisitorTest >> testOpenStatement [
 '.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testPauseStatementWithInteger [
 	| stmt |
 	stmt := FASTFortranParameterStatement new
@@ -1233,7 +1235,7 @@ FASTFortranCopyVisitorTest >> testPauseStatementWithInteger [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testPauseStatementWithString [
 	| stmt |
 	stmt := FASTFortranPauseStatement new
@@ -1247,7 +1249,7 @@ FASTFortranCopyVisitorTest >> testPauseStatementWithString [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testPrintStatement [
 	| stmt |
 	stmt := self printStatement: { self characterLiteral: 'message' }.
@@ -1259,7 +1261,7 @@ FASTFortranCopyVisitorTest >> testPrintStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testReadStatement [
 	| stmt |
 	stmt := self
@@ -1278,7 +1280,7 @@ FASTFortranCopyVisitorTest >> testReadStatement [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testReturnStatementEmpty [
 	| node copy |
 	node :=  self returnStatement: nil.
@@ -1291,7 +1293,7 @@ FASTFortranCopyVisitorTest >> testReturnStatementEmpty [
 		
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testReturnStatementLiteralValue [
 	| node copy |
 	node := self returnStatement: (self realLiteral: '3.5').
@@ -1306,7 +1308,7 @@ FASTFortranCopyVisitorTest >> testReturnStatementLiteralValue [
 		
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testRewindStatement [
 	| stmt |
 	stmt := FASTFortranRewindStatement new
@@ -1323,7 +1325,7 @@ FASTFortranCopyVisitorTest >> testRewindStatement [
 '.
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testStopStatementEmpty [
 	| stmt |
 	stmt := FASTFortranStopStatement new.
@@ -1335,7 +1337,7 @@ FASTFortranCopyVisitorTest >> testStopStatementEmpty [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testStopStatementWithInteger [
 	| stmt |
 	stmt := FASTFortranStopStatement new
@@ -1349,7 +1351,7 @@ FASTFortranCopyVisitorTest >> testStopStatementWithInteger [
 '
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testStopStatementWithString [
 	| stmt |
 	stmt := FASTFortranStopStatement new
@@ -1363,7 +1365,7 @@ FASTFortranCopyVisitorTest >> testStopStatementWithString [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranCopyVisitorTest >> testStringConcatOperator [
 	| stmt |
 	stmt := self binary: '//' left: #texte right: ' a string'.
@@ -1374,7 +1376,7 @@ FASTFortranCopyVisitorTest >> testStringConcatOperator [
 'texte // '' a string'''
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testStringLiteralWithQuote [
 	" 'a ''string'' with quotes' "
 
@@ -1390,7 +1392,7 @@ FASTFortranCopyVisitorTest >> testStringLiteralWithQuote [
 
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testTwoDeclarationsTwoVariables [
 	"subroutine blah()
         integer i
@@ -1425,7 +1427,7 @@ FASTFortranCopyVisitorTest >> testTwoDeclarationsTwoVariables [
 
 ]
 
-{ #category : #'tests - statements' }
+{ #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testWriteStatement [
 	| stmt |
 	stmt := self writeStatement: #( 'message' ).

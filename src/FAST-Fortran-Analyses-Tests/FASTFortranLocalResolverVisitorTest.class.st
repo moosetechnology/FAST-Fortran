@@ -2,18 +2,20 @@
 A FASTFortranLocalResolverVisitorTest is a test class for testing the behavior of FASTFortranLocalResolverVisitor
 "
 Class {
-	#name : #FASTFortranLocalResolverVisitorTest,
-	#superclass : #FASTFortranAbstractVisitorTest,
-	#category : #'FAST-Fortran-Analyses-Tests-Resolver'
+	#name : 'FASTFortranLocalResolverVisitorTest',
+	#superclass : 'FASTFortranAbstractVisitorTest',
+	#category : 'FAST-Fortran-Analyses-Tests-Resolver',
+	#package : 'FAST-Fortran-Analyses-Tests',
+	#tag : 'Resolver'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 FASTFortranLocalResolverVisitorTest >> newVisitor [
 
 	^FASTFortranLocalResolverVisitor new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranLocalResolverVisitorTest >> testLinkToDeclaration [
 	"
 	SUBROUTINE something()
@@ -36,7 +38,7 @@ FASTFortranLocalResolverVisitorTest >> testLinkToDeclaration [
 	self assert: varAccess localDeclaration equals: body first declarators first
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FASTFortranLocalResolverVisitorTest >> testLinkToImplicitDeclaration [
 	"
 	SUBROUTINE something()

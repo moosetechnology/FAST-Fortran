@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranEndFileStatement }
+Extension { #name : 'FASTFortranEndFileStatement' }
 
-{ #category : #'*FAST-Fortran-Analyses' }
+{ #category : '*FAST-Fortran-Analyses' }
 FASTFortranEndFileStatement >> exportForCFG [
 
 	^FASTFortranExporterVisitor export: self

@@ -2,29 +2,31 @@
 Creates a Roassal visualization of a CFG
 "
 Class {
-	#name : #FASTFortranCFGVisualization,
-	#superclass : #Object,
+	#name : 'FASTFortranCFGVisualization',
+	#superclass : 'Object',
 	#instVars : [
 		'canvas'
 	],
-	#category : #'FAST-Fortran-Analyses-CFG'
+	#category : 'FAST-Fortran-Analyses-CFG',
+	#package : 'FAST-Fortran-Analyses',
+	#tag : 'CFG'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FASTFortranCFGVisualization class >> on: aFASTFortranCFGVisitor [
 
 	^self new
 		openOn: aFASTFortranCFGVisitor
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FASTFortranCFGVisualization class >> onFilename: aFilename [
 
 	^self new
 		openOnFilename: aFilename 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FASTFortranCFGVisualization >> attachLineText: lineShape [
 
 	lineShape model key nextBlockForValues do: [ :valueNextBlock || label |
@@ -38,7 +40,7 @@ FASTFortranCFGVisualization >> attachLineText: lineShape [
 	
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FASTFortranCFGVisualization >> basicBlockShape: aBasicBlock [
 
 	| shape |
@@ -56,7 +58,7 @@ FASTFortranCFGVisualization >> basicBlockShape: aBasicBlock [
 	^ shape
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FASTFortranCFGVisualization >> buildLegend [
 	| legend |
 	legend := RSLegend new.
@@ -71,7 +73,7 @@ FASTFortranCFGVisualization >> buildLegend [
 	legend build
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FASTFortranCFGVisualization >> buildLines: shapes [
 
 	| marker bldr |
@@ -93,12 +95,12 @@ FASTFortranCFGVisualization >> buildLines: shapes [
 		ifTrue: [ self attachLineText: lineModel ] ]
 ]
 
-{ #category : #'accessing - shapes' }
+{ #category : 'accessing - shapes' }
 FASTFortranCFGVisualization >> conditionalBlockColor [
 	^Color blue
 ]
 
-{ #category : #'accessing - shapes' }
+{ #category : 'accessing - shapes' }
 FASTFortranCFGVisualization >> finalBlockShape [
 
 	^RSEllipse new
@@ -111,7 +113,7 @@ FASTFortranCFGVisualization >> finalBlockShape [
 		yourself
 ]
 
-{ #category : #'accessing - shapes' }
+{ #category : 'accessing - shapes' }
 FASTFortranCFGVisualization >> normalBlockShape [
 
 	^RSBox new
@@ -119,7 +121,7 @@ FASTFortranCFGVisualization >> normalBlockShape [
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FASTFortranCFGVisualization >> openOn: aFASTFortranCFGVisitor [
 
 	| shapes |
@@ -138,7 +140,7 @@ FASTFortranCFGVisualization >> openOn: aFASTFortranCFGVisitor [
 	^ canvas
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FASTFortranCFGVisualization >> openOnFilename: aFilename [
 
 	^self openOn: (((aFilename asFileReference
@@ -147,7 +149,7 @@ FASTFortranCFGVisualization >> openOnFilename: aFilename [
 			accept: FASTFortranCFGVisitor new)
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FASTFortranCFGVisualization >> shapeFor: aBasicBlock [
 
 	| shape |
@@ -160,7 +162,7 @@ FASTFortranCFGVisualization >> shapeFor: aBasicBlock [
 	^ shape
 ]
 
-{ #category : #'accessing - shapes' }
+{ #category : 'accessing - shapes' }
 FASTFortranCFGVisualization >> startAndFinalBlockShape [
 
 	^RSComposite new
@@ -174,7 +176,7 @@ FASTFortranCFGVisualization >> startAndFinalBlockShape [
 
 ]
 
-{ #category : #'accessing - shapes' }
+{ #category : 'accessing - shapes' }
 FASTFortranCFGVisualization >> startBlockShape [
 
 	^RSEllipse new

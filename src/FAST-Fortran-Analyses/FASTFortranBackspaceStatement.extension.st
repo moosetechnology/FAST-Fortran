@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranBackspaceStatement }
+Extension { #name : 'FASTFortranBackspaceStatement' }
 
-{ #category : #'*FAST-Fortran-Analyses' }
+{ #category : '*FAST-Fortran-Analyses' }
 FASTFortranBackspaceStatement >> exportForCFG [
 
 	^FASTFortranExporterVisitor export: self

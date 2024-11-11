@@ -9,22 +9,24 @@ a block has
 - #nextBlocks that come after it in the CFG
 "
 Class {
-	#name : #FASTFortranAbstractBasicBlock,
-	#superclass : #Object,
+	#name : 'FASTFortranAbstractBasicBlock',
+	#superclass : 'Object',
 	#instVars : [
 		'isStart',
 		'statements'
 	],
-	#category : #'FAST-Fortran-Analyses-CFG'
+	#category : 'FAST-Fortran-Analyses-CFG',
+	#package : 'FAST-Fortran-Analyses',
+	#tag : 'CFG'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractBasicBlock >> addStatement: aFASTStatement [
 
 	self statements add: aFASTStatement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractBasicBlock >> firstStatement [
 
 	^self isEmpty 
@@ -32,7 +34,7 @@ FASTFortranAbstractBasicBlock >> firstStatement [
 		ifFalse: [ self statements first ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 FASTFortranAbstractBasicBlock >> initialize [
 
 	super initialize.
@@ -41,19 +43,19 @@ FASTFortranAbstractBasicBlock >> initialize [
 	statements := OrderedCollection new
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FASTFortranAbstractBasicBlock >> isConditional [
 
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FASTFortranAbstractBasicBlock >> isEmpty [
 
 	^self statements isEmpty
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FASTFortranAbstractBasicBlock >> isFinal [
 	"The block last statement is also the last executed one in the CFG"
 
@@ -61,43 +63,43 @@ FASTFortranAbstractBasicBlock >> isFinal [
 	[ self nextBlocks anySatisfy: [ :block | block isNil or: [ block isNullBlock]] ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FASTFortranAbstractBasicBlock >> isNullBlock [
 
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FASTFortranAbstractBasicBlock >> isStart [
 
 	^isStart
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractBasicBlock >> isStart: anObject [
 
 	isStart := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractBasicBlock >> lastStatement [
 
 	^self statements last
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractBasicBlock >> nextBlocks [
 
 	self subclassResponsibility
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 FASTFortranAbstractBasicBlock >> sourceCode [
 
 	self subclassResponsibility 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranAbstractBasicBlock >> statements [
 
 	^statements

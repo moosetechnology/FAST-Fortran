@@ -1,6 +1,6 @@
-Extension { #name : #FASTFortranDoStatement }
+Extension { #name : 'FASTFortranDoStatement' }
 
-{ #category : #'*FAST-Fortran-Analyses' }
+{ #category : '*FAST-Fortran-Analyses' }
 FASTFortranDoStatement >> exportForCFG [
 
 	^'do ' , (FASTFortranExporterVisitor export: self loopControl)

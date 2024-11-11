@@ -7,15 +7,17 @@ It has several successors, each associated to a value
 For example an if-statement will be represented has a ConditionalBasicBlock and will have two succesors associated respectively to the `true` and `false` values
 "
 Class {
-	#name : #FASTFortranConditionalBasicBlock,
-	#superclass : #FASTFortranAbstractBasicBlock,
+	#name : 'FASTFortranConditionalBasicBlock',
+	#superclass : 'FASTFortranAbstractBasicBlock',
 	#instVars : [
 		'nextBlocks'
 	],
-	#category : #'FAST-Fortran-Analyses-CFG'
+	#category : 'FAST-Fortran-Analyses-CFG',
+	#package : 'FAST-Fortran-Analyses',
+	#tag : 'CFG'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranConditionalBasicBlock >> addStatement: aStatement [
 
 	self isEmpty ifFalse: [ AssertionFailure signal: 'ConditionalBasicBlocks can have only one statement' ].
@@ -23,7 +25,7 @@ FASTFortranConditionalBasicBlock >> addStatement: aStatement [
 	super addStatement: aStatement
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 FASTFortranConditionalBasicBlock >> initialize [
 
 	super initialize.
@@ -31,13 +33,13 @@ FASTFortranConditionalBasicBlock >> initialize [
 	nextBlocks := Dictionary new: 3
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FASTFortranConditionalBasicBlock >> isConditional [
 
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranConditionalBasicBlock >> isFinal [
 
 	super isFinal ifTrue: [ ^true ].
@@ -45,7 +47,7 @@ FASTFortranConditionalBasicBlock >> isFinal [
 	^false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranConditionalBasicBlock >> nextBlock: aBlock onValue: aValue [
 	"if the next block for aValue is not a NullBlock, then set it to aBlock, otherwise leave the NullBlock"
 	| currentNext |
@@ -58,31 +60,31 @@ FASTFortranConditionalBasicBlock >> nextBlock: aBlock onValue: aValue [
 	nextBlocks at: aValue put: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranConditionalBasicBlock >> nextBlockForValue: aValue [
 
 	^nextBlocks at: aValue ifAbsent: [ nil ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranConditionalBasicBlock >> nextBlockForValues [
 
 	^nextBlocks associations
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranConditionalBasicBlock >> nextBlocks [
 
 	^nextBlocks values
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 FASTFortranConditionalBasicBlock >> sourceCode [
 
 	^self firstStatement exportForCFG
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FASTFortranConditionalBasicBlock >> statement: aFASTFortranStatement [
 
 	self addStatement: aFASTFortranStatement 

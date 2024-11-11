@@ -1,20 +1,22 @@
 Class {
-	#name : #FASTFortranLocalResolverVisitor,
-	#superclass : #FASTFortranVisitor,
+	#name : 'FASTFortranLocalResolverVisitor',
+	#superclass : 'FASTFortranVisitor',
 	#instVars : [
 		'scoper'
 	],
-	#category : #'FAST-Fortran-Analyses-Resolver'
+	#category : 'FAST-Fortran-Analyses-Resolver',
+	#package : 'FAST-Fortran-Analyses',
+	#tag : 'Resolver'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FASTFortranLocalResolverVisitor class >> on: aFASTNode [
 
 	^self new
 		on: aFASTNode
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FASTFortranLocalResolverVisitor >> on: aFASTFortranProgramUnit [
 
 	scoper := FASTFortranLocalResolverScoping new.
@@ -24,27 +26,27 @@ FASTFortranLocalResolverVisitor >> on: aFASTFortranProgramUnit [
 	^aFASTFortranProgramUnit 
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariable [
 
 	self visitFASTFortranVariable: aFASTFortranArrayVariable
 ]
 
-{ #category : #'visiting - programUnits' }
+{ #category : 'visiting - programUnits' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranProcedure: aFASTFortranProcedure [
 	"do not call #visitFASTFortranProgramUnit:"
 
 	self visitFASTFortranSubprogram: aFASTFortranProcedure
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranScalarVariable: aFASTFortranScalarVariable [
 	"reference to an identifier in the AST"
 
 	self visitFASTFortranVariable: aFASTFortranScalarVariable
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBlock [
 
 	scoper pushScope.
@@ -56,27 +58,27 @@ FASTFortranLocalResolverVisitor >> visitFASTFortranStatementBlock: aFASTFortranS
 	^ scoper popScope
 ]
 
-{ #category : #'visiting - traits' }
+{ #category : 'visiting - traits' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranTBehaviouralEntity: aFASTFortranTBehaviouralEntity [
 
 	aFASTFortranTBehaviouralEntity statementBlock accept: self
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranVariable: aFASTFortranVariable [
 	"reference to an identifier in the AST"
 
 	self visitFASTIdentifierExpression: aFASTFortranVariable
 ]
 
-{ #category : #'visiting - statements' }
+{ #category : 'visiting - statements' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFortranVariableDeclarationStatement [
 
 	aFASTFortranVariableDeclarationStatement declarators do: [ :decl |
 		decl accept: self ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranVariableDeclarator: aFASTVariableDeclaration [
 	"register a variable (structuralEntity) declaration into the current scope"
 
@@ -87,7 +89,7 @@ FASTFortranLocalResolverVisitor >> visitFASTFortranVariableDeclarator: aFASTVari
 	aFASTVariableDeclaration localDeclaration: aFASTVariableDeclaration
 ]
 
-{ #category : #'visiting - expressions' }
+{ #category : 'visiting - expressions' }
 FASTFortranLocalResolverVisitor >> visitFASTIdentifierExpression: aFASTIdentifier [
 	"reference to an identifier in the AST
 	 - the identifier refers to a variable (structuralEntity)
