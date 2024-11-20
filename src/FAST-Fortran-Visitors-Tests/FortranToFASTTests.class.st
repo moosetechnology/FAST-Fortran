@@ -470,6 +470,34 @@ FortranToFASTTests >> testBinaryExpressionExponentiation [
 ]
 
 { #category : 'tests-expression' }
+FortranToFASTTests >> testBinaryExpressionFieldAccess [
+	
+	| result asnmt expr |
+	fortranCode := '      PROGRAM MYPROG
+       var = lb.att
+      END
+'.
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"/home/anquetil/Pharo/images/FastFortran-parsing/srcCode.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:19)","statement":{"anno":[],"expression":{"anno":[],"expression":{"anno":[],"span":"(2:14)-(2:15)","tag":"value","value":{"contents":"lb","tag":"variable"}},"field":{"anno":[],"span":"(2:17)-(2:19)","tag":"value","value":{"contents":"att","tag":"variable"}},"span":"(2:14)-(2:19)","tag":"deref"},"span":"(2:8)-(2:19)","tag":"assign_expression","target":{"anno":[],"span":"(2:8)-(2:10)","tag":"value","value":{"contents":"var","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	result := self visitJsonCode.
+
+	asnmt := result first statementBlock statements first.
+	self assert: asnmt class equals: FASTFortranAssignmentStatement.
+
+	expr := asnmt expression.
+	self assert: expr class equals: FASTFortranFieldAccess.
+	self assert: expr startPos equals: 35.
+
+	self assert: expr pointer class equals: FASTFortranScalarVariable.
+	self assert: expr pointer name equals: 'lb'.
+	self assert: expr pointer startPos equals: 35.
+
+	self assert: expr field class equals: FASTFortranScalarVariable.
+	self assert: expr field name equals: 'att'.
+	self assert: expr field startPos equals: 38
+
+]
+
+{ #category : 'tests-expression' }
 FortranToFASTTests >> testBinaryExpressionGtKeyword [
 	
 	| result asnmt expr |

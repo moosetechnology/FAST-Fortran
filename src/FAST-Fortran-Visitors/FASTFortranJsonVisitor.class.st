@@ -208,6 +208,7 @@ FASTFortranJsonVisitor >> visitAssign_expression: anAssignExpressionNode [
 	"The assignment statement assigns a value to a variable, substring, array element, record, or record field"
 
 	| data |
+
 	data := super visitAssign_expression: anAssignExpressionNode.
 	^ (self
 		   newEntity: FASTFortranAssignmentStatement
@@ -447,6 +448,20 @@ FASTFortranJsonVisitor >> visitDeclaratorVariable: aDeclaratorVariableNode [
 FASTFortranJsonVisitor >> visitDeclarators: aDeclaratorsList [
 
 	^ (super visitDeclarators: aDeclaratorsList) second
+]
+
+{ #category : 'visiting expression' }
+FASTFortranJsonVisitor >> visitDeref: aDerefNode [
+	"span expression field"
+
+	| data |
+
+	data := super visitDeref: aDerefNode.
+
+	^(self newEntity: FASTFortranFieldAccess atPosition: data first)
+		pointer: data second ;
+		field: data third ;
+		yourself
 ]
 
 { #category : 'visiting statement' }
