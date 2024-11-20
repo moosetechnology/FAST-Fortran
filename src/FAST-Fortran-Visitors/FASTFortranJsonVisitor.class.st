@@ -1290,13 +1290,29 @@ FASTFortranJsonVisitor >> visitSubroutine: aSubroutineNode [
 { #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitSubscript: aSubscriptNode [
 
-	| data |
+	| data field |
 	data := super visitSubscript: aSubscriptNode.
 
-	^(self newEntity: FASTFortranArrayVariable atPosition: data first)
-		name: data second name ;
-		indices: data third ;
-		yourself
+	(data second class = FASTFortranScalarVariable)
+		ifTrue: [ ^(self newEntity: FASTFortranArrayVariable atPosition: data first)
+			name: data second name ;
+			indices: data third ;
+			yourself ].
+	
+
+	(data second class = FASTFortranFieldAccess)
+		ifTrue: [ 
+			field := model newArrayVariable
+				startPos: data second field startPos ;
+				endPos: data second field endPos ;
+				name: data second field name ;
+				indices: data third ;
+				yourself.
+			data second field: field.
+			^data second
+		].
+
+	Exception signal: 'Unknown case in parsing array expression'
 ]
 
 { #category : 'visiting expression' }
