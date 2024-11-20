@@ -135,7 +135,8 @@ Class {
 		'entity',
 		'segment',
 		'tDeclaration',
-		'tWithDeclarations'
+		'tWithDeclarations',
+		'fieldAccess'
 	],
 	#category : 'FAST-Fortran-Generator',
 	#package : 'FAST-Fortran-Generator'
@@ -300,6 +301,11 @@ f77 allows the BYTE type as an array index, just as it allows the REAL type, but
 		                       newClassNamed: #DoublePrecisionType
 		                       comment:
 		                       'I represent Fortran Double Precision type, synonym of REAL*8'.
+
+	fieldAccess := self
+		                   newClassNamed: #FieldAccess
+		                   comment:
+		                   'I represent an access to pointer.field in Esope (therefore an expression)'.
 
 	impliedDoExpression := self
 		                   newClassNamed: #ImpliedDoExpression
@@ -575,6 +581,7 @@ FASTFortranGenerator >> defineHierarchy [
 	doubleComplexConstant --|> numericalConstant.
 	doublePrecisionConstant --|> numericalConstant.
 	equivalenceGroup --|> tVariableGroup.
+	fieldAccess --|> variable.
 	functionCall --|> abstractExpression.
 	functionCall --|> tWithArguments.
 	impliedDoExpression --|> tWithLoopControl.
@@ -685,6 +692,12 @@ FASTFortranGenerator >> defineRelations [
 
 	(dataGroup property: #dataConstants)
 	<>-* (abstractExpression property: #parentDataStatement).
+
+	(fieldAccess property: #pointer)
+	<>- ((variable property: #pointerIn) comment: 'Parent FieldAccess in which receiver is a pointer').
+
+	(fieldAccess property: #field)
+	<>- ((variable property: #fieldIn) comment: 'Parent FieldAccess in which receiver is a field').
 
 	(impliedDoExpression property: #variables)
 	<>-* (tVariableEntity property: #parentImpliedExpression).
