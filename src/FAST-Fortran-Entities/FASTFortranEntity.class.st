@@ -43,6 +43,62 @@ FASTFortranEntity class >> metamodel [
 ]
 
 { #category : 'testing' }
+FASTFortranEntity >> isAssignment [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTFortranEntity >> isBehaviouralEntity [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTFortranEntity >> isBinaryExpression [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTFortranEntity >> isBooleanLiteral [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTFortranEntity >> isCharacterLiteral [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTFortranEntity >> isExpression [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTFortranEntity >> isLiteral [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTFortranEntity >> isNumericalLiteral [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
 FASTFortranEntity >> isQueryable [
 
 	<generated>
@@ -50,7 +106,42 @@ FASTFortranEntity >> isQueryable [
 ]
 
 { #category : 'testing' }
+FASTFortranEntity >> isReturnStatement [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTFortranEntity >> isScopableEntity [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
 FASTFortranEntity >> isStatement [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTFortranEntity >> isStatementBlock [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTFortranEntity >> isUnaryExpression [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
+FASTFortranEntity >> isVariableEntity [
 
 	<generated>
 	^ false

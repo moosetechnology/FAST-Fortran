@@ -343,6 +343,13 @@ FASTFortranTEntityCreator >> newExternalStatement [
 ]
 
 { #category : 'entity creation' }
+FASTFortranTEntityCreator >> newFieldAccess [
+
+	<generated>
+	^ self add: FASTFortranFieldAccess new
+]
+
+{ #category : 'entity creation' }
 FASTFortranTEntityCreator >> newFormatStatement [
 
 	<generated>
