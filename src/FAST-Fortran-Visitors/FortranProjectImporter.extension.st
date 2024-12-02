@@ -18,14 +18,22 @@ FortranProjectImporter >> getFASTFor: sourceCode [
 	"Remove TAB at state of lines ???? "
 
 	| fastSrcFile |
+
 	fastSrcFile := self defaultFASTSource.
 	fastSrcFile writeStreamDo: [:stream |
-		stream truncate.
-		self preprocess: sourceCode to: stream.
-		stream cr
+		stream
+			<< sourceCode ;
+			<< OSPlatform current lineEnding
 	].
-	
-	self parseFortran77: fastSrcFile.
+	self
+		deEsopify:fastSrcFile
+		from: self fastSrcFolder asFileReference
+		to: self fastSrcFolder asFileReference.
+	self
+		parseFortran77: (fastSrcFile withExtension: 'f')
+		from: self fastSrcFolder asFileReference
+		to: self fastSrcFolder asFileReference.
+
 	^self jsonASTToFAST 
 ]
 
