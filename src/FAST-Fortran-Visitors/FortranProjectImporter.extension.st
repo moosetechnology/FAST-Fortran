@@ -2,7 +2,9 @@ Extension { #name : 'FortranProjectImporter' }
 
 { #category : '*FAST-Fortran-Visitors' }
 FortranProjectImporter >> defaultFASTSource [
-	^(self ensureFolder: self fastSrcFolder) / 'tmpFASTSource.f'
+
+	^(self ensureEmptyFolder: self fastSrcFolder) / 'tmpFASTSource.E'.
+
 ]
 
 { #category : '*FAST-Fortran-Visitors' }
@@ -30,9 +32,9 @@ FortranProjectImporter >> getFASTFor: sourceCode [
 { #category : '*FAST-Fortran-Visitors' }
 FortranProjectImporter >> jsonASTToFAST [
 
-	| fortranFile jsonAST |
-	fortranFile := self defaultFASTSource.
-	jsonAST := (self fortranFolderToASTFolder: fortranFile parent) / (fortranFile basename , '.json').
+	| jsonAST |
+
+	jsonAST := self defaultFASTSource withExtension: 'json'.
 
 	^FASTFortranJsonVisitor new visitProgramFile:
 		  (jsonAST readStreamEncoded: self defaultFileEncoding do: [ :str | 
