@@ -136,7 +136,8 @@ Class {
 		'segment',
 		'tDeclaration',
 		'tWithDeclarations',
-		'fieldAccess'
+		'fieldAccess',
+		'ioParameter'
 	],
 	#category : 'FAST-Fortran-Generator',
 	#package : 'FAST-Fortran-Generator'
@@ -167,6 +168,26 @@ FASTFortranGenerator class >> prefix [
 FASTFortranGenerator class >> submetamodels [
 
 	^ { FASTMetamodelGenerator }
+]
+
+{ #category : 'definition' }
+FASTFortranGenerator >> commentForIOParameter [
+	^'I represent a specifier keywords used in I/O statement (open, write, read, close, ...).
+
+where the most common specifiers are:
+
+```fortran
+    [UNIT=]  u
+    IOSTAT=  ios
+    ERR=     err
+    FILE=    fname
+    STATUS=  sta
+    ACCESS=  acc
+    FORM=    frm
+    RECL=    rl
+```
+	
+	'
 ]
 
 { #category : 'definition' }
@@ -446,6 +467,8 @@ FASTFortranGenerator >> defineFASTClasses [
 
 	conditionalStatement := self newClassNamed: #ConditionalStatement comment: 'I represent a fortran statement with a condition: if-block, if-logical'.
 
+
+	ioParameter := self newClassNamed: #IOParameter comment: self commentForIOParameter.
 ]
 
 { #category : 'definition' }
@@ -589,6 +612,8 @@ FASTFortranGenerator >> defineHierarchy [
 	impliedDoExpression --|> tVariableGroup.
 	integerConstant --|> numericalConstant.
 	integerConstant --|> tFormat.
+	ioParameter --|> tNamedEntity.
+	ioParameter --|> tIOParameter.
 	numericalConstant  --|> abstractLiteral.
 	numericalConstant --|> tNumericalLiteral.
 	realConstant --|> numericalConstant.
@@ -820,6 +845,10 @@ FASTFortranGenerator >> defineRelations [
 	<>-* ((labelReference property: #referencer) comment:
 			 'A statement (like goto) referencing this label').
 
+	((ioParameter property: #expression) comment: 
+		'value of the parameter (keyword argument)')
+	<>- ((tExpression property: #ioSpecifier) comment: 
+		'name of the parameter (keyword argument)')
 ]
 
 { #category : 'definition' }

@@ -399,6 +399,13 @@ FASTFortranTEntityCreator >> newGoToStatement [
 ]
 
 { #category : 'entity creation' }
+FASTFortranTEntityCreator >> newIOParameter [
+
+	<generated>
+	^ self add: FASTFortranIOParameter new
+]
+
+{ #category : 'entity creation' }
 FASTFortranTEntityCreator >> newIfArithmeticStatement [
 
 	<generated>

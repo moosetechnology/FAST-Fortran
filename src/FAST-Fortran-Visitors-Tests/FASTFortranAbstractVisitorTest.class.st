@@ -394,6 +394,15 @@ FASTFortranAbstractVisitorTest >> integerType: dimension [
 ]
 
 { #category : 'entity creation' }
+FASTFortranAbstractVisitorTest >> ioParameter: aName value: expression [
+
+	^FASTFortranIOParameter new
+		name: (self makeSimpleExpression: aName) ;
+		expression: (self makeSimpleExpression: expression) ;
+		yourself
+]
+
+{ #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> ioStatement: aClass ioParams: params arguments: args [
 
 	^aClass new
