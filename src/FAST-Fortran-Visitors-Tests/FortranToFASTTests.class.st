@@ -2251,18 +2251,18 @@ FortranToFASTTests >> testInquireStatement [
 
 	self assert: stmt ioParameters size equals: 4.
 
-	self assert: stmt ioParameters first class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters first class equals: FASTFortranIOParameter.
 	self assert: stmt ioParameters first startPos equals: 34.
-	self assert: stmt ioParameters first variable name equals: 'unit'.
-	self assert: stmt ioParameters second class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters first name equals: 'unit'.
+	self assert: stmt ioParameters second class equals: FASTFortranIOParameter.
 	self assert: stmt ioParameters second startPos equals: 45.
-	self assert: stmt ioParameters second variable name equals: 'form'.
-	self assert: stmt ioParameters third class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters second name equals: 'form'.
+	self assert: stmt ioParameters third class equals: FASTFortranIOParameter.
 	self assert: stmt ioParameters third startPos equals: 56.
-	self assert: stmt ioParameters third variable name equals: 'err'.
-	self assert: stmt ioParameters fourth class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters third name equals: 'err'.
+	self assert: stmt ioParameters fourth class equals: FASTFortranIOParameter.
 	self assert: stmt ioParameters fourth startPos equals: 63.
-	self assert: stmt ioParameters fourth variable name equals: 'iostat'.
+	self assert: stmt ioParameters fourth name equals: 'iostat'.
 ]
 
 { #category : 'tests-statement' }
@@ -2283,13 +2283,13 @@ FortranToFASTTests >> testInquireStatementFilename [
 
 	self assert: stmt ioParameters size equals: 2.
 
-	self assert: stmt ioParameters first class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters first class equals: FASTFortranIOParameter.
 	self assert: stmt ioParameters first startPos equals: 35.
-	self assert: stmt ioParameters first variable name equals: 'file'.
+	self assert: stmt ioParameters first name equals: 'file'.
 	self assert: stmt ioParameters first expression class equals: FASTFortranCharacterLiteral.
 	self assert: stmt ioParameters first expression primitiveValue equals: '.profile'.
 
-	self assert: stmt ioParameters second class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters second class equals: FASTFortranIOParameter.
 ]
 
 { #category : 'tests-statement' }
@@ -2315,9 +2315,9 @@ FortranToFASTTests >> testInquireStatementImplicitUnit [
 	self assert: stmt ioParameters first startPos equals: 36.
 	self assert: stmt ioParameters first primitiveValue equals: '3'.
 
-	self assert: stmt ioParameters second class equals: FASTFortranAssignmentExpression.
-	self assert: stmt ioParameters third class equals: FASTFortranAssignmentExpression.
-	self assert: stmt ioParameters fourth class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters second class equals: FASTFortranIOParameter.
+	self assert: stmt ioParameters third class equals: FASTFortranIOParameter.
+	self assert: stmt ioParameters fourth class equals: FASTFortranIOParameter.
 ]
 
 { #category : 'tests-statement' }
@@ -2346,6 +2346,28 @@ FortranToFASTTests >> testIntrinsicStatement [
 	self assert: stmt variables second class equals: FASTFortranScalarVariable.
 	self assert: stmt variables second startPos equals: 44.
 	self assert: stmt variables second name equals: 'cos'.
+]
+
+{ #category : 'tests-expression' }
+FortranToFASTTests >> testKeywordArgument [
+
+	| result stmt |
+	fortranCode := '      PROGRAM MYPROG
+          open(unit=1)
+      END
+'.
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"/Users/sow/Documents/Pharo/images/241114Moose12/srcCode.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:11)-(2:22)","statement":{"anno":[],"span":"(2:11)-(2:22)","specification":{"anno":[],"list":[{"anno":[],"expr":{"anno":[],"span":"(2:21)-(2:21)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"name":"unit","span":"(2:16)-(2:21)"}],"span":"(2:15)-(2:22)"},"tag":"open"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	result := self visitJsonCode.
+
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranOpenStatement.
+	self assert: stmt startPos equals: 32.
+
+	self assert: stmt ioParameters size equals: 1.
+	self assert: stmt ioParameters anyOne class equals: FASTFortranIOParameter.
+	self assert: stmt ioParameters anyOne name equals: 'unit'.
+	self assert: stmt ioParameters anyOne expression class equals: FASTFortranIntegerLiteral.
+	self assert: stmt ioParameters anyOne expression primitiveValue equals: '1'.
 ]
 
 { #category : 'tests-statement' }
@@ -2521,15 +2543,15 @@ FortranToFASTTests >> testOpenStatement [
 	self assert: stmt ioParameters first startPos equals: 31.
 	self assert: stmt ioParameters first primitiveValue equals: '8'.
 
-	self assert: stmt ioParameters second class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters second class equals: FASTFortranIOParameter.
 	self assert: stmt ioParameters second startPos equals: 34.
-	self assert: stmt ioParameters second variable name equals: 'file'.
+	self assert: stmt ioParameters second name equals: 'file'.
 	self assert: stmt ioParameters second expression class equals: FASTFortranCharacterLiteral.
 	self assert: stmt ioParameters second expression primitiveValue equals: 'projectA/data.test'.
 
-	self assert: stmt ioParameters third class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters third class equals: FASTFortranIOParameter.
 	self assert: stmt ioParameters third startPos equals: 61.
-	self assert: stmt ioParameters third variable name equals: 'err'.
+	self assert: stmt ioParameters third name equals: 'err'.
 ]
 
 { #category : 'tests-statement' }
@@ -2763,18 +2785,18 @@ FortranToFASTTests >> testRewindStatementIOParameters [
 
 	self assert: stmt ioParameters size equals: 3.
 
-	self assert: stmt ioParameters first class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters first class equals: FASTFortranIOParameter.
 	self assert: stmt ioParameters first startPos equals: 34.
-	self assert: stmt ioParameters first variable name equals: 'unit'.
+	self assert: stmt ioParameters first name equals: 'unit'.
 	self assert: stmt ioParameters first expression primitiveValue equals: '3'.
 
-	self assert: stmt ioParameters second class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters second class equals: FASTFortranIOParameter.
 	self assert: stmt ioParameters second startPos equals: 42.
-	self assert: stmt ioParameters second variable name equals: 'iostat'.
+	self assert: stmt ioParameters second name equals: 'iostat'.
 
-	self assert: stmt ioParameters third class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters third class equals: FASTFortranIOParameter.
 	self assert: stmt ioParameters third startPos equals: 55.
-	self assert: stmt ioParameters third variable name equals: 'err'.
+	self assert: stmt ioParameters third name equals: 'err'.
 ]
 
 { #category : 'tests-statement' }
@@ -2841,11 +2863,8 @@ c@_   end segment
 	self assert: declarator dimensions second class equals: FASTFortranArrayRange. 
 	self assert: declarator dimensions second lowerBound equals: nil. 
 	self assert: declarator dimensions second upperBound class equals: FASTFortranScalarVariable.
-	self assert: declarator dimensions second upperBound name equals: 'm'.
-	
-	"
-	self assert: seg startPos equals: 31.
-	self assert: seg endPos equals: 60."
+	self assert: declarator dimensions second upperBound name equals: 'm'
+
 ]
 
 { #category : 'tests-statement' }
@@ -3251,11 +3270,11 @@ FortranToFASTTests >> testWriteFullIOParameters [
 	self assert: stmt ioParameters first startPos equals: 40.
 	self assert: stmt ioParameters second class equals: FASTFortranIntegerLiteral.
 	self assert: stmt ioParameters second startPos equals: 43.
-	self assert: stmt ioParameters third class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters third class equals: FASTFortranIOParameter.
 	self assert: stmt ioParameters third startPos equals: 46.
-	self assert: stmt ioParameters fourth class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters fourth class equals: FASTFortranIOParameter.
 	self assert: stmt ioParameters fourth startPos equals: 53.
-	self assert: stmt ioParameters fifth class equals: FASTFortranAssignmentExpression.
+	self assert: stmt ioParameters fifth class equals: FASTFortranIOParameter.
 	self assert: stmt ioParameters fifth startPos equals: 63.
 
 	self assert: stmt arguments size equals: 2.

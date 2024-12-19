@@ -2,7 +2,9 @@ Extension { #name : 'FortranProjectImporter' }
 
 { #category : '*FAST-Fortran-Visitors' }
 FortranProjectImporter >> defaultFASTSource [
-	^(self ensureFolder: self fastSrcFolder) / 'tmpFASTSource.f'
+
+	^(self ensureEmptyFolder: self fastSrcFolder) / 'tmpFASTSource.E'.
+
 ]
 
 { #category : '*FAST-Fortran-Visitors' }
@@ -16,23 +18,31 @@ FortranProjectImporter >> getFASTFor: sourceCode [
 	"Remove TAB at state of lines ???? "
 
 	| fastSrcFile |
+
 	fastSrcFile := self defaultFASTSource.
 	fastSrcFile writeStreamDo: [:stream |
-		stream truncate.
-		self preprocess: sourceCode to: stream.
-		stream cr
+		stream
+			<< sourceCode ;
+			<< OSPlatform current lineEnding
 	].
-	
-	self parseFortran77: fastSrcFile.
+	self
+		deEsopify:fastSrcFile
+		from: self fastSrcFolder asFileReference
+		to: self fastSrcFolder asFileReference.
+	self
+		parseFortran77: (fastSrcFile withExtension: 'f')
+		from: self fastSrcFolder asFileReference
+		to: self fastSrcFolder asFileReference.
+
 	^self jsonASTToFAST 
 ]
 
 { #category : '*FAST-Fortran-Visitors' }
 FortranProjectImporter >> jsonASTToFAST [
 
-	| fortranFile jsonAST |
-	fortranFile := self defaultFASTSource.
-	jsonAST := (self fortranFolderToASTFolder: fortranFile parent) / (fortranFile basename , '.json').
+	| jsonAST |
+
+	jsonAST := self defaultFASTSource withExtension: 'json'.
 
 	^FASTFortranJsonVisitor new visitProgramFile:
 		  (jsonAST readStreamEncoded: self defaultFileEncoding do: [ :str | 

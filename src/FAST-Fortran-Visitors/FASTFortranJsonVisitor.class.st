@@ -788,18 +788,13 @@ FASTFortranJsonVisitor >> visitGoto_computedStatement: aGotoComputedStatementNod
 FASTFortranJsonVisitor >> visitIOParameter: anIOParameterNode [
 	"#(span name expr)"
 
-	| data assignedVariable|
+	| data |
 	data := super visitIOParameter: anIOParameterNode.
 
 	data second ifNil: [ ^data third ].
 
-	assignedVariable := FASTFortranScalarVariable new.
-	assignedVariable name: data second.
-	assignedVariable startPos: (self pointToPosition: data first first).
-	assignedVariable endPos: (assignedVariable startPos + assignedVariable name size - 1).
-
-	^(self newEntity: FASTFortranAssignmentExpression atPosition: data first)
-		variable: assignedVariable ;
+	^(self newEntity: FASTFortranIOParameter atPosition: data first)
+		name: data second ;
 		expression: data third ;
 		yourself
 

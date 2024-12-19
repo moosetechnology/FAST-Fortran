@@ -1208,8 +1208,8 @@ FASTFortranCopyVisitorTest >> testOpenStatement [
 	stmt := FASTFortranOpenStatement new
 		ioParameters: {
 			self integerLiteral: '3' .
-			self assignementExpression: #file value: 'projectA/data.test'.
-			self assignementExpression: #err value: 99
+			self ioParameter: #file value: 'projectA/data.test'.
+			self ioParameter: #err value: 99
 		}.
 
 	self
@@ -1314,8 +1314,8 @@ FASTFortranCopyVisitorTest >> testRewindStatement [
 	stmt := FASTFortranRewindStatement new
 		ioParameters: {
 			self integerLiteral: '3' .
-			self assignementExpression: #iostat value: #stat.
-			self assignementExpression: #err value: 10
+			self ioParameter: #iostat value: #stat.
+			self ioParameter: #err value: 10
 		}.
 
 	self
