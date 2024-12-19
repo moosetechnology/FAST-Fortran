@@ -2863,11 +2863,8 @@ c@_   end segment
 	self assert: declarator dimensions second class equals: FASTFortranArrayRange. 
 	self assert: declarator dimensions second lowerBound equals: nil. 
 	self assert: declarator dimensions second upperBound class equals: FASTFortranScalarVariable.
-	self assert: declarator dimensions second upperBound name equals: 'm'.
-	
-	"
-	self assert: seg startPos equals: 31.
-	self assert: seg endPos equals: 60."
+	self assert: declarator dimensions second upperBound name equals: 'm'
+
 ]
 
 { #category : 'tests-statement' }

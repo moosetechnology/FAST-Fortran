@@ -397,7 +397,7 @@ FASTFortranAbstractVisitorTest >> integerType: dimension [
 FASTFortranAbstractVisitorTest >> ioParameter: aName value: expression [
 
 	^FASTFortranIOParameter new
-		name: (self makeSimpleExpression: aName) ;
+		name: aName ;
 		expression: (self makeSimpleExpression: expression) ;
 		yourself
 ]

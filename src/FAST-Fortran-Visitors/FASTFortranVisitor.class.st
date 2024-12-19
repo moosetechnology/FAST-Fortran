@@ -363,6 +363,12 @@ FASTFortranVisitor >> visitFASTFortranGoToUnconditionalStatement: aFASTFortranGo
 ]
 
 { #category : 'visiting - statements' }
+FASTFortranVisitor >> visitFASTFortranIOParameter: aFASTFortranIOParameter [
+
+	self visitFASTTNamedEntity: aFASTFortranIOParameter
+]
+
+{ #category : 'visiting - statements' }
 FASTFortranVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortranIfArithmeticStatement [
 	<generated>
 

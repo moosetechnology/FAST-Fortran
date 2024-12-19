@@ -521,6 +521,15 @@ FASTFortranExporterVisitor >> visitFASTFortranGoToStatement: aFASTFortranGoToSta
 	self newLine
 ]
 
+{ #category : 'visiting' }
+FASTFortranExporterVisitor >> visitFASTFortranIOParameter: aFASTFortranIOParameter [
+
+	self 
+		<< aFASTFortranIOParameter name;
+		<< ' = '.
+ 	aFASTFortranIOParameter expression accept: self
+]
+
 { #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortranIfArithmeticStatementNode [
 
