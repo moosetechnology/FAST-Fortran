@@ -2,7 +2,9 @@ Extension { #name : 'FASTFortranIOParameter' }
 
 { #category : '*FAST-Fortran-Visitors' }
 FASTFortranIOParameter >> accept: aVisitor [
-	^ aVisitor visitFASTFortranIOParameter: self
+	<generated>
+	^ aVisitor visitFASTFortranIOParameter: self.
+
 ]
 
 { #category : '*FAST-Fortran-Visitors' }

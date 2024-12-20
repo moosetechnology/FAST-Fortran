@@ -572,8 +572,8 @@ FASTFortranCopyVisitorTest >> testFunctionNoParameterNoStatement [
 
 	self deny: copy equals: node.
 	
-	self deny: copy returnType equals: node returnType.
-	self assert: copy returnType class equals: node returnType class.
+	self deny: copy declaredType equals: node declaredType.
+	self assert: copy declaredType class equals: node declaredType class.
 
 ]
 
@@ -613,7 +613,7 @@ FASTFortranCopyVisitorTest >> testFunctionNoReturnType [
 
 	| fct copy |
 	fct := self functionDeclaration: 'blah'.
-	fct returnType: nil.
+	fct declaredType: nil.
 
 	copy := visitor copy: fct.
 
@@ -1041,8 +1041,8 @@ FASTFortranCopyVisitorTest >> testOneDeclarationCharacterType [
 	self deny: copy equals: node.
 	self assert: copy class equals: node class.
 
-	self deny: copy type equals: node type.
-	self assert: copy type class equals: node type class.
+	self deny: copy declaredType equals: node declaredType.
+	self assert: copy declaredType class equals: node declaredType class.
 		
 	self assert: copy declarators size equals: node declarators size.
 
@@ -1064,9 +1064,9 @@ FASTFortranCopyVisitorTest >> testOneDeclarationCharacterTypeStarSize [
 	self deny: copy equals: node.
 	self assert: copy class equals: node class.
 
-	self deny: copy type equals: node type.
-	self assert: copy type class equals: node type class.
-	self assert: copy type size class equals: node type size class.
+	self deny: copy declaredType equals: node declaredType.
+	self assert: copy declaredType class equals: node declaredType class.
+	self assert: copy declaredType size class equals: node declaredType size class.
 ]
 
 { #category : 'tests - statements' }
@@ -1081,12 +1081,12 @@ FASTFortranCopyVisitorTest >> testOneDeclarationCharacterTypeWithSize [
 	self deny: copy equals: node.
 	self assert: copy class equals: node class.
 
-	self deny: copy type equals: node type.
-	self assert: copy type class equals: node type class.
+	self deny: copy declaredType equals: node declaredType.
+	self assert: copy declaredType class equals: node declaredType class.
 
-	self deny: copy type size equals: node type size.
-	self assert: copy type size class equals: node type size class.
-	self assert: copy type size primitiveValue equals: node type size primitiveValue
+	self deny: copy declaredType size equals: node declaredType size.
+	self assert: copy declaredType size class equals: node declaredType size class.
+	self assert: copy declaredType size primitiveValue equals: node declaredType size primitiveValue
 ]
 
 { #category : 'tests - statements' }
@@ -1101,8 +1101,8 @@ FASTFortranCopyVisitorTest >> testOneDeclarationDoublePrecisionType [
 	self deny: copy equals: node.
 	self assert: copy class equals: node class.
 
-	self deny: copy type equals: node type.
-	self assert: copy type class equals: node type class.
+	self deny: copy declaredType equals: node declaredType.
+	self assert: copy declaredType class equals: node declaredType class.
 		
 	self assert: copy declarators size equals: node declarators size.
 
@@ -1124,12 +1124,12 @@ FASTFortranCopyVisitorTest >> testOneDeclarationIntegerTypeWithSize [
 	self deny: copy equals: node.
 	self assert: copy class equals: node class.
 
-	self deny: copy type equals: node type.
-	self assert: copy type class equals: node type class.
+	self deny: copy declaredType equals: node declaredType.
+	self assert: copy declaredType class equals: node declaredType class.
 
-	self deny: copy type size equals: node type size.
-	self assert: copy type size class equals: node type size class.
-	self assert: copy type size primitiveValue equals: node type size primitiveValue
+	self deny: copy declaredType size equals: node declaredType size.
+	self assert: copy declaredType size class equals: node declaredType size class.
+	self assert: copy declaredType size primitiveValue equals: node declaredType size primitiveValue
 ]
 
 { #category : 'tests - statements' }
@@ -1144,8 +1144,8 @@ FASTFortranCopyVisitorTest >> testOneDeclarationLogicalType [
 	self deny: copy equals: node.
 	self assert: copy class equals: node class.
 
-	self deny: copy type equals: node type.
-	self assert: copy type class equals: node type class.
+	self deny: copy declaredType equals: node declaredType.
+	self assert: copy declaredType class equals: node declaredType class.
 		
 	self assert: copy declarators size equals: node declarators size.
 
@@ -1165,8 +1165,8 @@ FASTFortranCopyVisitorTest >> testOneDeclarationRealType [
 	self deny: copy equals: node.
 	self assert: copy class equals: node class.
 
-	self deny: copy type equals: node type.
-	self assert: copy type class equals: node type class.
+	self deny: copy declaredType equals: node declaredType.
+	self assert: copy declaredType class equals: node declaredType class.
 		
 	self assert: copy declarators size equals: node declarators size.
 
@@ -1188,8 +1188,8 @@ FASTFortranCopyVisitorTest >> testOneDeclarationTwoVariables [
 	self deny: copy equals: node.
 	self assert: copy class equals: node class.
 
-	self deny: copy type equals: node type.
-	self assert: copy type class equals: node type class.
+	self deny: copy declaredType equals: node declaredType.
+	self assert: copy declaredType class equals: node declaredType class.
 
 	self assert: copy declarators size equals: node declarators size.
 

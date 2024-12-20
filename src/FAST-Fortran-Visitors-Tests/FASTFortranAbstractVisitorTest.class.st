@@ -106,7 +106,7 @@ FASTFortranAbstractVisitorTest >> array: name access: aCollection [
 FASTFortranAbstractVisitorTest >> arrayDeclaration: variable dimensions: aCollection [
 
 	^ FASTFortranVariableDeclarationStatement new
-		  type: (self integerType: nil);
+		  declaredType: (self integerType: nil);
 		  declarators: { self arrayDeclarator: variable dimensions: aCollection };
 		  startPos: 1;
 		  endPos: 10;
@@ -230,7 +230,7 @@ FASTFortranAbstractVisitorTest >> declarationStatement: typeDescription variable
 	"Bulk declaration of several variables"
 
 	^FASTFortranVariableDeclarationStatement new
-		type: (self makeType: typeDescription) ;
+		declaredType: (self makeType: typeDescription) ;
 		declarators: (self variableDeclarators: aCollection)  ;
 		startPos: 1 ;
 		endPos: 10 ;
@@ -319,7 +319,7 @@ FASTFortranAbstractVisitorTest >> functionDeclaration: aName [
 
 	^FASTFortranFunction new
 		name: aName ;
-		returnType: FASTFortranRealType new ;
+		declaredType: FASTFortranRealType new ;
 		parameters: {  } ;
 		statementBlock: FASTFortranStatementBlock new
 		yourself.

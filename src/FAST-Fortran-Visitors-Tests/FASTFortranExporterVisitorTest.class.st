@@ -525,7 +525,7 @@ FASTFortranExporterVisitorTest >> testFunctionNoParameterWithStatement [
 FASTFortranExporterVisitorTest >> testFunctionNoReturnType [
 	| fct |
 	fct := self functionDeclaration: 'blah'.
-	fct returnType: nil.
+	fct declaredType: nil.
 
 	self
 		assertExport: fct
@@ -966,12 +966,16 @@ FASTFortranExporterVisitorTest >> testOneDeclarationRealType [
 { #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testOneDeclarationTwoVariables [
 	| stmt |
-	stmt := self declarationStatement: #integer variables: #(i j).
+	stmt := FASTFortranFunctionTypeDeclarationStatement new
+		declaredType: (self makeType: #integer) ;
+		name: 'fct';
+		startPos: 1 ;
+		endPos: 10.
 
 	self
 		assertExport: stmt
 		equals: 
-'      integer i,j
+'      integer fct
 '
 ]
 

@@ -315,7 +315,8 @@ FASTFortranVisitor >> visitFASTFortranFormatStatement: aFASTFortranFormatStateme
 { #category : 'visiting - programUnits' }
 FASTFortranVisitor >> visitFASTFortranFunction: aFASTFortranFunction [
 
-	self visitFASTFortranProcedure: aFASTFortranFunction
+	self visitFASTFortranProcedure: aFASTFortranFunction.
+	aFASTFortranFunction declaredType accept: self.
 ]
 
 { #category : 'visiting - expressions' }
@@ -331,6 +332,14 @@ FASTFortranVisitor >> visitFASTFortranFunctionStatement: aFASTFortranFunctionSta
 
 	self visitFASTFortranTStatement: aFASTFortranFunctionStatement.
 	self visitFASTFortranTWithArguments: aFASTFortranFunctionStatement
+]
+
+{ #category : 'visiting - statements' }
+FASTFortranVisitor >> visitFASTFortranFunctionTypeDeclarationStatement: aFASTFortranFunctionTypeDeclarationStatement [
+
+	self visitFASTFortranTStatement:
+		aFASTFortranFunctionTypeDeclarationStatement.
+	aFASTFortranFunctionTypeDeclarationStatement declaredType accept: self.
 ]
 
 { #category : 'visiting - statements' }
@@ -887,7 +896,7 @@ FASTFortranVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFortran
 
 	self visitFASTFortranTStatement:
 		aFASTFortranVariableDeclarationStatement.
-	aFASTFortranVariableDeclarationStatement type accept: self.
+	aFASTFortranVariableDeclarationStatement declaredType accept: self.
 	aFASTFortranVariableDeclarationStatement declarators do: [ :decl |
 		decl accept: self ]
 ]

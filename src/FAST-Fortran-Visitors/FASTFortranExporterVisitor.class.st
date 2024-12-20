@@ -452,8 +452,8 @@ FASTFortranExporterVisitor >> visitFASTFortranFormatStatement: aFASTFortranForma
 FASTFortranExporterVisitor >> visitFASTFortranFunction: aFASTFortranFunction [
 
 	self sixSpaces.
-	aFASTFortranFunction returnType ifNotNil: [ :returnType |
-		returnType accept: self.
+	aFASTFortranFunction declaredType ifNotNil: [ :declaredType |
+		declaredType accept: self.
 		self spaces: 1 ].
 	self
 		<< 'function ';
@@ -489,6 +489,18 @@ FASTFortranExporterVisitor >> visitFASTFortranFunctionStatement: aFASTFortranFun
 		<< ' = '.
 	self outputTopLevelExpression: [
 		aFASTFortranFunctionStatement expression accept: self ].
+	self newLine
+]
+
+{ #category : 'visiting - statements' }
+FASTFortranExporterVisitor >> visitFASTFortranFunctionTypeDeclarationStatement: aFASTFortranFunctionTypeDeclarationStatement [
+
+	self visitFASTFortranAbstractStatement:
+		aFASTFortranFunctionTypeDeclarationStatement.
+	aFASTFortranFunctionTypeDeclarationStatement declaredType accept: self.
+	self 
+		<< ' '; 
+		<< aFASTFortranFunctionTypeDeclarationStatement name.
 	self newLine
 ]
 
@@ -974,7 +986,7 @@ FASTFortranExporterVisitor >> visitFASTFortranVariableDeclarationStatement: aFAS
 
 	self visitFASTFortranAbstractStatement:
 		aFASTFortranVariableDeclarationStatement.
-	aFASTFortranVariableDeclarationStatement type accept: self.
+	aFASTFortranVariableDeclarationStatement declaredType accept: self.
 	self << ' '.
 	self visitNodeListSeparatedByCommas:
 		aFASTFortranVariableDeclarationStatement declarators.

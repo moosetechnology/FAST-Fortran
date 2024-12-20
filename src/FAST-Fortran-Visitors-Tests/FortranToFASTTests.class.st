@@ -1000,8 +1000,8 @@ FortranToFASTTests >> testDeclarationIntegerWithInitializer [
 	self assert: declarator name equals: 'i'.
 	self assert: declarator startPos equals: 34.
 
-	self assert: stmt type class equals: FASTFortranIntegerType.
-	self assert: stmt type startPos equals: 26.
+	self assert: stmt declaredType class equals: FASTFortranIntegerType.
+	self assert: stmt declaredType startPos equals: 26.
 ]
 
 { #category : 'tests-expression' }
@@ -1699,8 +1699,8 @@ FortranToFASTTests >> testFunctionNoParameter [
 	self assert: fct statementBlock statements isEmpty.
 	self assert: fct startPos equals: 7.
 
-	self assert: fct returnType class equals: FASTFortranIntegerType.
-	self assert: fct returnType startPos equals: 7.
+	self assert: fct declaredType class equals: FASTFortranIntegerType.
+	self assert: fct declaredType startPos equals: 7.
 	
 
 ]
@@ -1747,7 +1747,7 @@ FortranToFASTTests >> testFunctionTypeDeclaredAsVariable [
 
 	self assert: fct class equals: FASTFortranFunction.
 	self assert: fct name equals: 'afct'.
-	self assert: fct returnType isNil.
+	self assert: fct declaredType isNil.
 
 	self assert: fct statementBlock statements size equals: 1.
 	self assert: fct statementBlock startPos equals: 29.
@@ -1757,6 +1757,7 @@ FortranToFASTTests >> testFunctionTypeDeclaredAsVariable [
 	
 	self assert: stmt class equals: FASTFortranFunctionTypeDeclarationStatement.
 	self assert: stmt name equals: 'afct'.
+	self assert: stmt declaredType class  equals: FASTFortranIntegerType.
 	
 	
 ]
@@ -1778,7 +1779,7 @@ FortranToFASTTests >> testFunctionTypeDeclaredAsVariableWithAnotherDeclaration [
 
 	self assert: fct class equals: FASTFortranFunction.
 	self assert: fct name equals: 'afct'.
-	self assert: fct returnType isNil.
+	self assert: fct declaredType isNil.
 
 	self assert: fct statementBlock statements size equals: 2.
 	
@@ -1803,8 +1804,8 @@ FortranToFASTTests >> testFunctionWithDeclaredType [
 
 	self assert: fct class equals: FASTFortranFunction.
 
-	self assert: fct returnType class equals: FASTFortranIntegerType.
-	self assert: fct returnType startPos equals: 7.
+	self assert: fct declaredType class equals: FASTFortranIntegerType.
+	self assert: fct declaredType startPos equals: 7.
 
 ]
 
@@ -1862,7 +1863,7 @@ FortranToFASTTests >> testFunctionWithStatement [
 	self assert: fct statementBlock startPos equals: 37.
 	self assert: fct statementBlock endPos equals: 44.
 
-	self assert: fct returnType class equals: FASTFortranIntegerType.
+	self assert: fct declaredType class equals: FASTFortranIntegerType.
 ]
 
 { #category : 'tests-programUnit' }
@@ -1881,7 +1882,7 @@ FortranToFASTTests >> testFunctionWithoutDeclaredType [
 
 	self assert: fct class equals: FASTFortranFunction.
 
-	self assert: fct returnType isNil
+	self assert: fct declaredType isNil
 ]
 
 { #category : 'tests-statement' }
@@ -3089,8 +3090,8 @@ FortranToFASTTests >> testVariableDeclarationCharacter [
 	self assert: stmt startPos equals: 26.
 	self assert: stmt endPos equals: 45.
 
-	self assert: stmt type class equals: FASTFortranCharacterType.
-	self assert: stmt type size class equals: FASTFortranIntegerLiteral.
+	self assert: stmt declaredType class equals: FASTFortranCharacterType.
+	self assert: stmt declaredType size class equals: FASTFortranIntegerLiteral.
 
 	self assert: stmt declarators size equals: 1.
 	var := stmt declarators first.
@@ -3115,7 +3116,7 @@ FortranToFASTTests >> testVariableDeclarationInteger [
 	self assert: stmt startPos equals: 26.
 	self assert: stmt endPos equals: 34.
 
-	self assert: stmt type class equals: FASTFortranIntegerType.
+	self assert: stmt declaredType class equals: FASTFortranIntegerType.
 	self assert: stmt declarators size equals: 1.
 	
 	var := stmt declarators first.
@@ -3139,8 +3140,8 @@ FortranToFASTTests >> testVariableDeclarationIntegerWithLength [
 	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
 	self assert: stmt startPos equals: 26.
 
-	self assert: stmt type class equals: FASTFortranIntegerType.
-	self assert: stmt type size class equals: FASTFortranIntegerLiteral.
+	self assert: stmt declaredType class equals: FASTFortranIntegerType.
+	self assert: stmt declaredType size class equals: FASTFortranIntegerLiteral.
 
 ]
 
@@ -3162,7 +3163,7 @@ FortranToFASTTests >> testVariableDeclarationLogical [
 	self assert: stmt startPos equals: 26.
 	self assert: stmt endPos equals: 34.
 
-	self assert: stmt type class equals: FASTFortranLogicalType.
+	self assert: stmt declaredType class equals: FASTFortranLogicalType.
 	self assert: stmt declarators size equals: 1.
 	
 	var := stmt declarators first.
@@ -3187,7 +3188,7 @@ FortranToFASTTests >> testVariableDeclarationReal [
 	self assert: stmt startPos equals: 26.
 	self assert: stmt endPos equals: 31.
 
-	self assert: stmt type class equals: FASTFortranRealType.
+	self assert: stmt declaredType class equals: FASTFortranRealType.
 	self assert: stmt declarators size equals: 1.
 	
 	var := stmt declarators first.
@@ -3212,8 +3213,8 @@ FortranToFASTTests >> testVariableDeclarationWithLength [
 	self assert: stmt startPos equals: 26.
 	self assert: stmt endPos equals: 45.
 
-	self assert: stmt type class equals: FASTFortranCharacterType.
-	self assert: stmt type size class equals: FASTFortranIntegerLiteral.
+	self assert: stmt declaredType class equals: FASTFortranCharacterType.
+	self assert: stmt declaredType size class equals: FASTFortranIntegerLiteral.
 
 	self assert: stmt declarators size equals: 1.
 	var := stmt declarators first.
@@ -3238,8 +3239,8 @@ FortranToFASTTests >> testVariableDeclarationWithStarSize [
 	self assert: stmt startPos equals: 26.
 	self assert: stmt endPos equals: 42.
 
-	self assert: stmt type class equals: FASTFortranCharacterType.
-	self assert: stmt type size class equals: FASTFortranAsterisk.
+	self assert: stmt declaredType class equals: FASTFortranCharacterType.
+	self assert: stmt declaredType size class equals: FASTFortranAsterisk.
 
 ]
 
