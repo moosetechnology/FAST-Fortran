@@ -145,6 +145,44 @@ FASTFortranJsonVisitor >> putMembers: entities inBody: stmtBlock [
 ]
 
 { #category : 'private' }
+FASTFortranJsonVisitor >> replaceByFunctionTypeDeclaration: variableDeclaration inBlock: statementBlock [
+	
+	"We want to replace variableDeclarationStatement by functionTypeDeclarationStatement
+	in the statementBlock"
+	
+	| functionTypeDeclaration statementBlockCopy |
+	functionTypeDeclaration  := model newFunctionTypeDeclarationStatement
+		declaredType: variableDeclaration declaredType;
+		name: variableDeclaration declarators first name.
+	
+	statementBlockCopy  := OrderedCollection new: statementBlock statements size.
+	
+	
+	"We clone the FMMultiValueLink because of lack of clone selector.
+	Implemented in the two following do loop.
+	"
+	statementBlock statements 
+		do: [ :statement | 
+			statementBlockCopy add: statement
+		].
+	
+	statementBlockCopy 
+		do: [ :statement | 
+			statement statementContainer: nil
+		].
+
+	statementBlockCopy do: [ :statement |
+		statementBlock addStatement: (statement = variableDeclaration
+			ifTrue: [ functionTypeDeclaration ]
+			ifFalse: [ statement ]
+		)
+	]
+		
+	
+	
+]
+
+{ #category : 'private' }
 FASTFortranJsonVisitor >> set: aFASTFortranNode startEnd: startEndPoints [
 
 	aFASTFortranNode
@@ -406,7 +444,7 @@ FASTFortranJsonVisitor >> visitDeclarationStatement: aDeclarationStatementNode [
 	data := super visitDeclarationStatement: aDeclarationStatementNode.
 
 	declaration := (self newEntity: FASTFortranVariableDeclarationStatement atPosition: data first)
-		type: data second ;
+		declaredType: data second ;
 		  "attributes: data third ;"
 		declarators: data fourth ;
 		yourself.
@@ -730,10 +768,23 @@ FASTFortranJsonVisitor >> visitFunctionWithBlocks: aFunctionNode [
 
 	function := (self newEntity: FASTFortranFunction atPosition: data first)
 		name: data second ;
-		returnType: data third ;
+		declaredType: data third ;
 		parameters: data fourth ;
 		statementBlock: data fifth ;
 		yourself.
+	
+	
+	(function statementBlock statements 
+		detect: [ :each | 
+			(each class = FASTFortranVariableDeclarationStatement) 
+				and: [ each declarators first name = function name ]		
+		]
+		ifFound: [ :declaration | 
+			self 
+				replaceByFunctionTypeDeclaration: declaration 
+				inBlock: function statementBlock 
+		]
+	).
 	
 	self addSegmentDeclarationsTo: function.
 

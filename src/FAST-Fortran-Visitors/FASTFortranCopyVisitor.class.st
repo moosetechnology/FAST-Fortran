@@ -575,6 +575,19 @@ FASTFortranCopyVisitor >> visitFASTFortranExternalStatement: aFASTFortranExterna
 ]
 
 { #category : 'visiting' }
+FASTFortranCopyVisitor >> visitFASTFortranFieldAccess: aFASTFortranFieldAccess [
+	<generated>
+	^FASTFortranFieldAccess new
+		field: (self copy: aFASTFortranFieldAccess field) ;
+		pointer: (self copy: aFASTFortranFieldAccess pointer) ;
+		name: (self copy: aFASTFortranFieldAccess name) ;
+		startPos: (self copy: aFASTFortranFieldAccess startPos) ;
+		endPos: (self copy: aFASTFortranFieldAccess endPos) ;
+		yourself
+
+]
+
+{ #category : 'visiting' }
 FASTFortranCopyVisitor >> visitFASTFortranFormatStatement: aFASTFortranFormatStatement [
 	<generated>
 	^FASTFortranFormatStatement new
@@ -592,10 +605,10 @@ FASTFortranCopyVisitor >> visitFASTFortranFunction: aFASTFortranFunction [
 	<generated>
 	^FASTFortranFunction new
 		declarations: (self copy: aFASTFortranFunction declarations) ;
+		declaredType: (self copy: aFASTFortranFunction declaredType) ;
 		comments: (self copy: aFASTFortranFunction comments) ;
 		name: (self copy: aFASTFortranFunction name) ;
 		parameters: (self copy: aFASTFortranFunction parameters) ;
-		returnType: (self copy: aFASTFortranFunction returnType) ;
 		statementBlock: (self copy: aFASTFortranFunction statementBlock) ;
 		startPos: (self copy: aFASTFortranFunction startPos) ;
 		endPos: (self copy: aFASTFortranFunction endPos) ;
@@ -625,6 +638,19 @@ FASTFortranCopyVisitor >> visitFASTFortranFunctionStatement: aFASTFortranFunctio
 		expression: (self copy: aFASTFortranFunctionStatement expression) ;
 		startPos: (self copy: aFASTFortranFunctionStatement startPos) ;
 		endPos: (self copy: aFASTFortranFunctionStatement endPos) ;
+		yourself
+
+]
+
+{ #category : 'visiting' }
+FASTFortranCopyVisitor >> visitFASTFortranFunctionTypeDeclarationStatement: aFASTFortranFunctionTypeDeclarationStatement [
+	<generated>
+	^FASTFortranFunctionTypeDeclarationStatement new
+		declaredType: (self copy: aFASTFortranFunctionTypeDeclarationStatement declaredType) ;
+		name: (self copy: aFASTFortranFunctionTypeDeclarationStatement name) ;
+		label: (self copy: aFASTFortranFunctionTypeDeclarationStatement label) ;
+		startPos: (self copy: aFASTFortranFunctionTypeDeclarationStatement startPos) ;
+		endPos: (self copy: aFASTFortranFunctionTypeDeclarationStatement endPos) ;
 		yourself
 
 ]
@@ -668,6 +694,18 @@ FASTFortranCopyVisitor >> visitFASTFortranGoToStatement: aFASTFortranGoToStateme
 ]
 
 { #category : 'visiting' }
+FASTFortranCopyVisitor >> visitFASTFortranIOParameter: aFASTFortranIOParameter [
+	<generated>
+	^FASTFortranIOParameter new
+		name: (self copy: aFASTFortranIOParameter name) ;
+		expression: (self copy: aFASTFortranIOParameter expression) ;
+		startPos: (self copy: aFASTFortranIOParameter startPos) ;
+		endPos: (self copy: aFASTFortranIOParameter endPos) ;
+		yourself
+
+]
+
+{ #category : 'visiting' }
 FASTFortranCopyVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortranIfArithmeticStatement [
 	<generated>
 	^FASTFortranIfArithmeticStatement new
@@ -687,8 +725,8 @@ FASTFortranCopyVisitor >> visitFASTFortranIfBlockStatement: aFASTFortranIfBlockS
 	<generated>
 	^FASTFortranIfBlockStatement new
 		condition: (self copy: aFASTFortranIfBlockStatement condition) ;
-		elseStatementBlock: (self copy: aFASTFortranIfBlockStatement elseStatementBlock) ;
 		thenStatementBlock: (self copy: aFASTFortranIfBlockStatement thenStatementBlock) ;
+		elseStatementBlock: (self copy: aFASTFortranIfBlockStatement elseStatementBlock) ;
 		label: (self copy: aFASTFortranIfBlockStatement label) ;
 		startPos: (self copy: aFASTFortranIfBlockStatement startPos) ;
 		endPos: (self copy: aFASTFortranIfBlockStatement endPos) ;
@@ -1198,6 +1236,15 @@ FASTFortranCopyVisitor >> visitFASTFortranTDeclaration: aFASTFortranTDeclaration
 ]
 
 { #category : 'visiting - traits' }
+FASTFortranCopyVisitor >> visitFASTFortranTDeclaredType: aFASTFortranTDeclaredType [
+	<generated>
+	^FASTFortranTDeclaredType new
+		declaredType: (self copy: aFASTFortranTDeclaredType declaredType) ;
+		yourself
+
+]
+
+{ #category : 'visiting - traits' }
 FASTFortranCopyVisitor >> visitFASTFortranTEntityCreator: aFASTFortranTEntityCreator [
 	<generated>
 	^FASTFortranTEntityCreator new
@@ -1341,7 +1388,7 @@ FASTFortranCopyVisitor >> visitFASTFortranVariable: aFASTFortranVariable [
 FASTFortranCopyVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFortranVariableDeclarationStatement [
 	<generated>
 	^FASTFortranVariableDeclarationStatement new
-		type: (self copy: aFASTFortranVariableDeclarationStatement type) ;
+		declaredType: (self copy: aFASTFortranVariableDeclarationStatement declaredType) ;
 		label: (self copy: aFASTFortranVariableDeclarationStatement label) ;
 		declarators: (self copy: aFASTFortranVariableDeclarationStatement declarators) ;
 		startPos: (self copy: aFASTFortranVariableDeclarationStatement startPos) ;
@@ -1394,6 +1441,16 @@ FASTFortranCopyVisitor >> visitFASTFortranWriteStatement: aFASTFortranWriteState
 		label: (self copy: aFASTFortranWriteStatement label) ;
 		startPos: (self copy: aFASTFortranWriteStatement startPos) ;
 		endPos: (self copy: aFASTFortranWriteStatement endPos) ;
+		yourself
+
+]
+
+{ #category : 'visiting - traits' }
+FASTFortranCopyVisitor >> visitFASTTExpression: aFASTTExpression [
+	<generated>
+	^FASTTExpression new
+		startPos: (self copy: aFASTTExpression startPos) ;
+		endPos: (self copy: aFASTTExpression endPos) ;
 		yourself
 
 ]

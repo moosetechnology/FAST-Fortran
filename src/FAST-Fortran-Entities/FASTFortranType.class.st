@@ -7,9 +7,8 @@ I represent Fortran Type statement
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parentDeclaration` | `FASTFortranType` | `type` | `FASTFortranVariableDeclarationStatement` | Parent declaration|
+| `parentDeclaration` | `FASTFortranType` | `declaredType` | `FASTFortranTDeclaredType` | Parent declaration|
 | `parentImplicitRule` | `FASTFortranType` | `type` | `FASTFortranImplicitTypingRule` | |
-| `typedFunctions` | `FASTFortranType` | `returnType` | `FASTFortranFunction` | |
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
@@ -23,10 +22,9 @@ Class {
 	#name : 'FASTFortranType',
 	#superclass : 'FASTFortranEntity',
 	#instVars : [
-		'#parentDeclaration => FMOne type: #FASTFortranVariableDeclarationStatement opposite: #type',
+		'#parentDeclaration => FMOne type: #FASTFortranTDeclaredType opposite: #declaredType',
 		'#parentImplicitRule => FMOne type: #FASTFortranImplicitTypingRule opposite: #type',
-		'#size => FMOne type: #FASTFortranAbstractExpression opposite: #parentTypeSize',
-		'#typedFunctions => FMOne type: #FASTFortranFunction opposite: #returnType'
+		'#size => FMOne type: #FASTFortranAbstractExpression opposite: #parentTypeSize'
 	],
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
@@ -44,7 +42,7 @@ FASTFortranType class >> annotation [
 
 { #category : 'accessing' }
 FASTFortranType >> parentDeclaration [
-	"Relation named: #parentDeclaration type: #FASTFortranVariableDeclarationStatement opposite: #type"
+	"Relation named: #parentDeclaration type: #FASTFortranTDeclaredType opposite: #declaredType"
 
 	<generated>
 	<FMComment: 'Parent declaration'>
@@ -112,28 +110,4 @@ FASTFortranType >> sizeGroup [
 	<generated>
 	<navigation: 'Size'>
 	^ MooseSpecializedGroup with: self size
-]
-
-{ #category : 'accessing' }
-FASTFortranType >> typedFunctions [
-	"Relation named: #typedFunctions type: #FASTFortranFunction opposite: #returnType"
-
-	<generated>
-	<container>
-	<derived>
-	^ typedFunctions
-]
-
-{ #category : 'accessing' }
-FASTFortranType >> typedFunctions: anObject [
-
-	<generated>
-	typedFunctions := anObject
-]
-
-{ #category : 'navigation' }
-FASTFortranType >> typedFunctionsGroup [
-	<generated>
-	<navigation: 'TypedFunctions'>
-	^ MooseSpecializedGroup with: self typedFunctions
 ]

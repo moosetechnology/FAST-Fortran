@@ -137,7 +137,9 @@ Class {
 		'tDeclaration',
 		'tWithDeclarations',
 		'fieldAccess',
-		'ioParameter'
+		'ioParameter',
+		'tDeclaredType',
+		'functionTypeDeclarationStatement'
 	],
 	#category : 'FAST-Fortran-Generator',
 	#package : 'FAST-Fortran-Generator'
@@ -488,6 +490,7 @@ FASTFortranGenerator >> defineHierarchy [
 	procedure --|> tWithParameters.
 	blockData --|> subprogram.
 	function --|> procedure.
+	function --|> tDeclaredType.
 	subroutine --|> procedure.
 
 	programFile --|> tWithComments.
@@ -496,12 +499,12 @@ FASTFortranGenerator >> defineHierarchy [
 
 	"other entities"
 	comment --|> tEntity.
-	comment --|> tComment. 
+	comment --|> tComment.
 
 	"FORTRAN STATEMENTS"
 	abstractStatement --|> tStatement.
 	abstractIOStatement --|> abstractStatement.
-	acceptStatement  --|> abstractStatement.
+	acceptStatement --|> abstractStatement.
 	assignmentStatement --|> abstractStatement.
 	assignmentStatement --|> tAssignment.
 	automaticStatement --|> abstractStatement.
@@ -536,6 +539,9 @@ FASTFortranGenerator >> defineHierarchy [
 	functionStatement --|> abstractStatement.
 	functionStatement --|> tWithArguments.
 	functionStatement --|> tNamedEntity.
+	functionTypeDeclarationStatement --|> abstractStatement.
+	functionTypeDeclarationStatement --|> tNamedEntity.
+	functionTypeDeclarationStatement --|> tDeclaredType.
 	goToStatement --|> abstractStatement.
 	goToStatement --|> tWithLabelReferences.
 	goToAssignedStatement --|> abstractStatement.
@@ -567,11 +573,12 @@ FASTFortranGenerator >> defineHierarchy [
 	returnStatement --|> tReturnStatement.
 	rewindStatement --|> abstractIOStatement.
 	saveStatement --|> abstractStatement.
-	statementBlock --|> tStatementBlock. 
-	statementBlock --|> tWithComments. 
+	statementBlock --|> tStatementBlock.
+	statementBlock --|> tWithComments.
 	staticStatement --|> abstractStatement.
 	stopStatement --|> abstractStatement.
 	unionStatement --|> abstractStatement.
+	variableDeclarationStatement --|> tDeclaredType.
 	variableDeclarationStatement --|> abstractStatement.
 	variableDeclarationStatement --|> tWithDeclarators.
 	virtualStatement --|> abstractStatement.
@@ -597,8 +604,8 @@ FASTFortranGenerator >> defineHierarchy [
 	characterConstant --|> abstractLiteral.
 	characterConstant --|> tCharacterLiteral.
 	characterConstant --|> tFormat.
-	commonGroup  --|> tWithDeclarators.
-	commonGroup  --|> tNamedEntity.
+	commonGroup --|> tWithDeclarators.
+	commonGroup --|> tNamedEntity.
 	complexConstant --|> numericalConstant.
 	dataGroup --|> tVariableGroup.
 	doubleComplexConstant --|> numericalConstant.
@@ -614,7 +621,7 @@ FASTFortranGenerator >> defineHierarchy [
 	integerConstant --|> tFormat.
 	ioParameter --|> tNamedEntity.
 	ioParameter --|> tIOParameter.
-	numericalConstant  --|> abstractLiteral.
+	numericalConstant --|> abstractLiteral.
 	numericalConstant --|> tNumericalLiteral.
 	realConstant --|> numericalConstant.
 	scalarVariable --|> variable.
@@ -636,17 +643,17 @@ FASTFortranGenerator >> defineHierarchy [
 	integerType --|> type.
 	logicalType --|> type.
 	realType --|> type.
-	
+
 	segment --|> type.
 	segment --|> #TStatementBlock.
 	segment --|> tDeclaration.
 	segment --|> tNamedEntity.
 
-	asterisk --|> integerConstant.  "used as type size"
+	asterisk --|> integerConstant. "used as type size"
 	asterisk --|> tEntryArgument.
 	asterisk --|> tFormat.
 
-	tFormat --|> tIOParameter
+	tFormat --|> tIOParameter.
 ]
 
 { #category : 'definition' }
@@ -749,7 +756,7 @@ FASTFortranGenerator >> defineRelations [
 		 'Expression assigned to the variable declared')
 	<>- (abstractExpression property: #variableDeclaratorOwner) .
 
-	((variableDeclarationStatement property: #type) comment: 'type')
+	((tDeclaredType property: #declaredType) comment: 'type')
 	<>-
 	((type property: #parentDeclaration) comment: 'Parent declaration').
 
@@ -764,9 +771,6 @@ FASTFortranGenerator >> defineRelations [
 
 	(entryStatement property: #entryArguments)
 	<>-* (tEntryArgument property: #entryStatement).
-
-	(function property: #returnType)
-	<>- (type property: #typedFunctions).
 
 	((functionStatement property: #expression) comment:
 		 'Expression thats being assigned upon declaration to the var')
@@ -848,7 +852,8 @@ FASTFortranGenerator >> defineRelations [
 	((ioParameter property: #expression) comment: 
 		'value of the parameter (keyword argument)')
 	<>- ((tExpression property: #ioSpecifier) comment: 
-		'name of the parameter (keyword argument)')
+		'name of the parameter (keyword argument)').
+
 ]
 
 { #category : 'definition' }
@@ -948,6 +953,8 @@ FASTFortranGenerator >> defineStatements [
 		                     newClassNamed: #FunctionStatement
 		                     comment:
 		                     'I represent a function statement - a function-like declaration, made in a single statement'.
+		
+	functionTypeDeclarationStatement := self newClassNamed: #FunctionTypeDeclarationStatement  comment: 'I represent a return type declaration statement'.
 
 	goToStatement := self
 		                 newClassNamed: #GoToStatement
@@ -1085,7 +1092,8 @@ FASTFortranGenerator >> defineTraits [
 	tBooleanLiteral := self remoteTrait: #TBooleanLiteral withPrefix: #FAST.
 	tCharacterLiteral := self remoteTrait: #TCharacterLiteral withPrefix: #FAST.
 	tComment := self remoteTrait: #TComment withPrefix: #FAST.
-	tDeclaration := builder newTraitNamed: #TDeclaration comment: 'I am a declaration in fortran'.
+	tDeclaration := self newTraitNamed: #TDeclaration comment: 'I am a declaration in fortran'.
+	tDeclaredType := self newTraitNamed: #TDeclaredType comment: 'I am the declared type of a function or variable'.
 	tExpression := self remoteTrait: #TExpression withPrefix: #FAST. 
 	tNamedEntity := self remoteTrait: #TNamedEntity withPrefix: #FAST.
 	tNumericalLiteral := self remoteTrait: #TNumericalLiteral withPrefix: #FAST.
@@ -1102,7 +1110,7 @@ FASTFortranGenerator >> defineTraits [
 	tFormat := self newTraitNamed: #TFormat comment: 'I represent a format description (eg. in Format or Print statement)'.
 	tIOParameter := self newTraitNamed: #TIOParameter comment: 'I represent a parameter to an IO-statement (read or write)'.
 	tVariableGroup := self newTraitNamed: #TVariableGroup comment: 'I represent an entity with several variables like in a DataStatement or an EquivalenceStatement'.
-	tWithDeclarations := builder newTraitNamed: #TWithDeclarations comment: 'I have declarations'.
+	tWithDeclarations := self newTraitNamed: #TWithDeclarations comment: 'I have declarations'.
 	tWithDeclarators := self newTraitNamed: #TWithDeclarators comment: 'I represent a declaration with several variable declarators'.
 	tWithFormat := self newTraitNamed: #TWithFormat comment: 'I represent a statement with a format (format, print)'.
 	tWithLabelReferences := self newTraitNamed: #TWithLabelReferences comment: 'I represent a statement (various kind of goto) that can have label references'.

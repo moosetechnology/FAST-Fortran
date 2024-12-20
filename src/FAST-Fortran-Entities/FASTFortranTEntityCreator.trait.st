@@ -378,6 +378,13 @@ FASTFortranTEntityCreator >> newFunctionStatement [
 ]
 
 { #category : 'entity creation' }
+FASTFortranTEntityCreator >> newFunctionTypeDeclarationStatement [
+
+	<generated>
+	^ self add: FASTFortranFunctionTypeDeclarationStatement new
+]
+
+{ #category : 'entity creation' }
 FASTFortranTEntityCreator >> newGoToAssignedStatement [
 
 	<generated>
