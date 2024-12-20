@@ -331,6 +331,16 @@ FASTFortranJsonVisitor >> visitCloseStatement: aCloseNode [
 ]
 
 { #category : 'visiting statement' }
+FASTFortranJsonVisitor >> visitComment: aCommentNode [
+
+	| data |
+	data := super visitComment: aCommentNode.
+	^(self newEntity: FASTFortranComment atPosition: data first)
+		content: 'C' , data second ;
+		yourself
+]
+
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitCommonGroup: aCommonGroupNode [
 	"#(span name varList)"
 
@@ -662,31 +672,6 @@ FASTFortranJsonVisitor >> visitEquivalenceStatement: anEquivalenceStatement [
 		yourself
 ]
 
-{ #category : 'visiting' }
-FASTFortranJsonVisitor >> visitEsopeEndsegmentComment: anEsopeCommentNode [
-
-	inSegmentDeclaration := false.
-	^nil
-	
-]
-
-{ #category : 'visiting' }
-FASTFortranJsonVisitor >> visitEsopeSegmentComment: anEsopeCommentNode [
-	"Source anchor for the segment is wrong,
-	 endLine/endColumn will be updated in #visitEsopeEndsegmentComment:"
-
-	| data |
-	data := super visitEsopeSegmentComment: anEsopeCommentNode.
-
-	inSegmentDeclaration := true.
-	segmentDeclarations add: ((self newEntity: FASTFortranSegment atPosition: data second)
-		name: data fourth ;
-		yourself).
-	
-	^nil
-	
-]
-
 { #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitExitStatement: anExitNode [
 
@@ -721,16 +706,6 @@ FASTFortranJsonVisitor >> visitFormatStatement: aFormatStatement [
 
 	^(self newEntity: FASTFortranFormatStatement atPosition: data first)
 		formatDescription: data second ;
-		yourself
-]
-
-{ #category : 'visiting statement' }
-FASTFortranJsonVisitor >> visitFortranComment: aCommentNode [
-
-	| data |
-	data := super visitFortranComment: aCommentNode.
-	^(self newEntity: FASTFortranComment atPosition: data first)
-		content: 'C' , data second ;
 		yourself
 ]
 
