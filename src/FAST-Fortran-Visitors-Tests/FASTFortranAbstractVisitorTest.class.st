@@ -298,7 +298,7 @@ FASTFortranAbstractVisitorTest >> findBasicBlocks: aClass with: aPharoBooleanBlo
 FASTFortranAbstractVisitorTest >> function: name type: typeDescription [
 
 	ast := self functionDeclaration: name.
-	ast returnType: (self makeType: typeDescription).
+	ast declaredType: (self makeType: typeDescription).
 
 	^ast
 
