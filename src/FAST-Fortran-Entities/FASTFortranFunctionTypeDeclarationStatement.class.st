@@ -9,6 +9,11 @@ I represent a return type declaration statement
 |---|
 | `invokedIn` | `FASTTNamedEntity` | `invoked` | `FASTTInvocation` | Optional invocation where this name is used|
 
+### Children
+| Relation | Origin | Opposite | Type | Comment |
+|---|
+| `declaredType` | `FASTFortranTDeclaredType` | `parentDeclaration` | `FASTFortranType` | type|
+
 
 ## Properties
 ======================

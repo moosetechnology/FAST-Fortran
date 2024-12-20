@@ -35,9 +35,9 @@ Class {
 	#traits : 'FASTFortranTEntryArgument + FASTFortranTFormat + FASTTVariableEntity',
 	#classTraits : 'FASTFortranTEntryArgument classTrait + FASTFortranTFormat classTrait + FASTTVariableEntity classTrait',
 	#instVars : [
+		'#pointerIn => FMOne type: #FASTFortranFieldAccess opposite: #pointer',
 		'#fieldIn => FMOne type: #FASTFortranFieldAccess opposite: #field',
-		'#parentVariableGroup => FMOne type: #FASTFortranTVariableGroup opposite: #variables',
-		'#pointerIn => FMOne type: #FASTFortranFieldAccess opposite: #pointer'
+		'#parentVariableGroup => FMOne type: #FASTFortranTVariableGroup opposite: #variables'
 	],
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
