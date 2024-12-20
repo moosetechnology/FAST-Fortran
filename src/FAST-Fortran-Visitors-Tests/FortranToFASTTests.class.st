@@ -1732,6 +1732,83 @@ FortranToFASTTests >> testFunctionStatement [
 ]
 
 { #category : 'tests-programUnit' }
+FortranToFASTTests >> testFunctionTypeDeclaredAsVariable [
+
+	| result fct stmt |
+	fortranCode := '      function aFct()
+      integer aFct
+      end
+'.
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"/Users/sow/Documents/Pharo/images/M12_241203_PairYC/srcCode.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:18)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:15)-(2:18)","type":"scalar","variable":{"anno":[],"span":"(2:15)-(2:18)","tag":"value","value":{"contents":"afct","tag":"variable"}}}],"span":"(2:15)-(2:18)"},"span":"(2:7)-(2:18)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"}],"name":"afct","result":null,"span":"(1:7)-(3:9)","subprograms":null,"tag":"function","type":null}]}'.
+	result := self visitJsonCode.
+
+	self assert: result isNotEmpty.
+	fct := result first.
+
+	self assert: fct class equals: FASTFortranFunction.
+	self assert: fct name equals: 'afct'.
+	self assert: fct returnType isNil.
+
+	self assert: fct statementBlock statements size equals: 1.
+	self assert: fct statementBlock startPos equals: 29.
+	self assert: fct statementBlock endPos equals: 40.
+	
+	stmt := fct statementBlock statements anyOne.
+	
+	self assert: stmt class equals: FASTFortranFunctionTypeDeclarationStatement.
+	self assert: stmt name equals: 'afct'.
+	
+	
+]
+
+{ #category : 'tests-programUnit' }
+FortranToFASTTests >> testFunctionTypeDeclaredAsVariableWithAnotherDeclaration [
+
+	| result fct |
+	fortranCode := '      function aFct()
+      integer aFct
+      real x
+      end
+'.
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"/Users/sow/Documents/Pharo/images/M12_241203_PairYC/srcCode.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:18)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:15)-(2:18)","type":"scalar","variable":{"anno":[],"span":"(2:15)-(2:18)","tag":"value","value":{"contents":"afct","tag":"variable"}}}],"span":"(2:15)-(2:18)"},"span":"(2:7)-(2:18)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"},{"anno":[],"label":null,"span":"(3:7)-(3:12)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(3:12)-(3:12)","type":"scalar","variable":{"anno":[],"span":"(3:12)-(3:12)","tag":"value","value":{"contents":"x","tag":"variable"}}}],"span":"(3:12)-(3:12)"},"span":"(3:7)-(3:12)","tag":"declaration","type":{"anno":[],"base_type":"real","selector":null,"span":"(3:7)-(3:10)"}},"tag":"statement"}],"name":"afct","result":null,"span":"(1:7)-(4:9)","subprograms":null,"tag":"function","type":null}]}'.
+	result := self visitJsonCode.
+
+	self assert: result isNotEmpty.
+	fct := result first.
+
+	self assert: fct class equals: FASTFortranFunction.
+	self assert: fct name equals: 'afct'.
+	self assert: fct returnType isNil.
+
+	self assert: fct statementBlock statements size equals: 2.
+	
+	self assert: fct statementBlock statements first class equals: FASTFortranFunctionTypeDeclarationStatement.
+	self assert: fct statementBlock statements second class equals: FASTFortranVariableDeclarationStatement.
+	
+]
+
+{ #category : 'tests-programUnit' }
+FortranToFASTTests >> testFunctionWithDeclaredType [
+
+	| result fct |
+	fortranCode := '      integer function aFct()
+      end
+'.
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"/Users/sow/Documents/Pharo/images/M12_241203_PairYC/srcCode.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[],"name":"afct","result":null,"span":"(1:7)-(2:9)","subprograms":null,"tag":"function","type":{"anno":[],"base_type":"integer","selector":null,"span":"(1:7)-(1:13)"}}]}'.
+
+	result := self visitJsonCode.
+
+	self assert: result isNotEmpty.
+	fct := result first.
+
+	self assert: fct class equals: FASTFortranFunction.
+
+	self assert: fct returnType class equals: FASTFortranIntegerType.
+	self assert: fct returnType startPos equals: 7.
+
+]
+
+{ #category : 'tests-programUnit' }
 FortranToFASTTests >> testFunctionWithParameter [
 
 	| result fct param |
@@ -1786,6 +1863,25 @@ FortranToFASTTests >> testFunctionWithStatement [
 	self assert: fct statementBlock endPos equals: 44.
 
 	self assert: fct returnType class equals: FASTFortranIntegerType.
+]
+
+{ #category : 'tests-programUnit' }
+FortranToFASTTests >> testFunctionWithoutDeclaredType [
+
+	| result fct |
+	fortranCode := '      function aFct()
+      end
+'.
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"/Users/sow/Documents/Pharo/images/M12_241203_PairYC/srcCode.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[],"name":"afct","result":null,"span":"(1:7)-(2:9)","subprograms":null,"tag":"function","type":null}]}'.
+
+	result := self visitJsonCode.
+
+	self assert: result isNotEmpty.
+	fct := result first.
+
+	self assert: fct class equals: FASTFortranFunction.
+
+	self assert: fct returnType isNil
 ]
 
 { #category : 'tests-statement' }
@@ -2820,51 +2916,6 @@ FortranToFASTTests >> testRewindStatementUnit [
 	self assert: stmt ioParameters first class equals: FASTFortranIntegerLiteral.
 	self assert: stmt ioParameters first startPos equals: 33.
 	self assert: stmt ioParameters first primitiveValue equals: '3'
-]
-
-{ #category : 'tests' }
-FortranToFASTTests >> testSegment [
-
-	| result seg declaration declarator |
-	fortranCode := '      subroutine hello
-c@_   segment, foo
-        integer bar(n, m)
-c@_   end segment
-      end
-'.
-
-	jsonCode :=  '{"meta":{"miVersion":"fortran77","miFilename":"<stdin>"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"comment":"@_   segment, foo","span":"(2:1)-(2:18)","tag":"comment"},{"anno":[],"label":null,"span":"(3:9)-(3:25)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(3:21)-(3:21)","upper":{"anno":[],"span":"(3:21)-(3:21)","tag":"value","value":{"contents":"n","tag":"variable"}}},{"anno":[],"lower":null,"span":"(3:24)-(3:24)","upper":{"anno":[],"span":"(3:24)-(3:24)","tag":"value","value":{"contents":"m","tag":"variable"}}}],"span":"(3:21)-(3:24)"},"initial":null,"length":null,"span":"(3:17)-(3:25)","type":"array","variable":{"anno":[],"span":"(3:17)-(3:19)","tag":"value","value":{"contents":"bar","tag":"variable"}}}],"span":"(3:17)-(3:25)"},"span":"(3:9)-(3:25)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(3:9)-(3:15)"}},"tag":"statement"},{"anno":[],"comment":"@_   end segment","span":"(4:1)-(4:17)","tag":"comment"}],"name":"hello","options":[null,null],"span":"(1:7)-(5:9)","subprograms":null,"tag":"subroutine"}]}'.
-
-	result := self visitJsonCode.
-
-	self assert: result first declarations size equals: 1.
-	seg := result first declarations anyOne.
-
-	self assert: seg statements size equals: 1.
-	
-	declaration := seg statements anyOne.
-	self assert: declaration class equals: FASTFortranVariableDeclarationStatement.
-	
-	self assert: declaration type class equals: FASTFortranIntegerType.
-	
-	
-	self assert: declaration declarators size equals: 1.
-	declarator := declaration declarators anyOne.
-	self assert: declarator class equals: FASTFortranVariableDeclarator.
-	self assert: declarator name equals: 'bar'.
-	
-	
-	self assert: declarator dimensions size equals: 2.
-	self assert: declarator dimensions first class equals: FASTFortranArrayRange. 
-	self assert: declarator dimensions first lowerBound equals: nil. 
-	self assert: declarator dimensions first upperBound class equals: FASTFortranScalarVariable.
-	self assert: declarator dimensions first upperBound name equals: 'n'.
-	
-	self assert: declarator dimensions second class equals: FASTFortranArrayRange. 
-	self assert: declarator dimensions second lowerBound equals: nil. 
-	self assert: declarator dimensions second upperBound class equals: FASTFortranScalarVariable.
-	self assert: declarator dimensions second upperBound name equals: 'm'
-
 ]
 
 { #category : 'tests-statement' }

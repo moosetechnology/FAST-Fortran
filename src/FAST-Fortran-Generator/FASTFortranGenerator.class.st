@@ -137,7 +137,9 @@ Class {
 		'tDeclaration',
 		'tWithDeclarations',
 		'fieldAccess',
-		'ioParameter'
+		'ioParameter',
+		'tDeclaredType',
+		'functionTypeDeclarationStatement'
 	],
 	#category : 'FAST-Fortran-Generator',
 	#package : 'FAST-Fortran-Generator'
@@ -536,6 +538,9 @@ FASTFortranGenerator >> defineHierarchy [
 	functionStatement --|> abstractStatement.
 	functionStatement --|> tWithArguments.
 	functionStatement --|> tNamedEntity.
+	functionTypeDeclarationStatement --|> abstractStatement.
+	functionTypeDeclarationStatement  --|> tNamedEntity.
+	functionTypeDeclarationStatement  --|> tDeclaredType.
 	goToStatement --|> abstractStatement.
 	goToStatement --|> tWithLabelReferences.
 	goToAssignedStatement --|> abstractStatement.
@@ -948,6 +953,8 @@ FASTFortranGenerator >> defineStatements [
 		                     newClassNamed: #FunctionStatement
 		                     comment:
 		                     'I represent a function statement - a function-like declaration, made in a single statement'.
+		
+	functionTypeDeclarationStatement := self newClassNamed: #FunctionTypeDeclarationStatement  comment: 'I represent a return type declaration statement'.
 
 	goToStatement := self
 		                 newClassNamed: #GoToStatement
@@ -1085,7 +1092,8 @@ FASTFortranGenerator >> defineTraits [
 	tBooleanLiteral := self remoteTrait: #TBooleanLiteral withPrefix: #FAST.
 	tCharacterLiteral := self remoteTrait: #TCharacterLiteral withPrefix: #FAST.
 	tComment := self remoteTrait: #TComment withPrefix: #FAST.
-	tDeclaration := builder newTraitNamed: #TDeclaration comment: 'I am a declaration in fortran'.
+	tDeclaration := self newTraitNamed: #TDeclaration comment: 'I am a declaration in fortran'.
+	tDeclaredType := self newTraitNamed: #TDeclaredType comment: 'I am the declared type of a function or variable'.
 	tExpression := self remoteTrait: #TExpression withPrefix: #FAST. 
 	tNamedEntity := self remoteTrait: #TNamedEntity withPrefix: #FAST.
 	tNumericalLiteral := self remoteTrait: #TNumericalLiteral withPrefix: #FAST.
@@ -1102,7 +1110,7 @@ FASTFortranGenerator >> defineTraits [
 	tFormat := self newTraitNamed: #TFormat comment: 'I represent a format description (eg. in Format or Print statement)'.
 	tIOParameter := self newTraitNamed: #TIOParameter comment: 'I represent a parameter to an IO-statement (read or write)'.
 	tVariableGroup := self newTraitNamed: #TVariableGroup comment: 'I represent an entity with several variables like in a DataStatement or an EquivalenceStatement'.
-	tWithDeclarations := builder newTraitNamed: #TWithDeclarations comment: 'I have declarations'.
+	tWithDeclarations := self newTraitNamed: #TWithDeclarations comment: 'I have declarations'.
 	tWithDeclarators := self newTraitNamed: #TWithDeclarators comment: 'I represent a declaration with several variable declarators'.
 	tWithFormat := self newTraitNamed: #TWithFormat comment: 'I represent a statement with a format (format, print)'.
 	tWithLabelReferences := self newTraitNamed: #TWithLabelReferences comment: 'I represent a statement (various kind of goto) that can have label references'.
