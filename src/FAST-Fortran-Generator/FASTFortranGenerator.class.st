@@ -133,7 +133,6 @@ Class {
 		'tBinaryExpression',
 		'tVariableEntity',
 		'entity',
-		'segment',
 		'tDeclaration',
 		'tWithDeclarations',
 		'fieldAccess',
@@ -189,31 +188,6 @@ where the most common specifiers are:
     RECL=    rl
 ```
 	
-	'
-]
-
-{ #category : 'definition' }
-FASTFortranGenerator >> commentForSegment [
-
-	^ '
-	```st
-	FASTFortranSegment new 
-		name: ''toto'';
-		statements: { 
-			FASTFortranVariableDeclarationStatement new 
-				type: (FASTFortranIntegerType new 
-					size: (FASTFortranScalarVariable new name: ''m'')
-				); 
-				declarators: { 
-					FASTFortranVariableDeclarator new 
-						name: ''x''; 
-						dimensions: { 
-							FASTFortranArrayRange new 
-								upperBound: (FASTFortranScalarVariable new name: ''n'') 
-						}
-				} 
-		}	
-	```
 	'
 ]
 
@@ -409,8 +383,6 @@ FASTFortranGenerator >> defineFASTClasses [
 	"FAMIX-level classes (might be removed later)"
 
 	entity  := self newClassNamed: #Entity.
-
-	segment := self newClassNamed: #Segment comment: self commentForSegment.
 
 	programFile := self
 		               newClassNamed: #ProgramFile
@@ -643,11 +615,6 @@ FASTFortranGenerator >> defineHierarchy [
 	integerType --|> type.
 	logicalType --|> type.
 	realType --|> type.
-
-	segment --|> type.
-	segment --|> #TStatementBlock.
-	segment --|> tDeclaration.
-	segment --|> tNamedEntity.
 
 	asterisk --|> integerConstant. "used as type size"
 	asterisk --|> tEntryArgument.

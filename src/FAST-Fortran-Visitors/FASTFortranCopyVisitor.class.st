@@ -1140,19 +1140,6 @@ FASTFortranCopyVisitor >> visitFASTFortranScalarVariable: aFASTFortranScalarVari
 ]
 
 { #category : 'visiting' }
-FASTFortranCopyVisitor >> visitFASTFortranSegment: aFASTFortranSegment [
-	<generated>
-	^FASTFortranSegment new
-		size: (self copy: aFASTFortranSegment size) ;
-		name: (self copy: aFASTFortranSegment name) ;
-		statements: (self copy: aFASTFortranSegment statements) ;
-		startPos: (self copy: aFASTFortranSegment startPos) ;
-		endPos: (self copy: aFASTFortranSegment endPos) ;
-		yourself
-
-]
-
-{ #category : 'visiting' }
 FASTFortranCopyVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBlock [
 	<generated>
 	^FASTFortranStatementBlock new
