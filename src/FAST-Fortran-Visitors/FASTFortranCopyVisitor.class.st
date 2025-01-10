@@ -31,8 +31,8 @@ FASTFortranCopyVisitor >> copy: aNode [
 FASTFortranCopyVisitor >> visitFASTFortranAbstractExpression: aFASTFortranAbstractExpression [
 	<generated>
 	^FASTFortranAbstractExpression new
-		startPos: (self copy: aFASTFortranAbstractExpression startPos) ;
 		endPos: (self copy: aFASTFortranAbstractExpression endPos) ;
+		startPos: (self copy: aFASTFortranAbstractExpression startPos) ;
 		yourself
 
 ]
@@ -53,8 +53,8 @@ FASTFortranCopyVisitor >> visitFASTFortranAbstractIOStatement: aFASTFortranAbstr
 FASTFortranCopyVisitor >> visitFASTFortranAbstractLiteral: aFASTFortranAbstractLiteral [
 	<generated>
 	^FASTFortranAbstractLiteral new
-		startPos: (self copy: aFASTFortranAbstractLiteral startPos) ;
 		endPos: (self copy: aFASTFortranAbstractLiteral endPos) ;
+		startPos: (self copy: aFASTFortranAbstractLiteral startPos) ;
 		yourself
 
 ]
@@ -86,8 +86,8 @@ FASTFortranCopyVisitor >> visitFASTFortranAmpersand: aFASTFortranAmpersand [
 	<generated>
 	^FASTFortranAmpersand new
 		primitiveValue: (self copy: aFASTFortranAmpersand primitiveValue) ;
-		startPos: (self copy: aFASTFortranAmpersand startPos) ;
 		endPos: (self copy: aFASTFortranAmpersand endPos) ;
+		startPos: (self copy: aFASTFortranAmpersand startPos) ;
 		yourself
 
 ]
@@ -98,8 +98,8 @@ FASTFortranCopyVisitor >> visitFASTFortranArrayRange: aFASTFortranArrayRange [
 	^FASTFortranArrayRange new
 		lowerBound: (self copy: aFASTFortranArrayRange lowerBound) ;
 		upperBound: (self copy: aFASTFortranArrayRange upperBound) ;
-		startPos: (self copy: aFASTFortranArrayRange startPos) ;
 		endPos: (self copy: aFASTFortranArrayRange endPos) ;
+		startPos: (self copy: aFASTFortranArrayRange startPos) ;
 		yourself
 
 ]
@@ -110,8 +110,8 @@ FASTFortranCopyVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariab
 	^FASTFortranArrayVariable new
 		name: (self copy: aFASTFortranArrayVariable name) ;
 		indices: (self copy: aFASTFortranArrayVariable indices) ;
-		startPos: (self copy: aFASTFortranArrayVariable startPos) ;
 		endPos: (self copy: aFASTFortranArrayVariable endPos) ;
+		startPos: (self copy: aFASTFortranArrayVariable startPos) ;
 		yourself
 
 ]
@@ -122,8 +122,8 @@ FASTFortranCopyVisitor >> visitFASTFortranAssignmentExpression: aFASTFortranAssi
 	^FASTFortranAssignmentExpression new
 		variable: (self copy: aFASTFortranAssignmentExpression variable) ;
 		expression: (self copy: aFASTFortranAssignmentExpression expression) ;
-		startPos: (self copy: aFASTFortranAssignmentExpression startPos) ;
 		endPos: (self copy: aFASTFortranAssignmentExpression endPos) ;
+		startPos: (self copy: aFASTFortranAssignmentExpression startPos) ;
 		yourself
 
 ]
@@ -146,8 +146,8 @@ FASTFortranCopyVisitor >> visitFASTFortranAsterisk: aFASTFortranAsterisk [
 	<generated>
 	^FASTFortranAsterisk new
 		primitiveValue: (self copy: aFASTFortranAsterisk primitiveValue) ;
-		startPos: (self copy: aFASTFortranAsterisk startPos) ;
 		endPos: (self copy: aFASTFortranAsterisk endPos) ;
+		startPos: (self copy: aFASTFortranAsterisk startPos) ;
 		yourself
 
 ]
@@ -181,8 +181,8 @@ FASTFortranCopyVisitor >> visitFASTFortranBinaryExpression: aFASTFortranBinaryEx
 	^FASTFortranBinaryExpression new
 		leftOperand: (self copy: aFASTFortranBinaryExpression leftOperand) ;
 		rightOperand: (self copy: aFASTFortranBinaryExpression rightOperand) ;
-		startPos: (self copy: aFASTFortranBinaryExpression startPos) ;
 		endPos: (self copy: aFASTFortranBinaryExpression endPos) ;
+		startPos: (self copy: aFASTFortranBinaryExpression startPos) ;
 		operator: (self copy: aFASTFortranBinaryExpression operator) ;
 		yourself
 
@@ -208,8 +208,8 @@ FASTFortranCopyVisitor >> visitFASTFortranBooleanLiteral: aFASTFortranBooleanLit
 	<generated>
 	^FASTFortranBooleanLiteral new
 		primitiveValue: (self copy: aFASTFortranBooleanLiteral primitiveValue) ;
-		startPos: (self copy: aFASTFortranBooleanLiteral startPos) ;
 		endPos: (self copy: aFASTFortranBooleanLiteral endPos) ;
+		startPos: (self copy: aFASTFortranBooleanLiteral startPos) ;
 		yourself
 
 ]
@@ -243,8 +243,8 @@ FASTFortranCopyVisitor >> visitFASTFortranCharacterLiteral: aFASTFortranCharacte
 	<generated>
 	^FASTFortranCharacterLiteral new
 		primitiveValue: (self copy: aFASTFortranCharacterLiteral primitiveValue) ;
-		startPos: (self copy: aFASTFortranCharacterLiteral startPos) ;
 		endPos: (self copy: aFASTFortranCharacterLiteral endPos) ;
+		startPos: (self copy: aFASTFortranCharacterLiteral startPos) ;
 		yourself
 
 ]
@@ -312,8 +312,8 @@ FASTFortranCopyVisitor >> visitFASTFortranComplexLiteral: aFASTFortranComplexLit
 	<generated>
 	^FASTFortranComplexLiteral new
 		primitiveValue: (self copy: aFASTFortranComplexLiteral primitiveValue) ;
-		startPos: (self copy: aFASTFortranComplexLiteral startPos) ;
 		endPos: (self copy: aFASTFortranComplexLiteral endPos) ;
+		startPos: (self copy: aFASTFortranComplexLiteral startPos) ;
 		yourself
 
 ]
@@ -431,8 +431,8 @@ FASTFortranCopyVisitor >> visitFASTFortranDoubleComplexLiteral: aFASTFortranDoub
 	<generated>
 	^FASTFortranDoubleComplexLiteral new
 		primitiveValue: (self copy: aFASTFortranDoubleComplexLiteral primitiveValue) ;
-		startPos: (self copy: aFASTFortranDoubleComplexLiteral startPos) ;
 		endPos: (self copy: aFASTFortranDoubleComplexLiteral endPos) ;
+		startPos: (self copy: aFASTFortranDoubleComplexLiteral startPos) ;
 		yourself
 
 ]
@@ -453,8 +453,8 @@ FASTFortranCopyVisitor >> visitFASTFortranDoublePrecisionLiteral: aFASTFortranDo
 	<generated>
 	^FASTFortranDoublePrecisionLiteral new
 		primitiveValue: (self copy: aFASTFortranDoublePrecisionLiteral primitiveValue) ;
-		startPos: (self copy: aFASTFortranDoublePrecisionLiteral startPos) ;
 		endPos: (self copy: aFASTFortranDoublePrecisionLiteral endPos) ;
+		startPos: (self copy: aFASTFortranDoublePrecisionLiteral startPos) ;
 		yourself
 
 ]
@@ -578,11 +578,11 @@ FASTFortranCopyVisitor >> visitFASTFortranExternalStatement: aFASTFortranExterna
 FASTFortranCopyVisitor >> visitFASTFortranFieldAccess: aFASTFortranFieldAccess [
 	<generated>
 	^FASTFortranFieldAccess new
-		field: (self copy: aFASTFortranFieldAccess field) ;
 		pointer: (self copy: aFASTFortranFieldAccess pointer) ;
+		field: (self copy: aFASTFortranFieldAccess field) ;
 		name: (self copy: aFASTFortranFieldAccess name) ;
-		startPos: (self copy: aFASTFortranFieldAccess startPos) ;
 		endPos: (self copy: aFASTFortranFieldAccess endPos) ;
+		startPos: (self copy: aFASTFortranFieldAccess startPos) ;
 		yourself
 
 ]
@@ -622,8 +622,8 @@ FASTFortranCopyVisitor >> visitFASTFortranFunctionCall: aFASTFortranFunctionCall
 	^FASTFortranFunctionCall new
 		name: (self copy: aFASTFortranFunctionCall name) ;
 		arguments: (self copy: aFASTFortranFunctionCall arguments) ;
-		startPos: (self copy: aFASTFortranFunctionCall startPos) ;
 		endPos: (self copy: aFASTFortranFunctionCall endPos) ;
+		startPos: (self copy: aFASTFortranFunctionCall startPos) ;
 		yourself
 
 ]
@@ -725,8 +725,8 @@ FASTFortranCopyVisitor >> visitFASTFortranIfBlockStatement: aFASTFortranIfBlockS
 	<generated>
 	^FASTFortranIfBlockStatement new
 		condition: (self copy: aFASTFortranIfBlockStatement condition) ;
-		thenStatementBlock: (self copy: aFASTFortranIfBlockStatement thenStatementBlock) ;
 		elseStatementBlock: (self copy: aFASTFortranIfBlockStatement elseStatementBlock) ;
+		thenStatementBlock: (self copy: aFASTFortranIfBlockStatement thenStatementBlock) ;
 		label: (self copy: aFASTFortranIfBlockStatement label) ;
 		startPos: (self copy: aFASTFortranIfBlockStatement startPos) ;
 		endPos: (self copy: aFASTFortranIfBlockStatement endPos) ;
@@ -797,8 +797,8 @@ FASTFortranCopyVisitor >> visitFASTFortranImpliedDoExpression: aFASTFortranImpli
 	^FASTFortranImpliedDoExpression new
 		loopControl: (self copy: aFASTFortranImpliedDoExpression loopControl) ;
 		variables: (self copy: aFASTFortranImpliedDoExpression variables) ;
-		startPos: (self copy: aFASTFortranImpliedDoExpression startPos) ;
 		endPos: (self copy: aFASTFortranImpliedDoExpression endPos) ;
+		startPos: (self copy: aFASTFortranImpliedDoExpression startPos) ;
 		yourself
 
 ]
@@ -831,8 +831,8 @@ FASTFortranCopyVisitor >> visitFASTFortranIntegerLiteral: aFASTFortranIntegerLit
 	<generated>
 	^FASTFortranIntegerLiteral new
 		primitiveValue: (self copy: aFASTFortranIntegerLiteral primitiveValue) ;
-		startPos: (self copy: aFASTFortranIntegerLiteral startPos) ;
 		endPos: (self copy: aFASTFortranIntegerLiteral endPos) ;
+		startPos: (self copy: aFASTFortranIntegerLiteral startPos) ;
 		yourself
 
 ]
@@ -922,8 +922,8 @@ FASTFortranCopyVisitor >> visitFASTFortranNumericalConstant: aFASTFortranNumeric
 	<generated>
 	^FASTFortranNumericalConstant new
 		primitiveValue: (self copy: aFASTFortranNumericalConstant primitiveValue) ;
-		startPos: (self copy: aFASTFortranNumericalConstant startPos) ;
 		endPos: (self copy: aFASTFortranNumericalConstant endPos) ;
+		startPos: (self copy: aFASTFortranNumericalConstant startPos) ;
 		yourself
 
 ]
@@ -1075,8 +1075,8 @@ FASTFortranCopyVisitor >> visitFASTFortranRealLiteral: aFASTFortranRealLiteral [
 	<generated>
 	^FASTFortranRealLiteral new
 		primitiveValue: (self copy: aFASTFortranRealLiteral primitiveValue) ;
-		startPos: (self copy: aFASTFortranRealLiteral startPos) ;
 		endPos: (self copy: aFASTFortranRealLiteral endPos) ;
+		startPos: (self copy: aFASTFortranRealLiteral startPos) ;
 		yourself
 
 ]
@@ -1133,8 +1133,8 @@ FASTFortranCopyVisitor >> visitFASTFortranScalarVariable: aFASTFortranScalarVari
 	<generated>
 	^FASTFortranScalarVariable new
 		name: (self copy: aFASTFortranScalarVariable name) ;
-		startPos: (self copy: aFASTFortranScalarVariable startPos) ;
 		endPos: (self copy: aFASTFortranScalarVariable endPos) ;
+		startPos: (self copy: aFASTFortranScalarVariable startPos) ;
 		yourself
 
 ]
@@ -1208,8 +1208,8 @@ FASTFortranCopyVisitor >> visitFASTFortranSubroutine: aFASTFortranSubroutine [
 FASTFortranCopyVisitor >> visitFASTFortranSubstring: aFASTFortranSubstring [
 	<generated>
 	^FASTFortranSubstring new
-		startPos: (self copy: aFASTFortranSubstring startPos) ;
 		endPos: (self copy: aFASTFortranSubstring endPos) ;
+		startPos: (self copy: aFASTFortranSubstring startPos) ;
 		yourself
 
 ]
@@ -1342,8 +1342,8 @@ FASTFortranCopyVisitor >> visitFASTFortranUnaryExpression: aFASTFortranUnaryExpr
 	<generated>
 	^FASTFortranUnaryExpression new
 		expression: (self copy: aFASTFortranUnaryExpression expression) ;
-		startPos: (self copy: aFASTFortranUnaryExpression startPos) ;
 		endPos: (self copy: aFASTFortranUnaryExpression endPos) ;
+		startPos: (self copy: aFASTFortranUnaryExpression startPos) ;
 		operator: (self copy: aFASTFortranUnaryExpression operator) ;
 		yourself
 
@@ -1365,8 +1365,8 @@ FASTFortranCopyVisitor >> visitFASTFortranVariable: aFASTFortranVariable [
 	<generated>
 	^FASTFortranVariable new
 		name: (self copy: aFASTFortranVariable name) ;
-		startPos: (self copy: aFASTFortranVariable startPos) ;
 		endPos: (self copy: aFASTFortranVariable endPos) ;
+		startPos: (self copy: aFASTFortranVariable startPos) ;
 		yourself
 
 ]
