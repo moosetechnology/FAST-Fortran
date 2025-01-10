@@ -5,7 +5,6 @@ Class {
 		'lineSizes',
 		'model',
 		'nestedDoEndLabel',
-		'inSegmentDeclaration',
 		'segmentDeclarations'
 	],
 	#category : 'FAST-Fortran-Visitors-Importer',
@@ -63,7 +62,6 @@ FASTFortranJsonVisitor >> initialize [
 
 	lineSizes := #(  ).
 	nestedDoEndLabel := Stack new: 5.
-	inSegmentDeclaration := false.
 	segmentDeclarations := OrderedCollection new
 ]
 
@@ -286,12 +284,13 @@ FASTFortranJsonVisitor >> visitBlock_data: aBlockDataNode [
 FASTFortranJsonVisitor >> visitBody: aNode [
 
 	| data stmtBlock |
+
 	data := aNode 
 		ifNil: [ #() ]
 		ifNotNil: [ super visitBody: aNode ].
 
 	stmtBlock := FASTFortranStatementBlock new.
-	self putMembers: (data reject:#isNil) inBody: stmtBlock.
+	self putMembers: (data reject: #isNil) inBody: stmtBlock.
 	
 	^stmtBlock 
 
@@ -328,6 +327,16 @@ FASTFortranJsonVisitor >> visitCloseStatement: aCloseNode [
 
 	^self newEntity: FASTFortranCloseStatement atPosition: data first
 
+]
+
+{ #category : 'visiting' }
+FASTFortranJsonVisitor >> visitComment: aCommentNode [
+
+	| data |
+	data := super visitFortranComment: aCommentNode.
+	^(self newEntity: FASTFortranComment atPosition: data first)
+		content: 'C' , data second ;
+		yourself
 ]
 
 { #category : 'visiting statement' }
@@ -440,21 +449,15 @@ FASTFortranJsonVisitor >> visitDataStatement: aDataStatement [
 { #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitDeclarationStatement: aDeclarationStatementNode [
 
-	| data declaration |
+	| data |
 	data := super visitDeclarationStatement: aDeclarationStatementNode.
 
-	declaration := (self newEntity: FASTFortranVariableDeclarationStatement atPosition: data first)
+	^(self newEntity: FASTFortranVariableDeclarationStatement atPosition: data first)
 		declaredType: data second ;
 		  "attributes: data third ;"
 		declarators: data fourth ;
 		yourself.
 	
-	^inSegmentDeclaration 
-		ifTrue: [
-			segmentDeclarations last addStatement: declaration.
-			nil
-		]
-		ifFalse: [ declaration ]
 ]
 
 { #category : 'visiting' }
@@ -660,31 +663,6 @@ FASTFortranJsonVisitor >> visitEquivalenceStatement: anEquivalenceStatement [
 	^(self newEntity: FASTFortranEquivalenceStatement atPosition: data first)
 		variableGroups: data second second ;
 		yourself
-]
-
-{ #category : 'visiting' }
-FASTFortranJsonVisitor >> visitEsopeEndsegmentComment: anEsopeCommentNode [
-
-	inSegmentDeclaration := false.
-	^nil
-	
-]
-
-{ #category : 'visiting' }
-FASTFortranJsonVisitor >> visitEsopeSegmentComment: anEsopeCommentNode [
-	"Source anchor for the segment is wrong,
-	 endLine/endColumn will be updated in #visitEsopeEndsegmentComment:"
-
-	| data |
-	data := super visitEsopeSegmentComment: anEsopeCommentNode.
-
-	inSegmentDeclaration := true.
-	segmentDeclarations add: ((self newEntity: FASTFortranSegment atPosition: data second)
-		name: data fourth ;
-		yourself).
-	
-	^nil
-	
 ]
 
 { #category : 'visiting statement' }
