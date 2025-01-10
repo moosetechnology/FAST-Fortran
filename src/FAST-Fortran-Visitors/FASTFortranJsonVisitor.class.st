@@ -331,6 +331,16 @@ FASTFortranJsonVisitor >> visitCloseStatement: aCloseNode [
 
 ]
 
+{ #category : 'visiting' }
+FASTFortranJsonVisitor >> visitComment: aCommentNode [
+
+	| data |
+	data := super visitFortranComment: aCommentNode.
+	^(self newEntity: FASTFortranComment atPosition: data first)
+		content: 'C' , data second ;
+		yourself
+]
+
 { #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitCommonGroup: aCommonGroupNode [
 	"#(span name varList)"
