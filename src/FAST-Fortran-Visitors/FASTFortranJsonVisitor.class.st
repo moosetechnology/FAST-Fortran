@@ -60,6 +60,7 @@ FASTFortranJsonVisitor >> initialize [
 
 	super initialize.
 
+	model := FASTFortranModel new.
 	lineSizes := #(  ).
 	nestedDoEndLabel := Stack new: 5.
 	segmentDeclarations := OrderedCollection new
@@ -1120,7 +1121,6 @@ FASTFortranJsonVisitor >> visitPrintStatement: aPrintStatementNode [
 
 { #category : 'visiting prog-unit' }
 FASTFortranJsonVisitor >> visitProgramFile: aProgramFileNode [
-	model := FASTFortranModel new.
 	^ (super visitProgramFile: aProgramFileNode) second
 ]
 
