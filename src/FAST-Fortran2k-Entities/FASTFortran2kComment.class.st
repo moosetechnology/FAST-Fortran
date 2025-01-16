@@ -23,7 +23,7 @@ A fortran comment
 "
 Class {
 	#name : 'FASTFortran2kComment',
-	#superclass : 'FASTFortran2kEntity',
+	#superclass : 'FASTFortran2kAbstractStatement',
 	#traits : 'FASTTComment + FASTTEntity',
 	#classTraits : 'FASTTComment classTrait + FASTTEntity classTrait',
 	#instVars : [

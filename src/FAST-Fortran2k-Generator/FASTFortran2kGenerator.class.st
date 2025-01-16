@@ -844,6 +844,9 @@ FASTFortran2kGenerator >> defineProperties2k [
 	(useRenamedStatement property: #alias type: #String)
 		comment: 'I represent the alias of the used entity'.
 		
+	(variableDeclarator property: #nbDimension type: #Number)
+		comment: 'I represent the dimension of the dynamic array'
+		
 ]
 
 { #category : 'definition' }

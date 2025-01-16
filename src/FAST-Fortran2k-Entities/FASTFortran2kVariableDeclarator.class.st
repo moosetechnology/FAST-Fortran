@@ -24,6 +24,7 @@ Part of a variable declaration: name of the variable + optional initial value
 |---|
 | `endPos` | `Number` | nil | |
 | `name` | `String` | nil | |
+| `nbDimension` | `Number` | nil | I represent the dimension of the dynamic array|
 | `startPos` | `Number` | nil | |
 
 "
@@ -34,8 +35,9 @@ Class {
 	#classTraits : 'FASTTNamedEntity classTrait',
 	#instVars : [
 		'#dimensions => FMMany type: #FASTFortran2kArrayRange opposite: #parentVariableDeclarator',
-		'#parentDeclaration => FMOne type: #FASTFortran2kTWithDeclarators opposite: #declarators',
-		'#expression => FMOne type: #FASTFortran2kAbstractExpression opposite: #variableDeclaratorOwner'
+		'#expression => FMOne type: #FASTFortran2kAbstractExpression opposite: #variableDeclaratorOwner',
+		'#nbDimension => FMProperty',
+		'#parentDeclaration => FMOne type: #FASTFortran2kTWithDeclarators opposite: #declarators'
 	],
 	#category : 'FAST-Fortran2k-Entities-Entities',
 	#package : 'FAST-Fortran2k-Entities',
@@ -102,6 +104,21 @@ FASTFortran2kVariableDeclarator >> expressionGroup [
 	<generated>
 	<navigation: 'Expression'>
 	^ MooseSpecializedGroup with: self expression
+]
+
+{ #category : 'accessing' }
+FASTFortran2kVariableDeclarator >> nbDimension [
+
+	<FMProperty: #nbDimension type: #Number>
+	<generated>
+	<FMComment: 'I represent the dimension of the dynamic array'>
+	^ nbDimension
+]
+
+{ #category : 'accessing' }
+FASTFortran2kVariableDeclarator >> nbDimension: anObject [
+	<generated>
+	nbDimension := anObject
 ]
 
 { #category : 'accessing' }
