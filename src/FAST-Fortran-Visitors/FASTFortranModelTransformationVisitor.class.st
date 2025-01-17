@@ -1082,6 +1082,42 @@ FASTFortranModelTransformationVisitor >> makeTypeDefinition: aFASTFortranSegment
 ]
 
 { #category : 'visiting - programUnits' }
+FASTFortranModelTransformationVisitor >> visitFASTEsopeSegment: aFASTEsopeSegmentNode [
+
+	| module segmentName |
+	segmentName := aFASTEsopeSegmentNode name.
+
+	module := FASTFortran2kModule new name: segmentName , '_m'.
+	module addProcedure: (self makeProcedureSegini2: aFASTEsopeSegmentNode).
+	module procedures addAll:
+		(self makeProceduresDimensions: aFASTEsopeSegmentNode).
+	1 halt.
+	module statementBlock:
+		(FASTFortran2kStatementBlock new statements: {
+				 self makeSegmentModuleProlog.
+				 (self makeTypeDefinition: aFASTEsopeSegmentNode).
+				 (self makeSegmentTypeName: segmentName).
+				 (self makeBoxedTypeDefinition: segmentName).
+				 (self makeInterfaces: segmentName).
+				 (self makeContainsStatement: segmentName).
+				 (self makeProcedureIgnore: segmentName).
+				 (self makeProcedureAssignPointerToPointer: segmentName).
+				 (self makeProcedureSegmentType: segmentName).
+				 (self makeProcedureSegcop: aFASTEsopeSegmentNode).
+				 (self makeProcedureSegmov: aFASTEsopeSegmentNode).
+				 (self makeProcedureSegadj: aFASTEsopeSegmentNode).
+				 (self makeProcedureSegsup: aFASTEsopeSegmentNode).
+				 (self makeProcedureSegprt: aFASTEsopeSegmentNode).
+				 (self makeProcedureSegstore: aFASTEsopeSegmentNode).
+				 (self makeProcedureSegload: aFASTEsopeSegmentNode).
+				 (self makeProcedureSegpar: aFASTEsopeSegmentNode).
+				 (self makeProcedureSeglik: aFASTEsopeSegmentNode).
+				 (self makeProcedureSegloc: segmentName).
+				 (self makeProcedureBoxed: segmentName) }).
+	^ module halt
+]
+
+{ #category : 'visiting - programUnits' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranAssignmentExpression: anAssignmentExpressionNode [
 
 	| variable expression |

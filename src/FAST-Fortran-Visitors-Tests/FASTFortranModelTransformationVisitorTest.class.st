@@ -7,6 +7,28 @@ Class {
 }
 
 { #category : 'running' }
+FASTFortranModelTransformationVisitorTest >> fooSegment [
+	| model foo_seg |
+	model := FASTEsopeModel new name: 'esopeModel'.
+
+	foo_seg := model newSegmentNamed: 'foo'.
+	foo_seg 
+		statements: { 
+			model newVariableDeclarationStatement 
+				declaredType: (model newIntegerType); 
+				declarators: { 
+					model newVariableDeclarator 
+						name: 'foo'; 
+						dimensions: { 
+							model newArrayRange 
+								upperBound: (model newScalarVariable name: 'N') 
+						} 
+				} 
+		}.
+	^foo_seg 
+]
+
+{ #category : 'running' }
 FASTFortranModelTransformationVisitorTest >> newVisitor [
 
 	^FASTFortranModelTransformationVisitor new
@@ -66,6 +88,24 @@ FASTFortranModelTransformationVisitorTest >> testDoStatement [
 	self assert: loopControl init class equals: FASTFortran2kAssignmentExpression.
 	self assert: loopControl init variable class equals: FASTFortran2kScalarVariable.
 	self assert: loopControl init expression class equals: FASTFortran2kIntegerLiteral.
+]
+
+{ #category : 'running' }
+FASTFortranModelTransformationVisitorTest >> testEsopeSegmentToDerivedTypeInModule [
+	"
+	segment foo
+	integer bar(N)
+	end segment
+	"
+
+	| stmt res |
+
+	stmt := self fooSegment.
+	
+	res := stmt accept: visitor.
+
+	self assert: res class equals: FASTFortran2kModule.
+	self assert: res name equals: 'foo_m'.
 ]
 
 { #category : 'running' }
