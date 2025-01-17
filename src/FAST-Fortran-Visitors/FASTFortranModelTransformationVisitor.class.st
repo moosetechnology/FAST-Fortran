@@ -683,7 +683,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureSegini: aFASTFortranSegmen
 	routineParams := self computeRoutineParams: segmentDimensions.
 	routineParamsDeclarations := self computeRoutineParamsDeclarations: segmentDimensions.
 	localParamsDims := self computeLocalParamsDims: segmentDimensions.
-			1halt.
+
 	allocateSegmentAttributes := self computeAllocateSegmentAttributes: aFASTFortranSegment.
 
 	tmpStream << '
@@ -983,7 +983,7 @@ FASTFortranModelTransformationVisitor >> makeProceduresDimensions: aFASTFortranS
 	parameters := self computeDimensionalExpressions: aFASTFortranSegment.
 
 	procedures := OrderedCollection new.
-1halt.
+
 	aFASTFortranSegment statements do: [ :declaration | 
 		declaration declarators do: [ :declarator | | index | 
 			index := 1.
@@ -1007,7 +1007,7 @@ FASTFortranModelTransformationVisitor >> makeProceduresDimensions: aFASTFortranS
 						FASTFortran2kSourceCodeString new content: aStream contents.
 					}
 				).
-			1halt.					
+		
 			procedures add: procedure.
 			index := index + 1.
 		] ]].
@@ -1091,7 +1091,7 @@ FASTFortranModelTransformationVisitor >> visitFASTEsopeSegment: aFASTEsopeSegmen
 	module addProcedure: (self makeProcedureSegini2: aFASTEsopeSegmentNode).
 	module procedures addAll:
 		(self makeProceduresDimensions: aFASTEsopeSegmentNode).
-	1 halt.
+
 	module statementBlock:
 		(FASTFortran2kStatementBlock new statements: {
 				 self makeSegmentModuleProlog.
@@ -1114,7 +1114,7 @@ FASTFortranModelTransformationVisitor >> visitFASTEsopeSegment: aFASTEsopeSegmen
 				 (self makeProcedureSeglik: aFASTEsopeSegmentNode).
 				 (self makeProcedureSegloc: segmentName).
 				 (self makeProcedureBoxed: segmentName) }).
-	^ module halt
+	^ module
 ]
 
 { #category : 'visiting - programUnits' }
@@ -1336,7 +1336,7 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranSegment: aFASTFortranSe
 	module addProcedure: (self makeProcedureSegini2: aFASTFortranSegment).
 	module procedures addAll:
 		(self makeProceduresDimensions: aFASTFortranSegment).
-	1 halt.
+
 	module statementBlock:
 		(FASTFortran2kStatementBlock new statements: {
 				 self makeSegmentModuleProlog.
@@ -1359,7 +1359,7 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranSegment: aFASTFortranSe
 				 (self makeProcedureSeglik: aFASTFortranSegment).
 				 (self makeProcedureSegloc: segmentName).
 				 (self makeProcedureBoxed: segmentName) }).
-	^ module halt
+	^ module
 ]
 
 { #category : 'visiting - programUnits' }
@@ -1419,7 +1419,7 @@ FASTFortranModelTransformationVisitor >> visitSegmentAttributes: attributes [
 	self ensureEmptyStream.
 	attributes do: [ :each |
 		| parameters |
-		1 halt.
+
 		self flag: #FIXME. "handle parameters in each declaractors dimensions"
 		parameters := each declarators collect: #dimensions.
 
@@ -1443,7 +1443,7 @@ FASTFortranModelTransformationVisitor >> visitSementAttributes: attributes [
 	self ensureEmptyStream.
 	attributes do: [ :each |
 		| parameters |
-		1 halt.
+
 		self flag: #FIXME. "handle parameters in each declaractors dimensions"
 		parameters := each declarators collect: #dimensions.
 
