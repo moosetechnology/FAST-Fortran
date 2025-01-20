@@ -626,7 +626,7 @@ FASTFortranCopyVisitorTest >> testFunctionStatement [
 	| node |
 	node := FASTFortranFunctionStatement new.
 	node name: 'fct'.
-	node arguments: (self scalarVariables: #(x y)).
+	node parameters: (self scalarVariables: #(x y)).
 	node expression: (self binary: '+' left: #x right: 2).
 
 	self

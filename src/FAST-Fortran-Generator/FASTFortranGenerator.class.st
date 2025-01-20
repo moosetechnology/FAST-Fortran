@@ -509,7 +509,7 @@ FASTFortranGenerator >> defineHierarchy [
 	formatStatement --|> abstractStatement.
 	formatStatement --|> tWithFormat.
 	functionStatement --|> abstractStatement.
-	functionStatement --|> tWithArguments.
+	functionStatement --|> tWithParameters.
 	functionStatement --|> tNamedEntity.
 	functionTypeDeclarationStatement --|> abstractStatement.
 	functionTypeDeclarationStatement --|> tNamedEntity.

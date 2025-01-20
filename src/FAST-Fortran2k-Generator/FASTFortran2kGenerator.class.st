@@ -605,7 +605,7 @@ FASTFortran2kGenerator >> defineHierarchy [
 	formatStatement --|> abstractStatement.
 	formatStatement --|> tWithFormat.
 	functionStatement --|> abstractStatement.
-	functionStatement --|> tWithArguments.
+	functionStatement --|> tWithParameters.
 	functionStatement --|> tNamedEntity.
 	goToStatement --|> abstractStatement.
 	goToStatement --|> tWithLabelReferences.

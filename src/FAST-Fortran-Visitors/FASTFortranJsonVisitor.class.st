@@ -733,7 +733,7 @@ FASTFortranJsonVisitor >> visitFunctionStatement: aFunctionStatementNode [
 
 	^(self newEntity: FASTFortranFunctionStatement atPosition: data first)
 		name: data second name ;
-		arguments: data third ;
+		parameters: data third ;
 		expression: data fourth ;
 		yourself
 ]

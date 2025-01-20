@@ -12,8 +12,8 @@ I represent a function statement - a function-like declaration, made in a single
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `arguments` | `FASTTWithArguments` | `argumentOwner` | `FASTTExpression` | My arguments|
 | `expression` | `FASTFortran2kFunctionStatement` | `assignementExpressionOwner` | `FASTFortran2kAbstractExpression` | Expression thats being assigned upon declaration to the var|
+| `parameters` | `FASTTWithParameters` | `parameterOwner` | `FASTTVariableEntity` | My parameters|
 
 
 ## Properties
@@ -29,8 +29,8 @@ I represent a function statement - a function-like declaration, made in a single
 Class {
 	#name : 'FASTFortran2kFunctionStatement',
 	#superclass : 'FASTFortran2kAbstractStatement',
-	#traits : 'FASTTNamedEntity + FASTTWithArguments',
-	#classTraits : 'FASTTNamedEntity classTrait + FASTTWithArguments classTrait',
+	#traits : 'FASTTNamedEntity + FASTTWithParameters',
+	#classTraits : 'FASTTNamedEntity classTrait + FASTTWithParameters classTrait',
 	#instVars : [
 		'#expression => FMOne type: #FASTFortran2kAbstractExpression opposite: #assignementExpressionOwner'
 	],
