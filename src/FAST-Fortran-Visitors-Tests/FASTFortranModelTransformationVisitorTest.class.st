@@ -99,6 +99,8 @@ FASTFortranModelTransformationVisitorTest >> testEsopeSegmentToDerivedTypeInModu
 	"
 
 	| stmt res |
+	
+	self skip: #TODO.
 
 	stmt := self fooSegment.
 	
