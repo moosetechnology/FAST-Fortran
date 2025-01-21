@@ -108,7 +108,7 @@ FASTFortranModelTransformationVisitorTest >> testEsopeSegmentToDerivedTypeInModu
 	self assert: res name equals: 'foo_m'.
 ]
 
-{ #category : 'running' }
+{ #category : 'tests-statement' }
 FASTFortranModelTransformationVisitorTest >> testFctStatement [
 	"
      PROGRAM demo
@@ -125,7 +125,7 @@ contains
 end program demo
 		
 	"
-	| src dst var fctStatement |
+	| src dst var fctStatement entity |
 	
 	var := self scalarVariable: #x.
 	
@@ -136,12 +136,17 @@ end program demo
 						yourself.
 	
 	
-	fctStatement famix: (FamixF77StatementFunction new
+	fctStatement famix: (FamixF77StatementFunction new 
+		name: fctStatement name;
 		declaredType: (FamixF77TypeIntrinsic new name: 'real');
 		yourself
 	).
 	
-	var famixParameter: (FamixF77Parameter new declaredType: (FamixF77TypeIntrinsic new name: 'real'); yourself).
+	var famixParameter: (FamixF77Parameter new 
+		name: 'x'; 
+		declaredType: (FamixF77TypeIntrinsic new name: 'real'); 
+		yourself
+	).
 				
 
 	src := FASTFortranProgramMain new 
@@ -157,7 +162,19 @@ end program demo
 	
 	self assert: dst class equals: FASTFortran2kProgramMain.
 	self assert: dst name equals: 'demo'.
-	self assert: dst statementBlock statements size equals: 0.
+	self assert: dst internalProcedures size equals: 1.
+	
+	entity := dst internalProcedures first.
+	self assert: entity class equals: FASTFortran2kInternalFunction.
+	self assert: entity name equals: 'fct'.
+	self assert: entity returnType class equals: FASTFortran2kRealType.
+	self assert: entity statementBlock statements size equals: 2.
+	self assert: entity parameters size equals: 1.
+	
+	entity := entity parameters first.
+	self assert: entity class equals: FASTFortran2kScalarVariable.
+	self assert: entity name equals: 'x'.
+
 ]
 
 { #category : 'tests-programUnit' }

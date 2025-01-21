@@ -3,7 +3,8 @@ Class {
 	#superclass : 'FASTFortranVisitor',
 	#instVars : [
 		'model',
-		'tmpStream'
+		'tmpStream',
+		'stack'
 	],
 	#category : 'FAST-Fortran-Visitors-Visitor',
 	#package : 'FAST-Fortran-Visitors',
@@ -211,7 +212,8 @@ FASTFortranModelTransformationVisitor >> initialize [
 
 	super initialize.
 
-	model := FASTFortran2kModel new
+	model := FASTFortran2kModel new.
+	stack := Stack new
 ]
 
 { #category : 'visiting - programUnits' }
@@ -1224,7 +1226,7 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranFunctionStatement: aFun
 	fct := FASTFortran2kInternalFunction new
 		name: aFunctionStatementNode name.
 	
-	fct returnType: aFunctionStatementNode famix.
+	fct returnType: (aFunctionStatementNode famix declaredType accept: self).
 		
 	fct	 parameters: (aFunctionStatementNode parameters collect: [:parameter | 
 			FASTFortran2kScalarVariable new 
@@ -1235,10 +1237,19 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranFunctionStatement: aFun
 		
 	fct statementBlock: FASTFortran2kStatementBlock new.
 
-	aFunctionStatementNode parameters do: [:parameter | 
-		fct statementBlock addStatement: (parameter accept: self)
+	aFunctionStatementNode parameters do: [:parameter |
+		fct statementBlock addStatement: (
+			FASTFortran2kVariableDeclarationStatement new
+				type: (parameter famixParameter declaredType accept: self);
+				declarators: { FASTFortran2kVariableDeclarator new 
+					name:  parameter name; 
+					mooseModel: model; 
+					yourself 
+				};
+				mooseModel: model;
+				yourself
+		)
 	].
-			
 
 	
 	fct statementBlock addStatement:	(	
@@ -1248,7 +1259,7 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranFunctionStatement: aFun
 				mooseModel: model;
 				yourself
 			).
-			
+		
 	^fct
 ]
 
@@ -1319,16 +1330,21 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranProgramFile: aFASTFortr
 FASTFortranModelTransformationVisitor >> visitFASTFortranProgramMain: aProgramNode [
 
 	| programMain |
+	
 	programMain := FASTFortran2kProgramMain new 
 		name: aProgramNode name;
-		statementBlock: (aProgramNode statementBlock accept: self);
 		mooseModel: model; 
 		yourself.
 
+	stack push: programMain.
+	
+	programMain statementBlock: (aProgramNode statementBlock accept: self).
+	
 	programMain statementBlock statements
 		detect: [ :statement | statement class = FASTFortran2kImplicitStatement ]
 		ifNone: [ programMain statementBlock statements addFirst: FASTFortran2kImplicitStatement new ].
 
+	stack pop.
 	^programMain
 ]
 
@@ -1397,12 +1413,23 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranSegment: aFASTFortranSe
 { #category : 'visiting - programUnits' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBlock [
 
-	^ FASTFortran2kStatementBlock new
-		  statements:
-			  (aFASTFortranStatementBlock statements collect: [ :statement |
-					   statement accept: self ]);
+	| fctStatements programUnit f2kStatementBlock |
+	programUnit := stack top.
+	f2kStatementBlock := FASTFortran2kStatementBlock new
 		  mooseModel: model;
-		  yourself
+		  yourself.
+	
+	
+	aFASTFortranStatementBlock statements
+		do: [ :statement | | f2kStatement |
+			f2kStatement := statement accept: self.
+
+			statement class = FASTFortranFunctionStatement
+				ifFalse: [ f2kStatementBlock addStatement: f2kStatement ]
+				ifTrue:  [ programUnit addInternalProcedure: f2kStatement ]
+		].
+
+	^f2kStatementBlock
 ]
 
 { #category : 'visiting - programUnits' }
@@ -1433,6 +1460,21 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranVariableDeclarator: aFA
 		  name: aFASTFortranVariableDeclarator name;
 		  nbDimension: aFASTFortranVariableDeclarator dimensions size;
 		  yourself
+]
+
+{ #category : 'visiting - programUnits' }
+FASTFortranModelTransformationVisitor >> visitFamixF77Type: aFamixF77Type [
+	| aTypeClass |
+	aTypeClass := {
+		#real -> FASTFortran2kRealType.
+		#integer -> FASTFortran2kIntegerType.
+		#character -> FASTFortran2kCharacterType.
+		#logical -> FASTFortran2kLogicalType.
+	} asDictionary at: aFamixF77Type name.
+
+	^aTypeClass new
+		mooseModel: model;
+		yourself.
 ]
 
 { #category : 'visiting - programUnits' }
