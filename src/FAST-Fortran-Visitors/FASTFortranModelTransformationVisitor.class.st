@@ -1463,19 +1463,24 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranStatementBlock: aFASTFo
 FASTFortranModelTransformationVisitor >> visitFASTFortranSubroutine: aFASTFortranSubroutine [
 
 	| subroutine |
-	subroutine := FASTFortran2kSubroutine new 
+	subroutine := FASTFortran2kSubroutine new
 		name: aFASTFortranSubroutine name;
-		statementBlock: (aFASTFortranSubroutine statementBlock accept: self);
 		mooseModel: model;
 		yourself.
+		
+	stack push: subroutine.
+	
+	subroutine statementBlock: (aFASTFortranSubroutine statementBlock accept: self).
+	
+	stack pop.
 	^subroutine.
 ]
 
 { #category : 'visiting - programUnits' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFortranVariableDeclarationStatement [
 
-	^ FASTFortranVariableDeclarationStatement new
-		  type: (aFASTFortranVariableDeclarationStatement type accept: self);
+	^ FASTFortran2kVariableDeclarationStatement new
+		  type: (aFASTFortranVariableDeclarationStatement declaredType accept: self);
 		  mooseModel: model;
 		  yourself
 ]
