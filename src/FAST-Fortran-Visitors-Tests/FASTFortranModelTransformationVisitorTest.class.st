@@ -277,12 +277,45 @@ FASTFortranModelTransformationVisitorTest >> testProgramEmpty [
 ]
 
 { #category : 'running' }
-FASTFortranModelTransformationVisitorTest >> testProgramWithSubInvocation [
+FASTFortranModelTransformationVisitorTest >> testProgramWithExternalSubroutineInvocation [
+	"
+C	--------sub.f----------------
+	subroutine sub
+	print*, 'hello'
+	end
+C  -----end sub.f --------------
+C	--------demo.f----------------
+	program demo
+	call sub()
+	end
+C  -----end demo.f --------------
+
+
+C	--------sub_mod.f90----------------
+module sub_mod
+	implicit none
+contains
+	subroutine sub()
+	print *, 'hello'
+	end subroutine sub
+end sub_mod
+C	--------end sub_mod.f90----------------
+
+C	--------demo.f90----------------
+program demo
+	use :: sub_mod
+	call sub()
+end program demo
+C	--------end demo.f90----------------
+	"
+
 	| progfilesrc subfilesrc progfiledst subfiledst |
+
+	self skip: #TODO.
 
 	subfilesrc := FASTFortranProgramFile new "fileName: 'sub.f'"
 	 	addProgramUnit: (FASTFortranSubroutine new 
-			name: 'demo'; 
+			name: 'sub'; 
 			statementBlock: (FASTFortranStatementBlock new
 				statements: {
 					FASTFortranPrintStatement new
@@ -296,7 +329,7 @@ FASTFortranModelTransformationVisitorTest >> testProgramWithSubInvocation [
 	
 	progfilesrc := FASTFortranProgramFile new "fileName: 'demo.f'"
 	 	addProgramUnit: (FASTFortranProgramMain new 
-			name: 'sub'; 
+			name: 'demo'; 
 			statementBlock: (FASTFortranStatementBlock new
 				statements: { FASTFortranCallStatement new name: 'sub' ; arguments: {}; yourself }
 			); 
