@@ -98,7 +98,7 @@ FASTFortranModelTransformationVisitorTest >> testEsopeSegmentToDerivedTypeInModu
 	end segment
 	"
 
-	| stmt res |
+	| stmt res f2ksegment |
 	
 	self skip: #TODO.
 
@@ -108,6 +108,24 @@ FASTFortranModelTransformationVisitorTest >> testEsopeSegmentToDerivedTypeInModu
 
 	self assert: res class equals: FASTFortran2kModule.
 	self assert: res name equals: 'foo_m'.
+	
+	f2ksegment := (visitor model allWithType: FASTFortran2kDerivedType).
+	
+	self assert: f2ksegment size equals: 1.
+	self assert: f2ksegment first name equals: 'foo_t'.
+	
+	self assert: f2ksegment first name equals: 'foo_t'.
+	self assert: f2ksegment first derivedTypeComponents size equals: 1.
+	
+	stmt := f2ksegment first derivedTypeComponents first.
+	self assert: stmt class equals: FASTFortran2kVariableDeclarationStatement.
+	self assert: stmt type equals: FASTFortran2kIntegerType.
+	self assert: stmt declarators size equals: 1.
+	
+	stmt := stmt declarators first.
+	self assert: stmt class equals: FASTFortran2kVariableDeclarator.
+	self assert: stmt name equals: 'bar'.
+	self assert: stmt dimensions size equals: 1.
 ]
 
 { #category : 'tests-statement' }

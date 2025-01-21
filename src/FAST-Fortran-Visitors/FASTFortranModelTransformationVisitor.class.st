@@ -65,7 +65,7 @@ FASTFortranModelTransformationVisitor >> computeProcedureInitialisationAndAlloca
 
 	aFASTFortranSegment statements do: [ :declaration |
 		| typeName |
-		typeName := (declaration type accept: FASTFortranExporterVisitor new)
+		typeName := (declaration declaredType accept: FASTFortranExporterVisitor new)
 			            outputStream contents.
 		declaration declarators do: [ :declarator |
 			| dims |
@@ -1091,6 +1091,12 @@ FASTFortranModelTransformationVisitor >> makeTypeDefinition: aFASTFortranSegment
 	^segment
 ]
 
+{ #category : 'accessing' }
+FASTFortranModelTransformationVisitor >> model [
+
+	^ model
+]
+
 { #category : 'visiting - programUnits' }
 FASTFortranModelTransformationVisitor >> visitFASTEsopeSegment: aFASTEsopeSegmentNode [
 
@@ -1488,10 +1494,15 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranVariableDeclarationStat
 { #category : 'visiting - programUnits' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranVariableDeclarator: aFASTFortranVariableDeclarator [
 
-	^ FASTFortran2kVariableDeclarator new
+	| varDeclarator |
+	varDeclarator := FASTFortran2kVariableDeclarator new
 		  name: aFASTFortranVariableDeclarator name;
-		  nbDimension: aFASTFortranVariableDeclarator dimensions size;
-		  yourself
+		  yourself.
+		
+	varDeclarator dimensions:
+		(self visitVariableDeclaratorDimensions: varDeclarator dimensions).
+
+	^varDeclarator 
 ]
 
 { #category : 'visiting - programUnits' }
@@ -1562,4 +1573,13 @@ FASTFortranModelTransformationVisitor >> visitSementAttributes: attributes [
 	generatedCode := tmpStream contents.
 	self ensureEmptyStream.
 	^ generatedCode
+]
+
+{ #category : 'visiting - programUnits' }
+FASTFortranModelTransformationVisitor >> visitVariableDeclaratorDimensions: variableDeclarationsDimensions [
+	
+	^variableDeclarationsDimensions
+		collect: [ :dimension | 
+			dimension accept: self
+		]
 ]

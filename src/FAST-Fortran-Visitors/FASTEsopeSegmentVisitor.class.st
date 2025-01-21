@@ -34,7 +34,7 @@ FASTEsopeSegmentVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFo
 	variableDeclaration := FASTFortran2kDerivedTypeComponent new.
 
 	variableDeclaration type:
-		(aFASTFortranVariableDeclarationStatement type accept: self).
+		(aFASTFortranVariableDeclarationStatement declaredType accept: self).
 	variableDeclaration declarators:
 		(aFASTFortranVariableDeclarationStatement declarators collect: [
 			 :declartor | "thenReject: #isNil" declartor accept: self ]).
