@@ -1029,7 +1029,7 @@ FASTFortranModelTransformationVisitor >> makeProgramUnit: programUnits [
 	procedures ifNotEmpty: [
 		progUnits add: (FASTFortran2kModule new
 				 name: 'temp_mod';
-				 programUnits: procedures;
+				 procedures: procedures;
 				 mooseModel: model;
 				 yourself) ].
 
@@ -1037,6 +1037,14 @@ FASTFortranModelTransformationVisitor >> makeProgramUnit: programUnits [
 		((programUnits select: [ :pu | pu class = FASTFortranProgramMain ])
 			 collect: [ :pu | pu accept: self ]).
 	^ progUnits
+]
+
+{ #category : 'visiting - programUnits' }
+FASTFortranModelTransformationVisitor >> makePuModule: filename [
+	^ FASTFortran2kModule new 
+		name: (($. split: filename) first, '_mod');
+		mooseModel: model;
+		yourself.
 ]
 
 { #category : 'visiting - programUnits' }
@@ -1310,20 +1318,39 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranPrintStatement: aFASTFo
 { #category : 'visiting - programUnits' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranProgramFile: aFASTFortranProgramFile [
 
-	| programFile module |
+	| programFile puMain puModules |
 
-	module := FASTFortran2kModule new name: '' "aFASTFortranProgramFile fileName, '_mod'".
 	
+	puModules := OrderedCollection new.
+
+	aFASTFortranProgramFile programUnit do: [ :progUnit | | f2kProgUnit | 
+		f2kProgUnit := progUnit accept: self.
+		progUnit class = FASTFortranProgramMain 
+			ifTrue:  [ puMain := f2kProgUnit ] 
+			ifFalse: [ puModules add: f2kProgUnit ]
+	].
+
 	programFile := FASTFortran2kProgramFile new 
-		"fileName: aFASTFortranProgramFile fileName".
-	programFile 
-		programUnit: (self makeProgramUnit: (aFASTFortranProgramFile programUnit));
-		mooseModel: model.
-	programFile 
+		"filename: (filename, '90');"
+		mooseModel: model;
 		comments: (
 			aFASTFortranProgramFile comments collect: [ :comment | comment accept: self  ]
-		).
+		);
+		yourself.
+
+	puModules 
+		ifNotEmpty: [  
+			programFile addProgramUnit: 
+				((self makePuModule: aFASTFortranProgramFile famix filename)
+					procedures: puModules;
+					yourself) 
+		].
+	
+	puMain ifNotNil: [ programFile addProgramUnit: puMain ].
+
 	^programFile 
+	
+ 
 ]
 
 { #category : 'visiting - programUnits' }

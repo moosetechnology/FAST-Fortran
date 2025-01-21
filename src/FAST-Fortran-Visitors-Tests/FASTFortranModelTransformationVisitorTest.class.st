@@ -177,6 +177,85 @@ end program demo
 
 ]
 
+{ #category : 'running' }
+FASTFortranModelTransformationVisitorTest >> testMultipleProgramUnits [
+	"
+	subroutine sub
+	print*, 'hello'
+	end
+	program demo
+	call sub()
+	end
+
+
+module sub_mod
+	implicit none
+contains
+	subroutine sub()
+	print *, 'hello'
+	end subroutine sub
+end sub_mod
+
+program demo
+	use :: sub_mod
+	implicit none
+	call sub()
+end program demo
+
+"
+
+	| sourceFileSrc sourceFileDst subroutine programMain entity |
+
+	self skip: #TODO.
+	
+	subroutine := FASTFortranSubroutine new 
+			name: 'sub'; 
+			statementBlock: (FASTFortranStatementBlock new
+				statements: {
+					FASTFortranPrintStatement new
+						format: FASTFortranAsterisk new;
+						arguments: { FASTFortranCharacterLiteral new primitiveValue: 'Hello' }; 
+						yourself
+				}
+			); 
+			yourself.
+			
+	programMain := FASTFortranProgramMain new 
+			name: 'demo'; 
+			statementBlock: (FASTFortranStatementBlock new
+				statements: { FASTFortranCallStatement new name: 'sub' ; arguments: {}; yourself }
+			); 
+			yourself.
+
+	
+	sourceFileSrc := FASTFortranProgramFile new "fileName: 'demo.f'"
+	 	programUnit: { subroutine . programMain };
+		yourself.
+	
+	
+	sourceFileSrc famix: (FamixF77ProgramFile new filename: 'demo.f').
+	subroutine famix: (FamixF77PUSubroutine new name: 'sub').
+	programMain famix: (FamixF77PUMain new name: 'demo').
+
+	sourceFileDst := sourceFileSrc accept: visitor.
+	
+	self assert: sourceFileDst class equals: FASTFortran2kProgramFile.
+	self assert: sourceFileDst programUnit size equals: 2.
+	
+	entity := sourceFileDst programUnit first.
+	self assert: entity class equals: FASTFortran2kModule.
+	self assert: entity name equals: 'demo_mod'.
+	self assert: entity procedures size equals: 1.
+	
+	entity := entity procedures first.
+	self assert: entity class equals: FASTFortran2kSubroutine.
+	self assert: entity name equals: 'sub'.
+	
+	entity := sourceFileDst programUnit second.
+	self assert: entity class equals: FASTFortran2kProgramMain.
+	self assert: entity name equals: 'demo'.
+]
+
 { #category : 'tests-programUnit' }
 FASTFortranModelTransformationVisitorTest >> testProgramEmpty [
 	| src dst entity |
