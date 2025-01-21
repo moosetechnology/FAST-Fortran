@@ -110,29 +110,57 @@ FASTFortranModelTransformationVisitorTest >> testEsopeSegmentToDerivedTypeInModu
 
 { #category : 'running' }
 FASTFortranModelTransformationVisitorTest >> testFctStatement [
-	| src dst |
+	"
+     PROGRAM demo
+     fct(x)  = x + 2
+     END
+
+program demo
+	implicit none
+contains
+    real function fct(x)
+	 real, intent(in) :: x
+    fct = x + 2
+    end function fct
+end program demo
+		
+	"
+	| src dst var fctStatement |
+	
+	var := self scalarVariable: #x.
+	
+	fctStatement := FASTFortranFunctionStatement new
+						name: 'fct';
+						parameters: { var };
+						expression: (self binary: '+' left: #x right: 2);
+						yourself.
+	
+	
+	fctStatement famix: (FamixF77StatementFunction new
+		declaredType: (FamixF77TypeIntrinsic new name: 'real');
+		yourself
+	).
+	
+	var famixParameter: (FamixF77Parameter new declaredType: (FamixF77TypeIntrinsic new name: 'real'); yourself).
+				
 
 	src := FASTFortranProgramMain new 
 		name: 'demo'; 
 		statementBlock: (
 			FASTFortranStatementBlock new
-				statements: {
-					FASTFortranFunctionStatement new
-						name: 'fct';
-						arguments: (self scalarVariables: #(x));
-						expression: (self binary: '+' left: #x right: 2);
-						yourself
-				}
+				statements: {fctStatement}
 		); 
 		yourself.
+
 		
 	dst := src accept: visitor.
 	
 	self assert: dst class equals: FASTFortran2kProgramMain.
 	self assert: dst name equals: 'demo'.
+	self assert: dst statementBlock statements size equals: 0.
 ]
 
-{ #category : 'running' }
+{ #category : 'tests-todo' }
 FASTFortranModelTransformationVisitorTest >> testProgramEmpty [
 	| src dst |
 
@@ -145,6 +173,7 @@ FASTFortranModelTransformationVisitorTest >> testProgramEmpty [
 	
 	self assert: dst class equals: FASTFortran2kProgramMain.
 	self assert: dst name equals: 'demo'.
+	self assert: dst statementBlock statements size equals: 0.
 ]
 
 { #category : 'running' }

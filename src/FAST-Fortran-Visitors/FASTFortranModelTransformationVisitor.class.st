@@ -1219,12 +1219,37 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranDoStatement: aDoStateme
 { #category : 'visiting - programUnits' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranFunctionStatement: aFunctionStatementNode [
 
-	^ FASTFortran2kInternalProcedure new
-		  statementBlock: (FASTFortran2kStatementBlock new statements:
-					   { (aFunctionStatementNode expression accept: self) });
-		  arguments: (aFunctionStatementNode arguments accept: self);
-		  mooseModel: model;
-		  yourself
+
+	| fct |
+	fct := FASTFortran2kInternalFunction new
+		name: aFunctionStatementNode name.
+	
+	fct returnType: aFunctionStatementNode famix.
+		
+	fct	 parameters: (aFunctionStatementNode parameters collect: [:parameter | 
+			FASTFortran2kScalarVariable new 
+				name: parameter name; 
+				mooseModel: model;
+				yourself
+			]).
+		
+	fct statementBlock: FASTFortran2kStatementBlock new.
+
+	aFunctionStatementNode parameters do: [:parameter | 
+		fct statementBlock addStatement: (parameter accept: self)
+	].
+			
+
+	
+	fct statementBlock addStatement:	(	
+			FASTFortran2kAssignmentStatement new
+				variable: (FASTFortran2kVariable new name: aFunctionStatementNode name);
+				expression: (aFunctionStatementNode expression accept: self);
+				mooseModel: model;
+				yourself
+			).
+			
+	^fct
 ]
 
 { #category : 'visiting - programUnits' }
