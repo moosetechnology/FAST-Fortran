@@ -1318,11 +1318,18 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranProgramFile: aFASTFortr
 { #category : 'visiting - programUnits' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranProgramMain: aProgramNode [
 
-	^FASTFortran2kProgramMain new 
+	| programMain |
+	programMain := FASTFortran2kProgramMain new 
 		name: aProgramNode name;
 		statementBlock: (aProgramNode statementBlock accept: self);
 		mooseModel: model; 
-		yourself
+		yourself.
+
+	programMain statementBlock statements
+		detect: [ :statement | statement class = FASTFortran2kImplicitStatement ]
+		ifNone: [ programMain statementBlock statements addFirst: FASTFortran2kImplicitStatement new ].
+
+	^programMain
 ]
 
 { #category : 'visiting - programUnits' }

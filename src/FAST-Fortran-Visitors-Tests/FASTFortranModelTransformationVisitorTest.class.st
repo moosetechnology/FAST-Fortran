@@ -160,9 +160,9 @@ end program demo
 	self assert: dst statementBlock statements size equals: 0.
 ]
 
-{ #category : 'tests-todo' }
+{ #category : 'tests-programUnit' }
 FASTFortranModelTransformationVisitorTest >> testProgramEmpty [
-	| src dst |
+	| src dst entity |
 
 	src := FASTFortranProgramMain new 
 		name: 'demo'; 
@@ -173,7 +173,11 @@ FASTFortranModelTransformationVisitorTest >> testProgramEmpty [
 	
 	self assert: dst class equals: FASTFortran2kProgramMain.
 	self assert: dst name equals: 'demo'.
-	self assert: dst statementBlock statements size equals: 0.
+	self assert: dst statementBlock statements size equals: 1.
+	
+	entity := dst statementBlock statements first.
+	self assert: entity class equals: FASTFortran2kImplicitStatement.
+	
 ]
 
 { #category : 'running' }
