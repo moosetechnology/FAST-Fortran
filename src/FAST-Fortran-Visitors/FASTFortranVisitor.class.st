@@ -331,7 +331,7 @@ FASTFortranVisitor >> visitFASTFortranFunctionCall: aFASTFortranFunctionCall [
 FASTFortranVisitor >> visitFASTFortranFunctionStatement: aFASTFortranFunctionStatement [
 
 	self visitFASTFortranTStatement: aFASTFortranFunctionStatement.
-	self visitFASTFortranTWithArguments: aFASTFortranFunctionStatement
+	self visitFASTFortranTWithParameters: aFASTFortranFunctionStatement
 ]
 
 { #category : 'visiting - statements' }
