@@ -225,8 +225,6 @@ end program demo
 "
 
 	| sourceFileSrc sourceFileDst subroutine programMain entity |
-
-	self skip: #TODO.
 	
 	subroutine := FASTFortranSubroutine new 
 			name: 'sub'; 
