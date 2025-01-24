@@ -116,6 +116,65 @@ FASTFortranModelTransformationVisitorTest >> testEsopeSegmentToDerivedTypeInModu
 	self assert: stmt name equals: 'bar'.
 ]
 
+{ #category : 'running' }
+FASTFortranModelTransformationVisitorTest >> testEsopeSegmentWithArrayFieldToDerivedTypeInModule [
+	"
+	segment foo
+	integer bar(N)
+	end segment
+	"
+
+	| stmt res f2ksegment varDim |
+	
+	varDim := self scalarVariable: #N.
+	"varDim famixDeclaration: (FamixF77Variable new 
+			name: 'N'; 
+			declaredType: (FamixF77TypeIntrinsic new name: 'real');
+			yourself
+			);
+		yourself."
+	
+	stmt := (FASTEsopeSegment new name: 'foo')
+		statements: { 
+			FASTFortranVariableDeclarationStatement new
+				declaredType: (FASTFortranIntegerType new); 
+				declarators: { 
+					FASTFortranVariableDeclarator new
+						name: 'bar';
+						dimensions: { FASTFortranArrayRange new upperBound: varDim } 
+				} 
+		} ;
+		"famix: (FamixEsopeSegment new attributes: () )"
+		yourself.
+	
+	res := stmt accept: visitor.
+
+	self assert: res class equals: FASTFortran2kModule.
+	self assert: res name equals: 'foo_m'.
+	
+	f2ksegment := res statementBlock statements detect: [ :e | e class = FASTFortran2kDerivedTypeDefinition ].
+	
+	self assert: f2ksegment name equals: 'foo'.
+	
+	self assert: f2ksegment derivedTypeComponents size equals: 2.
+	
+	stmt := f2ksegment derivedTypeComponents first.
+	self assert: stmt class equals: FASTFortran2kDerivedTypeComponent.
+	self assert: stmt type class equals: FASTFortran2kIntegerType.
+	self assert: stmt declarators size equals: 1.
+	self assert: stmt declarators anyOne class equals: FASTFortran2kVariableDeclarator.
+	self assert: stmt declarators anyOne name equals: 'N'.
+	
+	stmt := f2ksegment derivedTypeComponents second.
+	self assert: stmt class equals: FASTFortran2kDerivedTypeComponent.
+	self assert: stmt type class equals: FASTFortran2kIntegerType.
+	self assert: stmt declarators size equals: 1.
+	
+	stmt := stmt declarators first.
+	self assert: stmt class equals: FASTFortran2kVariableDeclarator.
+	self assert: stmt name equals: 'bar'.
+]
+
 { #category : 'tests-statement' }
 FASTFortranModelTransformationVisitorTest >> testFctStatement [
 	"
