@@ -198,87 +198,67 @@ end program demo
 ]
 
 { #category : 'running' }
-FASTFortranModelTransformationVisitorTest >> testMultipleProceduresInProgFileMovedTOModule [
+FASTFortranModelTransformationVisitorTest >> testMultipleProceduresMovedToModule [
 	"
-C	--------sub.f----------------
+C	--------someFile.f----------------
 	subroutine sub
-	print*, 'hello'
 	end
 	real function f()
-	f = 3
 	end function
-C  -----end sub.f --------------
+C  -----end someFile.f --------------
 
-C	--------sub_mod.f90----------------
+C	--------someFile_mod.f90----------------
 module sub_mod
 	implicit none
 contains
 	subroutine sub()
-		print *, 'hello'
 	end subroutine sub
 	real function f()
-		f = 3
 	end function f
 end sub_mod
-C	--------end sub_mod.f90----------------
+C	--------end someFile_mod.f90----------------
 
 	"
 
-	| f77SourceFile subroutine function res var |
+	| f77SourceFile subroutine function res module |
 	
-	subroutine := FASTFortranSubroutine new 
-			name: 'sub'; 
-			statementBlock: (FASTFortranStatementBlock new
-				statements: {
-					FASTFortranPrintStatement new
-						format: FASTFortranAsterisk new;
-						arguments: { FASTFortranCharacterLiteral new primitiveValue: 'Hello' }; 
-						yourself
-				}
-			); 
-			yourself.
-			
-	var := self scalarVariable: #f.
-		
-	function := FASTFortranFunction new 
-			name: 'f'; 
-			statementBlock: (FASTFortranStatementBlock new
-				statements: {
-					FASTFortranAssignmentStatement new
-						variable: var;
-						expression: (FASTFortranIntegerLiteral new primitiveValue: '1'); 
-						yourself
-				}
-			); 
+	subroutine := FASTFortranSubroutine new
+		name: 'sub' ;
+		statementBlock: FASTFortranStatementBlock new ;
+		famix: (FamixF77PUSubroutine new name: 'sub') ; 
 			yourself.
 
-	f77SourceFile := FASTFortranProgramFile new "fileName: 'sub.f'"
-	 	addProgramUnit: subroutine;
+	function := FASTFortranFunction new 
+		name: 'f' ;
+		statementBlock: FASTFortranStatementBlock new ;
+		famix: (FamixF77PUFunction new
+			name: 'f' ; 
+			declaredType: (FamixF77TypeIntrinsic new name: 'real')) ;
 		yourself.
-	
-	
-	f77SourceFile famix: (FamixF77ProgramFile new filename: 'sub.f').
-	subroutine famix: (FamixF77PUSubroutine new name: 'sub').
-	function famix: (FamixF77PUFunction new name: 'f').
-	var famix: (FamixF77Variable new name: 'f').
+
+	f77SourceFile := FASTFortranProgramFile new    "fileName: 'sub.f'"
+	 	addProgramUnit: subroutine ;
+	 	addProgramUnit: function ;
+		famix: (FamixF77ProgramFile new filename: 'someFile.f') ;
+		yourself.
 		
 	res := f77SourceFile accept: visitor.
 	
 	self assert: res class equals: FASTFortran2kProgramFile.
 	self assert: res programUnit size equals: 1.
 	
-	res := res programUnit first.
-	self assert: res class equals: FASTFortran2kModule.
-	self assert: res name equals: 'sub_mod'.
-	self assert: res procedures size equals: 1.
+	module := res programUnit anyOne.
+	self assert: module class equals: FASTFortran2kModule.
+	self assert: module name equals: 'someFile_mod'.
+	self assert: module procedures size equals: 2.
 	
-	res := res procedures first.
+	res := module procedures first.
 	self assert: res class equals: FASTFortran2kSubroutine.
 	self assert: res name equals: 'sub'.
-	self assert: res parameters size equals: 0.
-	self assert: res statementBlock statements size equals: 1.
-	self assert: res statementBlock statements first class equals: FASTFortran2kPrintStatement.
-	
+
+	res := module procedures second.
+	self assert: res class equals: FASTFortran2kFunction.
+	self assert: res name equals: 'f'.
 
 ]
 

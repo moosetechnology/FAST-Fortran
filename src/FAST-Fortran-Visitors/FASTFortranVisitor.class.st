@@ -316,7 +316,7 @@ FASTFortranVisitor >> visitFASTFortranFormatStatement: aFASTFortranFormatStateme
 FASTFortranVisitor >> visitFASTFortranFunction: aFASTFortranFunction [
 
 	self visitFASTFortranProcedure: aFASTFortranFunction.
-	aFASTFortranFunction declaredType accept: self.
+	aFASTFortranFunction famix declaredType accept: self.
 ]
 
 { #category : 'visiting - expressions' }

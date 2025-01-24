@@ -1232,6 +1232,23 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranDoStatement: aDoStateme
 		  yourself
 ]
 
+{ #category : 'visiting - programUnits' }
+FASTFortranModelTransformationVisitor >> visitFASTFortranFunction: aFASTFortranFunction [
+
+	| subroutine |
+	subroutine := FASTFortran2kFunction new
+		name: aFASTFortranFunction name;
+		mooseModel: model;
+		yourself.
+		
+	stack push: subroutine.
+	
+	super visitFASTFortranFunction: aFASTFortranFunction.
+	
+	stack pop.
+	^subroutine.
+]
+
 { #category : 'visiting statement' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranFunctionStatement: aFunctionStatementNode [
 
