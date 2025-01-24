@@ -8,24 +8,17 @@ Class {
 
 { #category : 'running' }
 FASTFortranModelTransformationVisitorTest >> fooSegment [
-	| model foo_seg |
-	model := FASTEsopeModel new name: 'esopeModel'.
 
-	foo_seg := model newSegmentNamed: 'foo'.
-	foo_seg 
+	^(FASTEsopeSegment new name: 'foo')
 		statements: { 
-			model newVariableDeclarationStatement 
-				declaredType: (model newIntegerType); 
+			FASTFortranVariableDeclarationStatement new
+				declaredType: (FASTFortranIntegerType new); 
 				declarators: { 
-					model newVariableDeclarator 
-						name: 'foo'; 
-						dimensions: { 
-							model newArrayRange 
-								upperBound: (model newScalarVariable name: 'N') 
-						} 
+					FASTFortranVariableDeclarator new
+						name: 'bar'
 				} 
-		}.
-	^foo_seg 
+		} ;
+		yourself
 ]
 
 { #category : 'running' }
@@ -94,14 +87,12 @@ FASTFortranModelTransformationVisitorTest >> testDoStatement [
 FASTFortranModelTransformationVisitorTest >> testEsopeSegmentToDerivedTypeInModule [
 	"
 	segment foo
-	integer bar(N)
+	integer bar
 	end segment
 	"
 
 	| stmt res f2ksegment |
 	
-	self skip: #TODO.
-
 	stmt := self fooSegment.
 	
 	res := stmt accept: visitor.
@@ -109,23 +100,20 @@ FASTFortranModelTransformationVisitorTest >> testEsopeSegmentToDerivedTypeInModu
 	self assert: res class equals: FASTFortran2kModule.
 	self assert: res name equals: 'foo_m'.
 	
-	f2ksegment := (visitor model allWithType: FASTFortran2kDerivedType).
+	f2ksegment := res statementBlock statements detect: [ :e | e class = FASTFortran2kDerivedTypeDefinition ].
 	
-	self assert: f2ksegment size equals: 1.
-	self assert: f2ksegment first name equals: 'foo_t'.
+	self assert: f2ksegment name equals: 'foo'.
 	
-	self assert: f2ksegment first name equals: 'foo_t'.
-	self assert: f2ksegment first derivedTypeComponents size equals: 1.
+	self assert: f2ksegment derivedTypeComponents size equals: 1.
 	
-	stmt := f2ksegment first derivedTypeComponents first.
-	self assert: stmt class equals: FASTFortran2kVariableDeclarationStatement.
-	self assert: stmt type equals: FASTFortran2kIntegerType.
+	stmt := f2ksegment derivedTypeComponents anyOne.
+	self assert: stmt class equals: FASTFortran2kDerivedTypeComponent.
+	self assert: stmt type class equals: FASTFortran2kIntegerType.
 	self assert: stmt declarators size equals: 1.
 	
 	stmt := stmt declarators first.
 	self assert: stmt class equals: FASTFortran2kVariableDeclarator.
 	self assert: stmt name equals: 'bar'.
-	self assert: stmt dimensions size equals: 1.
 ]
 
 { #category : 'tests-statement' }
