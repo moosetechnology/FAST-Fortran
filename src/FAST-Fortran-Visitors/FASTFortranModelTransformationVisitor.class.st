@@ -1187,13 +1187,23 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranBooleanLiteral: aBoolea
 { #category : 'visiting - expressions' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranCallStatement: aFASTFortranCallStatement [
 
-	^ FASTFortran2kCallStatement new
-		  name: aFASTFortranCallStatement name;
-		  arguments:
-			  (aFASTFortranCallStatement arguments collect: [ :argument |
-					   argument accept: self ]);
-		  mooseModel: model;
-		  yourself
+	
+	| famixProgFile callStatement |
+	self flag: #FIXME. "how to correctly handle the use statement ? "
+	famixProgFile := aFASTFortranCallStatement famix "candidates anyOne parentProgramFile".
+
+	callStatement := FASTFortran2kCallStatement new
+		name: aFASTFortranCallStatement name;
+		arguments: (aFASTFortranCallStatement arguments
+				collect: [ :argument | argument accept: self ]
+		);
+		mooseModel: model;
+		yourself.
+		
+		
+	^ callStatement
+	
+	
 ]
 
 { #category : 'visiting - expressions' }
