@@ -198,6 +198,91 @@ end program demo
 ]
 
 { #category : 'running' }
+FASTFortranModelTransformationVisitorTest >> testMultipleProceduresInProgFileMovedTOModule [
+	"
+C	--------sub.f----------------
+	subroutine sub
+	print*, 'hello'
+	end
+	real function f()
+	f = 3
+	end function
+C  -----end sub.f --------------
+
+C	--------sub_mod.f90----------------
+module sub_mod
+	implicit none
+contains
+	subroutine sub()
+		print *, 'hello'
+	end subroutine sub
+	real function f()
+		f = 3
+	end function f
+end sub_mod
+C	--------end sub_mod.f90----------------
+
+	"
+
+	| f77SourceFile subroutine function res var |
+	
+	subroutine := FASTFortranSubroutine new 
+			name: 'sub'; 
+			statementBlock: (FASTFortranStatementBlock new
+				statements: {
+					FASTFortranPrintStatement new
+						format: FASTFortranAsterisk new;
+						arguments: { FASTFortranCharacterLiteral new primitiveValue: 'Hello' }; 
+						yourself
+				}
+			); 
+			yourself.
+			
+	var := self scalarVariable: #f.
+		
+	function := FASTFortranFunction new 
+			name: 'f'; 
+			statementBlock: (FASTFortranStatementBlock new
+				statements: {
+					FASTFortranAssignmentStatement new
+						variable: var;
+						expression: (FASTFortranIntegerLiteral new primitiveValue: '1'); 
+						yourself
+				}
+			); 
+			yourself.
+
+	f77SourceFile := FASTFortranProgramFile new "fileName: 'sub.f'"
+	 	addProgramUnit: subroutine;
+		yourself.
+	
+	
+	f77SourceFile famix: (FamixF77ProgramFile new filename: 'sub.f').
+	subroutine famix: (FamixF77PUSubroutine new name: 'sub').
+	function famix: (FamixF77PUFunction new name: 'f').
+	var famix: (FamixF77Variable new name: 'f').
+		
+	res := f77SourceFile accept: visitor.
+	
+	self assert: res class equals: FASTFortran2kProgramFile.
+	self assert: res programUnit size equals: 1.
+	
+	res := res programUnit first.
+	self assert: res class equals: FASTFortran2kModule.
+	self assert: res name equals: 'sub_mod'.
+	self assert: res procedures size equals: 1.
+	
+	res := res procedures first.
+	self assert: res class equals: FASTFortran2kSubroutine.
+	self assert: res name equals: 'sub'.
+	self assert: res parameters size equals: 0.
+	self assert: res statementBlock statements size equals: 1.
+	self assert: res statementBlock statements first class equals: FASTFortran2kPrintStatement.
+	
+
+]
+
+{ #category : 'running' }
 FASTFortranModelTransformationVisitorTest >> testMultipleProgramUnits [
 	"
 	subroutine sub
@@ -296,8 +381,6 @@ C	--------end sub_mod.f90----------------
 	"
 
 	| f77SourceFile subroutine res |
-
-	self skip: #TODO.
 	
 	subroutine := FASTFortranSubroutine new 
 			name: 'sub'; 
