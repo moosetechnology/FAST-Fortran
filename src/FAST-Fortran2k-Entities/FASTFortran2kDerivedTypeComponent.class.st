@@ -1,5 +1,5 @@
 "
-Im a derived type component
+I'm a derived type component
 
 ## Relations
 ======================
@@ -7,7 +7,7 @@ Im a derived type component
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `derivedType` | `FASTFortran2kDerivedTypeComponent` | `derivedTypeComponents` | `FASTFortran2kDerivedType` | |
+| `derivedTypeDefinition` | `FASTFortran2kDerivedTypeComponent` | `derivedTypeComponents` | `FASTFortran2kDerivedTypeDefinition` | |
 
 
 
@@ -16,7 +16,7 @@ Class {
 	#name : 'FASTFortran2kDerivedTypeComponent',
 	#superclass : 'FASTFortran2kVariableDeclarationStatement',
 	#instVars : [
-		'#derivedType => FMOne type: #FASTFortran2kDerivedType opposite: #derivedTypeComponents'
+		'#derivedTypeDefinition => FMOne type: #FASTFortran2kDerivedTypeDefinition opposite: #derivedTypeComponents'
 	],
 	#category : 'FAST-Fortran2k-Entities-Entities',
 	#package : 'FAST-Fortran2k-Entities',
@@ -33,24 +33,24 @@ FASTFortran2kDerivedTypeComponent class >> annotation [
 ]
 
 { #category : 'accessing' }
-FASTFortran2kDerivedTypeComponent >> derivedType [
-	"Relation named: #derivedType type: #FASTFortran2kDerivedType opposite: #derivedTypeComponents"
+FASTFortran2kDerivedTypeComponent >> derivedTypeDefinition [
+	"Relation named: #derivedTypeDefinition type: #FASTFortran2kDerivedTypeDefinition opposite: #derivedTypeComponents"
 
 	<generated>
 	<container>
-	^ derivedType
+	^ derivedTypeDefinition
 ]
 
 { #category : 'accessing' }
-FASTFortran2kDerivedTypeComponent >> derivedType: anObject [
+FASTFortran2kDerivedTypeComponent >> derivedTypeDefinition: anObject [
 
 	<generated>
-	derivedType := anObject
+	derivedTypeDefinition := anObject
 ]
 
 { #category : 'navigation' }
-FASTFortran2kDerivedTypeComponent >> derivedTypeGroup [
+FASTFortran2kDerivedTypeComponent >> derivedTypeDefinitionGroup [
 	<generated>
-	<navigation: 'DerivedType'>
-	^ MooseSpecializedGroup with: self derivedType
+	<navigation: 'DerivedTypeDefinition'>
+	^ MooseSpecializedGroup with: self derivedTypeDefinition
 ]

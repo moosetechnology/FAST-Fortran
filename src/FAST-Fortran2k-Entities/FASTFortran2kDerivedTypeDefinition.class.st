@@ -1,5 +1,5 @@
 "
-I represent a derived type
+I represent a derived type definition
 
 ## Relations
 ======================
@@ -12,8 +12,8 @@ I represent a derived type
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `derivedTypeComponents` | `FASTFortran2kDerivedType` | `derivedType` | `FASTFortran2kDerivedTypeComponent` | |
-| `typeBoundProcedures` | `FASTFortran2kDerivedType` | `derivedType` | `FASTFortran2kTypeBoundProcedure` | |
+| `derivedTypeComponents` | `FASTFortran2kDerivedTypeDefinition` | `derivedTypeDefinition` | `FASTFortran2kDerivedTypeComponent` | |
+| `typeBoundProcedures` | `FASTFortran2kDerivedTypeDefinition` | `derivedTypeDefinition` | `FASTFortran2kTypeBoundProcedure` | |
 
 
 ## Properties
@@ -28,14 +28,14 @@ I represent a derived type
 
 "
 Class {
-	#name : 'FASTFortran2kDerivedType',
+	#name : 'FASTFortran2kDerivedTypeDefinition',
 	#superclass : 'FASTFortran2kAbstractStatement',
 	#traits : 'FASTTNamedEntity',
 	#classTraits : 'FASTTNamedEntity classTrait',
 	#instVars : [
 		'#superType => FMProperty',
-		'#derivedTypeComponents => FMMany type: #FASTFortran2kDerivedTypeComponent opposite: #derivedType',
-		'#typeBoundProcedures => FMMany type: #FASTFortran2kTypeBoundProcedure opposite: #derivedType'
+		'#derivedTypeComponents => FMMany type: #FASTFortran2kDerivedTypeComponent opposite: #derivedTypeDefinition',
+		'#typeBoundProcedures => FMMany type: #FASTFortran2kTypeBoundProcedure opposite: #derivedTypeDefinition'
 	],
 	#category : 'FAST-Fortran2k-Entities-Entities',
 	#package : 'FAST-Fortran2k-Entities',
@@ -43,29 +43,29 @@ Class {
 }
 
 { #category : 'meta' }
-FASTFortran2kDerivedType class >> annotation [
+FASTFortran2kDerivedTypeDefinition class >> annotation [
 
-	<FMClass: #DerivedType super: #FASTFortran2kAbstractStatement>
+	<FMClass: #DerivedTypeDefinition super: #FASTFortran2kAbstractStatement>
 	<package: #'FAST-Fortran2k-Entities'>
 	<generated>
 	^ self
 ]
 
 { #category : 'adding' }
-FASTFortran2kDerivedType >> addDerivedTypeComponent: anObject [
+FASTFortran2kDerivedTypeDefinition >> addDerivedTypeComponent: anObject [
 	<generated>
 	^ self derivedTypeComponents add: anObject
 ]
 
 { #category : 'adding' }
-FASTFortran2kDerivedType >> addTypeBoundProcedure: anObject [
+FASTFortran2kDerivedTypeDefinition >> addTypeBoundProcedure: anObject [
 	<generated>
 	^ self typeBoundProcedures add: anObject
 ]
 
 { #category : 'accessing' }
-FASTFortran2kDerivedType >> derivedTypeComponents [
-	"Relation named: #derivedTypeComponents type: #FASTFortran2kDerivedTypeComponent opposite: #derivedType"
+FASTFortran2kDerivedTypeDefinition >> derivedTypeComponents [
+	"Relation named: #derivedTypeComponents type: #FASTFortran2kDerivedTypeComponent opposite: #derivedTypeDefinition"
 
 	<generated>
 	<derived>
@@ -73,21 +73,21 @@ FASTFortran2kDerivedType >> derivedTypeComponents [
 ]
 
 { #category : 'accessing' }
-FASTFortran2kDerivedType >> derivedTypeComponents: anObject [
+FASTFortran2kDerivedTypeDefinition >> derivedTypeComponents: anObject [
 
 	<generated>
 	derivedTypeComponents value: anObject
 ]
 
 { #category : 'navigation' }
-FASTFortran2kDerivedType >> derivedTypeComponentsGroup [
+FASTFortran2kDerivedTypeDefinition >> derivedTypeComponentsGroup [
 	<generated>
 	<navigation: 'DerivedTypeComponents'>
 	^ MooseSpecializedGroup withAll: self derivedTypeComponents asSet
 ]
 
 { #category : 'accessing' }
-FASTFortran2kDerivedType >> superType [
+FASTFortran2kDerivedTypeDefinition >> superType [
 
 	<FMProperty: #superType type: #String>
 	<generated>
@@ -96,14 +96,14 @@ FASTFortran2kDerivedType >> superType [
 ]
 
 { #category : 'accessing' }
-FASTFortran2kDerivedType >> superType: anObject [
+FASTFortran2kDerivedTypeDefinition >> superType: anObject [
 	<generated>
 	superType := anObject
 ]
 
 { #category : 'accessing' }
-FASTFortran2kDerivedType >> typeBoundProcedures [
-	"Relation named: #typeBoundProcedures type: #FASTFortran2kTypeBoundProcedure opposite: #derivedType"
+FASTFortran2kDerivedTypeDefinition >> typeBoundProcedures [
+	"Relation named: #typeBoundProcedures type: #FASTFortran2kTypeBoundProcedure opposite: #derivedTypeDefinition"
 
 	<generated>
 	<derived>
@@ -111,14 +111,14 @@ FASTFortran2kDerivedType >> typeBoundProcedures [
 ]
 
 { #category : 'accessing' }
-FASTFortran2kDerivedType >> typeBoundProcedures: anObject [
+FASTFortran2kDerivedTypeDefinition >> typeBoundProcedures: anObject [
 
 	<generated>
 	typeBoundProcedures value: anObject
 ]
 
 { #category : 'navigation' }
-FASTFortran2kDerivedType >> typeBoundProceduresGroup [
+FASTFortran2kDerivedTypeDefinition >> typeBoundProceduresGroup [
 	<generated>
 	<navigation: 'TypeBoundProcedures'>
 	^ MooseSpecializedGroup withAll: self typeBoundProcedures asSet

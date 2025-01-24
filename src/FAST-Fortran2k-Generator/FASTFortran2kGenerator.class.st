@@ -137,7 +137,6 @@ Class {
 		'useRenamedStatement',
 		'useNoRenamedStatement',
 		'useOnlyStatement',
-		'derivedType',
 		'derivedTypeDeclarationStatement',
 		'derivedTypeComponent',
 		'typeBoundProcedure',
@@ -162,7 +161,8 @@ Class {
 		'importStatement',
 		'classDeclarationStatement',
 		'sourceCodeString',
-		'formattedCodeString'
+		'formattedCodeString',
+		'derivedTypeDefinition'
 	],
 	#classInstVars : [
 		'typeBoundProcedure'
@@ -214,13 +214,13 @@ FASTFortran2kGenerator >> defineClasses2k [
 		                             comment:
 		                             '`class(type_name) [, pointer/allocatable/target] [, other_attributes ] :: declarators`'.
 
-	derivedType := self
-		               newClassNamed: #DerivedType
-		               comment: 'I represent a derived type'.
+	derivedTypeDefinition := self
+		               newClassNamed: #DerivedTypeDefinition
+		               comment: 'I represent a derived type definition'.
 
 	derivedTypeComponent := self
 		                        newClassNamed: #DerivedTypeComponent
-		                        comment: 'Im a derived type component'.
+		                        comment: 'I''m a derived type component'.
 
 	derivedTypeDeclarationStatement := self
 		                                   newClassNamed:
@@ -719,9 +719,9 @@ FASTFortran2kGenerator >> defineHierarchy2k [
 
 	nameEntity --|> tNamedEntity.
 
-	derivedType --|> type.
-	derivedType --|> tNamedEntity.
-	derivedType --|> abstractStatement.
+	derivedTypeDefinition --|> type.
+	derivedTypeDefinition --|> tNamedEntity.
+	derivedTypeDefinition --|> abstractStatement.
 	
 	derivedTypeDeclarationStatement --|> variableDeclarationStatement.
 	classDeclarationStatement --|> variableDeclarationStatement.
@@ -824,7 +824,7 @@ FASTFortran2kGenerator >> defineProperties [
 { #category : 'definition' }
 FASTFortran2kGenerator >> defineProperties2k [
 
-	(derivedType property: #superType type: #String) comment:
+	(derivedTypeDefinition property: #superType type: #String) comment:
 		'I represent the name of the super type'.
 		
 	(interface property: #isAbstractInterface type: #Boolean)
@@ -995,8 +995,8 @@ FASTFortran2kGenerator >> defineRelations [
 { #category : 'definition' }
 FASTFortran2kGenerator >> defineRelations2k [
 
-	derivedType <>-* derivedTypeComponent.
-	derivedType <>-* typeBoundProcedure.
+	derivedTypeDefinition <>-* derivedTypeComponent.
+	derivedTypeDefinition <>-* typeBoundProcedure.
 	
 	importStatement  <>-* nameEntity.
 

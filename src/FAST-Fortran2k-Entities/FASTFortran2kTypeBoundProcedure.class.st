@@ -7,7 +7,7 @@ Im a type-bound-procedure
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `derivedType` | `FASTFortran2kTypeBoundProcedure` | `typeBoundProcedures` | `FASTFortran2kDerivedType` | |
+| `derivedTypeDefinition` | `FASTFortran2kTypeBoundProcedure` | `typeBoundProcedures` | `FASTFortran2kDerivedTypeDefinition` | |
 | `invokedIn` | `FASTTNamedEntity` | `invoked` | `FASTTInvocation` | Optional invocation where this name is used|
 
 
@@ -30,8 +30,8 @@ Class {
 	#classTraits : 'FASTTNamedEntity classTrait',
 	#instVars : [
 		'#alias => FMProperty',
-		'#interface => FMProperty',
-		'#derivedType => FMOne type: #FASTFortran2kDerivedType opposite: #typeBoundProcedures'
+		'#derivedTypeDefinition => FMOne type: #FASTFortran2kDerivedTypeDefinition opposite: #typeBoundProcedures',
+		'#interface => FMProperty'
 	],
 	#category : 'FAST-Fortran2k-Entities-Entities',
 	#package : 'FAST-Fortran2k-Entities',
@@ -63,26 +63,26 @@ FASTFortran2kTypeBoundProcedure >> alias: anObject [
 ]
 
 { #category : 'accessing' }
-FASTFortran2kTypeBoundProcedure >> derivedType [
-	"Relation named: #derivedType type: #FASTFortran2kDerivedType opposite: #typeBoundProcedures"
+FASTFortran2kTypeBoundProcedure >> derivedTypeDefinition [
+	"Relation named: #derivedTypeDefinition type: #FASTFortran2kDerivedTypeDefinition opposite: #typeBoundProcedures"
 
 	<generated>
 	<container>
-	^ derivedType
+	^ derivedTypeDefinition
 ]
 
 { #category : 'accessing' }
-FASTFortran2kTypeBoundProcedure >> derivedType: anObject [
+FASTFortran2kTypeBoundProcedure >> derivedTypeDefinition: anObject [
 
 	<generated>
-	derivedType := anObject
+	derivedTypeDefinition := anObject
 ]
 
 { #category : 'navigation' }
-FASTFortran2kTypeBoundProcedure >> derivedTypeGroup [
+FASTFortran2kTypeBoundProcedure >> derivedTypeDefinitionGroup [
 	<generated>
-	<navigation: 'DerivedType'>
-	^ MooseSpecializedGroup with: self derivedType
+	<navigation: 'DerivedTypeDefinition'>
+	^ MooseSpecializedGroup with: self derivedTypeDefinition
 ]
 
 { #category : 'accessing' }

@@ -245,13 +245,6 @@ FASTFortran2kTEntityCreator >> newDecodeStatement [
 ]
 
 { #category : 'entity creation' }
-FASTFortran2kTEntityCreator >> newDerivedType [
-
-	<generated>
-	^ self add: FASTFortran2kDerivedType new
-]
-
-{ #category : 'entity creation' }
 FASTFortran2kTEntityCreator >> newDerivedTypeComponent [
 
 	<generated>
@@ -263,6 +256,13 @@ FASTFortran2kTEntityCreator >> newDerivedTypeDeclaration [
 
 	<generated>
 	^ self add: FASTFortran2kDerivedTypeDeclaration new
+]
+
+{ #category : 'entity creation' }
+FASTFortran2kTEntityCreator >> newDerivedTypeDefinition [
+
+	<generated>
+	^ self add: FASTFortran2kDerivedTypeDefinition new
 ]
 
 { #category : 'entity creation' }
