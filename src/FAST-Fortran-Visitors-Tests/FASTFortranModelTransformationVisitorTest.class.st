@@ -472,66 +472,86 @@ FASTFortranModelTransformationVisitorTest >> testProgramEmpty [
 { #category : 'running' }
 FASTFortranModelTransformationVisitorTest >> testProgramWithExternalSubroutineInvocation [
 	"
-C	--------sub.f----------------
+C	--------someFile.f----------------
 	subroutine sub
-	print*, 'hello'
 	end
-C  -----end sub.f --------------
-C	--------demo.f----------------
+C  -----end someFile.f --------------
+C	--------mainFile.f----------------
 	program demo
-	call sub()
+	call sub
 	end
-C  -----end demo.f --------------
+C  -----end mainFile.f --------------
 
 
-C	--------sub_mod.f90----------------
-module sub_mod
+C	--------someFile_mod.f90----------------
+module someFile_mod
 	implicit none
 contains
 	subroutine sub()
-	print *, 'hello'
 	end subroutine sub
-end sub_mod
-C	--------end sub_mod.f90----------------
+end someFile_mod
+C	--------end someFile_mod.f90----------------
 
-C	--------demo.f90----------------
+C	--------mainFile.f90----------------
 program demo
-	use :: sub_mod
+	use :: someFile_mod
+	implicit none
 	call sub()
 end program demo
-C	--------end demo.f90----------------
+C	--------end mainFile.f90----------------
 	"
 
-	| progfilesrc subfilesrc progfiledst subfiledst |
+	| f77MainFile f77SomeFile f2kMainFile f2kSomeFile subroutine programMain res subroutineInvocation |
 
 	self skip: #TODO.
-
-	subfilesrc := FASTFortranProgramFile new "fileName: 'sub.f'"
-	 	addProgramUnit: (FASTFortranSubroutine new 
+	
+	subroutine :=  FASTFortranSubroutine new 
 			name: 'sub'; 
-			statementBlock: (FASTFortranStatementBlock new
-				statements: {
-					FASTFortranPrintStatement new
-						format: FASTFortranAsterisk new;
-						arguments: { FASTFortranCharacterLiteral new primitiveValue: 'Hello' }; 
-						yourself
-				}
-			); 
-			yourself);
+			statementBlock: FASTFortranStatementBlock new;
+			famix: (FamixF77PUSubroutine new name: 'sub');
+			yourself.
+			
+	subroutineInvocation := FASTFortranCallStatement new 
+			name: 'sub'; 
+			arguments: {};
 			yourself.
 	
-	progfilesrc := FASTFortranProgramFile new "fileName: 'demo.f'"
-	 	addProgramUnit: (FASTFortranProgramMain new 
+	programMain :=  FASTFortranProgramMain new 
 			name: 'demo'; 
-			statementBlock: (FASTFortranStatementBlock new
-				statements: { FASTFortranCallStatement new name: 'sub' ; arguments: {}; yourself }
-			); 
-			yourself);
+			statementBlock: ( FASTFortranStatementBlock new statements: { subroutineInvocation } );
+			famix: (FamixF77PUMain new name: 'demo');
 			yourself.
-		
-	subfiledst := subfilesrc accept: visitor.
-	progfiledst := progfilesrc accept: visitor.
 	
-	self assert: progfiledst class equals: FASTFortran2kProgramMain.
-	self assert: progfiledst name equals: 'demo'.
+	subroutineInvocation famix: (
+		FamixF77Invocation new 
+			sender: programMain famix; 
+			addCandidate: subroutine famix;
+			yourself
+		).
+
+	f77SomeFile := FASTFortranProgramFile new "fileName: 'someFile.f'"
+	 	addProgramUnit: subroutine;
+		famix: (FamixF77ProgramFile new filename: 'someFile.f');
+		yourself.
+	
+	f77MainFile := FASTFortranProgramFile new "fileName: 'mainFile.f'"
+	 	addProgramUnit: programMain ;
+		famix: (FamixF77ProgramFile new filename: 'mainFile.f');
+		yourself.
+		
+	f2kSomeFile := f77SomeFile accept: visitor.
+	f2kMainFile := f77MainFile accept: visitor.
+	
+	self assert: f2kMainFile programUnit size equals: 1.
+	res := f2kMainFile programUnit anyOne.
+	self assert: res class equals: FASTFortran2kProgramMain.
+	self assert: res name equals: 'demo'.
+	self assert: res statementBlock statements size equals: 3.
+	
+	
+	self assert: f2kSomeFile programUnit size equals: 1.
+	res := f2kSomeFile programUnit anyOne.
+	self assert: res class equals: FASTFortran2kModule.
+	self assert: res name equals: 'someFile_mod'.
+	
 ]
