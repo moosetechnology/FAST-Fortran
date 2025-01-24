@@ -18,7 +18,7 @@ FASTFortranModelTransformationVisitor >> computeAllocateSegmentAttributes: aFAST
 '
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> computeDimensionalExpressions: aFASTFortranSegment [
 
 	| visitor parameters |
@@ -42,7 +42,7 @@ FASTFortranModelTransformationVisitor >> computeLocalParamsDims: segmentDimensio
 	^ aStream contents.
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> computeProcedureInitialisationAndAllocation: aFASTFortranSegment [
 
 	| aStream dimensions |
@@ -109,7 +109,7 @@ FASTFortranModelTransformationVisitor >> computeProcedureInitialisationAndAlloca
 	^ FASTFortran2kSourceCodeString new content: aStream contents
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> computeProcedureLocalVariablesDimensions: aFASTFortranSegment [
 
 	| maxDim aStream |
@@ -127,7 +127,7 @@ FASTFortranModelTransformationVisitor >> computeProcedureLocalVariablesDimension
 	^ FASTFortran2kSourceCodeString new content: aStream contents
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> computeProcedureParameters: aFASTFortranSegment [
 
 	| parameters |
@@ -140,7 +140,7 @@ FASTFortranModelTransformationVisitor >> computeProcedureParameters: aFASTFortra
 	^ parameters
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> computeProcedureParametersDeclaration: aFASTFortranSegment [
 
 	| aStream parameters |
@@ -201,13 +201,13 @@ FASTFortranModelTransformationVisitor >> computeSegmentsDimensions: aFASTFortran
 		]
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> ensureEmptyStream [
 
 	tmpStream := WriteStream with: ''
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'initialization' }
 FASTFortranModelTransformationVisitor >> initialize [
 
 	super initialize.
@@ -216,7 +216,7 @@ FASTFortranModelTransformationVisitor >> initialize [
 	stack := Stack new
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeBoxedTypeDefinition: segmentName [
 
 	^ FASTFortran2kFormattedCodeString new
@@ -237,7 +237,7 @@ FASTFortranModelTransformationVisitor >> makeBoxedTypeDefinition: segmentName [
 		  values: (Dictionary with: #segmentName -> segmentName)
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeContainsStatement: segmentName [
 
 	^ FASTFortran2kFormattedCodeString new
@@ -251,7 +251,7 @@ contains
 		  values: (Dictionary with: #segmentName -> segmentName)
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeInterfaces: segmentName [
 
 	^ FASTFortran2kFormattedCodeString new
@@ -343,7 +343,7 @@ FASTFortranModelTransformationVisitor >> makeInterfaces: segmentName [
 		  values: (Dictionary with: #segmentName -> segmentName)
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProcedureAssignPointerToPointer: segmentName [
 
 	^ FASTFortran2kFormattedCodeString new
@@ -365,7 +365,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureAssignPointerToPointer: se
 		  values: (Dictionary with: #segmentName -> segmentName)
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProcedureBoxed: segmentName [
 
 	^ FASTFortran2kFormattedCodeString new
@@ -547,7 +547,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureBoxed: segmentName [
 		  values: (Dictionary with: #segmentName -> segmentName)
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProcedureIgnore: segmentName [
 
 	^ FASTFortran2kFormattedCodeString new
@@ -575,7 +575,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureIgnore: segmentName [
 		  values: (Dictionary with: #segmentName -> segmentName)
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProcedureSegadj: aFASTFortranSegment [
 
 	| segxxx parameterNames |
@@ -605,7 +605,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureSegadj: aFASTFortranSegmen
 	^ segxxx
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProcedureSegcop: aFASTFortranSegment [
 
 	| segxxx |
@@ -633,7 +633,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureSegcop: aFASTFortranSegmen
 	^ segxxx
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProcedureSegini2: aFASTFortranSegment [
 	"
 	subroutine {segmentName}_segini(this {routineParams})
@@ -675,7 +675,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureSegini2: aFASTFortranSegme
 		  yourself
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProcedureSegini: aFASTFortranSegment [
 
 	| segxxx routineParams routineParamsDeclarations localParamsDims allocateSegmentAttributes segmentDimensions |
@@ -719,7 +719,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureSegini: aFASTFortranSegmen
 	^ segxxx
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProcedureSeglik: aFASTFortranSegment [
 
 	| segxxx parameterNames |
@@ -761,7 +761,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureSeglik: aFASTFortranSegmen
 	^ segxxx
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProcedureSegload: aFASTFortranSegment [
 
 	| segxxx parameterNames |
@@ -791,7 +791,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureSegload: aFASTFortranSegme
 	^ segxxx
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProcedureSegloc: segmentName [
 
 	^ FASTFortran2kFormattedCodeString new
@@ -813,7 +813,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureSegloc: segmentName [
 		  values: (Dictionary with: #segmentName -> segmentName)
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProcedureSegmentType: segmentName [
 
 	^ FASTFortran2kFormattedCodeString new
@@ -833,7 +833,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureSegmentType: segmentName [
 		  values: (Dictionary with: #segmentName -> segmentName)
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProcedureSegmov: aFASTFortranSegment [
 
 	| segxxx |
@@ -861,7 +861,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureSegmov: aFASTFortranSegmen
 	^ segxxx
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProcedureSegpar: aFASTFortranSegment [
 
 	| segxxx parameterNames |
@@ -892,7 +892,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureSegpar: aFASTFortranSegmen
 	^ segxxx
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProcedureSegprt: aFASTFortranSegment [
 
 	| segxxx parameterNames |
@@ -921,7 +921,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureSegprt: aFASTFortranSegmen
 	^ segxxx
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProcedureSegstore: aFASTFortranSegment [
 
 	| segxxx parameterNames |
@@ -950,7 +950,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureSegstore: aFASTFortranSegm
 	^ segxxx
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProcedureSegsup: aFASTFortranSegment [
 
 	| segxxx parameterNames |
@@ -978,7 +978,7 @@ FASTFortranModelTransformationVisitor >> makeProcedureSegsup: aFASTFortranSegmen
 	^ segxxx
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProceduresDimensions: aFASTFortranSegment [
 
 	| parameters procedures |
@@ -1017,7 +1017,7 @@ FASTFortranModelTransformationVisitor >> makeProceduresDimensions: aFASTFortranS
 	^procedures 
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeProgramUnit: programUnits [
 
 	| progUnits procedures |
@@ -1039,7 +1039,7 @@ FASTFortranModelTransformationVisitor >> makeProgramUnit: programUnits [
 	^ progUnits
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makePuModule: filename [
 	^ FASTFortran2kModule new 
 		name: (($. split: filename) first, '_mod');
@@ -1047,7 +1047,7 @@ FASTFortranModelTransformationVisitor >> makePuModule: filename [
 		yourself.
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeSegmentModuleProlog [
 
 	^ FASTFortran2kSourceCodeString new content: '
@@ -1061,7 +1061,7 @@ FASTFortranModelTransformationVisitor >> makeSegmentModuleProlog [
 '
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'helpers' }
 FASTFortranModelTransformationVisitor >> makeSegmentTypeName: segmentName [
 
 	^ FASTFortran2kFormattedCodeString new
@@ -1133,7 +1133,7 @@ FASTFortranModelTransformationVisitor >> visitFASTEsopeSegment: aFASTEsopeSegmen
 	^ module
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting - expressions' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranAssignmentExpression: anAssignmentExpressionNode [
 
 	| variable expression |
@@ -1147,7 +1147,7 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranAssignmentExpression: a
 		  yourself
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting statement' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranAssignmentStatement: anAssignmentStatementNode [
 
 	^ FASTFortran2kAssignmentStatement new
@@ -1164,7 +1164,7 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranAsterisk: aFASTFortranA
 	^ FASTFortran2kAsterisk new mooseModel: model
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting - expressions' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranBinaryExpression: aBinaryExpresionNode [
 
 	^ FASTFortran2kBinaryExpression new
@@ -1175,7 +1175,7 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranBinaryExpression: aBina
 		  yourself
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting - expressions' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranBooleanLiteral: aBooleanLiteralNode [
 
 	^ FASTFortran2kBooleanLiteral new
@@ -1184,7 +1184,7 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranBooleanLiteral: aBoolea
 		  yourself
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting - expressions' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranCallStatement: aFASTFortranCallStatement [
 
 	^ FASTFortran2kCallStatement new
@@ -1196,7 +1196,7 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranCallStatement: aFASTFor
 		  yourself
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting - expressions' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranCharacterLiteral: aFASTFortranCharacterLiteral [
 
 	^ FASTFortran2kCharacterLiteral new
@@ -1221,7 +1221,7 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranComment: aCommentNode [
 		  yourself
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting statement' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranDoStatement: aDoStatementNode [
 
 	^ FASTFortran2kDoStatement new
@@ -1232,7 +1232,7 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranDoStatement: aDoStateme
 		  yourself
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting statement' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranFunctionStatement: aFunctionStatementNode [
 
 
@@ -1292,13 +1292,13 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranIntegerType: aFASTFortr
 	^ FASTFortran2kIntegerType new
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting - helpers' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranList: list [
 
 	^ list collect: [ :item | item accept: self ]
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting - expressions' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranLoopControlExpression: aLoopControlNode [
 
 	^ FASTFortran2kLoopControlExpression new
@@ -1309,7 +1309,7 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranLoopControlExpression: 
 		  yourself
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting statement' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranPrintStatement: aFASTFortranPrintStatement [
 
 	^ FASTFortran2kPrintStatement new
@@ -1381,7 +1381,7 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranProgramMain: aProgramNo
 	^programMain
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting - expressions' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranRealLiteral: aRealLiteralNode [
 
 	^ FASTFortran2kRealLiteral new
@@ -1398,7 +1398,7 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranRealType: aRealTypeNode
 		  yourself
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting - expressions' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranScalarVariable: aScalarVariableNode [
 
 	^ FASTFortran2kScalarVariable new
@@ -1443,10 +1443,10 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranSegment: aFASTFortranSe
 	^ module
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting statement' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBlock [
 
-	| fctStatements programUnit f2kStatementBlock |
+	| programUnit f2kStatementBlock |
 	programUnit := stack top.
 	f2kStatementBlock := FASTFortran2kStatementBlock new
 		  mooseModel: model;
@@ -1482,7 +1482,7 @@ FASTFortranModelTransformationVisitor >> visitFASTFortranSubroutine: aFASTFortra
 	^subroutine.
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting statement' }
 FASTFortranModelTransformationVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFortranVariableDeclarationStatement [
 
 	^ FASTFortran2kVariableDeclarationStatement new
@@ -1520,10 +1520,11 @@ FASTFortranModelTransformationVisitor >> visitFamixF77Type: aFamixF77Type [
 		yourself.
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting statement' }
 FASTFortranModelTransformationVisitor >> visitSatementBlock: statementBlock [
 
 	| statements |
+
 	statements := self visitFASTFortranList: statementBlock statements.
 
 	^ FASTFortran2kStatementBlock new statements: statements
@@ -1575,7 +1576,7 @@ FASTFortranModelTransformationVisitor >> visitSementAttributes: attributes [
 	^ generatedCode
 ]
 
-{ #category : 'visiting - programUnits' }
+{ #category : 'visiting statement' }
 FASTFortranModelTransformationVisitor >> visitVariableDeclaratorDimensions: variableDeclarationsDimensions [
 	
 	^variableDeclarationsDimensions
