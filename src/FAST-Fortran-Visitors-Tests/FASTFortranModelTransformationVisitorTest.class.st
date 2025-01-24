@@ -470,6 +470,64 @@ FASTFortranModelTransformationVisitorTest >> testProgramEmpty [
 ]
 
 { #category : 'running' }
+FASTFortranModelTransformationVisitorTest >> testProgramMainWithCppInclude [
+	"
++------ incFile.obj --------------------------------+    
+|      integer N                                    |
++---------------------------------------------------+    
+                     |
+                     v
++------ incFile.obj.E ------------------------------+
+|      subroutine _$incFile_obj                     |
+|      integer N                                    |
+|      end                                          |
++---------------------------------------------------+
+
++------ mainFile.E ---------------------------------+
+|      program main                                 |
+|#include ""incFile.obj""                           |
+|      end                                          |
++---------------------------------------------------+
+	"
+
+	| incFile mainFile fakeIncObj varDeclarationN programMain cppInclude |
+	
+	self skip: #TODO.
+	
+	incFile := FASTFortranProgramFile new.
+	mainFile := FASTFortranProgramFile new.
+	
+	fakeIncObj := FASTFortranSubroutine new name: '_$incFile_obj'.
+	varDeclarationN := FASTFortranVariableDeclarationStatement new
+		declaredType: (FASTFortranIntegerType new);
+		addDeclarator: (FASTFortranVariableDeclarator new name: 'N');
+		yourself.
+	
+	fakeIncObj statementBlock: (FASTFortranStatementBlock  new addStatement: varDeclarationN; yourself).
+	
+	incFile addProgramUnit: fakeIncObj.
+	
+	
+	cppInclude := FASTEsopeCppIncludeStatement new filename: 'inc.obj'.
+
+	programMain := FASTFortranProgramMain new 
+		name: 'main';
+		statementBlock: (FASTFortranStatementBlock  new 
+			addStatement: cppInclude;
+			yourself
+		);
+		yourself.
+
+	mainFile addProgramUnit: programMain.
+	
+	
+	
+	self flag: #FIXME. ""
+	
+	
+]
+
+{ #category : 'running' }
 FASTFortranModelTransformationVisitorTest >> testProgramWithExternalSubroutineInvocation [
 	"
 C	--------someFile.f----------------
