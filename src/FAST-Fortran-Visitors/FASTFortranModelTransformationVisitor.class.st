@@ -1098,6 +1098,15 @@ FASTFortranModelTransformationVisitor >> model [
 ]
 
 { #category : 'visiting - programUnits' }
+FASTFortranModelTransformationVisitor >> visitFASTEsopeCppIncludeStatement: aFASTEsopeCppIncludeStatement [
+
+	| programUnit |
+	1halt.
+	programUnit := stack top.
+	
+]
+
+{ #category : 'visiting - programUnits' }
 FASTFortranModelTransformationVisitor >> visitFASTEsopeSegment: aFASTEsopeSegmentNode [
 
 	| module segmentName |

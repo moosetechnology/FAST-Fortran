@@ -490,23 +490,25 @@ FASTFortranModelTransformationVisitorTest >> testProgramMainWithCppInclude [
 +---------------------------------------------------+
 	"
 
-	| incFile mainFile fakeIncObj varDeclarationN programMain cppInclude |
+	| incFile mainFile fakeIncObj varDeclarationN programMain cppInclude famixIncludedFile res |
 	
 	self skip: #TODO.
-	
-	incFile := FASTFortranProgramFile new.
-	mainFile := FASTFortranProgramFile new.
-	
-	fakeIncObj := FASTFortranSubroutine new name: '_$incFile_obj'.
+
 	varDeclarationN := FASTFortranVariableDeclarationStatement new
 		declaredType: (FASTFortranIntegerType new);
 		addDeclarator: (FASTFortranVariableDeclarator new name: 'N');
 		yourself.
 	
-	fakeIncObj statementBlock: (FASTFortranStatementBlock  new addStatement: varDeclarationN; yourself).
+	famixIncludedFile := FamixF77IncludedFile new 
+			name: '_$incFile_obj';
+			addLocalVariable: (FamixF77Variable new name: 'N'; declaredType: (FamixF77TypeIntrinsic new name: 'integer'));
+			yourself.
 	
-	incFile addProgramUnit: fakeIncObj.
-	
+	fakeIncObj := FASTFortranSubroutine new 
+		name: '_$incFile_obj';
+		statementBlock: (FASTFortranStatementBlock  new addStatement: varDeclarationN; yourself);
+		famix: famixIncludedFile;
+		yourself.
 	
 	cppInclude := FASTEsopeCppIncludeStatement new filename: 'inc.obj'.
 
@@ -518,13 +520,37 @@ FASTFortranModelTransformationVisitorTest >> testProgramMainWithCppInclude [
 		);
 		yourself.
 
-	mainFile addProgramUnit: programMain.
+	programMain famix: (FamixF77PUMain new 
+		name: 'main';
+		addInclude: (FamixF77Include new 
+			filename: '';
+			included: famixIncludedFile;
+			yourself
+		);
+		yourself).
+
+	incFile := FASTFortranProgramFile new 
+		addProgramUnit: fakeIncObj;
+		famix: (FamixF77ProgramFile new name: 'inc.obj.E');
+		yourself.
+
+	mainFile := FASTFortranProgramFile new 
+		addProgramUnit: programMain;
+		famix: (FamixF77ProgramFile new name: 'progFile.f');
+		yourself.
 	
+
+	res := mainFile accept: visitor.
 	
-	
-	self flag: #FIXME. ""
-	
-	
+	self assert: res programUnit size equals: 1.
+	res := res programUnit anyOne.
+	self assert: res class equals: FASTFortran2kProgramMain.
+	self assert: res name equals: 'main'.
+	self assert: res statementBlock size equals: 2.
+	self assert: res statementBlock first class equals: FASTFortran2kUseStatement.
+	self assert: res statementBlock first name equals: 'inc_obj_mod'.
+	self assert: res statementBlock second class equals: FASTFortran2kImplicitStatement.
+
 ]
 
 { #category : 'running' }
