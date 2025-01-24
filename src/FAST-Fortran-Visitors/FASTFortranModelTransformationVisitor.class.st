@@ -1077,7 +1077,7 @@ FASTFortranModelTransformationVisitor >> makeSegmentTypeName: segmentName [
 FASTFortranModelTransformationVisitor >> makeTypeDefinition: aFASTFortranSegment [
 
 	| segment visitor |
-	segment := FASTFortran2kDerivedType new
+	segment := FASTFortran2kDerivedTypeDefinition new
 		           name: aFASTFortranSegment name;
 		           derivedTypeComponents: OrderedCollection new.
 
