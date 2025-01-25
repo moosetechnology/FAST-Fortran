@@ -484,7 +484,7 @@ FASTFortranExporterVisitor >> visitFASTFortranFunctionStatement: aFASTFortranFun
 		<< aFASTFortranFunctionStatement name;
 		outputExpression: [
 			self visitNodeListSeparatedByCommas:
-					aFASTFortranFunctionStatement arguments ]
+					aFASTFortranFunctionStatement parameters ]
 		inParentheses: true;
 		<< ' = '.
 	self outputTopLevelExpression: [

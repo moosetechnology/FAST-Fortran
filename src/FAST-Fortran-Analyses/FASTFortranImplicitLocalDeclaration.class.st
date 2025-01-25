@@ -12,6 +12,13 @@ Class {
 	#tag : 'Resolver'
 }
 
+{ #category : 'visiting' }
+FASTFortranImplicitLocalDeclaration >> accept: aVisitor [
+	<generated>
+	^ aVisitor visitFASTFortranImplicitLocalDeclaration: self.
+
+]
+
 { #category : 'private - ssa' }
 FASTFortranImplicitLocalDeclaration >> activeVersion [
 
