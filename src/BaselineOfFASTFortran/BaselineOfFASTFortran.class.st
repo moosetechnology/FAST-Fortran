@@ -10,7 +10,7 @@ BaselineOfFASTFortran >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [ 
-		spec description: 'Developement version of FAST Fortran'.
+		spec description: 'FAST Fortran'.
 		self definePackages: spec.
 		self defineDependencies: spec ]
 ]
@@ -36,8 +36,6 @@ BaselineOfFASTFortran >> definePackages: spec [
 		repository: 'https://github.com/moosetechnology/FAST-Fortran';
 		package: 'FAST-Fortran-Generator' with: [ spec requires: #(FAST Esope) ] ;
 		package: 'FAST-Fortran-Entities' with: [ spec requires: #(FAST Esope) ];
-		package: 'FAST-Fortran2k-Generator' with: [ spec requires: #('FAST-Fortran-Generator') ] ;
-		package: 'FAST-Fortran2k-Entities' with: [ spec requires: #('FAST-Fortran-Entities') ];
 		package: 'FAST-Fortran-Visitors' with: [ spec requires: #('FAST-Fortran-Entities' 'FAST-Fortran2k-Entities') ];
 		package: 'FAST-Fortran-Visitors-Tests' with: [ spec requires: #('FAST-Fortran-Visitors') ] ;
 		package: 'FAST-Fortran-Analyses' with: [ spec requires: #('FAST-Fortran-Visitors') ] ; 
