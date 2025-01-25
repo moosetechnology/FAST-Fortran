@@ -23,7 +23,7 @@ FASTFortran2kExporterVisitorTest >> newVisitor [
 { #category : 'running' }
 FASTFortran2kExporterVisitorTest >> segmentBookDefinition [
 
-	^ FASTFortran2kDerivedType new
+	^ FASTFortran2kDerivedTypeDefinition new
 		  name: 'book';
 		  derivedTypeComponents: {
 				  (FASTFortran2kDerivedTypeComponent new
@@ -48,7 +48,7 @@ FASTFortran2kExporterVisitorTest >> segmentBookDefinition [
 { #category : 'running' }
 FASTFortran2kExporterVisitorTest >> segmentBoxedBookDefinition [
 
-	^ FASTFortran2kDerivedType new
+	^ FASTFortran2kDerivedTypeDefinition new
 		  name: 'boxed_book';
 		  superType: 'segment';
 		  derivedTypeComponents: {
