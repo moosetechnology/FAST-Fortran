@@ -12,6 +12,7 @@ BaselineOfFASTFortran >> baseline: spec [
 	spec for: #common do: [ 
 		spec description: 'FAST Fortran'.
 		self definePackages: spec.
+		self defineGroups: spec.
 		self defineDependencies: spec ]
 ]
 
@@ -28,6 +29,16 @@ BaselineOfFASTFortran >> defineDependencies: spec [
 		with: [ spec
 				loads: #('default');
 				repository: 'github://moosetechnology/Esope' ]
+]
+
+{ #category : 'baselines' }
+BaselineOfFASTFortran >> defineGroups: spec [
+
+	^ spec
+		  group: 'default' with: #( core );
+
+		  group: 'core' with: #( 'FAST-Fortran-Entities' 'FAST-Fortran-Visitors' 'FAST-Fortran-Analyses' );
+		  group: 'all' with: #( core 'FAST-Fortran-Generator' 'FAST-Fortran-Visitors-Tests' 'FAST-Fortran-Analyses-Tests' )
 ]
 
 { #category : 'baselines' }
