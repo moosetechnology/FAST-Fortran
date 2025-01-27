@@ -9,10 +9,12 @@ Class {
 BaselineOfFASTFortran >> baseline: spec [
 
 	<baseline>
-	spec for: #common do: [ 
+	spec for: #common do: [
 		spec description: 'FAST Fortran'.
+		spec repository: 'https://github.com/moosetechnology/FAST-Fortran'.
 		self definePackages: spec.
-		self defineDependencies: spec ]
+		self defineDependencies: spec.
+		self defineGroups: spec ]
 ]
 
 { #category : 'baselines' }
@@ -31,9 +33,23 @@ BaselineOfFASTFortran >> defineDependencies: spec [
 ]
 
 { #category : 'baselines' }
+BaselineOfFASTFortran >> defineGroups: spec [
+
+	^ spec
+		  group: 'default' with: #( core );
+		  group: 'core'
+		  with: #( 'FAST-Fortran-Entities' 'FAST-Fortran-Visitors'
+			     'FAST-Fortran-Analyses' );
+		  group: 'all'
+		  with:
+			  #( 'core' 'FAST-Fortran-Generator' 'FAST-Fortran-Visitors-Tests'
+			     'FAST-Fortran-Analyses-Tests' )
+]
+
+{ #category : 'baselines' }
 BaselineOfFASTFortran >> definePackages: spec [
+
 	spec
-		repository: 'https://github.com/moosetechnology/FAST-Fortran';
 		package: 'FAST-Fortran-Generator' with: [ spec requires: #(FAST Esope) ] ;
 		package: 'FAST-Fortran-Entities' with: [ spec requires: #(FAST Esope) ];
 		package: 'FAST-Fortran-Visitors' with: [ spec requires: #(FAST 'FAST-Fortran-Entities') ];
