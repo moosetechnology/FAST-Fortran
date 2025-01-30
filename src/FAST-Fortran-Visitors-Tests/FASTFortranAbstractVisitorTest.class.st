@@ -151,7 +151,7 @@ FASTFortranAbstractVisitorTest >> assignementExpression: aName value: value [
 FASTFortranAbstractVisitorTest >> assignementStatement: aName value: rhs [
 
 	^FASTFortranAssignmentStatement new
-		variable: (self makeSimpleExpression: aName) ;
+		variable: (self scalarVariable: aName) ;
 		expression: (self makeSimpleExpression: rhs) ;
 		yourself
 ]
