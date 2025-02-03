@@ -110,10 +110,11 @@ FASTFortranExporterVisitorTest >> testAssignementFunctionCall [
 { #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testAssignementStatementArrayAssigned [
 	| stmt |
-	stmt := self
-		assignementStatement: (self
-			array: 'arr' access: { self scalarVariable: 'i' . self integerLiteral: '1'})
-		value: #b.
+	stmt := FASTFortranAssignmentStatement new
+		variable: (self 
+			array: 'arr' access: { self scalarVariable: 'i' . self integerLiteral: '1'});
+		expression: (self makeSimpleExpression: #b);
+		yourself.
 
 	self
 		assertExport: stmt
