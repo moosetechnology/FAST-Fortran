@@ -899,7 +899,7 @@ FASTFortranExporterVisitor >> visitFASTFortranTComment: aFASTFortranTComment [
 { #category : 'visiting - traits' }
 FASTFortranExporterVisitor >> visitFASTFortranTLiteral: aFASTFortranTLiteral [
 
-	self << aFASTFortranTLiteral primitiveValue
+	self << aFASTFortranTLiteral primitiveValue asString
 ]
 
 { #category : 'visiting - traits' }
