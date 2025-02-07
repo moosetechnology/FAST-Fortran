@@ -647,6 +647,8 @@ FASTFortranGenerator >> defineProperties [
 
 	(labelReference property: #label type: #String) comment: 'The value of the label. The value is an integer literal, stored in a String'.
 
+	(programFile property: #filename type: #String).
+
 	(returnStatement property: #alternateReturnLabel type: #String)
 		comment: 'Optional. Expression of type INTEGER or REAL'.
 
