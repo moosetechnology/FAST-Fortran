@@ -35,15 +35,10 @@ BaselineOfFASTFortran >> defineDependencies: spec [
 { #category : 'baselines' }
 BaselineOfFASTFortran >> defineGroups: spec [
 
-	^ spec
-		  group: 'default' with: #( core );
-		  group: 'core'
-		  with: #( 'FAST-Fortran-Entities' 'FAST-Fortran-Visitors'
-			     'FAST-Fortran-Analyses' );
-		  group: 'all'
-		  with:
-			  #( 'core' 'FAST-Fortran-Generator' 'FAST-Fortran-Visitors-Tests'
-			     'FAST-Fortran-Analyses-Tests' )
+	spec
+		group: 'default' with: #( core );
+		group: 'core' with: #( 'FAST-Fortran-Entities' 'FAST-Fortran-Visitors' 'FAST-Fortran-Analyses' );
+		group: 'all' with: #( 'core' 'FAST-Fortran-Generator' 'FAST-Fortran-Visitors-Tests' 'FAST-Fortran-Analyses-Tests' )
 ]
 
 { #category : 'baselines' }
