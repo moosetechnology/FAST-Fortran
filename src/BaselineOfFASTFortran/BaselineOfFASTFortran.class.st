@@ -11,9 +11,9 @@ BaselineOfFASTFortran >> baseline: spec [
 	<baseline>
 	spec for: #common do: [
 		spec description: 'FAST Fortran'.
-		spec repository: 'https://github.com/moosetechnology/FAST-Fortran'.
-		self definePackages: spec.
+		spec repository: 'github://moosetechnology/FAST-Fortran'.
 		self defineDependencies: spec.
+		self definePackages: spec.
 		self defineGroups: spec ]
 ]
 
