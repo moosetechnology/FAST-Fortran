@@ -6,3 +6,9 @@ FASTFortranFieldAccess >> accept: aVisitor [
 	^ aVisitor visitFASTFortranFieldAccess: self.
 
 ]
+
+{ #category : '*FAST-Fortran-Visitors' }
+FASTFortranFieldAccess >> isFieldAccess [
+
+	^ true
+]
