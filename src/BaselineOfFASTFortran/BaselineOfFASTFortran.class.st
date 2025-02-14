@@ -11,7 +11,6 @@ BaselineOfFASTFortran >> baseline: spec [
 	<baseline>
 	spec for: #common do: [
 		spec description: 'FAST Fortran'.
-		spec repository: 'github://moosetechnology/FAST-Fortran'.
 		self defineDependencies: spec.
 		self definePackages: spec.
 		self defineGroups: spec ]
@@ -24,12 +23,7 @@ BaselineOfFASTFortran >> defineDependencies: spec [
 		baseline: 'FAST'
 		with: [ spec
 				loads: #('tools');
-				repository: 'github://moosetechnology/FAST:v2/src' ] ;
-
-	baseline: 'Esope'
-		with: [ spec
-				loads: #('default');
-				repository: 'github://moosetechnology/Esope' ]
+				repository: 'github://moosetechnology/FAST:v2/src' ]
 ]
 
 { #category : 'baselines' }
