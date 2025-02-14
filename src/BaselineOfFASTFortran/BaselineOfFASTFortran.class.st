@@ -28,7 +28,7 @@ BaselineOfFASTFortran >> defineDependencies: spec [
 		baseline: 'Famix'
 		with: [ 
 			spec
-				loads: #( 'Core' );
+				loads: #( 'Core' 'Minimal' 'Basic' );
 				repository: 'github://moosetechnology/Famix:development/src' ]
 ]
 
