@@ -33,9 +33,11 @@ BaselineOfFASTFortran >> defineDependencies: spec [
 				loads: #( 'Core' 'Minimal' 'Basic' );
 				repository: 'github://moosetechnology/Famix:development' ];
 
-		"'FASTFortranImporter >> jsonASTToFAST:fromFortranSource:' use NeoJSONReader"
-		baseline: 'NeoJSON'
-		with: [ spec repository: 'github://svenvc/NeoJSON' ];
+		"'FASTFortranImporter >> jsonASTToFAST:fromFortranSource:' use NeoJSONReader
+		Needed also by Esope, so we can ignore it
+		"
+		"baseline: 'NeoJSON'
+		with: [ spec repository: 'github://svenvc/NeoJSON' ];"
 
 		"Warning: We Need Esope because of FASTFortranDifferentialValidator from FAST-Fortran depends on FortranProjectImporter from Esope"
 		baseline: 'Esope'
