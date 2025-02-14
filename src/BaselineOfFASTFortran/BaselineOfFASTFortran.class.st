@@ -21,7 +21,8 @@ BaselineOfFASTFortran >> defineDependencies: spec [
 
 	spec
 		baseline: 'FAST'
-		with: [ spec
+		with: [ 
+			spec
 				loads: #('tools');
 				repository: 'github://moosetechnology/FAST:v2' ];
 
@@ -29,14 +30,17 @@ BaselineOfFASTFortran >> defineDependencies: spec [
 		with: [ 
 			spec
 				loads: #( 'Core' 'Minimal' 'Basic' );
-				repository: 'github://moosetechnology/Famix:development' ]
+				repository: 'github://moosetechnology/Famix:development' ];
+
+		baseline: 'NeoJSON' 
+		with: [ spec repository: 'github://svenvc/NeoJSON' ]
 ]
 
 { #category : 'baselines' }
 BaselineOfFASTFortran >> defineGroups: spec [
 
 	spec
-		group: 'default' with: #( core );
+		group: 'default' with: #( 'core' );
 		group: 'core' with: #( 'FAST-Fortran-Entities' 'FAST-Fortran-Visitors' 'FAST-Fortran-Analyses' );
 		group: 'all' with: #( 'core' 'FAST-Fortran-Generator' 'FAST-Fortran-Visitors-Tests' 'FAST-Fortran-Analyses-Tests' )
 ]
