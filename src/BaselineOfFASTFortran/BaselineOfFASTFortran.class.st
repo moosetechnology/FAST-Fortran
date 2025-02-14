@@ -23,13 +23,13 @@ BaselineOfFASTFortran >> defineDependencies: spec [
 		baseline: 'FAST'
 		with: [ spec
 				loads: #('tools');
-				repository: 'github://moosetechnology/FAST:v2/src' ];
+				repository: 'github://moosetechnology/FAST:v2' ];
 
 		baseline: 'Famix'
 		with: [ 
 			spec
 				loads: #( 'Core' 'Minimal' 'Basic' );
-				repository: 'github://moosetechnology/Famix:development/src' ]
+				repository: 'github://moosetechnology/Famix:development' ]
 ]
 
 { #category : 'baselines' }
