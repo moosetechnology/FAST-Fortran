@@ -23,7 +23,13 @@ BaselineOfFASTFortran >> defineDependencies: spec [
 		baseline: 'FAST'
 		with: [ spec
 				loads: #('tools');
-				repository: 'github://moosetechnology/FAST:v2/src' ]
+				repository: 'github://moosetechnology/FAST:v2/src' ];
+
+		baseline: 'Famix'
+		with: [ 
+			spec
+				loads: #( 'Core' );
+				repository: 'github://moosetechnology/Famix:development/src' ]
 ]
 
 { #category : 'baselines' }
@@ -39,9 +45,9 @@ BaselineOfFASTFortran >> defineGroups: spec [
 BaselineOfFASTFortran >> definePackages: spec [
 
 	spec
-		package: 'FAST-Fortran-Generator' with: [ spec requires: #(FAST) ] ;
-		package: 'FAST-Fortran-Entities' with: [ spec requires: #(FAST) ];
-		package: 'FAST-Fortran-Visitors' with: [ spec requires: #(FAST 'FAST-Fortran-Entities') ];
+		package: 'FAST-Fortran-Generator' with: [ spec requires: #(FAST Famix) ] ;
+		package: 'FAST-Fortran-Entities' with: [ spec requires: #(FAST Famix) ];
+		package: 'FAST-Fortran-Visitors' with: [ spec requires: #('FAST-Fortran-Entities') ];
 		package: 'FAST-Fortran-Visitors-Tests' with: [ spec requires: #('FAST-Fortran-Visitors') ] ;
 		package: 'FAST-Fortran-Analyses' with: [ spec requires: #('FAST-Fortran-Visitors') ] ; 
 		package: 'FAST-Fortran-Analyses-Tests' with: [ spec requires: #('FAST-Fortran-Visitors' 'FAST-Fortran-Visitors-Tests') ]
