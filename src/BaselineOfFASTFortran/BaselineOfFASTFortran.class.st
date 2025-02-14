@@ -26,14 +26,20 @@ BaselineOfFASTFortran >> defineDependencies: spec [
 				loads: #('tools');
 				repository: 'github://moosetechnology/FAST:v2' ];
 
+		"by default FAST not load Famix-Traits"
 		baseline: 'Famix'
 		with: [ 
 			spec
 				loads: #( 'Core' 'Minimal' 'Basic' );
 				repository: 'github://moosetechnology/Famix:development' ];
 
-		baseline: 'NeoJSON' 
-		with: [ spec repository: 'github://svenvc/NeoJSON' ]
+		"'FASTFortranImporter >> jsonASTToFAST:fromFortranSource:' use NeoJSONReader"
+		baseline: 'NeoJSON'
+		with: [ spec repository: 'github://svenvc/NeoJSON' ];
+
+		"Warning: We Need Esope because of FASTFortranDifferentialValidator from FAST-Fortran depends on FortranProjectImporter from Esope"
+		baseline: 'Esope'
+		with: [ spec repository: 'github://moosetechnology/Esope' ]
 ]
 
 { #category : 'baselines' }
