@@ -845,6 +845,14 @@ FASTFortranVisitor >> visitFASTFortranTWithComments: aFASTFortranTWithComments [
 
 ]
 
+{ #category : 'visiting - statements' }
+FASTFortranVisitor >> visitFASTFortranTWithDeclarations: aFASTFortranTWithDeclarations [
+
+	aFASTFortranTWithDeclarations declarations do: [ :declaration | declaration accept: self ]
+	
+	
+]
+
 { #category : 'visiting - traits' }
 FASTFortranVisitor >> visitFASTFortranTWithIOParameters: aFASTFortranTWithIOParameters [
 
