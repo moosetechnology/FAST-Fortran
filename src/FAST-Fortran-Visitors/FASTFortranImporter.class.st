@@ -34,13 +34,19 @@ FASTFortranImporter >> jsonASTToFAST: jsonAST fromFortranSource: fortranCode [
 FASTFortranImporter >> onFile: srcFileName [
 
 	| jsonFileReference cmdReturn |
-	
+
+	self flag: '#FIXME: includedFile are special, they are not in a program unit, 
+		so for the parser to be able to parse them
+		we need to wrap them in a fake subroutine, 
+		we can also change the sourceAnchor to avoid deleting part of the source.
+		can be related to this method: "IASTToFamixFortranVisitor >> visitIASTIncludedFile:"
+		'.
+
 	jsonFileReference  := self tempJsonFileNameFrom: srcFileName.
 
 	cmdReturn := FortranProjectImporter new
 		parseFortran77File: srcFileName asFileReference
 		to: jsonFileReference.
-
 
 	(cmdReturn = 0) ifTrue: [
 		^self
