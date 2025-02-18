@@ -1037,6 +1037,43 @@ FortranToFASTTests >> testDerefAccessWithDim [
 	
 	| result asnmt expr arrayAccess |
 	fortranCode := '      PROGRAM MYPROG
+       var = lb.att(s/2)
+      END
+'.
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./srcCodeOrigin.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:24)","statement":{"anno":[],"expression":{"anno":[],"expression":{"anno":[],"expression":{"anno":[],"span":"(2:14)-(2:15)","tag":"value","value":{"contents":"lb","tag":"variable"}},"field":{"anno":[],"span":"(2:17)-(2:19)","tag":"value","value":{"contents":"att","tag":"variable"}},"span":"(2:14)-(2:19)","tag":"deref"},"indices":{"anno":[],"list":[{"anno":[],"index":{"anno":[],"left":{"anno":[],"span":"(2:21)-(2:21)","tag":"value","value":{"contents":"s","tag":"variable"}},"op":{"tag":"division"},"right":{"anno":[],"span":"(2:23)-(2:23)","tag":"value","value":{"contents":["2",null],"tag":"integer"}},"span":"(2:21)-(2:23)","tag":"binary"},"name":null,"span":"(2:21)-(2:23)","tag":"single"}],"span":"(2:21)-(2:23)"},"span":"(2:14)-(2:24)","tag":"subscript"},"span":"(2:8)-(2:24)","tag":"assign_expression","target":{"anno":[],"span":"(2:8)-(2:10)","tag":"value","value":{"contents":"var","tag":"variable"}}},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	result := self visitJsonCode.
+
+	asnmt := result first statementBlock statements first.
+	self assert: asnmt class equals: FASTFortranAssignmentStatement.
+
+	expr := asnmt expression.
+	self assert: expr class equals: FASTFortranFieldAccess.
+	self assert: expr startPos equals: 35.
+
+	self assert: expr pointer class equals: FASTFortranScalarVariable.
+	self assert: expr pointer name equals: 'lb'.
+	self assert: expr pointer startPos equals: 35.
+
+	arrayAccess := expr field.
+	self assert: arrayAccess class equals: FASTFortranArrayVariable .
+	self assert: arrayAccess name equals: 'att'.
+	self assert: arrayAccess indices size equals: 1.
+	self assert: arrayAccess startPos equals: 38.
+
+	self assert: arrayAccess indices anyOne class equals: FASTFortranBinaryExpression.
+	self assert: arrayAccess indices anyOne operator equals: '/'.
+	self assert: arrayAccess indices anyOne leftOperand class equals: FASTFortranScalarVariable.
+	self assert: arrayAccess indices anyOne leftOperand name equals: 's'.
+	self assert: arrayAccess indices anyOne rightOperand class equals: FASTFortranIntegerLiteral.
+	self assert: arrayAccess indices anyOne rightOperand primitiveValue equals: '2'.
+
+]
+
+{ #category : 'tests-expression' }
+FortranToFASTTests >> testDerefFieldAccessWithDim [
+	
+	| result asnmt expr arrayAccess |
+	fortranCode := '      PROGRAM MYPROG
        var = lb.att(S__/2)
       END
 '.
@@ -1060,7 +1097,10 @@ FortranToFASTTests >> testDerefAccessWithDim [
 	self assert: arrayAccess indices size equals: 1.
 	self assert: arrayAccess startPos equals: 38.
 
-	self assert: arrayAccess indices anyOne class equals: FASTFortranBinaryExpression.
+	self assert: arrayAccess indices anyOne class equals: FASTFortranUnaryExpression.
+	self assert: arrayAccess indices anyOne operator equals: '/'.
+	self assert: arrayAccess indices anyOne expression class equals: FASTFortranIntegerLiteral.
+	self assert: arrayAccess indices anyOne expression primitiveValue equals: '2'.
 
 ]
 
