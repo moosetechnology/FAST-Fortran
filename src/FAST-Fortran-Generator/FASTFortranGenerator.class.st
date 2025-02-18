@@ -802,10 +802,8 @@ FASTFortranGenerator >> defineRelations [
 		'Loop control limit value')
 	<>- (abstractExpression property: #parentLoopControlLimit).
 
-	((programFile property: #programUnits) comment:
-		 'Program Units in a program file')
-	<>-* ((programUnit property: #programFile) comment:
-			 'Parent program file').
+	(programFile comment: 'Program Units in a program file')
+	<>-* (programUnit comment: 'Parent program file').
 
 	((type property: #size) comment: 'a data size in bytes')
 	<>- (abstractExpression property: #parentTypeSize).
