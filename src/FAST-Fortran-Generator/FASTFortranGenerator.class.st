@@ -138,7 +138,9 @@ Class {
 		'fieldAccess',
 		'ioParameter',
 		'tDeclaredType',
-		'functionTypeDeclarationStatement'
+		'functionTypeDeclarationStatement',
+		'fieldDimension',
+		'fieldVariable'
 	],
 	#category : 'FAST-Fortran-Generator',
 	#package : 'FAST-Fortran-Generator'
@@ -303,6 +305,10 @@ f77 allows the BYTE type as an array index, just as it allows the REAL type, but
 		                   newClassNamed: #FieldAccess
 		                   comment:
 		                   'I represent an access to pointer.field in Esope (therefore an expression)'.
+
+	fieldDimension := self newClassNamed: #FieldDimension comment: 'I represent a /anExpr  in pointer.field(/anExpr) '.
+	
+	fieldVariable := self newClassNamed: #FieldVariable comment: 'I represent a field in pointer.field'.
 
 	impliedDoExpression := self
 		                   newClassNamed: #ImpliedDoExpression
@@ -584,6 +590,8 @@ FASTFortranGenerator >> defineHierarchy [
 	doublePrecisionConstant --|> numericalConstant.
 	equivalenceGroup --|> tVariableGroup.
 	fieldAccess --|> variable.
+	fieldDimension --|> variable.
+	fieldVariable --|> variable.
 	functionCall --|> abstractExpression.
 	functionCall --|> tWithArguments.
 	impliedDoExpression --|> tWithLoopControl.
@@ -699,6 +707,9 @@ FASTFortranGenerator >> defineRelations [
 
 	(fieldAccess property: #field)
 	<>- ((variable property: #fieldIn) comment: 'Parent FieldAccess in which receiver is a field').
+	
+	((fieldVariable property: #fieldDimensions) comment: 'fieldDimensions used in the field array dimension access')
+	<>-* ((fieldDimension property: #parentFieldVariable) comment: 'a field array dimension acces expression of which I am in').
 
 	(impliedDoExpression property: #variables)
 	<>-* (tVariableEntity property: #parentImpliedExpression).
