@@ -1,5 +1,5 @@
 "
-An entity that can contain fortran program units and comments
+Program Units in a program file
 
 ## Relations
 ======================
@@ -9,7 +9,7 @@ An entity that can contain fortran program units and comments
 |---|
 | `comments` | `FASTTWithComments` | `container` | `FASTTComment` | list of comments defined in the entity|
 | `declarations` | `FASTFortranTWithDeclarations` | `fortranDeclarationOwner` | `FASTFortranTDeclaration` | The elements I declare|
-| `programUnit` | `FASTFortranProgramFile` | `parentProgramFile` | `FASTFortranProgramUnit` | Program Units in a program file|
+| `programUnits` | `FASTFortranProgramFile` | `programFile` | `FASTFortranProgramUnit` | |
 
 
 ## Properties
@@ -27,7 +27,7 @@ Class {
 	#classTraits : 'FASTFortranTWithDeclarations classTrait + FASTTWithComments classTrait',
 	#instVars : [
 		'#filename => FMProperty',
-		'#programUnit => FMMany type: #FASTFortranProgramUnit opposite: #parentProgramFile'
+		'#programUnits => FMMany type: #FASTFortranProgramUnit opposite: #programFile'
 	],
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
@@ -46,7 +46,7 @@ FASTFortranProgramFile class >> annotation [
 { #category : 'adding' }
 FASTFortranProgramFile >> addProgramUnit: anObject [
 	<generated>
-	^ self programUnit add: anObject
+	^ self programUnits add: anObject
 ]
 
 { #category : 'accessing' }
@@ -64,25 +64,24 @@ FASTFortranProgramFile >> filename: anObject [
 ]
 
 { #category : 'accessing' }
-FASTFortranProgramFile >> programUnit [
-	"Relation named: #programUnit type: #FASTFortranProgramUnit opposite: #parentProgramFile"
+FASTFortranProgramFile >> programUnits [
+	"Relation named: #programUnits type: #FASTFortranProgramUnit opposite: #programFile"
 
 	<generated>
-	<FMComment: 'Program Units in a program file'>
 	<derived>
-	^ programUnit
+	^ programUnits
 ]
 
 { #category : 'accessing' }
-FASTFortranProgramFile >> programUnit: anObject [
+FASTFortranProgramFile >> programUnits: anObject [
 
 	<generated>
-	programUnit value: anObject
+	programUnits value: anObject
 ]
 
 { #category : 'navigation' }
-FASTFortranProgramFile >> programUnitGroup [
+FASTFortranProgramFile >> programUnitsGroup [
 	<generated>
-	<navigation: 'ProgramUnit'>
-	^ MooseSpecializedGroup withAll: self programUnit asSet
+	<navigation: 'ProgramUnits'>
+	^ MooseSpecializedGroup withAll: self programUnits asSet
 ]

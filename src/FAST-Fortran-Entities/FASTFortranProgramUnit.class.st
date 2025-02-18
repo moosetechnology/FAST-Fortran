@@ -1,5 +1,5 @@
 "
-A fortran program unit is a sequence of statements, terminated by an END statement. Every program unit is either a main program or a subprogram. If a program is to be executable, it must have a main program
+Parent program file
 
 ## Relations
 ======================
@@ -8,7 +8,7 @@ A fortran program unit is a sequence of statements, terminated by an END stateme
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `invokedIn` | `FASTTNamedEntity` | `invoked` | `FASTTInvocation` | Optional invocation where this name is used|
-| `parentProgramFile` | `FASTFortranProgramUnit` | `programUnit` | `FASTFortranProgramFile` | Parent program file|
+| `programFile` | `FASTFortranProgramUnit` | `programUnits` | `FASTFortranProgramFile` | |
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
@@ -35,7 +35,7 @@ Class {
 	#traits : 'FASTFortranTWithDeclarations + FASTTBehaviouralEntity + FASTTEntity + FASTTNamedEntity + FASTTWithComments',
 	#classTraits : 'FASTFortranTWithDeclarations classTrait + FASTTBehaviouralEntity classTrait + FASTTEntity classTrait + FASTTNamedEntity classTrait + FASTTWithComments classTrait',
 	#instVars : [
-		'#parentProgramFile => FMOne type: #FASTFortranProgramFile opposite: #programUnit'
+		'#programFile => FMOne type: #FASTFortranProgramFile opposite: #programUnits'
 	],
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
@@ -52,25 +52,24 @@ FASTFortranProgramUnit class >> annotation [
 ]
 
 { #category : 'accessing' }
-FASTFortranProgramUnit >> parentProgramFile [
-	"Relation named: #parentProgramFile type: #FASTFortranProgramFile opposite: #programUnit"
+FASTFortranProgramUnit >> programFile [
+	"Relation named: #programFile type: #FASTFortranProgramFile opposite: #programUnits"
 
 	<generated>
-	<FMComment: 'Parent program file'>
 	<container>
-	^ parentProgramFile
+	^ programFile
 ]
 
 { #category : 'accessing' }
-FASTFortranProgramUnit >> parentProgramFile: anObject [
+FASTFortranProgramUnit >> programFile: anObject [
 
 	<generated>
-	parentProgramFile := anObject
+	programFile := anObject
 ]
 
 { #category : 'navigation' }
-FASTFortranProgramUnit >> parentProgramFileGroup [
+FASTFortranProgramUnit >> programFileGroup [
 	<generated>
-	<navigation: 'ParentProgramFile'>
-	^ MooseSpecializedGroup with: self parentProgramFile
+	<navigation: 'ProgramFile'>
+	^ MooseSpecializedGroup with: self programFile
 ]

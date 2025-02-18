@@ -558,7 +558,7 @@ FASTFortranVisitor >> visitFASTFortranProgramFile: aFASTFortranProgramFile [
 
 	self visitFASTFortranTWithComments: aFASTFortranProgramFile.
 
-	aFASTFortranProgramFile programUnit do: [ :pu | pu accept: self ]
+	aFASTFortranProgramFile programUnits do: [ :pu | pu accept: self ]
 ]
 
 { #category : 'visiting - programUnits' }
