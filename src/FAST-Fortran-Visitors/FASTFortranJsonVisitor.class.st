@@ -181,6 +181,30 @@ FASTFortranJsonVisitor >> replaceByFunctionTypeDeclaration: variableDeclaration 
 	
 ]
 
+{ #category : 'visiting expression' }
+FASTFortranJsonVisitor >> sanitizeIndices: aCollection [
+	"15, it a theoric limit of subscrit array in fortran"
+			
+	^ aCollection
+		collect: [ :expression | 
+			(expression class = FASTFortranBinaryExpression)
+				ifTrue: [  
+					((expression leftOperand class = FASTFortranScalarVariable) and: [ (expression leftOperand name asLowercase = 's__') ])
+						ifTrue: [ | indice |
+							indice := model newUnaryExpression 
+								operator: expression operator;
+								expression: expression rightOperand;
+								yourself.
+							model remove: expression.
+							indice
+						]
+						ifFalse: [ expression ]
+					]
+				ifFalse: [ expression ]
+				]
+		into: (OrderedCollection new: 15).
+]
+
 { #category : 'private' }
 FASTFortranJsonVisitor >> set: aFASTFortranNode startEnd: startEndPoints [
 
@@ -1325,12 +1349,14 @@ FASTFortranJsonVisitor >> visitSubscript: aSubscriptNode [
 	
 
 	(data second class = FASTFortranFieldAccess)
-		ifTrue: [ 
+		ifTrue: [  
+			self flag: '#FIXME: here we do not want ArrayVariable, we want something like FieldVariable, which can contain FieldVariableDimension for any indices'.
+
 			field := model newArrayVariable
 				startPos: data second field startPos ;
 				endPos: data second field endPos ;
 				name: data second field name ;
-				indices: data third ;
+				indices: (self sanitizeIndices: data third) ;
 				yourself.
 			data second field: field.
 			^data second
