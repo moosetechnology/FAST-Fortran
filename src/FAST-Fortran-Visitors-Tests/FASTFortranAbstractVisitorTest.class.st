@@ -473,7 +473,7 @@ FASTFortranAbstractVisitorTest >> loopControlInit: init increment: incr limit: l
 FASTFortranAbstractVisitorTest >> makeSimpleExpression: description [
 
 	description ifNil: [ ^nil ].
-	(description = $*) ifTrue: [ ^FASTFortranAsterisk new ].
+	(description = '*') ifTrue: [ ^FASTFortranAsterisk new ].
 	description isInteger ifTrue: [ ^self integerLiteral: description asString ].
 	description isFloat ifTrue: [ ^self realLiteral: description asString ].
 	description isSymbol ifTrue: [ ^self scalarVariable: description asString ].
@@ -632,5 +632,8 @@ FASTFortranAbstractVisitorTest >> writeStatement: aCollection [
 { #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> writeStatement: args ioParams: params [
 
-	^self ioStatement: FASTFortranWriteStatement ioParams: params arguments: args
+	^self 
+		ioStatement: FASTFortranWriteStatement 
+		ioParams: params 
+		arguments: args
 ]
