@@ -138,7 +138,8 @@ Class {
 		'fieldAccess',
 		'ioParameter',
 		'tDeclaredType',
-		'functionTypeDeclarationStatement'
+		'functionTypeDeclarationStatement',
+		'functionReturnStatement'
 	],
 	#category : 'FAST-Fortran-Generator',
 	#package : 'FAST-Fortran-Generator'
@@ -443,6 +444,8 @@ FASTFortranGenerator >> defineFASTClasses [
 
 
 	ioParameter := self newClassNamed: #IOParameter comment: self commentForIOParameter.
+
+	functionReturnStatement := self newClassNamed: #FunctionReturnStatement comment: 'I represent a return (not related to return keyword) for a function'.
 ]
 
 { #category : 'definition' }
@@ -515,6 +518,8 @@ FASTFortranGenerator >> defineHierarchy [
 	functionTypeDeclarationStatement --|> abstractStatement.
 	functionTypeDeclarationStatement --|> tNamedEntity.
 	functionTypeDeclarationStatement --|> tDeclaredType.
+	functionReturnStatement --|> tNamedEntity. "we use the name to track the function name"
+	functionReturnStatement --|> tReturnStatement. "not the same as return statement (the keyword)"
 	goToStatement --|> abstractStatement.
 	goToStatement --|> tWithLabelReferences.
 	goToAssignedStatement --|> abstractStatement.
