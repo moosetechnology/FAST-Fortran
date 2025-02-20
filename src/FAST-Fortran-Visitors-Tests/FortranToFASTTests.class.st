@@ -814,7 +814,7 @@ C comment in a function''s body
 	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"fortran77.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"comment":" comment in a function''s body","span":"(2:1)-(2:30)","tag":"comment"}],"name":"afct","result":null,"span":"(1:7)-(3:9)","subprograms":null,"tag":"function","type":{"anno":[],"base_type":"integer","selector":null,"span":"(1:7)-(1:13)"}}]}'.
 	result := self visitJsonCode.
 
-	cmt := result first statementBlock comments anyOne.
+	cmt := result first statementBlock statements anyOne.
 	self assert: cmt content equals: 'C comment in a function''s body'.
 	self assert: cmt startPos equals: 31.
 	self assert: cmt endPos equals: 60.
@@ -1461,11 +1461,10 @@ C comment in loop
 	stmt := result first statementBlock statements first.	
 	self assert: stmt class equals: FASTFortranDoStatement.
 	self assert: stmt loopControl isNotNil.
-	self assert: stmt statementBlock statements isEmpty.
+	self assert: stmt statementBlock statements size equals: 1.
+	self assert: stmt statementBlock statements anyOne class equals: FASTFortranComment.
 	self assert: stmt startPos equals: 26.
 	self assert: stmt endPos equals: 67.
-
-	self assert: stmt statementBlock comments size equals: 1.
 ]
 
 { #category : 'tests-statement' }
@@ -2080,8 +2079,8 @@ C comment in else part
 	conditional := result first statementBlock statements first.
 	self assert: conditional class equals: FASTFortranIfBlockStatement.
 	self assert: conditional thenStatementBlock statements isEmpty.
-	self assert: conditional elseStatementBlock statements isEmpty.
-	self assert: conditional elseStatementBlock comments size equals: 1.
+	self assert: conditional elseStatementBlock statements size equals: 1.
+	self assert: conditional elseStatementBlock statements anyOne class equals: FASTFortranComment.
 ]
 
 { #category : 'tests-statement' }
@@ -2145,8 +2144,8 @@ C comment in then part
 
 	conditional := result first statementBlock statements first.
 	self assert: conditional class equals: FASTFortranIfBlockStatement.
-	self assert: conditional thenStatementBlock statements isEmpty.
-	self assert: conditional thenStatementBlock comments size equals: 1.
+	self assert: conditional thenStatementBlock statements size equals: 1.
+	self assert: conditional thenStatementBlock statements anyOne class equals: FASTFortranComment.
 	self assert: conditional thenStatementBlock startPos equals: 43.
 	self assert: conditional thenStatementBlock endPos equals: 64.
 
@@ -2607,12 +2606,12 @@ c23456789 123456789 123456789 123456789 123456789 123456789 12
 
 	body := result first statementBlock.
 	self assert: body statements isCollection.
-	self assert: body statements size equals: 1.
+	self assert: body statements size equals: 2.
+
 	self assert: body statements first class equals: FASTFortranImplicitStatement.
-	
-	self assert: body comments size equals: 1.
-	self assert: body comments first class equals: FASTFortranComment.
-	self assert: body comments first content equals: 'C23456789 123456789 123456789 123456789 123456789 123456789 12'.
+
+	self assert: body statements second class equals: FASTFortranComment.
+	self assert: body statements second content equals: 'C23456789 123456789 123456789 123456789 123456789 123456789 12'.
 ]
 
 { #category : 'tests-programUnit' }
