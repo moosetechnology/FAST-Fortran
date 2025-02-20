@@ -518,6 +518,7 @@ FASTFortranGenerator >> defineHierarchy [
 	functionTypeDeclarationStatement --|> abstractStatement.
 	functionTypeDeclarationStatement --|> tNamedEntity.
 	functionTypeDeclarationStatement --|> tDeclaredType.
+	functionReturnStatement --|> tNamedEntity. "we use the name to track the function name"
 	functionReturnStatement --|> tReturnStatement. "not the same as return statement (the keyword)"
 	goToStatement --|> abstractStatement.
 	goToStatement --|> tWithLabelReferences.
