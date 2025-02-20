@@ -24,10 +24,16 @@ FASTFortranImporter class >> onSourceString: aString [
 FASTFortranImporter >> jsonASTToFAST: jsonAST fromFortranSource: fortranCode [
 
 	| visitor |
-	visitor := FASTFortranJsonVisitor new.
+	visitor := self jsonVisitor.
 	visitor initLineSizes: fortranCode.
 	visitor visitProgramFile: (NeoJSONReader fromString: jsonAST).
 	^visitor model
+]
+
+{ #category : 'running' }
+FASTFortranImporter >> jsonVisitor [
+
+	^FASTFortranJsonVisitor new
 ]
 
 { #category : 'api' }
