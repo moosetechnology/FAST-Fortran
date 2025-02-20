@@ -12,8 +12,8 @@ I am the super class of all Fortran expressions
 | `assignementExpressionOwner` | `FASTFortranAbstractExpression` | `expression` | `FASTFortranFunctionStatement` | The AssignementExpression owner (if possible)|
 | `expressionStatementOwner` | `FASTTExpression` | `expression` | `FASTTExpressionStatement` | The expression statement that own me (if it's the case|
 | `ioSpecifier` | `FASTTExpression` | `expression` | `FASTFortranIOParameter` | name of the parameter (keyword argument)|
-| `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `upperBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
 | `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `lowerBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
+| `parentArrayDimensionDeclarator` | `FASTFortranAbstractExpression` | `upperBound` | `FASTFortranArrayRange` | Parent array dimension declarator|
 | `parentArrayExpression` | `FASTFortranAbstractExpression` | `indices` | `FASTFortranArrayVariable` | an ArrayVariable expression of which I am an indice|
 | `parentConditionalStatement` | `FASTFortranAbstractExpression` | `condition` | `FASTFortranConditionalStatement` | Parent conditional statement (if-block, if-logical, ...)|
 | `parentDataStatement` | `FASTFortranAbstractExpression` | `dataConstants` | `FASTFortranDataGroup` | |

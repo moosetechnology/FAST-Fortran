@@ -16,19 +16,15 @@ A fortran comment
 | Name | Type | Default value | Comment |
 |---|
 | `content` | `String` | nil | Content of the comment as a String|
-| `content` | `String` | nil | Determines a content of a comment|
 | `endPos` | `Number` | nil | |
 | `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : 'FASTFortranComment',
-	#superclass : 'FASTFortranEntity',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTTComment + FASTTEntity',
 	#classTraits : 'FASTTComment classTrait + FASTTEntity classTrait',
-	#instVars : [
-		'#content => FMProperty'
-	],
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
 	#tag : 'Entities'
@@ -37,23 +33,8 @@ Class {
 { #category : 'meta' }
 FASTFortranComment class >> annotation [
 
-	<FMClass: #Comment super: #FASTFortranEntity>
+	<FMClass: #Comment super: #FASTFortranAbstractStatement>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
-]
-
-{ #category : 'accessing' }
-FASTFortranComment >> content [
-
-	<FMProperty: #content type: #String>
-	<generated>
-	<FMComment: 'Determines a content of a comment'>
-	^ content
-]
-
-{ #category : 'accessing' }
-FASTFortranComment >> content: anObject [
-	<generated>
-	content := anObject
 ]
