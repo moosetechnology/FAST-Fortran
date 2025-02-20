@@ -371,6 +371,13 @@ FASTFortranTEntityCreator >> newFunctionCall [
 ]
 
 { #category : 'entity creation' }
+FASTFortranTEntityCreator >> newFunctionReturnStatement [
+
+	<generated>
+	^ self add: FASTFortranFunctionReturnStatement new
+]
+
+{ #category : 'entity creation' }
 FASTFortranTEntityCreator >> newFunctionStatement [
 
 	<generated>
