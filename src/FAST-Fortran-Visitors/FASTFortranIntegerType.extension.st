@@ -6,3 +6,9 @@ FASTFortranIntegerType >> accept: aVisitor [
 	^ aVisitor visitFASTFortranIntegerType: self.
 
 ]
+
+{ #category : '*FAST-Fortran-Visitors' }
+FASTFortranIntegerType >> name [ 
+
+	^'integer'
+]
