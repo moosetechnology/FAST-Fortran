@@ -6,3 +6,9 @@ FASTFortranComplexType >> accept: aVisitor [
 	^ aVisitor visitFASTFortranComplexType: self.
 
 ]
+
+{ #category : '*FAST-Fortran-Visitors' }
+FASTFortranComplexType >> name [ 
+
+	^'complex'
+]

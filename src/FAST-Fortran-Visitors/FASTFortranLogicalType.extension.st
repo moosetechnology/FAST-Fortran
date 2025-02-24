@@ -6,3 +6,9 @@ FASTFortranLogicalType >> accept: aVisitor [
 	^ aVisitor visitFASTFortranLogicalType: self.
 
 ]
+
+{ #category : '*FAST-Fortran-Visitors' }
+FASTFortranLogicalType >> name [ 
+
+	^'logical'
+]

@@ -6,3 +6,9 @@ FASTFortranByteType >> accept: aVisitor [
 	^ aVisitor visitFASTFortranByteType: self.
 
 ]
+
+{ #category : '*FAST-Fortran-Visitors' }
+FASTFortranByteType >> name [ 
+
+	^'byte'
+]

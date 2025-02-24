@@ -6,3 +6,9 @@ FASTFortranRealType >> accept: aVisitor [
 	^ aVisitor visitFASTFortranRealType: self.
 
 ]
+
+{ #category : '*FAST-Fortran-Visitors' }
+FASTFortranRealType >> name [ 
+
+	^'real'
+]
