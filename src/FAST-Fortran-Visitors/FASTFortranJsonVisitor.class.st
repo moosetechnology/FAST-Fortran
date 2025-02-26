@@ -360,7 +360,7 @@ FASTFortranJsonVisitor >> visitComment: aCommentNode [
 	| data |
 	data := super visitFortranComment: aCommentNode.
 	^(self newEntity: FASTFortranComment atPosition: data first)
-		content: 'C' , data second ;
+		content: data second ;
 		yourself
 ]
 
@@ -733,7 +733,7 @@ FASTFortranJsonVisitor >> visitFortranComment: aCommentNode [
 	| data |
 	data := super visitFortranComment: aCommentNode.
 	^(self newEntity: FASTFortranComment atPosition: data first)
-		content: 'C' , data second ;
+		content: data second ;
 		yourself
 ]
 
