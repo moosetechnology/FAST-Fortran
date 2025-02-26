@@ -815,7 +815,7 @@ C comment in a function''s body
 	result := self visitJsonCode.
 
 	cmt := result first statementBlock statements anyOne.
-	self assert: cmt content equals: 'C comment in a function''s body'.
+	self assert: cmt content equals: ' comment in a function''s body'.
 	self assert: cmt startPos equals: 31.
 	self assert: cmt endPos equals: 60.
 ]
@@ -2611,7 +2611,7 @@ c23456789 123456789 123456789 123456789 123456789 123456789 12
 	self assert: body statements first class equals: FASTFortranImplicitStatement.
 
 	self assert: body statements second class equals: FASTFortranComment.
-	self assert: body statements second content equals: 'C23456789 123456789 123456789 123456789 123456789 123456789 12'.
+	self assert: body statements second content equals: '23456789 123456789 123456789 123456789 123456789 123456789 12'.
 ]
 
 { #category : 'tests-programUnit' }
