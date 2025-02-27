@@ -461,11 +461,10 @@ FASTFortranGenerator >> defineHierarchy [
 
 	entity --|> tEntity.
 
-	"An IncludedFile is a virtual entity that represent a file included
-	 it can have comments, declarations or statements"
-	includedFile --|> tWithDeclarations.
-	includedFile --|> tWithComments.
-	includedFile --|> statementBlock.
+	"An IncludedFile is a virtual entity that represent a file included it can have comments,
+	 declarations or statements
+	 Also we want it to be a programUnit to be retrived by Carrefour as a rootEntity"
+	includedFile --|> programUnit.
 
 	programUnit --|> tEntity.
 	programUnit --|> tBehaviouralEntity.
