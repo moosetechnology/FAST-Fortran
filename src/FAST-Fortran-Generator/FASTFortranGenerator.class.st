@@ -139,7 +139,8 @@ Class {
 		'ioParameter',
 		'tDeclaredType',
 		'functionTypeDeclarationStatement',
-		'functionReturnStatement'
+		'functionReturnStatement',
+		'includedFile'
 	],
 	#category : 'FAST-Fortran-Generator',
 	#package : 'FAST-Fortran-Generator'
@@ -385,6 +386,11 @@ FASTFortranGenerator >> defineFASTClasses [
 
 	entity  := self newClassNamed: #Entity.
 
+	includedFile := self
+		              newClassNamed: #IncludedFile
+		              comment:
+		              'A virtual entity representing all the content of an included file'.
+
 	programFile := self
 		               newClassNamed: #ProgramFile
 		               comment:
@@ -455,6 +461,12 @@ FASTFortranGenerator >> defineHierarchy [
 
 	entity --|> tEntity.
 
+	"An IncludedFile is a virtual entity that represent a file included
+	 it can have comments, declarations or statements"
+	includedFile --|> tWithDeclarations.
+	includedFile --|> tWithComments.
+	includedFile --|> statementBlock.
+
 	programUnit --|> tEntity.
 	programUnit --|> tBehaviouralEntity.
 	programUnit --|> tWithDeclarations.
@@ -470,6 +482,7 @@ FASTFortranGenerator >> defineHierarchy [
 
 	programFile --|> tWithComments.
 	programFile --|> tWithDeclarations.
+
 	programUnit --|> tWithComments.
 
 	"other entities"

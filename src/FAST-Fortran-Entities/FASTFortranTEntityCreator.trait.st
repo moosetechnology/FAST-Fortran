@@ -476,6 +476,13 @@ FASTFortranTEntityCreator >> newIncludeStatement [
 ]
 
 { #category : 'entity creation' }
+FASTFortranTEntityCreator >> newIncludedFile [
+
+	<generated>
+	^ self add: FASTFortranIncludedFile new
+]
+
+{ #category : 'entity creation' }
 FASTFortranTEntityCreator >> newInquireStatement [
 
 	<generated>
