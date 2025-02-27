@@ -436,6 +436,13 @@ FASTFortranVisitor >> visitFASTFortranIncludeStatement: aFASTFortranIncludeState
 	self visitFASTFortranTStatement: aFASTFortranIncludeStatement
 ]
 
+{ #category : 'visiting - programUnits' }
+FASTFortranVisitor >> visitFASTFortranIncludedFile: aFASTFortranIncludedFile [
+
+	self visitFASTFortranTWithDeclarations: aFASTFortranIncludedFile.
+	aFASTFortranIncludedFile statementBlock accept: self
+]
+
 { #category : 'visiting - statements' }
 FASTFortranVisitor >> visitFASTFortranInquireStatement: aFASTFortranInquireStatement [
 
