@@ -16,6 +16,37 @@ FASTFortranLocalResolverVisitorTest >> newVisitor [
 ]
 
 { #category : 'tests' }
+FASTFortranLocalResolverVisitorTest >> testIndiceInArray [
+	"
+	SUBROUTINE something()
+	x(i) = 5
+	END
+	"
+
+	| varAccess body |
+	varAccess := FASTFortranArrayVariable new
+		name: #x ;
+		indices: { self scalarVariable: #i }.
+	self subroutine: #something.
+	self addStatement: (FASTFortranAssignmentStatement new
+		variable: varAccess ;
+		expression: (self makeSimpleExpression: 6) ).
+
+	visitor on: ast.
+
+	body := ast statementBlock statements.
+
+	varAccess := body first variable.
+	self assert: varAccess localDeclaration isImplicitDeclaration.
+	self assert: varAccess localDeclaration name equals: 'x'.
+
+	varAccess := varAccess indices anyOne.
+	self assert: varAccess localDeclaration isImplicitDeclaration.
+	self assert: varAccess localDeclaration name equals: 'i'.
+
+]
+
+{ #category : 'tests' }
 FASTFortranLocalResolverVisitorTest >> testLinkToDeclaration [
 	"
 	SUBROUTINE something()
