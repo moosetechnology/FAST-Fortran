@@ -21,7 +21,7 @@ FASTFortranSSAVisitorTest >> newVisitor [
 { #category : 'running' }
 FASTFortranSSAVisitorTest >> runVisitor [
 
-	^ssa := visitor visit: ast
+	^ssa := visitor on: ast
 ]
 
 { #category : 'tests' }

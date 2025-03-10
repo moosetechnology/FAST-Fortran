@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : 'visiting' }
-FASTFortranCopyVisitor class >> visit: anAST [
+FASTFortranCopyVisitor class >> on: anAST [
 
 	^anAST accept: self new
 ]

@@ -2,7 +2,8 @@ Class {
 	#name : 'FASTFortranSSAVisitor',
 	#superclass : 'FASTFortranVisitor',
 	#instVars : [
-		'variableVersions'
+		'variableVersions',
+		'isBeingAssigned'
 	],
 	#category : 'FAST-Fortran-Analyses-SSA',
 	#package : 'FAST-Fortran-Analyses',
@@ -10,10 +11,10 @@ Class {
 }
 
 { #category : 'visiting' }
-FASTFortranSSAVisitor class >> visit: anAST [
+FASTFortranSSAVisitor class >> on: anAST [
 
 	^self new
-		visit: anAST 
+		on: anAST 
 ]
 
 { #category : 'private - ssa' }
@@ -26,6 +27,20 @@ FASTFortranSSAVisitor >> createVariableVersion: aFASTFortranVariable [
 	variableVersions add: aFASTFortranVariable localDeclaration.
 
 	^ssaVersion 
+]
+
+{ #category : 'api' }
+FASTFortranSSAVisitor >> on: anAST [
+
+	| copy |
+	copy := FASTFortranCopyVisitor on: anAST.
+	FASTFortranLocalResolverVisitor new on: copy.
+
+	variableVersions := Set new.
+
+	copy accept: self.
+
+	^ copy
 ]
 
 { #category : 'private - ssa' }
@@ -83,20 +98,6 @@ FASTFortranSSAVisitor >> variableVersionsIn: versions1 notIn: versions2 [
 			v1 sameVariableAs: v2
 		]
 	]
-]
-
-{ #category : 'api' }
-FASTFortranSSAVisitor >> visit: anAST [
-
-	| copy |
-	copy := FASTFortranCopyVisitor visit: anAST.
-	FASTFortranLocalResolverVisitor new on: copy.
-
-	variableVersions := Set new.
-
-	copy accept: self.
-
-	^ copy
 ]
 
 { #category : 'visiting - expressions' }
