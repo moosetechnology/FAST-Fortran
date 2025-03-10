@@ -30,7 +30,7 @@ FASTFortranConditionalBasicBlock >> initialize [
 
 	super initialize.
 
-	nextBlocks := Dictionary new: 3
+	nextBlocks := Dictionary new: 2
 ]
 
 { #category : 'testing' }

@@ -46,10 +46,10 @@ FASTFortranSSAVisitorTest >> testDoLoopCreatesConditionalBlock [
 	self assert: varAccess ssaName equals: 'i_1'.
 
 	varAccess := loopStmt loopControl limit.
-	self assert: varAccess ssaName equals: 'x_1'.
+	self assert: varAccess ssaName equals: 'x_0'.
 
-	self assert: varAccess localDeclaration activeVersion name equals: 'x_1'.
-	self assert: varAccess localDeclaration newVersionNumber equals: 2
+	self assert: varAccess localDeclaration activeVersion name equals: 'x_0'.
+	self assert: varAccess localDeclaration newVersionNumber equals: 1
 
 ]
 
@@ -498,10 +498,10 @@ FASTFortranSSAVisitorTest >> testUnAssigned [
 	varAccess := ssa statementBlock statements second condition.
 
 	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
-	self assert: varAccess ssaVersion version equals: 1.
-	self assert: varAccess ssaName equals: 'x_1'.
+	self assert: varAccess ssaVersion version equals: 0.
+	self assert: varAccess ssaName equals: 'x_0'.
 
-	self assert: varAccess localDeclaration newVersionNumber equals: 2
+	self assert: varAccess localDeclaration newVersionNumber equals: 1
 
 ]
 

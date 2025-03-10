@@ -18,15 +18,34 @@ FASTFortranSSAVisitor class >> on: anAST [
 ]
 
 { #category : 'private - ssa' }
+FASTFortranSSAVisitor >> assignmentVariableVersion: aFASTFortranVariable [
+
+	^(self createVariableVersion: aFASTFortranVariable)
+		newVersionNumber ;
+		yourself
+]
+
+{ #category : 'private - ssa' }
 FASTFortranSSAVisitor >> createVariableVersion: aFASTFortranVariable [
 
-	| ssaVersion |
-	ssaVersion := FASTFortranSSAVariableVersion for: aFASTFortranVariable.
-	aFASTFortranVariable localDeclaration activeVersion: ssaVersion.
+	| newSSA |
+	newSSA := FASTFortranSSAVariableVersion for: aFASTFortranVariable.
+	aFASTFortranVariable localDeclaration activeVersion
+		ifNotNil: [ :lastSSA | newSSA version: lastSSA version ].
+	
+	aFASTFortranVariable localDeclaration activeVersion: newSSA.
 	
 	variableVersions add: aFASTFortranVariable localDeclaration.
 
-	^ssaVersion 
+	^newSSA 
+]
+
+{ #category : 'initialization' }
+FASTFortranSSAVisitor >> initialize [
+
+	super initialize.
+
+	isBeingAssigned := false
 ]
 
 { #category : 'api' }
@@ -103,7 +122,21 @@ FASTFortranSSAVisitor >> variableVersionsIn: versions1 notIn: versions2 [
 { #category : 'visiting - expressions' }
 FASTFortranSSAVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariable [
 
-	^ self visitFASTFortranVariable: aFASTFortranArrayVariable
+	| inAssignment |
+	self visitFASTFortranVariable: aFASTFortranArrayVariable.
+
+	inAssignment := isBeingAssigned.
+	isBeingAssigned := false.
+	aFASTFortranArrayVariable indices do: [ :indice |
+		indice accept: self ].
+	isBeingAssigned := inAssignment
+]
+
+{ #category : 'visiting - statements' }
+FASTFortranSSAVisitor >> visitFASTFortranAssignmentStatement: aFASTFortranAssignmentStatement [
+	"overriding to avoid duplicate visiting"
+
+	self visitFASTFortranTAssignment: aFASTFortranAssignmentStatement
 ]
 
 { #category : 'visiting - statements' }
@@ -188,16 +221,25 @@ FASTFortranSSAVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBl
 { #category : 'visiting - statements' }
 FASTFortranSSAVisitor >> visitFASTFortranTAssignment: aFASTFortranTAssignment [
 
-	| fastVariable |
-	fastVariable := aFASTFortranTAssignment variable.
-	fastVariable ssaVersion: (self createVariableVersion: fastVariable).
+	isBeingAssigned := true.
+	aFASTFortranTAssignment variable accept: self.
+	isBeingAssigned := false.
 
-	aFASTFortranTAssignment expression accept: self
+	aFASTFortranTAssignment expression accept: self.
+
 ]
 
 { #category : 'visiting - expressions' }
 FASTFortranSSAVisitor >> visitFASTFortranVariable: aFASTFortranVariable [
 
-	aFASTFortranVariable ssaVersion:
-		(self useVariableVersion: aFASTFortranVariable)
+	isBeingAssigned
+		ifTrue: [ aFASTFortranVariable ssaVersion: (self assignmentVariableVersion: aFASTFortranVariable) ]
+		ifFalse: [ aFASTFortranVariable ssaVersion: (self useVariableVersion: aFASTFortranVariable) ]
+]
+
+{ #category : 'visiting - statements' }
+FASTFortranSSAVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFortranVariableDeclarationStatement [
+	"overriding to avoid duplicate visiting"
+
+	self visitFASTFortranTStatement: aFASTFortranVariableDeclarationStatement
 ]
