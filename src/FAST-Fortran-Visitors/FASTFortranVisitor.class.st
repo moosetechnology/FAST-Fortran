@@ -767,10 +767,8 @@ FASTFortranVisitor >> visitFASTFortranTLiteral: aFASTFortranTLiteral [
 FASTFortranVisitor >> visitFASTFortranTNamedBehaviouralEntity: aFASTFortranTNamedBehaviouralEntity [
 	<generated>
 
-	self visitFASTFortranTBehaviouralEntity:
-		aFASTFortranTNamedBehaviouralEntity.
-	self visitFASTFortranTNamedEntity:
-		aFASTFortranTNamedBehaviouralEntity
+	self visitFASTFortranTBehaviouralEntity: aFASTFortranTNamedBehaviouralEntity.
+	self visitFASTFortranTNamedEntity: aFASTFortranTNamedBehaviouralEntity
 ]
 
 { #category : 'visiting - traits' }
@@ -909,8 +907,7 @@ FASTFortranVisitor >> visitFASTFortranVariable: aFASTFortranVariable [
 { #category : 'visiting - statements' }
 FASTFortranVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFortranVariableDeclarationStatement [
 
-	self visitFASTFortranTStatement:
-		aFASTFortranVariableDeclarationStatement.
+	self visitFASTFortranTStatement: aFASTFortranVariableDeclarationStatement.
 	aFASTFortranVariableDeclarationStatement declaredType accept: self.
 	aFASTFortranVariableDeclarationStatement declarators do: [ :decl |
 		decl accept: self ]
