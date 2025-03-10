@@ -441,6 +441,16 @@ FASTFortranCFGVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatement [
 	super visitFASTFortranTStatementBlock: aFASTFortranStatement
 ]
 
+{ #category : 'visiting - statements' }
+FASTFortranCFGVisitor >> visitFASTFortranStopStatement: aFASTFortranStopStatement [
+	"Ends the current basicBlock and has no nextBlock"
+
+	self visitFASTFortranTStatement: aFASTFortranStopStatement.
+
+	currentBlock nextBlock: FASTFortranNullBlock new.
+	self closeCurrentBlock
+]
+
 { #category : 'visiting - traits' }
 FASTFortranCFGVisitor >> visitFASTFortranTStatement: aFASTFortranTStatement [
 
