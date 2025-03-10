@@ -1162,6 +1162,21 @@ FASTFortranJsonVisitor >> visitRange: aRangeNode [
 ]
 
 { #category : 'visiting statement' }
+FASTFortranJsonVisitor >> visitRead2Statement: aReadStatementNode [
+	"visited keys are: #(span format arguments)
+	 format translate to 1 IOParameter"
+
+	| data |
+	data := super visitRead2Statement: aReadStatementNode.
+
+	^(self newEntity: FASTFortranReadStatement atPosition: data first)
+		ioParameters: { data second };
+		arguments: data third;
+		yourself
+
+]
+
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitReadStatement: aReadStatementNode [
 	"see #visitWriteStatement:
 	visited keys are: #(span ioParameters arguments)"
