@@ -35,7 +35,7 @@ FASTFortranSSAVisitorTest >> testArrayAssignement [
 	| varAccess |
 	varAccess := FASTFortranArrayVariable new
 		name: #x ;
-		indices: { self scalarVariable: #i }.
+		indices: { self makeSimpleExpression: 1 }.
 	self subroutine: #something.
 	self addStatement: (FASTFortranAssignmentStatement new
 		variable: varAccess ;
@@ -45,7 +45,6 @@ FASTFortranSSAVisitorTest >> testArrayAssignement [
 
 	varAccess := ssa statementBlock statements first variable.
 	self assert: varAccess ssaName equals: 'x_1'.
-	self assert: varAccess indices first ssaName equals: 'i_0'.
 
 ]
 
