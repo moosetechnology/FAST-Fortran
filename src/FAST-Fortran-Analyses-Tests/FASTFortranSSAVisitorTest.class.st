@@ -25,6 +25,31 @@ FASTFortranSSAVisitorTest >> runVisitor [
 ]
 
 { #category : 'tests' }
+FASTFortranSSAVisitorTest >> testArrayAssignement [
+	"
+	SUBROUTINE something()
+	x(i) = 6
+	END
+	"
+
+	| varAccess |
+	varAccess := FASTFortranArrayVariable new
+		name: #x ;
+		indices: { self scalarVariable: #i }.
+	self subroutine: #something.
+	self addStatement: (FASTFortranAssignmentStatement new
+		variable: varAccess ;
+		expression: (self makeSimpleExpression: 6) ).
+
+	self runVisitor.
+
+	varAccess := ssa statementBlock statements first variable.
+	self assert: varAccess ssaName equals: 'x_1'.
+	self assert: varAccess indices first ssaName equals: 'i_0'.
+
+]
+
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testDoLoopCreatesConditionalBlock [
 
 	| loopStmt varAccess |
@@ -50,6 +75,31 @@ FASTFortranSSAVisitorTest >> testDoLoopCreatesConditionalBlock [
 
 	self assert: varAccess localDeclaration activeVersion name equals: 'x_0'.
 	self assert: varAccess localDeclaration newVersionNumber equals: 1
+
+]
+
+{ #category : 'tests' }
+FASTFortranSSAVisitorTest >> testFieldAccessAssignement [
+	"
+	SUBROUTINE something()
+	p.x = 6
+	END
+	"
+
+	| varAccess |
+	varAccess := FASTFortranFieldAccess new
+		pointer: (self scalarVariable: #p) ;
+		field: (self scalarVariable: #x).
+	self subroutine: #something.
+	self addStatement: (FASTFortranAssignmentStatement new
+		variable: varAccess ;
+		expression: (self makeSimpleExpression: 6) ).
+
+	self runVisitor.
+
+	varAccess := ssa statementBlock statements first variable.
+	self assert: varAccess pointer ssaName equals: 'p_0'.
+	self assert: varAccess field ssaName equals: 'x_1'.
 
 ]
 
