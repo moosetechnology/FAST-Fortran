@@ -304,6 +304,13 @@ FASTFortranVisitor >> visitFASTFortranExternalStatement: aFASTFortranExternalSta
 	self visitFASTFortranTStatement: aFASTFortranExternalStatement
 ]
 
+{ #category : 'visiting - expressions' }
+FASTFortranVisitor >> visitFASTFortranFieldAccess: aFASTFortranFieldAccess [ 
+
+	aFASTFortranFieldAccess pointer accept: self.
+	aFASTFortranFieldAccess field accept: self.
+]
+
 { #category : 'visiting - statements' }
 FASTFortranVisitor >> visitFASTFortranFormatStatement: aFASTFortranFormatStatement [
 	<generated>
