@@ -503,6 +503,31 @@ FASTFortranSSAVisitorTest >> testIfLogicalNotAssignedInside [
 ]
 
 { #category : 'tests' }
+FASTFortranSSAVisitorTest >> testParameterIsAssigned [
+	"
+	SUBROUTINE something(x)
+	INTEGER x
+	END
+	"
+
+	| varAccess |
+	self subroutine: #something.
+	ast addParameter: (self scalarVariable: #x).
+	self addStatement: (self declarationStatement: #integer variables: #(x)).
+
+	self runVisitor.
+
+	varAccess := ssa statementBlock statements first declarators first.
+
+	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
+	self assert: varAccess ssaVersion version equals: 1.
+	self assert: varAccess ssaName equals: 'x_1'.
+
+	self assert: varAccess localDeclaration newVersionNumber equals: 2
+
+]
+
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testSingleAssignement [
 	"
 	SUBROUTINE something()
