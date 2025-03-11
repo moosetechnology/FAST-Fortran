@@ -32,13 +32,6 @@ FASTFortranLocalResolverVisitor >> visitFASTFortranArrayVariable: aFASTFortranAr
 	self visitFASTFortranVariable: aFASTFortranArrayVariable
 ]
 
-{ #category : 'visiting - programUnits' }
-FASTFortranLocalResolverVisitor >> visitFASTFortranProcedure: aFASTFortranProcedure [
-	"do not call #visitFASTFortranProgramUnit:"
-
-	self visitFASTFortranSubprogram: aFASTFortranProcedure
-]
-
 { #category : 'visiting - expressions' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranScalarVariable: aFASTFortranScalarVariable [
 	"reference to an identifier in the AST"
@@ -56,12 +49,6 @@ FASTFortranLocalResolverVisitor >> visitFASTFortranStatementBlock: aFASTFortranS
 		 a startPos < b startPos ]) do: [ :node | node accept: self ].
 
 	^ scoper popScope
-]
-
-{ #category : 'visiting - traits' }
-FASTFortranLocalResolverVisitor >> visitFASTFortranTBehaviouralEntity: aFASTFortranTBehaviouralEntity [
-
-	aFASTFortranTBehaviouralEntity statementBlock accept: self
 ]
 
 { #category : 'visiting - expressions' }
