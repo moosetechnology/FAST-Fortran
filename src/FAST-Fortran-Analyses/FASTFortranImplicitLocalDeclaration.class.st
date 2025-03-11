@@ -43,6 +43,12 @@ FASTFortranImplicitLocalDeclaration >> isImplicitDeclaration [
 	^true
 ]
 
+{ #category : 'testing' }
+FASTFortranImplicitLocalDeclaration >> isParameter [
+
+	^false
+]
+
 { #category : 'accessing' }
 FASTFortranImplicitLocalDeclaration >> name [
 
