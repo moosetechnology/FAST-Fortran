@@ -5,18 +5,10 @@ I represent a FASTNonLocalDeclaration in Fortran where variables can be implicit
 Class {
 	#name : 'FASTFortranImplicitLocalDeclaration',
 	#superclass : 'FASTFortranEntity',
-	#classTraits : 'FASTTEntity classTrait',
 	#category : 'FAST-Fortran-Analyses-Resolver',
 	#package : 'FAST-Fortran-Analyses',
 	#tag : 'Resolver'
 }
-
-{ #category : 'visiting' }
-FASTFortranImplicitLocalDeclaration >> accept: aVisitor [
-	<generated>
-	^ aVisitor visitFASTFortranImplicitLocalDeclaration: self.
-
-]
 
 { #category : 'private - ssa' }
 FASTFortranImplicitLocalDeclaration >> activeVersion [
@@ -41,12 +33,6 @@ FASTFortranImplicitLocalDeclaration >> firstUse [
 FASTFortranImplicitLocalDeclaration >> isImplicitDeclaration [
 
 	^true
-]
-
-{ #category : 'testing' }
-FASTFortranImplicitLocalDeclaration >> isParameter [
-
-	^false
 ]
 
 { #category : 'accessing' }

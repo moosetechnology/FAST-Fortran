@@ -9,8 +9,8 @@ Class {
 { #category : 'private' }
 FASTFortranLocalResolverScoping >> nonLocalDeclaration: name [
 	"In Fortran a non declared identifier can be an implicit identifier"
-
-	^ FASTFortranImplicitLocalDeclaration new name: name
+1halt.
+	^ FASTFortranImplicitLocalDeclaration new
 ]
 
 { #category : 'api' }
@@ -60,8 +60,8 @@ FASTFortranLocalResolverScoping >> scopeAddParameterDefinition: name [
 	 - a parameter definition is considered as a first use"
 
 	| parameterDefinition |
-
-	parameterDefinition := FASTFortranParameterDefinition new name: name.
+1halt.
+	parameterDefinition := FASTFortranParameterLocalDefinition new name: name.
 	self scopeAdd: name declaration: parameterDefinition.
 
 	^ parameterDefinition
