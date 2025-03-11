@@ -1,7 +1,6 @@
 "
-I represent a FASTNonLocalDeclaration in Fortran where it can be an implicitDeclaration
+I represent a FASTNonLocalDeclaration in Fortran where variables can be implicitly declared
 
-I a more a marker than a real class
 "
 Class {
 	#name : 'FASTFortranImplicitLocalDeclaration',
@@ -62,11 +61,4 @@ FASTFortranImplicitLocalDeclaration >> ssaVersion: aSSAVersion [
 	^self firstUse ssaVersion: aSSAVersion
 
 
-]
-
-{ #category : 'accessing' }
-FASTFortranImplicitLocalDeclaration >> variable [
-
-	self flag: 'should not exist. Due to'.
-	^self name
 ]
