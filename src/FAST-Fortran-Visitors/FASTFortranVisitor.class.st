@@ -953,7 +953,7 @@ FASTFortranVisitor >> visitFASTFortranWriteStatement: aFASTFortranWriteStatement
 { #category : 'visiting - programUnits' }
 FASTFortranVisitor >> visitParameter: aFASTFortranScalarVariable [
 	"no special type for parameters, but worth having its own visit method
-	 (see #visitTWithParameters:)"
+	 (see #visitFASTFortranTWithParameters:)"
 
 	aFASTFortranScalarVariable accept: self
 ]
