@@ -80,9 +80,18 @@ FASTFortranLocalResolverVisitor >> visitFASTFortranVariableDeclarator: aFASTVari
 FASTFortranLocalResolverVisitor >> visitFASTIdentifierExpression: aFASTIdentifier [
 	"reference to an identifier in the AST
 	 - the identifier refers to a variable (structuralEntity)
-	 - look for a definition of this identifier in the hierarchy of scopes
-	 - if not found, creates a NonLocalDeclaration for it
-	 - binds this reference to the declaration"
+	 - look for a declaration of this identifier in the hierarchy of scopes
+	 - binds the reference (aFASTIdentifier) to this declaration"
 
 	scoper bind: aFASTIdentifier toLocalDeclaration: aFASTIdentifier name
+]
+
+{ #category : 'visiting - programUnits' }
+FASTFortranLocalResolverVisitor >> visitParameter: aFASTFortranScalarVariable [
+	"parameters are considered as a 'use' of the parameter-variable
+	 this is because in Fortran the declaration is in the body of the sub-program"
+
+	scoper
+		scopeAdd: aFASTFortranScalarVariable name
+		declaration: (FASTFortranParameterLocalDefinition new)
 ]
