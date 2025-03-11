@@ -70,6 +70,30 @@ FASTFortranLocalResolverVisitorTest >> testLinkToDeclaration [
 ]
 
 { #category : 'tests' }
+FASTFortranLocalResolverVisitorTest >> testLinkToDeclaredParameter [
+	"
+	SUBROUTINE something(x)
+	INTEGER x
+	END
+	"
+
+	| varAccess |
+	self subroutine: #something.
+	ast addParameter: (self scalarVariable: #x).
+	self addStatement: (self declarationStatement: #integer variables: #(x)).
+
+	visitor on: ast.
+
+	varAccess := ast statementBlock statements first declarators first.
+
+	self deny: varAccess localDeclaration isImplicitDeclaration.
+	self assert: varAccess localDeclaration equals: varAccess.
+
+	self assert: varAccess localUses size equals: 1.
+	self assert: varAccess localUses anyOne equals: ast parameters first
+]
+
+{ #category : 'tests' }
 FASTFortranLocalResolverVisitorTest >> testLinkToImplicitDeclaration [
 	"
 	SUBROUTINE something()
@@ -95,4 +119,27 @@ FASTFortranLocalResolverVisitorTest >> testLinkToImplicitDeclaration [
 
 	self assert: varAccess localDeclaration name equals: 'y'.
 	self assert: varAccess localDeclaration firstUse equals: body second variable
+]
+
+{ #category : 'tests' }
+FASTFortranLocalResolverVisitorTest >> testLinkToUndeclaredParameter [
+	"
+	SUBROUTINE something(x)
+	write (*) x
+	END
+	"
+
+	| varAccess |
+	self subroutine: #something.
+	ast addParameter: (self scalarVariable: #x).
+	self addStatement: (self writeStatement: #(x)).
+
+	visitor on: ast.
+
+	varAccess := ast statementBlock statements first arguments first.
+
+	self assert: varAccess localDeclaration isImplicitDeclaration.
+	self assert: varAccess localDeclaration isParameter.
+
+	self assert: varAccess localDeclaration equals: ast parameters first
 ]
