@@ -88,8 +88,11 @@ FASTFortranLocalResolverVisitorTest >> testLinkToImplicitDeclaration [
 	visitor on: ast.
 
 	body := ast statementBlock statements.
-	varAccess := body third expression.
+	varAccess := body third expression.  "y in 'x=y'"
+
 	self assert: varAccess localDeclaration isImplicitDeclaration.
+	self deny: varAccess localDeclaration isParameter.
+
 	self assert: varAccess localDeclaration name equals: 'y'.
 	self assert: varAccess localDeclaration firstUse equals: body second variable
 ]
