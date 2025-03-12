@@ -806,6 +806,17 @@ FASTFortranExporterVisitor >> visitFASTFortranRealType: aFASTFortranType [
 	self visitFASTFortranType: aFASTFortranType
 ]
 
+{ #category : 'visiting - traits' }
+FASTFortranExporterVisitor >> visitFASTFortranReturnStatement: aFASTFortranTReturnStatement [
+
+	self
+		visitFASTFortranAbstractStatement: aFASTFortranTReturnStatement;
+		<< 'return '.
+	aFASTFortranTReturnStatement expression ifNotNil: [ :expr |
+		expr accept: self ].
+	self newLine
+]
+
 { #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranRewindStatement: aFASTFortranRewindStatement [
 
@@ -900,17 +911,6 @@ FASTFortranExporterVisitor >> visitFASTFortranTComment: aFASTFortranTComment [
 FASTFortranExporterVisitor >> visitFASTFortranTLiteral: aFASTFortranTLiteral [
 
 	self << aFASTFortranTLiteral primitiveValue asString
-]
-
-{ #category : 'visiting - traits' }
-FASTFortranExporterVisitor >> visitFASTFortranTReturnStatement: aFASTFortranTReturnStatement [
-
-	self
-		visitFASTFortranAbstractStatement: aFASTFortranTReturnStatement;
-		<< 'return '.
-	aFASTFortranTReturnStatement expression ifNotNil: [ :expr |
-		expr accept: self ].
-	self newLine
 ]
 
 { #category : 'visiting - traits' }
