@@ -503,10 +503,11 @@ FASTFortranSSAVisitorTest >> testIfLogicalNotAssignedInside [
 ]
 
 { #category : 'tests' }
-FASTFortranSSAVisitorTest >> testParameterIsAssigned [
+FASTFortranSSAVisitorTest >> testParameterDeclaredAndAssigned [
 	"
 	SUBROUTINE something(x)
 	INTEGER x
+	x = 5
 	END
 	"
 
@@ -514,16 +515,63 @@ FASTFortranSSAVisitorTest >> testParameterIsAssigned [
 	self subroutine: #something.
 	ast addParameter: (self scalarVariable: #x).
 	self addStatement: (self declarationStatement: #integer variables: #(x)).
+	self addStatement: (self assignementStatement: #x value: 5).
 
 	self runVisitor.
 
-	varAccess := ssa statementBlock statements first declarators first.
+	varAccess := ssa statementBlock statements second variable.
 
 	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
 	self assert: varAccess ssaVersion version equals: 1.
 	self assert: varAccess ssaName equals: 'x_1'.
 
 	self assert: varAccess localDeclaration newVersionNumber equals: 2
+
+]
+
+{ #category : 'tests' }
+FASTFortranSSAVisitorTest >> testParameterUndeclaredAndAssigned [
+	"
+	SUBROUTINE something(x)
+	x = 5
+	END
+	"
+
+	| varAccess |
+	self subroutine: #something.
+	ast addParameter: (self scalarVariable: #x).
+	self addStatement: (self assignementStatement: #x value: 5).
+
+	self runVisitor.
+
+	varAccess := ssa statementBlock statements first variable.
+
+	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
+	self assert: varAccess ssaVersion version equals: 1.
+	self assert: varAccess ssaName equals: 'x_1'.
+
+]
+
+{ #category : 'tests' }
+FASTFortranSSAVisitorTest >> testParameterUndeclaredAndUsed [
+	"
+	SUBROUTINE something(x)
+	write (*) x
+	END
+	"
+
+	| varAccess |
+	self subroutine: #something.
+	ast addParameter: (self scalarVariable: #x).
+	self addStatement: (self writeStatement: #(x)).
+
+	self runVisitor.
+
+	varAccess := ssa statementBlock statements first arguments anyOne.
+
+	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
+	self assert: varAccess ssaVersion version equals: 0.
+	self assert: varAccess ssaName equals: 'x_0'.
 
 ]
 
