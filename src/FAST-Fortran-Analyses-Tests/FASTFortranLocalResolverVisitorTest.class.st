@@ -16,7 +16,37 @@ FASTFortranLocalResolverVisitorTest >> newVisitor [
 ]
 
 { #category : 'tests' }
-FASTFortranLocalResolverVisitorTest >> testIndiceInArray [
+FASTFortranLocalResolverVisitorTest >> testIndiceInArrayDeclared [
+	"
+	SUBROUTINE something()
+	integer i
+	x(i) = 5
+	END
+	"
+
+	| varAccess body |
+	varAccess := FASTFortranArrayVariable new
+		name: #x ;
+		indices: { self scalarVariable: #i }.
+	self subroutine: #something.
+	self addStatement: (self declarationStatement: #integer variables: #(i)).
+	self addStatement: (FASTFortranAssignmentStatement new
+		variable: varAccess ;
+		expression: (self makeSimpleExpression: 6) ).
+
+	visitor on: ast.
+
+	body := ast statementBlock statements.
+
+	varAccess := body second variable indices anyOne.
+
+	self deny: varAccess localDeclaration isImplicitDeclaration.
+	self assert: varAccess localDeclaration equals: body first declarators anyOne.
+
+]
+
+{ #category : 'tests' }
+FASTFortranLocalResolverVisitorTest >> testIndiceInArrayUndeclared [
 	"
 	SUBROUTINE something()
 	x(i) = 5
@@ -36,14 +66,13 @@ FASTFortranLocalResolverVisitorTest >> testIndiceInArray [
 
 	body := ast statementBlock statements.
 
-	varAccess := body first variable.
-	self assert: varAccess localDeclaration isImplicitDeclaration.
-	self assert: varAccess localDeclaration name equals: 'x'.
+	varAccess := body first variable indices anyOne.
 
-	varAccess := varAccess indices anyOne.
 	self assert: varAccess localDeclaration isImplicitDeclaration.
+	self deny: varAccess localDeclaration isParameter.
+
 	self assert: varAccess localDeclaration name equals: 'i'.
-
+	self assert: varAccess localDeclaration firstUse equals: varAccess
 ]
 
 { #category : 'tests' }
