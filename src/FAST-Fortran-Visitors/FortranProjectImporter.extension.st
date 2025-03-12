@@ -9,13 +9,13 @@ FortranProjectImporter >> defaultFASTSource [
 
 { #category : '*FAST-Fortran-Visitors' }
 FortranProjectImporter >> fastSrcFolder [
-	^'FastTmp'
+	^'FastTmp' asFileReference 
 ]
 
 { #category : '*FAST-Fortran-Visitors' }
 FortranProjectImporter >> getFASTFor: sourceCode [
 
-	"Remove TAB at state of lines ???? "
+	"Remove TAB at start of lines ???? "
 
 	| fastSrcFile |
 
@@ -29,12 +29,15 @@ FortranProjectImporter >> getFASTFor: sourceCode [
 		deEsopify:fastSrcFile
 		from: self fastSrcFolder asFileReference
 		to: self fastSrcFolder asFileReference.
+
 	self
 		parseFortran77: (fastSrcFile withExtension: 'f')
 		from: self fastSrcFolder asFileReference
 		to: self fastSrcFolder asFileReference.
 
-	^self jsonASTToFAST 
+	^FASTFortranJsonVisitor new visitProgramFile:
+		  ((fastSrcFile withExtension: 'json') readStreamEncoded: self defaultFileEncoding do: [ :str | 
+			   NeoJSONReader fromString: str contents ])
 ]
 
 { #category : '*FAST-Fortran-Visitors' }

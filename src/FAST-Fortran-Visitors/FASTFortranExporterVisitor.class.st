@@ -722,15 +722,6 @@ FASTFortranExporterVisitor >> visitFASTFortranLoopControlExpression: aFASTFortra
 		self outputTopLevelExpression: [ incr accept: self ] ]
 ]
 
-{ #category : 'visiting' }
-FASTFortranExporterVisitor >> visitFASTFortranModel: aFASTFortranModel [
-
-	1 halt.  "never called?"
-	(self rootEntitiesIn: aFASTFortranModel) do: [ :rootEntity |
-		rootEntity accept: self ].
-	^ self outputStream
-]
-
 { #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranOpenStatement: aFASTFortranOpenStatement [
 
@@ -804,6 +795,17 @@ FASTFortranExporterVisitor >> visitFASTFortranRealType: aFASTFortranType [
 
 	self << 'real'.
 	self visitFASTFortranType: aFASTFortranType
+]
+
+{ #category : 'visiting - traits' }
+FASTFortranExporterVisitor >> visitFASTFortranReturnStatement: aFASTFortranTReturnStatement [
+
+	self
+		visitFASTFortranAbstractStatement: aFASTFortranTReturnStatement;
+		<< 'return '.
+	aFASTFortranTReturnStatement expression ifNotNil: [ :expr |
+		expr accept: self ].
+	self newLine
 ]
 
 { #category : 'visiting - statements' }
@@ -903,35 +905,10 @@ FASTFortranExporterVisitor >> visitFASTFortranTLiteral: aFASTFortranTLiteral [
 ]
 
 { #category : 'visiting - traits' }
-FASTFortranExporterVisitor >> visitFASTFortranTReturnStatement: aFASTFortranTReturnStatement [
-
-	self
-		visitFASTFortranAbstractStatement: aFASTFortranTReturnStatement;
-		<< 'return '.
-	aFASTFortranTReturnStatement expression ifNotNil: [ :expr |
-		expr accept: self ].
-	self newLine
-]
-
-{ #category : 'visiting - traits' }
 FASTFortranExporterVisitor >> visitFASTFortranTWithArguments: aFASTFortranTWithArguments [
 
 	self visitNodeListSeparatedByCommas:
 		aFASTFortranTWithArguments arguments
-]
-
-{ #category : 'visiting - traits' }
-FASTFortranExporterVisitor >> visitFASTFortranTWithFormat: aFASTFortranTWithFormatIdentifier [
-	"call to #outputExpression:inParentheses: is oportunistic.
-	 It is not an operator precedence case"
-
-	1 halt.   "never called?"
-
-	self
-		outputExpression: [
-			self visitNodeListSeparatedByCommas:
-				aFASTFortranTWithFormatIdentifier format ]
-		inParentheses: true
 ]
 
 { #category : 'visiting - traits' }

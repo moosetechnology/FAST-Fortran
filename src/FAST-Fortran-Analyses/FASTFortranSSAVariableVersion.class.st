@@ -28,7 +28,14 @@ FASTFortranSSAVariableVersion >> addChoiceToPhi: aPhiVersion [
 FASTFortranSSAVariableVersion >> for: aFASTFortranVariable [
 
 	localDeclaration := aFASTFortranVariable localDeclaration.
-	version := localDeclaration newVersionNumber
+]
+
+{ #category : 'initialization' }
+FASTFortranSSAVariableVersion >> initialize [
+
+	super initialize.
+
+	version := 0
 ]
 
 { #category : 'accessing' }
@@ -47,6 +54,12 @@ FASTFortranSSAVariableVersion >> localDeclaration: anObject [
 FASTFortranSSAVariableVersion >> name [
 
 	^localDeclaration name , '_' , version asString
+]
+
+{ #category : 'instance creation' }
+FASTFortranSSAVariableVersion >> newVersionNumber [
+
+	^version := version + 1
 ]
 
 { #category : 'testing' }

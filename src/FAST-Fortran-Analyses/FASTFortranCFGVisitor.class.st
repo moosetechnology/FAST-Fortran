@@ -234,7 +234,7 @@ FASTFortranCFGVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
 
 { #category : 'visiting - statements' }
 FASTFortranCFGVisitor >> visitFASTFortranExitStatement: aFASTFortranExitStatement [
-	"looks a bit like a GOTO, but don'e need tospecify the label (goes to enclosing loop)"
+	"looks a bit like a GOTO, but does not need to specify the label (goes to enclosing loop)"
 
 	self visitFASTFortranTStatement: aFASTFortranExitStatement.
 
@@ -439,6 +439,16 @@ FASTFortranCFGVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatement [
 	to avoid calling #visitTStatement:"
 
 	super visitFASTFortranTStatementBlock: aFASTFortranStatement
+]
+
+{ #category : 'visiting - statements' }
+FASTFortranCFGVisitor >> visitFASTFortranStopStatement: aFASTFortranStopStatement [
+	"Ends the current basicBlock and has no nextBlock"
+
+	self visitFASTFortranTStatement: aFASTFortranStopStatement.
+
+	currentBlock nextBlock: FASTFortranNullBlock new.
+	self closeCurrentBlock
 ]
 
 { #category : 'visiting - traits' }

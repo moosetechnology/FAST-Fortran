@@ -10,7 +10,7 @@ FASTFortranEntity >> isImplicitDeclaration [
 FASTFortranEntity >> newVersionNumber [
 
 	^self activeVersion
-		ifNil: [ 1 ]
+		ifNil: [ 0 ]
 		ifNotNil: [ :active | active version + 1 ]
 
 ]

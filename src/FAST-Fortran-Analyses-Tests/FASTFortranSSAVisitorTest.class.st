@@ -21,7 +21,31 @@ FASTFortranSSAVisitorTest >> newVisitor [
 { #category : 'running' }
 FASTFortranSSAVisitorTest >> runVisitor [
 
-	^ssa := visitor visit: ast
+	^ssa := visitor on: ast
+]
+
+{ #category : 'tests' }
+FASTFortranSSAVisitorTest >> testArrayAssignement [
+	"
+	SUBROUTINE something()
+	x(i) = 6
+	END
+	"
+
+	| varAccess |
+	varAccess := FASTFortranArrayVariable new
+		name: #x ;
+		indices: { self makeSimpleExpression: 1 }.
+	self subroutine: #something.
+	self addStatement: (FASTFortranAssignmentStatement new
+		variable: varAccess ;
+		expression: (self makeSimpleExpression: 6) ).
+
+	self runVisitor.
+
+	varAccess := ssa statementBlock statements first variable.
+	self assert: varAccess ssaName equals: 'x_1'.
+
 ]
 
 { #category : 'tests' }
@@ -46,10 +70,35 @@ FASTFortranSSAVisitorTest >> testDoLoopCreatesConditionalBlock [
 	self assert: varAccess ssaName equals: 'i_1'.
 
 	varAccess := loopStmt loopControl limit.
-	self assert: varAccess ssaName equals: 'x_1'.
+	self assert: varAccess ssaName equals: 'x_0'.
 
-	self assert: varAccess localDeclaration activeVersion name equals: 'x_1'.
-	self assert: varAccess localDeclaration newVersionNumber equals: 2
+	self assert: varAccess localDeclaration activeVersion name equals: 'x_0'.
+	self assert: varAccess localDeclaration newVersionNumber equals: 1
+
+]
+
+{ #category : 'tests' }
+FASTFortranSSAVisitorTest >> testFieldAccessAssignement [
+	"
+	SUBROUTINE something()
+	p.x = 6
+	END
+	"
+
+	| varAccess |
+	varAccess := FASTFortranFieldAccess new
+		pointer: (self scalarVariable: #p) ;
+		field: (self scalarVariable: #x).
+	self subroutine: #something.
+	self addStatement: (FASTFortranAssignmentStatement new
+		variable: varAccess ;
+		expression: (self makeSimpleExpression: 6) ).
+
+	self runVisitor.
+
+	varAccess := ssa statementBlock statements first variable.
+	self assert: varAccess pointer ssaName equals: 'p_0'.
+	self assert: varAccess field ssaName equals: 'x_1'.
 
 ]
 
@@ -454,6 +503,79 @@ FASTFortranSSAVisitorTest >> testIfLogicalNotAssignedInside [
 ]
 
 { #category : 'tests' }
+FASTFortranSSAVisitorTest >> testParameterDeclaredAndAssigned [
+	"
+	SUBROUTINE something(x)
+	INTEGER x
+	x = 5
+	END
+	"
+
+	| varAccess |
+	self subroutine: #something.
+	ast addParameter: (self scalarVariable: #x).
+	self addStatement: (self declarationStatement: #integer variables: #(x)).
+	self addStatement: (self assignementStatement: #x value: 5).
+
+	self runVisitor.
+
+	varAccess := ssa statementBlock statements second variable.
+
+	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
+	self assert: varAccess ssaVersion version equals: 1.
+	self assert: varAccess ssaName equals: 'x_1'.
+
+	self assert: varAccess localDeclaration newVersionNumber equals: 2
+
+]
+
+{ #category : 'tests' }
+FASTFortranSSAVisitorTest >> testParameterUndeclaredAndAssigned [
+	"
+	SUBROUTINE something(x)
+	x = 5
+	END
+	"
+
+	| varAccess |
+	self subroutine: #something.
+	ast addParameter: (self scalarVariable: #x).
+	self addStatement: (self assignementStatement: #x value: 5).
+
+	self runVisitor.
+
+	varAccess := ssa statementBlock statements first variable.
+
+	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
+	self assert: varAccess ssaVersion version equals: 1.
+	self assert: varAccess ssaName equals: 'x_1'.
+
+]
+
+{ #category : 'tests' }
+FASTFortranSSAVisitorTest >> testParameterUndeclaredAndUsed [
+	"
+	SUBROUTINE something(x)
+	write (*) x
+	END
+	"
+
+	| varAccess |
+	self subroutine: #something.
+	ast addParameter: (self scalarVariable: #x).
+	self addStatement: (self writeStatement: #(x)).
+
+	self runVisitor.
+
+	varAccess := ssa statementBlock statements first arguments anyOne.
+
+	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
+	self assert: varAccess ssaVersion version equals: 0.
+	self assert: varAccess ssaName equals: 'x_0'.
+
+]
+
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testSingleAssignement [
 	"
 	SUBROUTINE something()
@@ -483,14 +605,14 @@ FASTFortranSSAVisitorTest >> testSingleAssignement [
 FASTFortranSSAVisitorTest >> testUnAssigned [
 	"
 	SUBROUTINE something()
-	INTEGER x
+	LOGICAL x
 	if (x) print 5
 	END
 	"
 
 	| varAccess |
 	self subroutine: #something.
-	self addStatement: (self declarationStatement: #integer variables: #(x)).
+	self addStatement: (self declarationStatement: #logical variables: #(x)).
 	self addStatement: (self logicalIf: #x statement: (self printStatement: #(5) )).
 
 	self runVisitor.
@@ -498,10 +620,10 @@ FASTFortranSSAVisitorTest >> testUnAssigned [
 	varAccess := ssa statementBlock statements second condition.
 
 	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
-	self assert: varAccess ssaVersion version equals: 1.
-	self assert: varAccess ssaName equals: 'x_1'.
+	self assert: varAccess ssaVersion version equals: 0.
+	self assert: varAccess ssaName equals: 'x_0'.
 
-	self assert: varAccess localDeclaration newVersionNumber equals: 2
+	self assert: varAccess localDeclaration newVersionNumber equals: 1
 
 ]
 

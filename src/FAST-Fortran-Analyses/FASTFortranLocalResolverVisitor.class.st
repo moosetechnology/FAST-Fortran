@@ -29,14 +29,18 @@ FASTFortranLocalResolverVisitor >> on: aFASTFortranProgramUnit [
 { #category : 'visiting - expressions' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariable [
 
-	self visitFASTFortranVariable: aFASTFortranArrayVariable
+	self visitFASTFortranVariable: aFASTFortranArrayVariable.
+	aFASTFortranArrayVariable indices do: [ :indice |
+		indice accept: self ]
 ]
 
 { #category : 'visiting - programUnits' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranProcedure: aFASTFortranProcedure [
-	"do not call #visitFASTFortranProgramUnit:"
+	"overriden because we want to visit the parameters before visiting the statements
+	 (with possible parameter declaration)"
 
-	self visitFASTFortranSubprogram: aFASTFortranProcedure
+	self visitFASTFortranTWithParameters: aFASTFortranProcedure.
+	self visitFASTFortranSubprogram: aFASTFortranProcedure.
 ]
 
 { #category : 'visiting - expressions' }
@@ -49,19 +53,10 @@ FASTFortranLocalResolverVisitor >> visitFASTFortranScalarVariable: aFASTFortranS
 { #category : 'visiting - statements' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBlock [
 
-	scoper pushScope.
-
 	"visit order is important to ensure declarations are visited before statements"
 	(aFASTFortranStatementBlock statements sorted: [ :a :b |
 		 a startPos < b startPos ]) do: [ :node | node accept: self ].
 
-	^ scoper popScope
-]
-
-{ #category : 'visiting - traits' }
-FASTFortranLocalResolverVisitor >> visitFASTFortranTBehaviouralEntity: aFASTFortranTBehaviouralEntity [
-
-	aFASTFortranTBehaviouralEntity statementBlock accept: self
 ]
 
 { #category : 'visiting - expressions' }
@@ -93,9 +88,26 @@ FASTFortranLocalResolverVisitor >> visitFASTFortranVariableDeclarator: aFASTVari
 FASTFortranLocalResolverVisitor >> visitFASTIdentifierExpression: aFASTIdentifier [
 	"reference to an identifier in the AST
 	 - the identifier refers to a variable (structuralEntity)
-	 - look for a definition of this identifier in the hierarchy of scopes
-	 - if not found, creates a NonLocalDeclaration for it
-	 - binds this reference to the declaration"
+	 - look for a declaration of this identifier in the hierarchy of scopes
+	 - binds the reference (aFASTIdentifier) to this declaration"
 
 	scoper bind: aFASTIdentifier toLocalDeclaration: aFASTIdentifier name
+]
+
+{ #category : 'generated' }
+FASTFortranLocalResolverVisitor >> visitFASTTEntity: aFASTTEntity [
+	"overriding to not do anything
+	 because visiting children is already taken care of in each individual visit method"
+]
+
+{ #category : 'visiting - programUnits' }
+FASTFortranLocalResolverVisitor >> visitParameter: aFASTFortranScalarVariable [
+	"parameters are considered as a 'use' of the parameter-variable
+	 this is because in Fortran the declaration is in the body of the sub-program"
+
+	scoper
+		scopeAdd: aFASTFortranScalarVariable name
+		declaration: (FASTFortranParameterLocalDefinition new).
+
+	scoper bind: aFASTFortranScalarVariable toLocalDeclaration: aFASTFortranScalarVariable name
 ]

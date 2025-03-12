@@ -91,12 +91,12 @@ FASTFortranSSAVisitorHelpersTest >> testVariableVersionsIn1Empty2 [
 FASTFortranSSAVisitorHelpersTest >> testVariableVersionsIn1NotIn2 [
 
 	self assert: (visitor variableVersionsIn: branchAB notIn: branchBC) size equals: 1.
-	self assert: (visitor variableVersionsIn: branchAB notIn: branchBC) anyOne name equals: 'varA_1'.
+	self assert: (visitor variableVersionsIn: branchAB notIn: branchBC) anyOne name equals: 'varA_0'.
 ]
 
 { #category : 'test' }
 FASTFortranSSAVisitorHelpersTest >> testVariableVersionsNotIn1In2 [
 
 	self assert: (visitor variableVersionsIn: branchBC notIn: branchAB) size equals: 1.
-	self assert: (visitor variableVersionsIn: branchBC notIn: branchAB) anyOne name equals: 'varC_1'.
+	self assert: (visitor variableVersionsIn: branchBC notIn: branchAB) anyOne name equals: 'varC_0'.
 ]

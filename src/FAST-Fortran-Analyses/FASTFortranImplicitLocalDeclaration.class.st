@@ -1,23 +1,14 @@
 "
-I represent a FASTNonLocalDeclaration in Fortran where it can be an implicitDeclaration
+I represent a FASTNonLocalDeclaration in Fortran where variables can be implicitly declared
 
-I a more a marker than a real class
 "
 Class {
 	#name : 'FASTFortranImplicitLocalDeclaration',
-	#superclass : 'FASTFortranEntity',
-	#classTraits : 'FASTTEntity classTrait',
+	#superclass : 'FASTEntity',
 	#category : 'FAST-Fortran-Analyses-Resolver',
 	#package : 'FAST-Fortran-Analyses',
 	#tag : 'Resolver'
 }
-
-{ #category : 'visiting' }
-FASTFortranImplicitLocalDeclaration >> accept: aVisitor [
-	<generated>
-	^ aVisitor visitFASTFortranImplicitLocalDeclaration: self.
-
-]
 
 { #category : 'private - ssa' }
 FASTFortranImplicitLocalDeclaration >> activeVersion [
@@ -44,6 +35,12 @@ FASTFortranImplicitLocalDeclaration >> isImplicitDeclaration [
 	^true
 ]
 
+{ #category : 'testing' }
+FASTFortranImplicitLocalDeclaration >> isParameter [
+
+	^false
+]
+
 { #category : 'accessing' }
 FASTFortranImplicitLocalDeclaration >> name [
 
@@ -56,17 +53,22 @@ FASTFortranImplicitLocalDeclaration >> name: aName [
 	"not needed"
 ]
 
+{ #category : 'printing' }
+FASTFortranImplicitLocalDeclaration >> printOn: aStream [
+	"Overrides MooseEntity>>printOn: because this is not a real MooseEntity (not meta-described)
+	 We duplicated Object>>printOn:"
+
+	| title |
+	title := self class name.
+	aStream
+		nextPutAll: (title first isVowel ifTrue: ['an '] ifFalse: ['a ']);
+		nextPutAll: title
+]
+
 { #category : 'private - ssa' }
 FASTFortranImplicitLocalDeclaration >> ssaVersion: aSSAVersion [
 
 	^self firstUse ssaVersion: aSSAVersion
 
 
-]
-
-{ #category : 'accessing' }
-FASTFortranImplicitLocalDeclaration >> variable [
-
-	self flag: 'should not exist. Due to'.
-	^self name
 ]

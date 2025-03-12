@@ -16,6 +16,66 @@ FASTFortranLocalResolverVisitorTest >> newVisitor [
 ]
 
 { #category : 'tests' }
+FASTFortranLocalResolverVisitorTest >> testIndiceInArrayDeclared [
+	"
+	SUBROUTINE something()
+	integer i
+	x(i) = 5
+	END
+	"
+
+	| varAccess body |
+	varAccess := FASTFortranArrayVariable new
+		name: #x ;
+		indices: { self scalarVariable: #i }.
+	self subroutine: #something.
+	self addStatement: (self declarationStatement: #integer variables: #(i)).
+	self addStatement: (FASTFortranAssignmentStatement new
+		variable: varAccess ;
+		expression: (self makeSimpleExpression: 6) ).
+
+	visitor on: ast.
+
+	body := ast statementBlock statements.
+
+	varAccess := body second variable indices anyOne.
+
+	self deny: varAccess localDeclaration isImplicitDeclaration.
+	self assert: varAccess localDeclaration equals: body first declarators anyOne.
+
+]
+
+{ #category : 'tests' }
+FASTFortranLocalResolverVisitorTest >> testIndiceInArrayUndeclared [
+	"
+	SUBROUTINE something()
+	x(i) = 5
+	END
+	"
+
+	| varAccess body |
+	varAccess := FASTFortranArrayVariable new
+		name: #x ;
+		indices: { self scalarVariable: #i }.
+	self subroutine: #something.
+	self addStatement: (FASTFortranAssignmentStatement new
+		variable: varAccess ;
+		expression: (self makeSimpleExpression: 6) ).
+
+	visitor on: ast.
+
+	body := ast statementBlock statements.
+
+	varAccess := body first variable indices anyOne.
+
+	self assert: varAccess localDeclaration isImplicitDeclaration.
+	self deny: varAccess localDeclaration isParameter.
+
+	self assert: varAccess localDeclaration name equals: 'i'.
+	self assert: varAccess localDeclaration firstUse equals: varAccess
+]
+
+{ #category : 'tests' }
 FASTFortranLocalResolverVisitorTest >> testLinkToDeclaration [
 	"
 	SUBROUTINE something()
@@ -39,6 +99,30 @@ FASTFortranLocalResolverVisitorTest >> testLinkToDeclaration [
 ]
 
 { #category : 'tests' }
+FASTFortranLocalResolverVisitorTest >> testLinkToDeclaredParameter [
+	"
+	SUBROUTINE something(x)
+	INTEGER x
+	END
+	"
+
+	| varAccess |
+	self subroutine: #something.
+	ast addParameter: (self scalarVariable: #x).
+	self addStatement: (self declarationStatement: #integer variables: #(x)).
+
+	visitor on: ast.
+
+	varAccess := ast statementBlock statements first declarators first.
+
+	self deny: varAccess localDeclaration isImplicitDeclaration.
+	self assert: varAccess localDeclaration equals: varAccess.
+
+	self assert: varAccess localUses size equals: 1.
+	self assert: varAccess localUses anyOne equals: ast parameters first
+]
+
+{ #category : 'tests' }
 FASTFortranLocalResolverVisitorTest >> testLinkToImplicitDeclaration [
 	"
 	SUBROUTINE something()
@@ -57,8 +141,58 @@ FASTFortranLocalResolverVisitorTest >> testLinkToImplicitDeclaration [
 	visitor on: ast.
 
 	body := ast statementBlock statements.
-	varAccess := body third expression.
+	varAccess := body third expression.  "y in 'x=y'"
+
 	self assert: varAccess localDeclaration isImplicitDeclaration.
+	self deny: varAccess localDeclaration isParameter.
+
 	self assert: varAccess localDeclaration name equals: 'y'.
 	self assert: varAccess localDeclaration firstUse equals: body second variable
+]
+
+{ #category : 'tests' }
+FASTFortranLocalResolverVisitorTest >> testLinkToUndeclaredParameter [
+	"
+	SUBROUTINE something(x)
+	write (*) x
+	END
+	"
+
+	| varAccess |
+	self subroutine: #something.
+	ast addParameter: (self scalarVariable: #x).
+	self addStatement: (self writeStatement: #(x)).
+
+	visitor on: ast.
+
+	varAccess := ast statementBlock statements first arguments first.
+
+	self assert: varAccess localDeclaration isImplicitDeclaration.
+	self assert: varAccess localDeclaration isParameter.
+
+	self assert: varAccess localDeclaration localUses size equals: 2.
+	self assert: varAccess localDeclaration firstUse equals: ast parameters first
+]
+
+{ #category : 'tests' }
+FASTFortranLocalResolverVisitorTest >> testLogicalIfAccessesDeclared [
+	"
+	SUBROUTINE something()
+	LOGICAL x
+	if (x) print 5
+	END
+	"
+
+	| varAccess body |
+	self subroutine: #something.
+	self addStatement: (self declarationStatement: #logical variables: #(x)).
+	self addStatement: (self logicalIf: #x statement: (self printStatement: #(5) )).
+
+	visitor on: ast.
+
+	body := ast statementBlock statements.
+	varAccess := body second condition.
+
+	self deny: varAccess localDeclaration isImplicitDeclaration.
+	self assert: varAccess localDeclaration equals: body first declarators first
 ]
