@@ -86,6 +86,12 @@ FASTFortranLocalResolverVisitor >> visitFASTIdentifierExpression: aFASTIdentifie
 	scoper bind: aFASTIdentifier toLocalDeclaration: aFASTIdentifier name
 ]
 
+{ #category : 'generated' }
+FASTFortranLocalResolverVisitor >> visitFASTTEntity: aFASTTEntity [
+	"overriding to not do anything
+	 because visiting children is already taken care of in each individual visit method"
+]
+
 { #category : 'visiting - programUnits' }
 FASTFortranLocalResolverVisitor >> visitParameter: aFASTFortranScalarVariable [
 	"parameters are considered as a 'use' of the parameter-variable
