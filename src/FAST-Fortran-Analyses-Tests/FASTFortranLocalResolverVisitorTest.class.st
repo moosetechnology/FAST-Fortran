@@ -170,5 +170,6 @@ FASTFortranLocalResolverVisitorTest >> testLinkToUndeclaredParameter [
 	self assert: varAccess localDeclaration isImplicitDeclaration.
 	self assert: varAccess localDeclaration isParameter.
 
-	self assert: varAccess localDeclaration equals: ast parameters first
+	self assert: varAccess localDeclaration localUses size equals: 2.
+	self assert: varAccess localDeclaration firstUse equals: ast parameters first
 ]
