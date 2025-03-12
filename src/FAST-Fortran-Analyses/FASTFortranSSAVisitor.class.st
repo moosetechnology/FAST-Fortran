@@ -48,6 +48,19 @@ FASTFortranSSAVisitor >> initialize [
 	isBeingAssigned := false
 ]
 
+{ #category : 'private - ssa' }
+FASTFortranSSAVisitor >> notAssigned: aBlock [
+	"turn inAssignment to false during evaluation of aBlock, then turn it back to what it was"
+
+	| wasAssignment |
+	wasAssignment := isBeingAssigned.
+	isBeingAssigned := false.
+
+	aBlock value.
+
+	isBeingAssigned := wasAssignment 
+]
+
 { #category : 'api' }
 FASTFortranSSAVisitor >> on: anAST [
 
@@ -122,14 +135,12 @@ FASTFortranSSAVisitor >> variableVersionsIn: versions1 notIn: versions2 [
 { #category : 'visiting - expressions' }
 FASTFortranSSAVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariable [
 
-	| inAssignment |
 	self visitFASTFortranVariable: aFASTFortranArrayVariable.
 
-	inAssignment := isBeingAssigned.
-	isBeingAssigned := false.
-	aFASTFortranArrayVariable indices do: [ :indice |
-		indice accept: self ].
-	isBeingAssigned := inAssignment
+	self notAssigned: [
+		aFASTFortranArrayVariable indices do: [ :indice |
+			indice accept: self ]
+	]
 ]
 
 { #category : 'visiting - statements' }
@@ -151,6 +162,15 @@ FASTFortranSSAVisitor >> visitFASTFortranDoWhileStatement: aFASTFortranDoWhileSt
 
 	self flag: 'DoWhile not correctly modelled yet'.
 	^ self shouldBeImplemented
+]
+
+{ #category : 'visiting - expressions' }
+FASTFortranSSAVisitor >> visitFASTFortranFieldAccess: aFASTFortranFieldAccess [
+
+	self notAssigned: [
+		aFASTFortranFieldAccess pointer accept: self ].
+
+	aFASTFortranFieldAccess field accept: self
 ]
 
 { #category : 'visiting - statements' }
