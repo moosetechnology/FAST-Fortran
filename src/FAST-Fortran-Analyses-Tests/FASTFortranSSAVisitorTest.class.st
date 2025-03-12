@@ -557,14 +557,14 @@ FASTFortranSSAVisitorTest >> testSingleAssignement [
 FASTFortranSSAVisitorTest >> testUnAssigned [
 	"
 	SUBROUTINE something()
-	INTEGER x
+	LOGICAL x
 	if (x) print 5
 	END
 	"
 
 	| varAccess |
 	self subroutine: #something.
-	self addStatement: (self declarationStatement: #integer variables: #(x)).
+	self addStatement: (self declarationStatement: #logical variables: #(x)).
 	self addStatement: (self logicalIf: #x statement: (self printStatement: #(5) )).
 
 	self runVisitor.
