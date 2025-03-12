@@ -29,7 +29,18 @@ FASTFortranLocalResolverVisitor >> on: aFASTFortranProgramUnit [
 { #category : 'visiting - expressions' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranArrayVariable: aFASTFortranArrayVariable [
 
-	self visitFASTFortranVariable: aFASTFortranArrayVariable
+	self visitFASTFortranVariable: aFASTFortranArrayVariable.
+	aFASTFortranArrayVariable indices do: [ :indice |
+		indice accept: self ]
+]
+
+{ #category : 'visiting - programUnits' }
+FASTFortranLocalResolverVisitor >> visitFASTFortranProcedure: aFASTFortranProcedure [
+	"overriden because we want to visit the parameters before visiting the statements
+	 (with possible parameter declaration)"
+
+	self visitFASTFortranTWithParameters: aFASTFortranProcedure.
+	self visitFASTFortranSubprogram: aFASTFortranProcedure.
 ]
 
 { #category : 'visiting - expressions' }
@@ -42,13 +53,10 @@ FASTFortranLocalResolverVisitor >> visitFASTFortranScalarVariable: aFASTFortranS
 { #category : 'visiting - statements' }
 FASTFortranLocalResolverVisitor >> visitFASTFortranStatementBlock: aFASTFortranStatementBlock [
 
-	scoper pushScope.
-
 	"visit order is important to ensure declarations are visited before statements"
 	(aFASTFortranStatementBlock statements sorted: [ :a :b |
 		 a startPos < b startPos ]) do: [ :node | node accept: self ].
 
-	^ scoper popScope
 ]
 
 { #category : 'visiting - expressions' }
@@ -99,5 +107,7 @@ FASTFortranLocalResolverVisitor >> visitParameter: aFASTFortranScalarVariable [
 
 	scoper
 		scopeAdd: aFASTFortranScalarVariable name
-		declaration: (FASTFortranParameterLocalDefinition new)
+		declaration: (FASTFortranParameterLocalDefinition new).
+
+	scoper bind: aFASTFortranScalarVariable toLocalDeclaration: aFASTFortranScalarVariable name
 ]

@@ -9,7 +9,7 @@ Class {
 { #category : 'private' }
 FASTFortranLocalResolverScoping >> nonLocalDeclaration: name [
 	"In Fortran a non declared identifier can be an implicit identifier"
-1halt.
+
 	^ FASTFortranImplicitLocalDeclaration new
 ]
 
@@ -17,16 +17,15 @@ FASTFortranLocalResolverScoping >> nonLocalDeclaration: name [
 FASTFortranLocalResolverScoping >> scopeAdd: aName declaration: aFASTNode [
 	"overrides because there may be a parameter definition already registered as a declaration
 	 if this is the case, removes it to add a real declaration"
+
 	self currentScope
 		at: aName
 		ifPresent: [ :found |
 			found isParameter
-				ifTrue: [ "previous 'declaration' is a parameter definition, substitue it"
-					self currentScope at: aName put: aFASTNode.
-					self addUse: found firstUse toLocalDeclaration: aFASTNode
+				ifTrue: [
+					self substituteParameterDefinition: found named: aName by: aFASTNode
 				]
-				ifFalse: [ DuplicatedVariableError signal:
-					'local variable ' , aName , ' already found in this scope' ] ]
+				ifFalse: [ self duplicateDeclarationError: aName ] ]
 		ifAbsent: [
 			"declaring a normal variable"
 			aFASTNode clearLocalUses.
@@ -60,9 +59,17 @@ FASTFortranLocalResolverScoping >> scopeAddParameterDefinition: name [
 	 - a parameter definition is considered as a first use"
 
 	| parameterDefinition |
-1halt.
+
 	parameterDefinition := FASTFortranParameterLocalDefinition new name: name.
 	self scopeAdd: name declaration: parameterDefinition.
 
 	^ parameterDefinition
+]
+
+{ #category : 'private' }
+FASTFortranLocalResolverScoping >> substituteParameterDefinition: found named: aName by: aFASTNode [
+
+	aFASTNode clearLocalUses.
+	self currentScope at: aName put: aFASTNode.
+	self addUse: found firstUse toLocalDeclaration: aFASTNode
 ]

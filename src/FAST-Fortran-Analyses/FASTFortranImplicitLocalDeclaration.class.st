@@ -4,7 +4,7 @@ I represent a FASTNonLocalDeclaration in Fortran where variables can be implicit
 "
 Class {
 	#name : 'FASTFortranImplicitLocalDeclaration',
-	#superclass : 'FASTFortranEntity',
+	#superclass : 'FASTEntity',
 	#category : 'FAST-Fortran-Analyses-Resolver',
 	#package : 'FAST-Fortran-Analyses',
 	#tag : 'Resolver'
@@ -35,6 +35,12 @@ FASTFortranImplicitLocalDeclaration >> isImplicitDeclaration [
 	^true
 ]
 
+{ #category : 'testing' }
+FASTFortranImplicitLocalDeclaration >> isParameter [
+
+	^false
+]
+
 { #category : 'accessing' }
 FASTFortranImplicitLocalDeclaration >> name [
 
@@ -45,6 +51,18 @@ FASTFortranImplicitLocalDeclaration >> name [
 FASTFortranImplicitLocalDeclaration >> name: aName [
 
 	"not needed"
+]
+
+{ #category : 'printing' }
+FASTFortranImplicitLocalDeclaration >> printOn: aStream [
+	"Overrides MooseEntity>>printOn: because this is not a real MooseEntity (not meta-described)
+	 We duplicated Object>>printOn:"
+
+	| title |
+	title := self class name.
+	aStream
+		nextPutAll: (title first isVowel ifTrue: ['an '] ifFalse: ['a ']);
+		nextPutAll: title
 ]
 
 { #category : 'private - ssa' }
