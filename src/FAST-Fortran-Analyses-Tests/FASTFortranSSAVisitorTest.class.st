@@ -519,13 +519,19 @@ FASTFortranSSAVisitorTest >> testParameterDeclaredAndAssigned [
 
 	self runVisitor.
 
-	varAccess := ssa statementBlock statements second variable.
+	varAccess := ssa parameters first.
 
 	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
 	self assert: varAccess ssaVersion version equals: 1.
 	self assert: varAccess ssaName equals: 'x_1'.
 
-	self assert: varAccess localDeclaration newVersionNumber equals: 2
+	varAccess := ssa statementBlock statements second variable.
+
+	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
+	self assert: varAccess ssaVersion version equals: 2.
+	self assert: varAccess ssaName equals: 'x_2'.
+
+	self assert: varAccess localDeclaration newVersionNumber equals: 3
 
 ]
 
@@ -547,8 +553,8 @@ FASTFortranSSAVisitorTest >> testParameterUndeclaredAndAssigned [
 	varAccess := ssa statementBlock statements first variable.
 
 	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
-	self assert: varAccess ssaVersion version equals: 1.
-	self assert: varAccess ssaName equals: 'x_1'.
+	self assert: varAccess ssaVersion version equals: 2.
+	self assert: varAccess ssaName equals: 'x_2'.
 
 ]
 
@@ -570,8 +576,8 @@ FASTFortranSSAVisitorTest >> testParameterUndeclaredAndUsed [
 	varAccess := ssa statementBlock statements first arguments anyOne.
 
 	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
-	self assert: varAccess ssaVersion version equals: 0.
-	self assert: varAccess ssaName equals: 'x_0'.
+	self assert: varAccess ssaVersion version equals: 1.
+	self assert: varAccess ssaName equals: 'x_1'.
 
 ]
 

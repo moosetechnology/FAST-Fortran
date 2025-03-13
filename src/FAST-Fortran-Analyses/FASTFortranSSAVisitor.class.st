@@ -263,3 +263,10 @@ FASTFortranSSAVisitor >> visitFASTFortranVariableDeclarationStatement: aFASTFort
 
 	self visitFASTFortranTStatement: aFASTFortranVariableDeclarationStatement
 ]
+
+{ #category : 'visiting - programUnits' }
+FASTFortranSSAVisitor >> visitParameter: aFASTFortranScalarVariable [
+	"Parameters are considered assigned on call"
+
+	aFASTFortranScalarVariable ssaVersion: (self assignmentVariableVersion: aFASTFortranScalarVariable )
+]

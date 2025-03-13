@@ -560,11 +560,9 @@ FASTFortranVisitor >> visitFASTFortranPrintStatement: aFASTFortranPrintStatement
 
 { #category : 'visiting - programUnits' }
 FASTFortranVisitor >> visitFASTFortranProcedure: aFASTFortranProcedure [
-	"be careful that #visitFASTFortranTWithParameters: is also called indirectly by
-	 #visitFASTFortranProgramUnit:"
 
+	self visitFASTFortranTWithParameters: aFASTFortranProcedure.
 	self visitFASTFortranSubprogram: aFASTFortranProcedure.
-	self visitFASTFortranTWithParameters: aFASTFortranProcedure
 ]
 
 { #category : 'visiting - programUnits' }
