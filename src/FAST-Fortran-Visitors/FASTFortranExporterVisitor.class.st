@@ -177,11 +177,10 @@ FASTFortranExporterVisitor >> upToSixSpaces: preceedingSize [
 FASTFortranExporterVisitor >> visitFASTFortranAbstractIOStatement: aFASTFortranIOStatement named: aString [
 
 	self
-		visitFASTFortranAbstractStatement: aFASTFortranIOStatement;
-		<< aString;
-		visitFASTFortranTWithIOParameters:
-			aFASTFortranIOStatement ioParameters;
-		visitFASTFortranTWithArguments: aFASTFortranIOStatement;
+		visitFASTFortranAbstractStatement: aFASTFortranIOStatement ;
+		<< aString ;
+		visitFASTFortranTWithIOParameters: aFASTFortranIOStatement ;
+		visitFASTFortranTWithArguments: aFASTFortranIOStatement ;
 		newLine
 ]
 
@@ -912,14 +911,14 @@ FASTFortranExporterVisitor >> visitFASTFortranTWithArguments: aFASTFortranTWithA
 ]
 
 { #category : 'visiting - traits' }
-FASTFortranExporterVisitor >> visitFASTFortranTWithIOParameters: anIOParametersCollection [
+FASTFortranExporterVisitor >> visitFASTFortranTWithIOParameters: aFASTFortranTWithIOParameters [
 	"call to #outputExpression:inParentheses: is oportunistic.
 	 It is not an operator precedence case"
 
 	self
 		space;
 		outputExpression: [
-			self visitNodeListSeparatedByCommas: anIOParametersCollection ]
+			self visitNodeListSeparatedByCommas: aFASTFortranTWithIOParameters ioParameters ]
 		inParentheses: true;
 		space
 ]
