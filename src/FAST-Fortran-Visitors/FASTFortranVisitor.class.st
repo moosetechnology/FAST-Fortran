@@ -857,7 +857,7 @@ FASTFortranVisitor >> visitFASTFortranTWithComments: aFASTFortranTWithComments [
 
 ]
 
-{ #category : 'visiting - statements' }
+{ #category : 'visiting - traits' }
 FASTFortranVisitor >> visitFASTFortranTWithDeclarations: aFASTFortranTWithDeclarations [
 
 	aFASTFortranTWithDeclarations declarations 
