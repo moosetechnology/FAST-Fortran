@@ -477,6 +477,27 @@ FASTFortranExporterVisitorTest >> testExternalStatement [
 '
 ]
 
+{ #category : 'tests' }
+FASTFortranExporterVisitorTest >> testFieldAccess [
+	| fct varAccess writeStatement |
+	fct := self functionDeclaration: 'blah'.
+	fct declaredType: nil.
+
+	varAccess := FASTFortranFieldAccess new
+		pointer: (self scalarVariable: #p) ;
+		field: (self scalarVariable: #x).
+	writeStatement := self writeStatement: {  varAccess }.
+	fct statementBlock addStatement: writeStatement.
+
+	self
+		assertExport: fct
+		equals: 
+'      function blah()
+        write (*,*) p.x
+      end
+'
+]
+
 { #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testFormatStatement [
 	| stmt |

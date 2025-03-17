@@ -432,6 +432,15 @@ FASTFortranExporterVisitor >> visitFASTFortranExternalStatement: aFASTFortranExt
 		newLine
 ]
 
+{ #category : 'visiting - expressions' }
+FASTFortranExporterVisitor >> visitFASTFortranFieldAccess: aFASTFortranFieldAccess [ 
+
+	aFASTFortranFieldAccess pointer accept: self.
+	self << '.'.
+	aFASTFortranFieldAccess field accept: self.
+
+]
+
 { #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranFormatStatement: aFASTFortranFormatStatement [
 
