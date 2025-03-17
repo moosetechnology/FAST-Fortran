@@ -314,7 +314,7 @@ FASTFortranJsonVisitor >> visitBody: aNode [
 		ifNil: [ #() ]
 		ifNotNil: [ super visitBody: aNode ].
 
-	stmtBlock := FASTFortranStatementBlock new.
+	stmtBlock := model newStatementBlock.
 	self putMembers: (data reject: #isNil) inBody: stmtBlock.
 	
 	^stmtBlock 

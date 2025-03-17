@@ -1335,6 +1335,7 @@ FortranToFASTTests >> testDoStatementEmptyInitIncrementLimit [
 	self assert: stmt class equals: FASTFortranDoStatement.
 	self assert: stmt loopControl isNotNil.
 	self assert: stmt statementBlock statements isEmpty.
+	self assert: stmt statementBlock mooseModel isNotNil.
 	self assert: stmt startPos equals: 26.
 	self assert: stmt endPos equals: 61.
 
@@ -1736,6 +1737,7 @@ FortranToFASTTests >> testFunctionNoParameter [
 	self assert: fct name equals: 'afct'.
 	self assert: fct parameters isEmpty.
 	self assert: fct statementBlock statements isEmpty.
+	self assert: fct statementBlock mooseModel isNotNil.
 	self assert: fct startPos equals: 7.
 
 	self assert: fct declaredType class equals: FASTFortranIntegerType.
@@ -2605,6 +2607,7 @@ c23456789 123456789 123456789 123456789 123456789 123456789 12
 	self assert: result first class equals: FASTFortranProgramMain.
 
 	body := result first statementBlock.
+	self assert: body mooseModel isNotNil.
 	self assert: body statements isCollection.
 	self assert: body statements size equals: 2.
 
@@ -3017,6 +3020,7 @@ FortranToFASTTests >> testSubroutineEmpty [
 	self assert: rtn class equals: FASTFortranSubroutine.
 	self assert: rtn parameters isEmpty.
 	self assert: rtn statementBlock statements isEmpty.
+	self assert: rtn statementBlock mooseModel isNotNil.
 	self assert: rtn startPos equals: 7.
 	self assert: rtn endPos equals: 31
 ]
