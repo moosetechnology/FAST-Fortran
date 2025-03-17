@@ -30,7 +30,7 @@ FASTFortranJsonVisitor >> checkLabel: label forStatement: statement [
 FASTFortranJsonVisitor >> createContinueStatement: endLabel [
 
 	| lastStatement |
-	lastStatement := FASTFortranContinueStatement new.
+	lastStatement := model newContinueStatement.
 	lastStatement startPos: endLabel startPos.
 	lastStatement endPos:
 		endLabel startPos + endLabel primitiveValue size - 1.
@@ -41,7 +41,7 @@ FASTFortranJsonVisitor >> createContinueStatement: endLabel [
 { #category : 'private' }
 FASTFortranJsonVisitor >> functionCallToArrayVariable: invocation [
 
-	^ FASTFortranArrayVariable new
+	^model newArrayVariable
 		name: invocation name ;
 		indices: invocation arguments ;
 		startPos: invocation startPos;
@@ -69,7 +69,7 @@ FASTFortranJsonVisitor >> initialize [
 { #category : 'private' }
 FASTFortranJsonVisitor >> integerLiteralToLabelRef: literal [
 
-	^ FASTFortranLabelReference new
+	^model newLabelReference
 		  label: literal primitiveValue;
 		  startPos: literal startPos;
 		  endPos: literal endPos;
@@ -301,7 +301,7 @@ FASTFortranJsonVisitor >> visitBlock_data: aBlockDataNode [
 
 	^ (self newEntity: FASTFortranBlockData atPosition: data first)
 		  name: data second;
-		  statementBlock: (FASTFortranStatementBlock new statements: data third);
+		  statementBlock: (model newStatementBlock statements: data third);
 		  yourself
 ]
 
@@ -339,9 +339,7 @@ CALL sub [([ar[, ar]])] where sub is a name of the subroutine to be called, ar i
 { #category : 'visiting' }
 FASTFortranJsonVisitor >> visitCharacterBaseType: aString [
 
-	^FASTFortranCharacterType new
-		mooseModel: model ;
-		yourself
+	^model newCharacterType
 ]
 
 { #category : 'visiting statement' }
@@ -396,9 +394,7 @@ nlist: List of variable names, array names, and array declarators  "
 { #category : 'visiting' }
 FASTFortranJsonVisitor >> visitComplexBaseType: aString [
 
-	^FASTFortranComplexType new
-		mooseModel: model ;
-		yourself
+	^model newComplexType
 ]
 
 { #category : 'visiting statement' }
@@ -415,8 +411,7 @@ FASTFortranJsonVisitor >> visitConditions: aConditionList [
 
 	"no way to know exactly the starting and ending position of this if
 	 we use the condition startPos - 3 ('IF ') and the then block endPosition"
-		newIf := FASTFortranIfBlockStatement new
-			mooseModel: model ;
+		newIf := model newIfBlockStatement
 			startPos: condAndThenPair first startPos - 3 ;
 			endPos: condAndThenPair second endPos ;
 			condition: condAndThenPair first;
@@ -425,8 +420,7 @@ FASTFortranJsonVisitor >> visitConditions: aConditionList [
 
 		firstIf
 			ifNil: [ firstIf := newIf ]
-			ifNotNil: [ elseIf elseStatementBlock: ( FASTFortranStatementBlock new
-				mooseModel: model ;
+			ifNotNil: [ elseIf elseStatementBlock: ( model newStatementBlock
 				startPos: newIf startPos ;
 				endPos: newIf endPos ;
 				statements: {newIf} ;
@@ -611,7 +605,7 @@ FASTFortranJsonVisitor >> visitDo_spec: aDoSpecNode [
 	| data assignementExpr |
 	data := super visitDo_spec: aDoSpecNode.
 
-	assignementExpr := FASTFortranAssignmentExpression new
+	assignementExpr := model newAssignmentExpression
 		startPos: data second startPos ;
 		endPos: data second endPos ;
 		variable: data second variable ;
@@ -630,9 +624,7 @@ FASTFortranJsonVisitor >> visitDo_spec: aDoSpecNode [
 { #category : 'visiting' }
 FASTFortranJsonVisitor >> visitDouble_precisionBaseType: aString [
 
-	^FASTFortranDoublePrecisionType new
-		mooseModel: model ;
-		yourself
+	^model newDoublePrecisionType
 ]
 
 { #category : 'visiting' }
@@ -970,16 +962,13 @@ FASTFortranJsonVisitor >> visitInquireStatement: anInquireStatement [
 { #category : 'visiting' }
 FASTFortranJsonVisitor >> visitIntegerBaseType: aString [
 
-	^FASTFortranIntegerType new
-		mooseModel: model ;
-		yourself
+	^model newIntegerType
 ]
 
 { #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitIntegerLiteralValue: anIntegerLiteralValueNode [
 
-	^FASTFortranIntegerLiteral new
-		mooseModel: model ;
+	^model newIntegerLiteral
 		primitiveValue: (super visitIntegerLiteralValue: anIntegerLiteralValueNode);
 		yourself
 ]
@@ -1018,7 +1007,7 @@ FASTFortranJsonVisitor >> visitLabelReference: aLabelReference [
 	| data |
 	data := super visitJsonElement: aLabelReference.
 
-	^FASTFortranLabelReference new
+	^model newLabelReference
 		label: data primitiveValue ;
 		startPos: data startPos ;
 		endPos: data endPos ;
@@ -1028,16 +1017,13 @@ FASTFortranJsonVisitor >> visitLabelReference: aLabelReference [
 { #category : 'visiting' }
 FASTFortranJsonVisitor >> visitLogicalBaseType: aString [
 
-	^FASTFortranLogicalType new
-		mooseModel: model ;
-		yourself
+	^model newLogicalType
 ]
 
 { #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitLogicalLiteralValue: aLogicalLiteralValue [
 
-	^FASTFortranBooleanLiteral new
-		mooseModel: model ;
+	^model newBooleanLiteral
 		primitiveValue: (super visitLogicalLiteralValue: aLogicalLiteralValue) ;
 		yourself
 ]
@@ -1091,8 +1077,7 @@ FASTFortranJsonVisitor >> visitMultiplication: anOperatorNode [
 { #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitOp: anOperatorNode [
 
-	^FASTFortranBinaryExpression new
-		mooseModel: model ;
+	^model newBinaryExpression
 		operator: (super visitOp: anOperatorNode);
 		yourself
 ]
@@ -1194,9 +1179,7 @@ FASTFortranJsonVisitor >> visitReadStatement: aReadStatementNode [
 { #category : 'visiting' }
 FASTFortranJsonVisitor >> visitRealBaseType: aString [
 
-	^FASTFortranRealType new
-		mooseModel: model ;
-		yourself
+	^model newRealType
 ]
 
 { #category : 'visiting expression' }
@@ -1204,8 +1187,7 @@ FASTFortranJsonVisitor >> visitRealLiteralValue: aRealLiteralValueNode [
 
 	| data |
 	data := super visitRealLiteralValue: aRealLiteralValueNode.
-	^FASTFortranRealLiteral new
-		mooseModel: model ;
+	^model newRealLiteral
 		primitiveValue: (data second ifNil: [ data first ] ifNotNil: [data first , data second]);
 		yourself
 ]
@@ -1282,9 +1264,7 @@ FASTFortranJsonVisitor >> visitSingle: anArraySingleIndexNode [
 { #category : 'visiting' }
 FASTFortranJsonVisitor >> visitStar: anObject [
 
-	^FASTFortranAsterisk new
-		mooseModel: model ;
-		yourself
+	^model newAsterisk
 ]
 
 { #category : 'visiting statement' }
@@ -1319,8 +1299,7 @@ FASTFortranJsonVisitor >> visitStopStatement: aStopStatementNode [
 { #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitStringLiteralValue: aString [
 
-	^FASTFortranCharacterLiteral new
-		mooseModel: model ;
+	^model newCharacterLiteral
 		primitiveValue: (super visitStringLiteralValue: aString);
 		yourself
 ]
@@ -1441,8 +1420,7 @@ FASTFortranJsonVisitor >> visitVariable: aVariableNode [
 	| data |
 	data := super visitVariable: aVariableNode.
 
-	^FASTFortranScalarVariable new
-		mooseModel: model ;
+	^model newScalarVariable
 		name: data;
 		yourself
 ]
