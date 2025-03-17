@@ -226,6 +226,17 @@ FASTFortranSSAVisitor >> visitFASTFortranLoopControlExpression: aFASTFortranLoop
 	aFASTFortranLoopControlExpression limit accept: self
 ]
 
+{ #category : 'visiting - statements' }
+FASTFortranSSAVisitor >> visitFASTFortranReadStatement: aFASTFortranReadStatement [
+
+	self visitFASTFortranTWithIOParameters: aFASTFortranReadStatement.
+
+	isBeingAssigned := true.
+	self visitFASTFortranTWithArguments: aFASTFortranReadStatement.
+	isBeingAssigned := false.
+
+]
+
 { #category : 'visiting - expressions' }
 FASTFortranSSAVisitor >> visitFASTFortranScalarVariable: aFASTFortranScalarVariable [
 
