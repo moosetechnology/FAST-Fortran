@@ -582,6 +582,30 @@ FASTFortranSSAVisitorTest >> testParameterUndeclaredAndUsed [
 ]
 
 { #category : 'tests' }
+FASTFortranSSAVisitorTest >> testReadStatement [
+	"
+	SUBROUTINE something()
+	INTEGER x
+	x = 5
+	END
+	"
+
+	| varAccess |
+	self subroutine: #something.
+	self addStatement: (self declarationStatement: #integer variables: #(x)).
+	self addStatement: (self readStatement: #( x )).
+
+	self runVisitor.
+
+	varAccess := ssa statementBlock statements second arguments anyOne.
+
+	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
+	self assert: varAccess ssaVersion version equals: 1.
+	self assert: varAccess ssaName equals: 'x_1'.
+
+]
+
+{ #category : 'tests' }
 FASTFortranSSAVisitorTest >> testSingleAssignement [
 	"
 	SUBROUTINE something()
