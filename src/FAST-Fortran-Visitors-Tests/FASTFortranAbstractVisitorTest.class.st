@@ -284,16 +284,6 @@ FASTFortranAbstractVisitorTest >> externalStatement: aName [
 		yourself
 ]
 
-{ #category : 'running' }
-FASTFortranAbstractVisitorTest >> findBasicBlocks: aClass with: aPharoBooleanBlock [
-
-	^visitor basicBlocks
-		select: [ :aBasicBlock |
-			(aBasicBlock class = aClass) and:
-			[ aPharoBooleanBlock value: aBasicBlock ]
-		]
-]
-
 { #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> function: name type: typeDescription [
 

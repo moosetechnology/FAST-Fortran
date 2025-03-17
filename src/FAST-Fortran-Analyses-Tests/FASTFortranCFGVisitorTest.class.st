@@ -7,6 +7,16 @@ Class {
 }
 
 { #category : 'running' }
+FASTFortranCFGVisitorTest >> findBasicBlocks: aClass with: aPharoBooleanBlock [
+
+	^visitor basicBlocks
+		select: [ :aBasicBlock |
+			(aBasicBlock class = aClass) and:
+			[ aPharoBooleanBlock value: aBasicBlock ]
+		]
+]
+
+{ #category : 'running' }
 FASTFortranCFGVisitorTest >> newVisitor [
 
 	^FASTFortranCFGVisitor new
