@@ -1334,8 +1334,8 @@ FortranToFASTTests >> testDoStatementEmptyInitIncrementLimit [
 	stmt := result first statementBlock statements first.	
 	self assert: stmt class equals: FASTFortranDoStatement.
 	self assert: stmt loopControl isNotNil.
-	self assert: stmt statementBlock statements isEmpty.
-	self assert: stmt statementBlock mooseModel isNotNil.
+	self assert: stmt body statements isEmpty.
+	self assert: stmt body mooseModel isNotNil.
 	self assert: stmt startPos equals: 26.
 	self assert: stmt endPos equals: 61.
 
@@ -1372,7 +1372,7 @@ FortranToFASTTests >> testDoStatementEmptyNoIncrement [
 	stmt := result first statementBlock statements first.	
 	self assert: stmt class equals: FASTFortranDoStatement.
 	self assert: stmt loopControl isNotNil.
-	self assert: stmt statementBlock statements isEmpty.
+	self assert: stmt body statements isEmpty.
 	self assert: stmt startPos equals: 26.
 	self assert: stmt endPos equals: 49.
 
@@ -1416,29 +1416,29 @@ FortranToFASTTests >> testDoStatementNestedOneContinue [
 	"DO 30 L=1,10"
 	stmt := result first statementBlock statements anyOne.	
 	self assert: stmt class equals: FASTFortranDoStatement.
-	self assert: stmt statementBlock statements size equals: 3.
+	self assert: stmt body statements size equals: 3.
 	self assert: stmt labelReferences size equals: 1.
 	self assert: stmt labelReferences first class equals: FASTFortranLabelReference.
 	self assert: stmt labelReferences first label equals: '30'.
 
 	"A=1"
-	stmt := result first statementBlock statements first statementBlock statements first.
+	stmt := result first statementBlock statements first body statements first.
 	self assert: stmt class equals: FASTFortranAssignmentStatement.
 
 	"DO 30 M=L,10"
-	stmt := result first statementBlock statements first statementBlock statements second.
+	stmt := result first statementBlock statements first body statements second.
 	self assert: stmt class equals: FASTFortranDoStatement.
-	self assert: stmt statementBlock statements size equals: 1.
+	self assert: stmt body statements size equals: 1.
 	self assert: stmt labelReferences size equals: 1.
 	self assert: stmt labelReferences first class equals: FASTFortranLabelReference.
 	self assert: stmt labelReferences first label equals: '30'.
 
 	"a=2"
-	stmt := stmt statementBlock statements first.
+	stmt := stmt body statements first.
 	self assert: stmt class equals: FASTFortranAssignmentStatement.
 
 	"30 CONTINUE"
-	stmt := result first statementBlock statements first statementBlock statements third.
+	stmt := result first statementBlock statements first body statements third.
 	self assert: stmt class equals: FASTFortranContinueStatement.
 	self assert: stmt label equals: '30'.
 
@@ -1462,8 +1462,8 @@ C comment in loop
 	stmt := result first statementBlock statements first.	
 	self assert: stmt class equals: FASTFortranDoStatement.
 	self assert: stmt loopControl isNotNil.
-	self assert: stmt statementBlock statements size equals: 1.
-	self assert: stmt statementBlock statements anyOne class equals: FASTFortranComment.
+	self assert: stmt body statements size equals: 1.
+	self assert: stmt body statements anyOne class equals: FASTFortranComment.
 	self assert: stmt startPos equals: 26.
 	self assert: stmt endPos equals: 67.
 ]
@@ -1491,14 +1491,14 @@ FortranToFASTTests >> testDoStatementWithLabelAndContinue [
 	self assert: stmt labelReferences anyOne class equals: FASTFortranLabelReference.
 	self assert: stmt labelReferences anyOne label equals: '100'.
 
-	self assert: stmt statementBlock statements size equals: 2.
+	self assert: stmt body statements size equals: 2.
 
-	self assert: stmt statementBlock statements first class equals: FASTFortranAssignmentStatement.
-	self assert: stmt statementBlock statements first startPos equals: 48.
+	self assert: stmt body statements first class equals: FASTFortranAssignmentStatement.
+	self assert: stmt body statements first startPos equals: 48.
 	
-	self assert: stmt statementBlock statements second class equals: FASTFortranContinueStatement.
-	self assert: stmt statementBlock statements second label equals: '100'.
-	self assert: stmt statementBlock statements second startPos equals: 52.
+	self assert: stmt body statements second class equals: FASTFortranContinueStatement.
+	self assert: stmt body statements second label equals: '100'.
+	self assert: stmt body statements second startPos equals: 52.
 	
 
 ]
@@ -1525,10 +1525,10 @@ FortranToFASTTests >> testDoStatementWithLabelAndTerminalStatement [
 	self assert: stmt labelReferences anyOne class equals: FASTFortranLabelReference.
 	self assert: stmt labelReferences anyOne label equals: '100'.
 
-	self assert: stmt statementBlock statements size equals: 1.
-	self assert: stmt statementBlock statements anyOne class equals: FASTFortranPrintStatement.
-	self assert: stmt statementBlock statements anyOne label equals: '100'.
-	self assert: stmt statementBlock statements anyOne startPos equals: 48.
+	self assert: stmt body statements size equals: 1.
+	self assert: stmt body statements anyOne class equals: FASTFortranPrintStatement.
+	self assert: stmt body statements anyOne label equals: '100'.
+	self assert: stmt body statements anyOne startPos equals: 48.
 
 ]
 
