@@ -4,24 +4,34 @@ I represent Fortran Do statement
 ## Relations
 ======================
 
+### Parents
+| Relation | Origin | Opposite | Type | Comment |
+|---|
+| `parentLoopStatement` | `FASTTStatement` | `body` | `FASTTLoopStatement` | Optional loop of which this statement is the body|
+| `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
+
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
+| `body` | `FASTTLoopStatement` | `parentLoopStatement` | `FASTTStatement` | The body of the loop|
 | `labelReferences` | `FASTFortranTWithLabelReferences` | `referencer` | `FASTFortranLabelReference` | the label(s) referenced|
 | `loopControl` | `FASTFortranTWithLoopControl` | `parentLoop` | `FASTFortranLoopControlExpression` | loop control|
-| `statementBlock` | `FASTFortranDoStatement` | `parentDoStatement` | `FASTFortranStatementBlock` | Statement block containing statements of the do body |
 
 
+## Properties
+======================
+
+| Name | Type | Default value | Comment |
+|---|
+| `endPos` | `Number` | nil | |
+| `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : 'FASTFortranDoStatement',
 	#superclass : 'FASTFortranAbstractStatement',
-	#traits : 'FASTFortranTWithLabelReferences + FASTFortranTWithLoopControl',
-	#classTraits : 'FASTFortranTWithLabelReferences classTrait + FASTFortranTWithLoopControl classTrait',
-	#instVars : [
-		'#statementBlock => FMOne type: #FASTFortranStatementBlock opposite: #parentDoStatement'
-	],
+	#traits : 'FASTFortranTWithLabelReferences + FASTFortranTWithLoopControl + FASTTLoopStatement',
+	#classTraits : 'FASTFortranTWithLabelReferences classTrait + FASTFortranTWithLoopControl classTrait + FASTTLoopStatement classTrait',
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
 	#tag : 'Entities'
@@ -34,27 +44,4 @@ FASTFortranDoStatement class >> annotation [
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
-]
-
-{ #category : 'accessing' }
-FASTFortranDoStatement >> statementBlock [
-	"Relation named: #statementBlock type: #FASTFortranStatementBlock opposite: #parentDoStatement"
-
-	<generated>
-	<FMComment: 'Statement block containing statements of the do body '>
-	^ statementBlock
-]
-
-{ #category : 'accessing' }
-FASTFortranDoStatement >> statementBlock: anObject [
-
-	<generated>
-	statementBlock := anObject
-]
-
-{ #category : 'navigation' }
-FASTFortranDoStatement >> statementBlockGroup [
-	<generated>
-	<navigation: 'StatementBlock'>
-	^ MooseSpecializedGroup with: self statementBlock
 ]

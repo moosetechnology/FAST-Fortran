@@ -8,9 +8,9 @@ Contains the block of Fortran statements
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `fastBehaviouralParent` | `FASTTStatementBlock` | `statementBlock` | `FASTTBehaviouralEntity` | Behavioural entity containing the statement block.|
-| `parentDoStatement` | `FASTFortranStatementBlock` | `statementBlock` | `FASTFortranDoStatement` | Parent do statement|
-| `parentIfBlock` | `FASTFortranStatementBlock` | `thenStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
 | `parentIfBlock` | `FASTFortranStatementBlock` | `elseStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
+| `parentIfBlock` | `FASTFortranStatementBlock` | `thenStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
+| `parentLoopStatement` | `FASTTStatement` | `body` | `FASTTLoopStatement` | Optional loop of which this statement is the body|
 | `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
 
 ### Children
@@ -35,7 +35,6 @@ Class {
 	#traits : 'FASTTStatementBlock + FASTTWithComments',
 	#classTraits : 'FASTTStatementBlock classTrait + FASTTWithComments classTrait',
 	#instVars : [
-		'#parentDoStatement => FMOne type: #FASTFortranDoStatement opposite: #statementBlock',
 		'#parentIfBlock => FMOne type: #FASTFortranIfBlockStatement opposite: #thenStatementBlock'
 	],
 	#category : 'FAST-Fortran-Entities-Entities',
@@ -50,31 +49,6 @@ FASTFortranStatementBlock class >> annotation [
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
-]
-
-{ #category : 'accessing' }
-FASTFortranStatementBlock >> parentDoStatement [
-	"Relation named: #parentDoStatement type: #FASTFortranDoStatement opposite: #statementBlock"
-
-	<generated>
-	<FMComment: 'Parent do statement'>
-	<container>
-	<derived>
-	^ parentDoStatement
-]
-
-{ #category : 'accessing' }
-FASTFortranStatementBlock >> parentDoStatement: anObject [
-
-	<generated>
-	parentDoStatement := anObject
-]
-
-{ #category : 'navigation' }
-FASTFortranStatementBlock >> parentDoStatementGroup [
-	<generated>
-	<navigation: 'ParentDoStatement'>
-	^ MooseSpecializedGroup with: self parentDoStatement
 ]
 
 { #category : 'accessing' }
