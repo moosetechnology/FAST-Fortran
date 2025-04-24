@@ -154,7 +154,7 @@ FASTFortranSSAVisitor >> visitFASTFortranAssignmentStatement: aFASTFortranAssign
 FASTFortranSSAVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
 
 	aFASTFortranDoStatement loopControl accept: self.
-	aFASTFortranDoStatement statementBlock accept: self
+	aFASTFortranDoStatement body accept: self
 ]
 
 { #category : 'visiting - statements' }

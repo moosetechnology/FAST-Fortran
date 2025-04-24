@@ -178,7 +178,7 @@ FASTFortranCFGVisitorTest >> testBlockChainingForDoLoopConditional [
 	self addStatement: (self declarationStatement: #fact type: #integer init: 1).
 	loop := self addStatement: (self doStatement: #(i 1 x 1)  statements: #()).
 	self
-		add: loop statementBlock
+		add: loop body
 		statement: (self assignementStatement: #fact value: (self binary: '*' left: #fact right: #i)).
 	self addStatement: (self returnStatement: #fact).
 	
@@ -338,7 +338,7 @@ FASTFortranCFGVisitorTest >> testDoLoopCreatesConditionalBlock [
 	self addStatement: (self declarationStatement: #fact type: #integer init: 1).
 	loop := self addStatement: (self doStatement: #(i 1 x 1)  statements: #()).
 	self
-		add: loop statementBlock
+		add: loop body
 		statement: (self assignementStatement: #fact value: (self binary: '*' left: #fact right: #i)).
 	self addStatement: (self returnStatement: #fact).
 	

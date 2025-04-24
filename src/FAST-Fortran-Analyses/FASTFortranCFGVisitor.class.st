@@ -220,7 +220,7 @@ FASTFortranCFGVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
 	self addPendingNextBlockAction: [ :bodyBlock |
 		conditionalBlock nextBlock: bodyBlock onValue: true ].
 	self closeCurrentBlock.
-	aFASTFortranDoStatement statementBlock accept: self.
+	aFASTFortranDoStatement body accept: self.
 	self chainPendingBlocksTo: conditionalBlock.
 
 	"after loop"
