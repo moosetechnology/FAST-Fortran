@@ -4,20 +4,32 @@ I represent a fortran statement with a condition: if-block, if-logical
 ## Relations
 ======================
 
+### Parents
+| Relation | Origin | Opposite | Type | Comment |
+|---|
+| `parentLoopStatement` | `FASTTStatement` | `body` | `FASTTLoopStatement` | Optional loop of which this statement is the body|
+| `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
+
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `condition` | `FASTFortranConditionalStatement` | `parentConditionalStatement` | `FASTFortranAbstractExpression` | Condition|
+| `condition` | `FASTTConditionalStatement` | `parentConditionalStatement` | `FASTTExpression` | The boolean condition tested|
 
 
+## Properties
+======================
+
+| Name | Type | Default value | Comment |
+|---|
+| `endPos` | `Number` | nil | |
+| `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : 'FASTFortranConditionalStatement',
 	#superclass : 'FASTFortranAbstractStatement',
-	#instVars : [
-		'#condition => FMOne type: #FASTFortranAbstractExpression opposite: #parentConditionalStatement'
-	],
+	#traits : 'FASTTConditionalStatement',
+	#classTraits : 'FASTTConditionalStatement classTrait',
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
 	#tag : 'Entities'
@@ -30,27 +42,4 @@ FASTFortranConditionalStatement class >> annotation [
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
-]
-
-{ #category : 'accessing' }
-FASTFortranConditionalStatement >> condition [
-	"Relation named: #condition type: #FASTFortranAbstractExpression opposite: #parentConditionalStatement"
-
-	<generated>
-	<FMComment: 'Condition'>
-	^ condition
-]
-
-{ #category : 'accessing' }
-FASTFortranConditionalStatement >> condition: anObject [
-
-	<generated>
-	condition := anObject
-]
-
-{ #category : 'navigation' }
-FASTFortranConditionalStatement >> conditionGroup [
-	<generated>
-	<navigation: 'Condition'>
-	^ MooseSpecializedGroup with: self condition
 ]
