@@ -141,7 +141,8 @@ Class {
 		'functionTypeDeclarationStatement',
 		'functionReturnStatement',
 		'includedFile',
-		'tConditionalStatement'
+		'tConditionalStatement',
+		'tLoopStatement'
 	],
 	#category : 'FAST-Fortran-Generator',
 	#package : 'FAST-Fortran-Generator'
@@ -512,8 +513,10 @@ FASTFortranGenerator >> defineHierarchy [
 	dimensionStatement --|> tWithDeclarators.
 	doStatement --|> abstractStatement.
 	doStatement --|> tWithLabelReferences.
+	doStatement --|> tLoopStatement.
 	doStatement --|> tWithLoopControl.
 	doWhileStatement --|> conditionalStatement.
+	doWhileStatement --|> tLoopStatement.
 	elseStatement --|> abstractStatement.
 	encodeStatement --|> abstractIOStatement.
 	endFileStatement --|> abstractIOStatement.
@@ -749,11 +752,6 @@ FASTFortranGenerator >> defineRelations [
 	((tWithLoopControl property: #loopControl) comment: 'loop control')
 	<>-
 	((loopControlExpression property: #parentLoop) comment: 'Parent loop').
-
-	((doStatement property: #statementBlock) comment:
-		 'Statement block containing statements of the do body ')
-	<>- ((statementBlock property: #parentDoStatement) comment:
-			 'Parent do statement').
 
 	(entryStatement property: #entryArguments)
 	<>-* (tEntryArgument property: #entryStatement).
@@ -1080,6 +1078,7 @@ FASTFortranGenerator >> defineTraits [
 	tNumericalLiteral := self remoteTrait: #TNumericalLiteral withPrefix: #FAST.
 	tStatement := self remoteTrait: #TStatement withPrefix: #FAST.
 	tStatementBlock := self remoteTrait: #TStatementBlock withPrefix: #FAST.
+	tLoopStatement := self remoteTrait: #TLoopStatement withPrefix: #FAST.
 	tReturnStatement := self remoteTrait: #TReturnStatement withPrefix: #FAST.
 	tUnaryExpression := self remoteTrait: #TUnaryExpression withPrefix: #FAST. 
 	tVariableEntity := self remoteTrait: #TVariableEntity withPrefix: #FAST.
