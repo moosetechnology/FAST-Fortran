@@ -140,7 +140,8 @@ Class {
 		'tDeclaredType',
 		'functionTypeDeclarationStatement',
 		'functionReturnStatement',
-		'includedFile'
+		'includedFile',
+		'tConditionalStatement'
 	],
 	#category : 'FAST-Fortran-Generator',
 	#package : 'FAST-Fortran-Generator'
@@ -502,6 +503,7 @@ FASTFortranGenerator >> defineHierarchy [
 	closeStatement --|> abstractIOStatement.
 	commonStatement --|> abstractStatement.
 	conditionalStatement --|> abstractStatement.
+	conditionalStatement --|> tConditionalStatement.
 	continueStatement --|> abstractStatement.
 	dataStatement --|> abstractStatement.
 	dataStatement --|> tWithVariableGroup.
@@ -766,10 +768,6 @@ FASTFortranGenerator >> defineRelations [
 
 	((goToAssignedStatement property: #selectorExpression) comment: 'The expression which value selects the label to go to')
 	<>- (abstractExpression property: #parentGotoAssignedStatement).
-
-	((conditionalStatement property: #condition) comment: 'Condition')
-	<>-
-	((abstractExpression property: #parentConditionalStatement) comment: 'Parent conditional statement (if-block, if-logical, ...)').
 
 	((ifLogicalStatement property: #statement) comment:
 		 'Statement of the logical if')
@@ -1074,6 +1072,7 @@ FASTFortranGenerator >> defineTraits [
 	tBooleanLiteral := self remoteTrait: #TBooleanLiteral withPrefix: #FAST.
 	tCharacterLiteral := self remoteTrait: #TCharacterLiteral withPrefix: #FAST.
 	tComment := self remoteTrait: #TComment withPrefix: #FAST.
+	tConditionalStatement := self remoteTrait: #TConditionalStatement withPrefix: #FAST.
 	tDeclaration := self newTraitNamed: #TDeclaration comment: 'I am a declaration in fortran'.
 	tDeclaredType := self newTraitNamed: #TDeclaredType comment: 'I am the declared type of a function or variable'.
 	tExpression := self remoteTrait: #TExpression withPrefix: #FAST. 
