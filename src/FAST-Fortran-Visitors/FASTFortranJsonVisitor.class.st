@@ -348,8 +348,9 @@ FASTFortranJsonVisitor >> visitCloseStatement: aCloseNode [
 	| data |
 	data := super visitCloseStatement: aCloseNode.
 
-	^self newEntity: FASTFortranCloseStatement atPosition: data first
-
+	^(self newEntity: FASTFortranCloseStatement atPosition: data first)
+		ioParameters: data second ;
+		yourself
 ]
 
 { #category : 'visiting' }
