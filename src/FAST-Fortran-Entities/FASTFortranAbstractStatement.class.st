@@ -8,6 +8,7 @@ I am the super class of all Fortran statements
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `parentIfStatement` | `FASTFortranAbstractStatement` | `statement` | `FASTFortranIfLogicalStatement` | Parent if statement|
+| `parentLoopStatement` | `FASTTStatement` | `body` | `FASTTLoopStatement` | Optional loop of which this statement is the body|
 | `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
 
 

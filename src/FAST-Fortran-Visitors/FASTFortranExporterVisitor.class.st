@@ -357,7 +357,7 @@ FASTFortranExporterVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStateme
 
 	aFASTFortranDoStatement loopControl accept: self.
 	self newLine.
-	aFASTFortranDoStatement statementBlock accept: self.
+	aFASTFortranDoStatement body accept: self.
 
 	aFASTFortranDoStatement labelReferences ifEmpty: [
 		self

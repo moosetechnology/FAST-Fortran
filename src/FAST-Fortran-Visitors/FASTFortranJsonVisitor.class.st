@@ -590,7 +590,7 @@ FASTFortranJsonVisitor >> visitDo: aDoNode [
 		body addStatement: (self createContinueStatement: (data fifth))
 	].
 
-	doStatement statementBlock: body.
+	doStatement body: body.
 	
 	self checkLabel: data second forStatement: doStatement.
 

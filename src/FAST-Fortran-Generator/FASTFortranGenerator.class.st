@@ -140,7 +140,9 @@ Class {
 		'tDeclaredType',
 		'functionTypeDeclarationStatement',
 		'functionReturnStatement',
-		'includedFile'
+		'includedFile',
+		'tConditionalStatement',
+		'tLoopStatement'
 	],
 	#category : 'FAST-Fortran-Generator',
 	#package : 'FAST-Fortran-Generator'
@@ -502,6 +504,7 @@ FASTFortranGenerator >> defineHierarchy [
 	closeStatement --|> abstractIOStatement.
 	commonStatement --|> abstractStatement.
 	conditionalStatement --|> abstractStatement.
+	conditionalStatement --|> tConditionalStatement.
 	continueStatement --|> abstractStatement.
 	dataStatement --|> abstractStatement.
 	dataStatement --|> tWithVariableGroup.
@@ -510,8 +513,10 @@ FASTFortranGenerator >> defineHierarchy [
 	dimensionStatement --|> tWithDeclarators.
 	doStatement --|> abstractStatement.
 	doStatement --|> tWithLabelReferences.
+	doStatement --|> tLoopStatement.
 	doStatement --|> tWithLoopControl.
 	doWhileStatement --|> conditionalStatement.
+	doWhileStatement --|> tLoopStatement.
 	elseStatement --|> abstractStatement.
 	encodeStatement --|> abstractIOStatement.
 	endFileStatement --|> abstractIOStatement.
@@ -748,11 +753,6 @@ FASTFortranGenerator >> defineRelations [
 	<>-
 	((loopControlExpression property: #parentLoop) comment: 'Parent loop').
 
-	((doStatement property: #statementBlock) comment:
-		 'Statement block containing statements of the do body ')
-	<>- ((statementBlock property: #parentDoStatement) comment:
-			 'Parent do statement').
-
 	(entryStatement property: #entryArguments)
 	<>-* (tEntryArgument property: #entryStatement).
 
@@ -766,10 +766,6 @@ FASTFortranGenerator >> defineRelations [
 
 	((goToAssignedStatement property: #selectorExpression) comment: 'The expression which value selects the label to go to')
 	<>- (abstractExpression property: #parentGotoAssignedStatement).
-
-	((conditionalStatement property: #condition) comment: 'Condition')
-	<>-
-	((abstractExpression property: #parentConditionalStatement) comment: 'Parent conditional statement (if-block, if-logical, ...)').
 
 	((ifLogicalStatement property: #statement) comment:
 		 'Statement of the logical if')
@@ -1074,6 +1070,7 @@ FASTFortranGenerator >> defineTraits [
 	tBooleanLiteral := self remoteTrait: #TBooleanLiteral withPrefix: #FAST.
 	tCharacterLiteral := self remoteTrait: #TCharacterLiteral withPrefix: #FAST.
 	tComment := self remoteTrait: #TComment withPrefix: #FAST.
+	tConditionalStatement := self remoteTrait: #TConditionalStatement withPrefix: #FAST.
 	tDeclaration := self newTraitNamed: #TDeclaration comment: 'I am a declaration in fortran'.
 	tDeclaredType := self newTraitNamed: #TDeclaredType comment: 'I am the declared type of a function or variable'.
 	tExpression := self remoteTrait: #TExpression withPrefix: #FAST. 
@@ -1081,6 +1078,7 @@ FASTFortranGenerator >> defineTraits [
 	tNumericalLiteral := self remoteTrait: #TNumericalLiteral withPrefix: #FAST.
 	tStatement := self remoteTrait: #TStatement withPrefix: #FAST.
 	tStatementBlock := self remoteTrait: #TStatementBlock withPrefix: #FAST.
+	tLoopStatement := self remoteTrait: #TLoopStatement withPrefix: #FAST.
 	tReturnStatement := self remoteTrait: #TReturnStatement withPrefix: #FAST.
 	tUnaryExpression := self remoteTrait: #TUnaryExpression withPrefix: #FAST. 
 	tVariableEntity := self remoteTrait: #TVariableEntity withPrefix: #FAST.

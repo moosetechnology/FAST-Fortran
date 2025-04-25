@@ -253,7 +253,7 @@ FASTFortranAbstractVisitorTest >> doStatement: control statements: stmtBlock [
 				ifFalse: [ nil ])
 			limit: control third) ;
 
-		statementBlock: (self statementBlock: stmtBlock) ;
+		body: (self statementBlock: stmtBlock) ;
 
 		startPos: 1 ;
 		endPos: 20 ;

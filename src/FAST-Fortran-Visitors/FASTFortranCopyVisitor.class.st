@@ -407,7 +407,7 @@ FASTFortranCopyVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
 		labelReferences: (self copy: aFASTFortranDoStatement labelReferences) ;
 		loopControl: (self copy: aFASTFortranDoStatement loopControl) ;
 		label: (self copy: aFASTFortranDoStatement label) ;
-		statementBlock: (self copy: aFASTFortranDoStatement statementBlock) ;
+		body: (self copy: aFASTFortranDoStatement body) ;
 		startPos: (self copy: aFASTFortranDoStatement startPos) ;
 		endPos: (self copy: aFASTFortranDoStatement endPos) ;
 		yourself
