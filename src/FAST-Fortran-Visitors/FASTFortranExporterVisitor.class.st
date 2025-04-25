@@ -179,9 +179,7 @@ FASTFortranExporterVisitor >> visitFASTFortranAbstractIOStatement: aFASTFortranI
 	self
 		visitFASTFortranAbstractStatement: aFASTFortranIOStatement ;
 		<< aString ;
-		visitFASTFortranTWithIOParameters: aFASTFortranIOStatement ;
-		visitFASTFortranTWithArguments: aFASTFortranIOStatement ;
-		newLine
+		visitFASTFortranTWithIOParameters: aFASTFortranIOStatement
 ]
 
 { #category : 'visiting - statements' }
@@ -276,6 +274,14 @@ FASTFortranExporterVisitor >> visitFASTFortranCharacterType: aFASTFortranType [
 
 	self << 'character'.
 	self visitFASTFortranType: aFASTFortranType
+]
+
+{ #category : 'visiting - statements' }
+FASTFortranExporterVisitor >> visitFASTFortranCloseStatement: aFASTFortranCloseStatement [
+
+	self
+		visitFASTFortranAbstractIOStatement: aFASTFortranCloseStatement named: 'close' ;
+		newLine
 ]
 
 { #category : 'visiting' }
@@ -675,13 +681,9 @@ FASTFortranExporterVisitor >> visitFASTFortranImpliedDoExpression: aFASTFortranI
 { #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranInquireStatement: aFASTFortranInquireStatement [
 
+	
 	self
-		visitFASTFortranAbstractStatement: aFASTFortranInquireStatement;
-		<< 'inquire ';
-		outputExpression: [
-			self visitNodeListSeparatedByCommas:
-					aFASTFortranInquireStatement ioParameters ]
-		inParentheses: true;
+		visitFASTFortranAbstractIOStatement: aFASTFortranInquireStatement named: 'inquire' ;
 		newLine
 ]
 
@@ -733,13 +735,9 @@ FASTFortranExporterVisitor >> visitFASTFortranLoopControlExpression: aFASTFortra
 { #category : 'visiting - statements' }
 FASTFortranExporterVisitor >> visitFASTFortranOpenStatement: aFASTFortranOpenStatement [
 
+	
 	self
-		visitFASTFortranAbstractStatement: aFASTFortranOpenStatement;
-		<< 'open ';
-		outputExpression: [
-			self visitNodeListSeparatedByCommas:
-					aFASTFortranOpenStatement ioParameters ]
-		inParentheses: true;
+		visitFASTFortranAbstractIOStatement: aFASTFortranOpenStatement named: 'open' ;
 		newLine
 ]
 
@@ -794,8 +792,10 @@ FASTFortranExporterVisitor >> visitFASTFortranProgramMain: aFASTFortranProgramMa
 FASTFortranExporterVisitor >> visitFASTFortranReadStatement: aFASTFortranReadStatement [
 
 	self
-		visitFASTFortranAbstractIOStatement: aFASTFortranReadStatement
-		named: 'read'
+		visitFASTFortranAbstractIOStatement: aFASTFortranReadStatement named: 'read' ;
+		space;
+		visitFASTFortranTWithArguments: aFASTFortranReadStatement ;
+		newLine
 ]
 
 { #category : 'visiting' }
@@ -820,12 +820,7 @@ FASTFortranExporterVisitor >> visitFASTFortranReturnStatement: aFASTFortranTRetu
 FASTFortranExporterVisitor >> visitFASTFortranRewindStatement: aFASTFortranRewindStatement [
 
 	self
-		visitFASTFortranAbstractStatement: aFASTFortranRewindStatement;
-		<< 'rewind ';
-		outputExpression: [
-			self visitNodeListSeparatedByCommas:
-					aFASTFortranRewindStatement ioParameters ]
-		inParentheses: true;
+		visitFASTFortranAbstractIOStatement: aFASTFortranRewindStatement named: 'rewind' ;
 		newLine
 ]
 
@@ -928,8 +923,7 @@ FASTFortranExporterVisitor >> visitFASTFortranTWithIOParameters: aFASTFortranTWi
 		space;
 		outputExpression: [
 			self visitNodeListSeparatedByCommas: aFASTFortranTWithIOParameters ioParameters ]
-		inParentheses: true;
-		space
+		inParentheses: true
 ]
 
 { #category : 'visiting - traits' }
@@ -1000,8 +994,10 @@ FASTFortranExporterVisitor >> visitFASTFortranVariableDeclarator: aFASTFortranVa
 FASTFortranExporterVisitor >> visitFASTFortranWriteStatement: aFASTFortranWriteStatement [
 
 	self
-		visitFASTFortranAbstractIOStatement: aFASTFortranWriteStatement
-		named: 'write'
+		visitFASTFortranAbstractIOStatement: aFASTFortranWriteStatement named: 'write' ;
+		space;
+		visitFASTFortranTWithArguments: aFASTFortranWriteStatement ;
+		newLine
 ]
 
 { #category : 'visiting' }
