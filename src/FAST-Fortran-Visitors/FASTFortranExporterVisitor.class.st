@@ -793,6 +793,7 @@ FASTFortranExporterVisitor >> visitFASTFortranReadStatement: aFASTFortranReadSta
 
 	self
 		visitFASTFortranAbstractIOStatement: aFASTFortranReadStatement named: 'read' ;
+		space;
 		visitFASTFortranTWithArguments: aFASTFortranReadStatement ;
 		newLine
 ]
@@ -922,8 +923,7 @@ FASTFortranExporterVisitor >> visitFASTFortranTWithIOParameters: aFASTFortranTWi
 		space;
 		outputExpression: [
 			self visitNodeListSeparatedByCommas: aFASTFortranTWithIOParameters ioParameters ]
-		inParentheses: true;
-		space
+		inParentheses: true
 ]
 
 { #category : 'visiting - traits' }
@@ -995,6 +995,7 @@ FASTFortranExporterVisitor >> visitFASTFortranWriteStatement: aFASTFortranWriteS
 
 	self
 		visitFASTFortranAbstractIOStatement: aFASTFortranWriteStatement named: 'write' ;
+		space;
 		visitFASTFortranTWithArguments: aFASTFortranWriteStatement ;
 		newLine
 ]
