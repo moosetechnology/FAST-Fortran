@@ -544,7 +544,8 @@ FASTFortranGenerator >> defineHierarchy [
 	goToAssignedStatement --|> tWithLabelReferences.
 	goToComputed --|> abstractStatement.
 	goToComputed --|> tWithLabelReferences.
-	ifArithmeticStatement --|> conditionalStatement.
+	ifArithmeticStatement --|> abstractStatement.
+	ifArithmeticStatement --|> tBranchStatement.
 	ifBlockStatement --|> conditionalStatement.
 	ifLogicalStatement --|> conditionalStatement.
 	implicitStatement --|> abstractStatement.
@@ -741,27 +742,6 @@ FASTFortranGenerator >> defineRelations [
 	((ifLogicalStatement property: #statement) comment:
 		 'Statement of the logical if')
 	<>- ((abstractStatement property: #parentIfStatement) comment: 'Parent if statement').
-
-	"((ifBlockStatement property: #thenStatementBlock) comment:
-		 'Statement block containing statements of then branch ')
-	<>-
-	((statementBlock property: #parentIfBlock) comment:
-		 'Parent if block').
-
-	((ifBlockStatement property: #elseStatementBlock) comment:
-		 'Statement block containing statements of else branch ')
-	<>-
-	((statementBlock property: #parentIfBlock) comment:
-		 'Parent if block')."
-
-	(ifArithmeticStatement property: #lessLabel)
-	<>- (labelReference property: #parentIfArithmeticLessBranch).
-
-	(ifArithmeticStatement property: #equalLabel)
-	<>- (labelReference property: #parentIfArithmeticEqualBranch).
-
-	(ifArithmeticStatement property: #greaterLabel)
-	<>- (labelReference property: #parentIfArithmeticMoreBranch).
 
 	(implicitStatement property: #typingRules)
 	<>-* (implicitTypingRule property: #parentImplicitStatement).
