@@ -8,9 +8,7 @@ Contains the block of Fortran statements
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `fastBehaviouralParent` | `FASTTStatementBlock` | `statementBlock` | `FASTTBehaviouralEntity` | Behavioural entity containing the statement block.|
-| `parentIfBlock` | `FASTFortranStatementBlock` | `elseStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
-| `parentIfBlock` | `FASTFortranStatementBlock` | `thenStatementBlock` | `FASTFortranIfBlockStatement` | Parent if block|
-| `parentLoopStatement` | `FASTTStatement` | `body` | `FASTTLoopStatement` | Optional loop of which this statement is the body|
+| `parentBranchStatement` | `FASTTStatement` | `branches` | `FASTTBranchStatement` | My parent BranchStatement (of which I am a branch)|
 | `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
 
 ### Children
@@ -34,9 +32,6 @@ Class {
 	#superclass : 'FASTFortranEntity',
 	#traits : 'FASTTStatementBlock + FASTTWithComments',
 	#classTraits : 'FASTTStatementBlock classTrait + FASTTWithComments classTrait',
-	#instVars : [
-		'#parentIfBlock => FMOne type: #FASTFortranIfBlockStatement opposite: #thenStatementBlock'
-	],
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
 	#tag : 'Entities'
@@ -49,29 +44,4 @@ FASTFortranStatementBlock class >> annotation [
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
-]
-
-{ #category : 'accessing' }
-FASTFortranStatementBlock >> parentIfBlock [
-	"Relation named: #parentIfBlock type: #FASTFortranIfBlockStatement opposite: #thenStatementBlock"
-
-	<generated>
-	<FMComment: 'Parent if block'>
-	<container>
-	<derived>
-	^ parentIfBlock
-]
-
-{ #category : 'accessing' }
-FASTFortranStatementBlock >> parentIfBlock: anObject [
-
-	<generated>
-	parentIfBlock := anObject
-]
-
-{ #category : 'navigation' }
-FASTFortranStatementBlock >> parentIfBlockGroup [
-	<generated>
-	<navigation: 'ParentIfBlock'>
-	^ MooseSpecializedGroup with: self parentIfBlock
 ]

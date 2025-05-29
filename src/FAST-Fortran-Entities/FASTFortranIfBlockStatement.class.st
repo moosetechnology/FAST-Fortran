@@ -1,25 +1,11 @@
 "
 I represent Fortran If (BLock) statement
 
-## Relations
-======================
-
-### Children
-| Relation | Origin | Opposite | Type | Comment |
-|---|
-| `elseStatementBlock` | `FASTFortranIfBlockStatement` | `parentIfBlock` | `FASTFortranStatementBlock` | Statement block containing statements of else branch |
-| `thenStatementBlock` | `FASTFortranIfBlockStatement` | `parentIfBlock` | `FASTFortranStatementBlock` | Statement block containing statements of then branch |
-
-
 
 "
 Class {
 	#name : 'FASTFortranIfBlockStatement',
 	#superclass : 'FASTFortranConditionalStatement',
-	#instVars : [
-		'#thenStatementBlock => FMOne type: #FASTFortranStatementBlock opposite: #parentIfBlock',
-		'#elseStatementBlock => FMOne type: #FASTFortranStatementBlock opposite: #parentIfBlock'
-	],
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
 	#tag : 'Entities'
@@ -50,13 +36,6 @@ FASTFortranIfBlockStatement >> elseStatementBlock: anObject [
 	elseStatementBlock := anObject
 ]
 
-{ #category : 'navigation' }
-FASTFortranIfBlockStatement >> elseStatementBlockGroup [
-	<generated>
-	<navigation: 'ElseStatementBlock'>
-	^ MooseSpecializedGroup with: self elseStatementBlock
-]
-
 { #category : 'accessing' }
 FASTFortranIfBlockStatement >> thenStatementBlock [
 	"Relation named: #thenStatementBlock type: #FASTFortranStatementBlock opposite: #parentIfBlock"
@@ -71,11 +50,4 @@ FASTFortranIfBlockStatement >> thenStatementBlock: anObject [
 
 	<generated>
 	thenStatementBlock := anObject
-]
-
-{ #category : 'navigation' }
-FASTFortranIfBlockStatement >> thenStatementBlockGroup [
-	<generated>
-	<navigation: 'ThenStatementBlock'>
-	^ MooseSpecializedGroup with: self thenStatementBlock
 ]

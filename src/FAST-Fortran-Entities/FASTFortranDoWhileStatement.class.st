@@ -7,13 +7,14 @@ I represent Fortran Do While statement
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parentLoopStatement` | `FASTTStatement` | `body` | `FASTTLoopStatement` | Optional loop of which this statement is the body|
+| `parentBranchStatement` | `FASTTStatement` | `branches` | `FASTTBranchStatement` | My parent BranchStatement (of which I am a branch)|
 | `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
 
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `body` | `FASTTLoopStatement` | `parentLoopStatement` | `FASTTStatement` | The body of the loop|
+| `branches` | `FASTTBranchStatement` | `parentBranchStatement` | `FASTTStatement` | The various children branches of this BranchStatement|
+| `expression` | `FASTTBranchStatement` | `parentBranchStatement` | `FASTTExpression` | The expression commanding which branch is executed|
 
 
 ## Properties
@@ -27,7 +28,7 @@ I represent Fortran Do While statement
 "
 Class {
 	#name : 'FASTFortranDoWhileStatement',
-	#superclass : 'FASTFortranConditionalStatement',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTTLoopStatement',
 	#classTraits : 'FASTTLoopStatement classTrait',
 	#category : 'FAST-Fortran-Entities-Entities',
@@ -38,7 +39,7 @@ Class {
 { #category : 'meta' }
 FASTFortranDoWhileStatement class >> annotation [
 
-	<FMClass: #DoWhileStatement super: #FASTFortranConditionalStatement>
+	<FMClass: #DoWhileStatement super: #FASTFortranAbstractStatement>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
