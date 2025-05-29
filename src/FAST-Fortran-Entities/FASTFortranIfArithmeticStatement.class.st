@@ -4,24 +4,33 @@ I represent Fortran If (Arithmetic) statement
 ## Relations
 ======================
 
+### Parents
+| Relation | Origin | Opposite | Type | Comment |
+|---|
+| `parentBranchStatement` | `FASTTStatement` | `branches` | `FASTTBranchStatement` | My parent BranchStatement (of which I am a branch)|
+| `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
+
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `equalLabel` | `FASTFortranIfArithmeticStatement` | `parentIfArithmeticEqualBranch` | `FASTFortranLabelReference` | |
-| `greaterLabel` | `FASTFortranIfArithmeticStatement` | `parentIfArithmeticMoreBranch` | `FASTFortranLabelReference` | |
-| `lessLabel` | `FASTFortranIfArithmeticStatement` | `parentIfArithmeticLessBranch` | `FASTFortranLabelReference` | |
+| `branches` | `FASTTBranchStatement` | `parentBranchStatement` | `FASTTStatement` | The various children branches of this BranchStatement|
+| `expression` | `FASTTBranchStatement` | `parentBranchStatement` | `FASTTExpression` | The expression commanding which branch is executed|
 
 
+## Properties
+======================
+
+| Name | Type | Default value | Comment |
+|---|
+| `endPos` | `Number` | nil | |
+| `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : 'FASTFortranIfArithmeticStatement',
-	#superclass : 'FASTFortranConditionalStatement',
-	#instVars : [
-		'#lessLabel => FMOne type: #FASTFortranLabelReference opposite: #parentIfArithmeticLessBranch',
-		'#equalLabel => FMOne type: #FASTFortranLabelReference opposite: #parentIfArithmeticEqualBranch',
-		'#greaterLabel => FMOne type: #FASTFortranLabelReference opposite: #parentIfArithmeticMoreBranch'
-	],
+	#superclass : 'FASTFortranAbstractStatement',
+	#traits : 'FASTTBranchStatement',
+	#classTraits : 'FASTTBranchStatement classTrait',
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
 	#tag : 'Entities'
@@ -30,74 +39,82 @@ Class {
 { #category : 'meta' }
 FASTFortranIfArithmeticStatement class >> annotation [
 
-	<FMClass: #IfArithmeticStatement super: #FASTFortranConditionalStatement>
+	<FMClass: #IfArithmeticStatement super: #FASTFortranAbstractStatement>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
 ]
 
 { #category : 'accessing' }
-FASTFortranIfArithmeticStatement >> equalLabel [
-	"Relation named: #equalLabel type: #FASTFortranLabelReference opposite: #parentIfArithmeticEqualBranch"
+FASTFortranIfArithmeticStatement >> condition [
+	"syntactic sugar"
 
-	<generated>
-	^ equalLabel
+	^self expression
 ]
 
 { #category : 'accessing' }
-FASTFortranIfArithmeticStatement >> equalLabel: anObject [
+FASTFortranIfArithmeticStatement >> condition: aBooleanExpression [
+	"syntactic sugar"
 
-	<generated>
-	equalLabel := anObject
+	expression := aBooleanExpression 
 ]
 
-{ #category : 'navigation' }
-FASTFortranIfArithmeticStatement >> equalLabelGroup [
-	<generated>
-	<navigation: 'EqualLabel'>
-	^ MooseSpecializedGroup with: self equalLabel
+{ #category : 'accessing' }
+FASTFortranIfArithmeticStatement >> equalLabel [
+	"syntactic sugar"
+
+	self mustHaveBranches: 3.
+	^(branches at: 2) ifNotNil: [ :goto | goto labelReferences anyOne ]
+]
+
+{ #category : 'accessing' }
+FASTFortranIfArithmeticStatement >> equalLabel: aLabel [
+	"syntactic sugar"
+
+	self mustHaveBranches: 3.
+	branches
+		at: 2
+		put: (FASTFortranGoToStatement new
+			addLabelReference: aLabel ;
+			yourself)
 ]
 
 { #category : 'accessing' }
 FASTFortranIfArithmeticStatement >> greaterLabel [
-	"Relation named: #greaterLabel type: #FASTFortranLabelReference opposite: #parentIfArithmeticMoreBranch"
+	"syntactic sugar"
 
-	<generated>
-	^ greaterLabel
+	self mustHaveBranches: 3.
+	^(branches at: 3) ifNotNil: [ :goto | goto labelReferences anyOne ]
 ]
 
 { #category : 'accessing' }
-FASTFortranIfArithmeticStatement >> greaterLabel: anObject [
+FASTFortranIfArithmeticStatement >> greaterLabel: aLabel [
+	"syntactic sugar"
 
-	<generated>
-	greaterLabel := anObject
-]
-
-{ #category : 'navigation' }
-FASTFortranIfArithmeticStatement >> greaterLabelGroup [
-	<generated>
-	<navigation: 'GreaterLabel'>
-	^ MooseSpecializedGroup with: self greaterLabel
+	self mustHaveBranches: 3.
+	branches
+		at: 3
+		put: (FASTFortranGoToStatement new
+			addLabelReference: aLabel ;
+			yourself)
 ]
 
 { #category : 'accessing' }
 FASTFortranIfArithmeticStatement >> lessLabel [
-	"Relation named: #lessLabel type: #FASTFortranLabelReference opposite: #parentIfArithmeticLessBranch"
+	"syntactic sugar"
 
-	<generated>
-	^ lessLabel
+	self mustHaveBranches: 3.
+	^(branches at: 1) ifNotNil: [ :goto | goto labelReferences anyOne ]
 ]
 
 { #category : 'accessing' }
-FASTFortranIfArithmeticStatement >> lessLabel: anObject [
+FASTFortranIfArithmeticStatement >> lessLabel: aLabel [
+	"syntactic sugar"
 
-	<generated>
-	lessLabel := anObject
-]
-
-{ #category : 'navigation' }
-FASTFortranIfArithmeticStatement >> lessLabelGroup [
-	<generated>
-	<navigation: 'LessLabel'>
-	^ MooseSpecializedGroup with: self lessLabel
+	self mustHaveBranches: 3.
+	branches
+		at: 1
+		put: (FASTFortranGoToStatement new
+			addLabelReference: aLabel ;
+			yourself)
 ]

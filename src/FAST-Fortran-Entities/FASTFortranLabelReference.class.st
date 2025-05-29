@@ -8,9 +8,6 @@ I contain the value of the label referred to
 ### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parentIfArithmeticEqualBranch` | `FASTFortranLabelReference` | `equalLabel` | `FASTFortranIfArithmeticStatement` | |
-| `parentIfArithmeticLessBranch` | `FASTFortranLabelReference` | `lessLabel` | `FASTFortranIfArithmeticStatement` | |
-| `parentIfArithmeticMoreBranch` | `FASTFortranLabelReference` | `greaterLabel` | `FASTFortranIfArithmeticStatement` | |
 | `referencer` | `FASTFortranLabelReference` | `labelReferences` | `FASTFortranTWithLabelReferences` | A statement (like goto) referencing this label|
 
 
@@ -27,9 +24,6 @@ Class {
 	#superclass : 'FASTFortranEntity',
 	#instVars : [
 		'#label => FMProperty',
-		'#parentIfArithmeticLessBranch => FMOne type: #FASTFortranIfArithmeticStatement opposite: #lessLabel',
-		'#parentIfArithmeticEqualBranch => FMOne type: #FASTFortranIfArithmeticStatement opposite: #equalLabel',
-		'#parentIfArithmeticMoreBranch => FMOne type: #FASTFortranIfArithmeticStatement opposite: #greaterLabel',
 		'#referencer => FMOne type: #FASTFortranTWithLabelReferences opposite: #labelReferences'
 	],
 	#category : 'FAST-Fortran-Entities-Entities',
@@ -59,78 +53,6 @@ FASTFortranLabelReference >> label [
 FASTFortranLabelReference >> label: anObject [
 	<generated>
 	label := anObject
-]
-
-{ #category : 'accessing' }
-FASTFortranLabelReference >> parentIfArithmeticEqualBranch [
-	"Relation named: #parentIfArithmeticEqualBranch type: #FASTFortranIfArithmeticStatement opposite: #equalLabel"
-
-	<generated>
-	<container>
-	<derived>
-	^ parentIfArithmeticEqualBranch
-]
-
-{ #category : 'accessing' }
-FASTFortranLabelReference >> parentIfArithmeticEqualBranch: anObject [
-
-	<generated>
-	parentIfArithmeticEqualBranch := anObject
-]
-
-{ #category : 'navigation' }
-FASTFortranLabelReference >> parentIfArithmeticEqualBranchGroup [
-	<generated>
-	<navigation: 'ParentIfArithmeticEqualBranch'>
-	^ MooseSpecializedGroup with: self parentIfArithmeticEqualBranch
-]
-
-{ #category : 'accessing' }
-FASTFortranLabelReference >> parentIfArithmeticLessBranch [
-	"Relation named: #parentIfArithmeticLessBranch type: #FASTFortranIfArithmeticStatement opposite: #lessLabel"
-
-	<generated>
-	<container>
-	<derived>
-	^ parentIfArithmeticLessBranch
-]
-
-{ #category : 'accessing' }
-FASTFortranLabelReference >> parentIfArithmeticLessBranch: anObject [
-
-	<generated>
-	parentIfArithmeticLessBranch := anObject
-]
-
-{ #category : 'navigation' }
-FASTFortranLabelReference >> parentIfArithmeticLessBranchGroup [
-	<generated>
-	<navigation: 'ParentIfArithmeticLessBranch'>
-	^ MooseSpecializedGroup with: self parentIfArithmeticLessBranch
-]
-
-{ #category : 'accessing' }
-FASTFortranLabelReference >> parentIfArithmeticMoreBranch [
-	"Relation named: #parentIfArithmeticMoreBranch type: #FASTFortranIfArithmeticStatement opposite: #greaterLabel"
-
-	<generated>
-	<container>
-	<derived>
-	^ parentIfArithmeticMoreBranch
-]
-
-{ #category : 'accessing' }
-FASTFortranLabelReference >> parentIfArithmeticMoreBranch: anObject [
-
-	<generated>
-	parentIfArithmeticMoreBranch := anObject
-]
-
-{ #category : 'navigation' }
-FASTFortranLabelReference >> parentIfArithmeticMoreBranchGroup [
-	<generated>
-	<navigation: 'ParentIfArithmeticMoreBranch'>
-	^ MooseSpecializedGroup with: self parentIfArithmeticMoreBranch
 ]
 
 { #category : 'accessing' }
