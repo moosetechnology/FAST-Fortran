@@ -20,34 +20,26 @@ FASTFortranIfBlockStatement class >> annotation [
 	^ self
 ]
 
-{ #category : 'accessing' }
+{ #category : 'as yet unclassified' }
 FASTFortranIfBlockStatement >> elseStatementBlock [
-	"Relation named: #elseStatementBlock type: #FASTFortranStatementBlock opposite: #parentIfBlock"
-
-	<generated>
-	<FMComment: 'Statement block containing statements of else branch '>
-	^ elseStatementBlock
+ 
+	^self falseBranch
 ]
 
-{ #category : 'accessing' }
-FASTFortranIfBlockStatement >> elseStatementBlock: anObject [
-
-	<generated>
-	elseStatementBlock := anObject
+{ #category : 'as yet unclassified' }
+FASTFortranIfBlockStatement >> elseStatementBlock: aFASTFortranStatementBlock [
+ 
+	self falseBranch: aFASTFortranStatementBlock 
 ]
 
-{ #category : 'accessing' }
+{ #category : 'as yet unclassified' }
 FASTFortranIfBlockStatement >> thenStatementBlock [
-	"Relation named: #thenStatementBlock type: #FASTFortranStatementBlock opposite: #parentIfBlock"
 
-	<generated>
-	<FMComment: 'Statement block containing statements of then branch '>
-	^ thenStatementBlock
+	^self trueBranch
 ]
 
-{ #category : 'accessing' }
-FASTFortranIfBlockStatement >> thenStatementBlock: anObject [
+{ #category : 'as yet unclassified' }
+FASTFortranIfBlockStatement >> thenStatementBlock: aFASTFortranStatementBlock [
 
-	<generated>
-	thenStatementBlock := anObject
+	self trueBranch: aFASTFortranStatementBlock 
 ]
