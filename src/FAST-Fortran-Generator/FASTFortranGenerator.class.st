@@ -35,7 +35,6 @@ Class {
 		'includeStatement',
 		'inquireStatement',
 		'intrinsicStatement',
-		'loopControlExpression',
 		'mainprogram',
 		'mapStatement',
 		'nameListStatement',
@@ -142,7 +141,9 @@ Class {
 		'functionReturnStatement',
 		'includedFile',
 		'tConditionalStatement',
-		'tLoopStatement'
+		'tLoopStatement',
+		'tBranchStatement',
+		'loopControlBlock'
 	],
 	#category : 'FAST-Fortran-Generator',
 	#package : 'FAST-Fortran-Generator'
@@ -333,7 +334,7 @@ I contain the value of the label referred to'.
 		               comment:
 		               'I represent Fortran boolean type'.
 
-	loopControlExpression := self
+	loopControlBlock := self
 		                         newClassNamed: #LoopControlExpression
 		                         comment:
 		                         'a Fortran Loop Control Expression'.
@@ -515,7 +516,7 @@ FASTFortranGenerator >> defineHierarchy [
 	doStatement --|> tWithLabelReferences.
 	doStatement --|> tLoopStatement.
 	doStatement --|> tWithLoopControl.
-	doWhileStatement --|> conditionalStatement.
+	doWhileStatement --|> abstractStatement.
 	doWhileStatement --|> tLoopStatement.
 	elseStatement --|> abstractStatement.
 	encodeStatement --|> abstractIOStatement.
@@ -691,6 +692,9 @@ FASTFortranGenerator >> defineRelations [
 
 	super defineRelations.
 
+	((abstractIOStatement property: #ioParameters) comment: 'IO-Parameters of an IO-statement (READ, WRITE...)')
+	<>-* (tIOParameter property: #parentIOStatement).
+
 	((arrayRange property: #upperBound) comment: 'An upper bound of an array dimension')
 	<>- ((abstractExpression property: #parentArrayDimensionDeclarator) comment:
 			 'Parent array dimension declarator').
@@ -698,10 +702,6 @@ FASTFortranGenerator >> defineRelations [
 	((arrayRange property: #lowerBound) comment: 'A lower bound of an array dimension')
 	<>- ((abstractExpression property: #parentArrayDimensionDeclarator) comment:
 			 'Parent array dimension declarator').
-
-	((variableDeclarator property: #dimensions) comment: 'Possible dimensions in case this is an array declaration')
-	<>-* ((arrayRange property: #parentVariableDeclarator)
-			comment: 'The variable declarator I am part of').
 
 	((arrayVariable property: #indices) comment: 'Indices used in the array access')
 	<>-* ((abstractExpression property: #parentArrayExpression) comment: 'an ArrayVariable expression of which I am an indice').
@@ -714,47 +714,18 @@ FASTFortranGenerator >> defineRelations [
 	(dataGroup property: #dataConstants)
 	<>-* (abstractExpression property: #parentDataStatement).
 
+	((tDeclaredType property: #declaredType) comment: 'type')
+	<>-
+	((type property: #parentDeclaration) comment: 'Parent declaration').
+
+	(entryStatement property: #entryArguments)
+	<>-* (tEntryArgument property: #entryStatement).
+
 	(fieldAccess property: #pointer)
 	<>- ((variable property: #pointerIn) comment: 'Parent FieldAccess in which receiver is a pointer').
 
 	(fieldAccess property: #field)
 	<>- ((variable property: #fieldIn) comment: 'Parent FieldAccess in which receiver is a field').
-
-	(impliedDoExpression property: #variables)
-	<>-* (tVariableEntity property: #parentImpliedExpression).
-	
-	
-	((tWithDeclarations property: #declarations) comment:
-		 'The elements I declare')
-	<>-* ((tDeclaration property: #fortranDeclarationOwner) comment:
-			 'The element that declares me').
-	
-
-	(tVariableGroup property: #variables)
-	<>-* (variable property: #parentVariableGroup).
-
-	((abstractIOStatement property: #ioParameters) comment: 'IO-Parameters of an IO-statement (READ, WRITE...)')
-	<>-* (tIOParameter property: #parentIOStatement).
-
-	tWithVariableGroup <>-* tVariableGroup.
-	
-	((tWithDeclarators property: #declarators) comment: 'variables declared')
-	<>-* (variableDeclarator property: #parentDeclaration).
-
-	((variableDeclarator property: #expression) comment:
-		 'Expression assigned to the variable declared')
-	<>- (abstractExpression property: #variableDeclaratorOwner) .
-
-	((tDeclaredType property: #declaredType) comment: 'type')
-	<>-
-	((type property: #parentDeclaration) comment: 'Parent declaration').
-
-	((tWithLoopControl property: #loopControl) comment: 'loop control')
-	<>-
-	((loopControlExpression property: #parentLoop) comment: 'Parent loop').
-
-	(entryStatement property: #entryArguments)
-	<>-* (tEntryArgument property: #entryStatement).
 
 	((functionStatement property: #expression) comment:
 		 'Expression thats being assigned upon declaration to the var')
@@ -771,7 +742,7 @@ FASTFortranGenerator >> defineRelations [
 		 'Statement of the logical if')
 	<>- ((abstractStatement property: #parentIfStatement) comment: 'Parent if statement').
 
-	((ifBlockStatement property: #thenStatementBlock) comment:
+	"((ifBlockStatement property: #thenStatementBlock) comment:
 		 'Statement block containing statements of then branch ')
 	<>-
 	((statementBlock property: #parentIfBlock) comment:
@@ -781,7 +752,7 @@ FASTFortranGenerator >> defineRelations [
 		 'Statement block containing statements of else branch ')
 	<>-
 	((statementBlock property: #parentIfBlock) comment:
-		 'Parent if block').
+		 'Parent if block')."
 
 	(ifArithmeticStatement property: #lessLabel)
 	<>- (labelReference property: #parentIfArithmeticLessBranch).
@@ -801,15 +772,23 @@ FASTFortranGenerator >> defineRelations [
 	(implicitTypingRule property: #ranges)
 	<>-* (implicitRange property: #parentImplicitRule).
 
-	((loopControlExpression property: #init) comment:
+	(impliedDoExpression property: #variables)
+	<>-* (tVariableEntity property: #parentImpliedExpression).
+
+	((ioParameter property: #expression) comment: 
+		'value of the parameter (keyword argument)')
+	<>- ((tExpression property: #ioSpecifier) comment: 
+		'name of the parameter (keyword argument)').
+
+	((loopControlBlock property: #init) comment:
 		 'initial assignment')
 	<>- (assignmentExpression property: #parentLoopControlInitialization).
 
-	((loopControlExpression property: #increment) comment:
+	((loopControlBlock property: #increment) comment:
 		'Loop control increment value')
 	<>- (abstractExpression property: #parentLoopControlIncrement).
 
-	((loopControlExpression property: #limit) comment:
+	((loopControlBlock property: #limit) comment:
 		'Loop control limit value')
 	<>- (abstractExpression property: #parentLoopControlLimit).
 
@@ -819,6 +798,27 @@ FASTFortranGenerator >> defineRelations [
 	((type property: #size) comment: 'a data size in bytes')
 	<>- (abstractExpression property: #parentTypeSize).
 
+	((variableDeclarator property: #dimensions) comment: 'Possible dimensions in case this is an array declaration')
+	<>-* ((arrayRange property: #parentVariableDeclarator)
+			comment: 'The variable declarator I am part of').
+
+	((variableDeclarator property: #expression) comment:
+		 'Expression assigned to the variable declared')
+	<>- (abstractExpression property: #variableDeclaratorOwner) .
+
+	(tVariableGroup property: #variables)
+	<>-* (variable property: #parentVariableGroup).
+
+	tWithVariableGroup <>-* tVariableGroup.
+	
+	((tWithDeclarators property: #declarators) comment: 'variables declared')
+	<>-* (variableDeclarator property: #parentDeclaration).
+
+	((tWithDeclarations property: #declarations) comment:
+		 'The elements I declare')
+	<>-* ((tDeclaration property: #fortranDeclarationOwner) comment:
+			 'The element that declares me').
+	
 	((tWithFormat property: #format) comment: 'The description of the format')
 	<>- ((tFormat property: #parentFormatedStatement) comment: 'A format description in a Format/Print/Read/Write statement').
 
@@ -827,10 +827,9 @@ FASTFortranGenerator >> defineRelations [
 	<>-* ((labelReference property: #referencer) comment:
 			 'A statement (like goto) referencing this label').
 
-	((ioParameter property: #expression) comment: 
-		'value of the parameter (keyword argument)')
-	<>- ((tExpression property: #ioSpecifier) comment: 
-		'name of the parameter (keyword argument)').
+	((tWithLoopControl property: #loopControl) comment: 'loop control')
+	<>-
+	((loopControlBlock property: #parentLoop) comment: 'Parent loop').
 
 ]
 
@@ -838,223 +837,145 @@ FASTFortranGenerator >> defineRelations [
 FASTFortranGenerator >> defineStatements [
 	"A statement consists of zero or more key words, symbolic names, literal constants, statement labels, operators, and special characters."
 
-	abstractStatement := self
-		                   newClassNamed: #AbstractStatement
-		                   comment: 'I am the super class of all Fortran statements'.
+	abstractStatement := self newClassNamed: #AbstractStatement
+		comment: 'I am the super class of all Fortran statements'.
 
-	abstractIOStatement := self
-		newClassNamed: #AbstractIOStatement
+	abstractIOStatement := self newClassNamed: #AbstractIOStatement
 		comment: 'I am the abstract superclass of all IO-statements (READ, WRITE, CLOSE, ENCODE...)'.
 
-	acceptStatement := self
-		                   newClassNamed: #AcceptStatement
-		                   comment: 'I represent Fortran accept statement'.
+	acceptStatement := self newClassNamed: #AcceptStatement
+		comment: 'I represent Fortran accept statement'.
 
-	assignmentStatement := self
-		                       newClassNamed: #AssignmentStatement
-		                       comment:
-		                       'I represent Fortran assignment made without ASSIGN statement'.
+	assignmentStatement := self newClassNamed: #AssignmentStatement
+		comment: 'I represent Fortran assignment made without ASSIGN statement'.
 
-	automaticStatement := self
-		                      newClassNamed: #AutomaticStatement
-		                      comment:
-		                      'I represent Fortran Automatic statement'.
-	backspaceStatement := self
-		                      newClassNamed: #BackspaceStatement
-		                      comment:
-		                      'I represent Fortran Backspace statement'.
-	callStatement := self
-		                 newClassNamed: #CallStatement
-		                 comment: 'I represent Fortran Call statement'.
-	closeStatement := self
-		                  newClassNamed: #CloseStatement
-		                  comment: 'I represent Fortran Close statement'.
-	commonStatement := self
-		                   newClassNamed: #CommonStatement
-		                   comment: 'I represent Fortran Common statement'.
-	continueStatement := self
-		                     newClassNamed: #ContinueStatement
-		                     comment:
-		                     'I represent Fortran Continue statement'.
-	dataStatement := self
-		                 newClassNamed: #DataStatement
-		                 comment: 'I represent a Fortran Data statement'.
+	automaticStatement := self newClassNamed: #AutomaticStatement
+		comment: 'I represent Fortran Automatic statement'.
+	backspaceStatement := self newClassNamed: #BackspaceStatement
+		comment: 'I represent Fortran Backspace statement'.
+	callStatement := self newClassNamed: #CallStatement
+		comment: 'I represent Fortran Call statement'.
+	closeStatement := self newClassNamed: #CloseStatement
+		comment: 'I represent Fortran Close statement'.
+	commonStatement := self newClassNamed: #CommonStatement
+		comment: 'I represent Fortran Common statement'.
+	continueStatement := self newClassNamed: #ContinueStatement
+		comment: 'I represent Fortran Continue statement'.
+	dataStatement := self newClassNamed: #DataStatement
+		comment: 'I represent a Fortran Data statement'.
 
-	dataGroup := self
-		                 newClassNamed: #DataGroup
-		                 comment: 'I represent a Fortran Data group in a Data statement'.
-	decodeStatement := self
-		                   newClassNamed: #DecodeStatement
-		                   comment: 'I represent Fortran Decode statement'.
-	encodeStatement := self
-		                   newClassNamed: #EncodeStatement
-		                   comment: 'I represent Fortran Encode statement'.
-	dimensionStatement := self
-		                      newClassNamed: #DimensionStatement
-		                      comment:
-		                      'I represent FortranDimension statement'.
-	doStatement := self
-		               newClassNamed: #DoStatement
-		               comment: 'I represent Fortran Do statement'.
-	doWhileStatement := self
-		                    newClassNamed: #DoWhileStatement
-		                    comment:
-		                    'I represent Fortran Do While statement'.
-	elseStatement := self
-		                 newClassNamed: #ElseStatement
-		                 comment: 'I represent Fortran Else statement'.
-	endFileStatement := self
-		                    newClassNamed: #EndFileStatement
-		                    comment:
-		                    'I represent Fortran End File statement'.
+	dataGroup := self newClassNamed: #DataGroup
+		comment: 'I represent a Fortran Data group in a Data statement'.
+	decodeStatement := self newClassNamed: #DecodeStatement
+		comment: 'I represent Fortran Decode statement'.
+	encodeStatement := self newClassNamed: #EncodeStatement
+		comment: 'I represent Fortran Encode statement'.
+	dimensionStatement := self newClassNamed: #DimensionStatement
+		comment: 'I represent FortranDimension statement'.
+	doStatement := self newClassNamed: #DoStatement
+		comment: 'I represent Fortran Do statement'.
+	doWhileStatement := self newClassNamed: #DoWhileStatement
+		comment: 'I represent Fortran Do While statement'.
+	elseStatement := self newClassNamed: #ElseStatement
+		comment: 'I represent Fortran Else statement'.
+	endFileStatement := self newClassNamed: #EndFileStatement
+		comment: 'I represent Fortran End File statement'.
 
-	entryStatement := self
-		                  newClassNamed: #EntryStatement
-		                  comment: 'I represent Fortran Entry statement'.
-	equivalenceGroup := self
-		                        newClassNamed: #EquivalenceGroup
-		                        comment:
-		                        'I represent a group of variables in an Equivalence statement'.
-	equivalenceStatement := self
-		                        newClassNamed: #EquivalenceStatement
-		                        comment:
-		                        'I represent a Fortran Equivalence statement'.
-	externalStatement := self
-		                     newClassNamed: #ExternalStatement
-		                     comment:
-		                     'I represent Fortran External statement'.
-	formatStatement := self
-		                   newClassNamed: #FormatStatement
-		                   comment: 'I represent Fortran Format statement'.
+	entryStatement := self newClassNamed: #EntryStatement
+		comment: 'I represent Fortran Entry statement'.
+	equivalenceGroup := self newClassNamed: #EquivalenceGroup
+		comment: 'I represent a group of variables in an Equivalence statement'.
+	equivalenceStatement := self newClassNamed: #EquivalenceStatement
+		comment: 'I represent a Fortran Equivalence statement'.
+	externalStatement := self newClassNamed: #ExternalStatement
+		comment: 'I represent Fortran External statement'.
+	formatStatement := self newClassNamed: #FormatStatement
+		comment: 'I represent Fortran Format statement'.
 
-	functionStatement := self
-		                     newClassNamed: #FunctionStatement
-		                     comment:
-		                     'I represent a function statement - a function-like declaration, made in a single statement'.
+	functionStatement := self newClassNamed: #FunctionStatement
+		comment: 'I represent a function statement - a function-like declaration, made in a single statement'.
 		
-	functionTypeDeclarationStatement := self newClassNamed: #FunctionTypeDeclarationStatement  comment: 'I represent a return type declaration statement'.
+	functionTypeDeclarationStatement := self newClassNamed: #FunctionTypeDeclarationStatement
+		comment: 'I represent a return type declaration statement'.
 
-	goToStatement := self
-		                 newClassNamed: #GoToStatement
-		                 comment: 'I represent Fortran Go To (unconditional) statement'.
+	goToStatement := self newClassNamed: #GoToStatement
+		comment: 'I represent Fortran Go To (unconditional) statement'.
 
-	goToAssignedStatement := self
-		                         newClassNamed: #GoToAssignedStatement
-		                         comment:
-		                         'I represent Fortran Go To( Assigned) statement'.
-	goToComputed := self
-		                newClassNamed: #GoToComputedStatement
-		                comment:
-		                'I represent Fortran Go To (Computed) statement'.
+	goToAssignedStatement := self newClassNamed: #GoToAssignedStatement
+		comment: 'I represent Fortran Go To( Assigned) statement'.
+	goToComputed := self newClassNamed: #GoToComputedStatement
+		comment: 'I represent Fortran Go To (Computed) statement'.
 
-	ifArithmeticStatement := self
-		                         newClassNamed: #IfArithmeticStatement
-		                         comment:
-		                         'I represent Fortran If (Arithmetic) statement'.
-	ifBlockStatement := self
-		                    newClassNamed: #IfBlockStatement
-		                    comment:
-		                    'I represent Fortran If (BLock) statement'.
-	ifLogicalStatement := self
-		                      newClassNamed: #IfLogicalStatement
-		                      comment:
-		                      'The logical IF statement executes one single statement, or does not execute it, depending on the value of a logical expression.'.
-	implicitStatement := self
-		                     newClassNamed: #ImplicitStatement
-		                     comment:
-		                     'I represent Fortran Implicit statement'.
+	ifArithmeticStatement := self newClassNamed: #IfArithmeticStatement
+	  	comment: 'I represent Fortran If (Arithmetic) statement'.
+	ifBlockStatement := self newClassNamed: #IfBlockStatement
+		comment: 'I represent Fortran If (BLock) statement'.
+	ifLogicalStatement := self newClassNamed: #IfLogicalStatement
+		comment: 'The logical IF statement executes one single statement, or does not execute it, depending on the value of a logical expression.'.
+	implicitStatement := self newClassNamed: #ImplicitStatement
+		comment: 'I represent Fortran Implicit statement'.
 
-	implicitTypingRule := self
-		                     newClassNamed: #ImplicitTypingRule
-		                     comment:
-		                     'I represent a rule (ie. Type+letter range) in an Implicit statement'.
+	implicitTypingRule := self newClassNamed: #ImplicitTypingRule
+		comment: 'I represent a rule (ie. Type+letter range) in an Implicit statement'.
 
-	implicitRange := self
-		                     newClassNamed: #ImplicitRange
-		                     comment:
-		                     'I represent a range of characters in an Implicit statement'.
+	implicitRange := self newClassNamed: #ImplicitRange
+		comment: 'I represent a range of characters in an Implicit statement'.
 
-	includeStatement := self
-		                    newClassNamed: #IncludeStatement
-		                    comment: 'I represent Fortran Include statement'.
-	inquireStatement := self
-		                    newClassNamed: #InquireStatement
-		                    comment: 'I represent Fortran Inquire statement'.
-	intrinsicStatement := self
-		                      newClassNamed: #IntrinsicStatement
-		                      comment:
+	includeStatement := self newClassNamed: #IncludeStatement
+		comment: 'I represent Fortran Include statement'.
+	inquireStatement := self newClassNamed: #InquireStatement
+		comment: 'I represent Fortran Inquire statement'.
+	intrinsicStatement := self newClassNamed: #IntrinsicStatement
+		comment:
 		                      'I represent Fortran Intrinsic statement'.
-	mapStatement := self
-		                newClassNamed: #MapStatement
-		                comment: 'I represent Fortran Map statement'.
-	nameListStatement := self
-		                     newClassNamed: #NameListStatement
-		                     comment:
-		                     'I represent Fortran NameList statement'.
-	openStatement := self
-		                 newClassNamed: #OpenStatement
-		                 comment: 'I represent Fortran Open statement'.
-	optionsStatement := self
-		                    newClassNamed: #OptionsStatement
-		                    comment: 'I represent Fortran Options statement'.
-	parameterStatement := self
-		                      newClassNamed: #ParameterStatement
-		                      comment:
-		                      'I represent Fortran Parameter statement'.
-	pauseStatement := self
-		                  newClassNamed: #PauseStatement
-		                  comment: 'I represent Fortran Pause statement'.
-	pragmaStatement := self
-		                   newClassNamed: #PragmaStatement
-		                   comment: 'I represent Fortran Pragma statement'.
-	printStatement := self
-		                  newClassNamed: #PrintStatement
-		                  comment: 'I represent Fortran Print statement'.
+	mapStatement := self newClassNamed: #MapStatement
+		comment: 'I represent Fortran Map statement'.
+	nameListStatement := self newClassNamed: #NameListStatement
+		comment: 'I represent Fortran NameList statement'.
+	openStatement := self newClassNamed: #OpenStatement
+		comment: 'I represent Fortran Open statement'.
+	optionsStatement := self newClassNamed: #OptionsStatement
+		comment: 'I represent Fortran Options statement'.
+	parameterStatement := self newClassNamed: #ParameterStatement
+		comment: 'I represent Fortran Parameter statement'.
+	pauseStatement := self newClassNamed: #PauseStatement
+		comment: 'I represent Fortran Pause statement'.
+	pragmaStatement := self newClassNamed: #PragmaStatement
+		comment: 'I represent Fortran Pragma statement'.
+	printStatement := self newClassNamed: #PrintStatement
+		comment: 'I represent Fortran Print statement'.
 
-	readStatement := self
-		                 newClassNamed: #ReadStatement
-		                 comment: 'I represent Fortran Read statement'.
+	readStatement := self newClassNamed: #ReadStatement
+		comment: 'I represent Fortran Read statement'.
 
-	returnStatement := self
-		                   newClassNamed: #ReturnStatement
-		                   comment: 'a Fortran Return Statement'.
+	returnStatement := self newClassNamed: #ReturnStatement
+		comment: 'a Fortran Return Statement'.
 
-	rewindStatement := self
-		                   newClassNamed: #RewindStatement
-		                   comment: 'I represent Fortran Rewind statement'.
-	saveStatement := self
-		                 newClassNamed: #SaveStatement
-		                 comment: 'I represent Fortran Save statement'.
+	rewindStatement := self newClassNamed: #RewindStatement
+		comment: 'I represent Fortran Rewind statement'.
+	saveStatement := self newClassNamed: #SaveStatement
+		comment: 'I represent Fortran Save statement'.
 
-	staticStatement := self
-		                   newClassNamed: #StaticStatement
-		                   comment: 'I represent Fortran Static statement'.
-	stopStatement := self
-		                 newClassNamed: #StopStatement
-		                 comment: 'I represent Fortran Stop statement'.
-	unionStatement := self
-		                  newClassNamed: #UnionStatement
-		                  comment: 'I represent Fortran Union statement'.
+	staticStatement := self newClassNamed: #StaticStatement
+		comment: 'I represent Fortran Static statement'.
+	stopStatement := self newClassNamed: #StopStatement
+		comment: 'I represent Fortran Stop statement'.
+	unionStatement := self newClassNamed: #UnionStatement
+		comment: 'I represent Fortran Union statement'.
 
-	variableDeclarationStatement := self
-		                   newClassNamed: #VariableDeclarationStatement
-		                   comment:
-		                   'I represent a type declaration for one or many scalar variables or arrays'.	
+	variableDeclarationStatement := self newClassNamed: #VariableDeclarationStatement
+	  	comment: 'I represent a type declaration for one or many scalar variables or arrays'.	
 
-	virtualStatement := self
-		                    newClassNamed: #VirtualStatement
-		                    comment: 'I represent Fortran Virtual statement'.
-	volatileStatement := self
-		                     newClassNamed: #VolatileStatement
-		                     comment: 'I represent Fortran Volatile statement'.
-	writeStatement := self
-		                  newClassNamed: #WriteStatement
-		                  comment: 'I represent Fortran Write statement'.
+	virtualStatement := self newClassNamed: #VirtualStatement
+		comment: 'I represent Fortran Virtual statement'.
+	volatileStatement := self newClassNamed: #VolatileStatement
+		comment: 'I represent Fortran Volatile statement'.
+	writeStatement := self newClassNamed: #WriteStatement
+		comment: 'I represent Fortran Write statement'.
 
 	"NOT IN THE 77 STANDARD"
-	exitStatement := self
-		                 newClassNamed: #ExitStatement
-		                 comment: 'I represent Fortran90 Exit statement'
+	exitStatement := self newClassNamed: #ExitStatement
+		comment: 'I represent Fortran90 Exit statement'
 ]
 
 { #category : 'definition' }
@@ -1062,31 +983,9 @@ FASTFortranGenerator >> defineTraits [
 
 	super defineTraits.
 
-	tEntity := self remoteTrait: #TEntity withPrefix: #FAST.
-
-	tAssignment := self remoteTrait: #TAssignment withPrefix: #FAST.
-	tBehaviouralEntity := self remoteTrait: #TBehaviouralEntity withPrefix: #FAST.
-	tBinaryExpression := self remoteTrait: #TBinaryExpression withPrefix: #FAST. 
-	tBooleanLiteral := self remoteTrait: #TBooleanLiteral withPrefix: #FAST.
-	tCharacterLiteral := self remoteTrait: #TCharacterLiteral withPrefix: #FAST.
-	tComment := self remoteTrait: #TComment withPrefix: #FAST.
-	tConditionalStatement := self remoteTrait: #TConditionalStatement withPrefix: #FAST.
+	tEntryArgument := self newTraitNamed: #TEntryArgument comment: 'I represent an argument in an entry statement: it can be a variable name, array name, formal procedure name, or an asterisk'.
 	tDeclaration := self newTraitNamed: #TDeclaration comment: 'I am a declaration in fortran'.
 	tDeclaredType := self newTraitNamed: #TDeclaredType comment: 'I am the declared type of a function or variable'.
-	tExpression := self remoteTrait: #TExpression withPrefix: #FAST. 
-	tNamedEntity := self remoteTrait: #TNamedEntity withPrefix: #FAST.
-	tNumericalLiteral := self remoteTrait: #TNumericalLiteral withPrefix: #FAST.
-	tStatement := self remoteTrait: #TStatement withPrefix: #FAST.
-	tStatementBlock := self remoteTrait: #TStatementBlock withPrefix: #FAST.
-	tLoopStatement := self remoteTrait: #TLoopStatement withPrefix: #FAST.
-	tReturnStatement := self remoteTrait: #TReturnStatement withPrefix: #FAST.
-	tUnaryExpression := self remoteTrait: #TUnaryExpression withPrefix: #FAST. 
-	tVariableEntity := self remoteTrait: #TVariableEntity withPrefix: #FAST.
-	tWithArguments := self remoteTrait: #TWithArguments withPrefix: #FAST.
-	tWithComments := self remoteTrait: #TWithComments withPrefix: #FAST.
-	tWithParameters := self remoteTrait: #TWithParameters withPrefix: #FAST.
-
-	tEntryArgument := self newTraitNamed: #TEntryArgument comment: 'I represent an argument in an entry statement: it can be a variable name, array name, formal procedure name, or an asterisk'.
 	tFormat := self newTraitNamed: #TFormat comment: 'I represent a format description (eg. in Format or Print statement)'.
 	tIOParameter := self newTraitNamed: #TIOParameter comment: 'I represent a parameter to an IO-statement (read or write)'.
 	tVariableGroup := self newTraitNamed: #TVariableGroup comment: 'I represent an entity with several variables like in a DataStatement or an EquivalenceStatement'.
@@ -1096,5 +995,29 @@ FASTFortranGenerator >> defineTraits [
 	tWithLabelReferences := self newTraitNamed: #TWithLabelReferences comment: 'I represent a statement (various kind of goto) that can have label references'.
 	tWithLoopControl := self newTraitNamed: #TWithLoopControl comment: 'I represent a loop control: initialization/limit/increment'.
 	tWithVariableGroup := self newTraitNamed: #TWithVariableGroups comment: 'I represent a statement with variable groups like a DataStatement or an EquivalenceStatement'.
+
+	"Traits from FAST-core"
+	tEntity := self remoteTrait: #TEntity withPrefix: #FAST.
+
+	tAssignment := self remoteTrait: #TAssignment withPrefix: #FAST.
+	tBehaviouralEntity := self remoteTrait: #TBehaviouralEntity withPrefix: #FAST.
+	tBinaryExpression := self remoteTrait: #TBinaryExpression withPrefix: #FAST. 
+	tBooleanLiteral := self remoteTrait: #TBooleanLiteral withPrefix: #FAST.
+	tBranchStatement := self remoteTrait: #TBranchStatement withPrefix: #FAST.
+	tCharacterLiteral := self remoteTrait: #TCharacterLiteral withPrefix: #FAST.
+	tComment := self remoteTrait: #TComment withPrefix: #FAST.
+	tConditionalStatement := self remoteTrait: #TConditionalStatement withPrefix: #FAST.
+	tExpression := self remoteTrait: #TExpression withPrefix: #FAST. 
+	tLoopStatement := self remoteTrait: #TLoopStatement withPrefix: #FAST.
+	tNamedEntity := self remoteTrait: #TNamedEntity withPrefix: #FAST.
+	tNumericalLiteral := self remoteTrait: #TNumericalLiteral withPrefix: #FAST.
+	tReturnStatement := self remoteTrait: #TReturnStatement withPrefix: #FAST.
+	tStatement := self remoteTrait: #TStatement withPrefix: #FAST.
+	tStatementBlock := self remoteTrait: #TStatementBlock withPrefix: #FAST.
+	tUnaryExpression := self remoteTrait: #TUnaryExpression withPrefix: #FAST. 
+	tVariableEntity := self remoteTrait: #TVariableEntity withPrefix: #FAST.
+	tWithArguments := self remoteTrait: #TWithArguments withPrefix: #FAST.
+	tWithComments := self remoteTrait: #TWithComments withPrefix: #FAST.
+	tWithParameters := self remoteTrait: #TWithParameters withPrefix: #FAST.
 
 ]
