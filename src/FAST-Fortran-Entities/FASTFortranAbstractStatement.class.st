@@ -8,7 +8,6 @@ I am the super class of all Fortran statements
 | Relation | Origin | Opposite | Type | Comment |
 |---|
 | `parentBranchStatement` | `FASTTStatement` | `branches` | `FASTTBranchStatement` | My parent BranchStatement (of which I am a branch)|
-| `parentIfStatement` | `FASTFortranAbstractStatement` | `statement` | `FASTFortranIfLogicalStatement` | Parent if statement|
 | `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
 
 
@@ -28,8 +27,7 @@ Class {
 	#traits : 'FASTTStatement',
 	#classTraits : 'FASTTStatement classTrait',
 	#instVars : [
-		'#label => FMProperty',
-		'#parentIfStatement => FMOne type: #FASTFortranIfLogicalStatement opposite: #statement'
+		'#label => FMProperty'
 	],
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
@@ -58,29 +56,4 @@ FASTFortranAbstractStatement >> label [
 FASTFortranAbstractStatement >> label: anObject [
 	<generated>
 	label := anObject
-]
-
-{ #category : 'accessing' }
-FASTFortranAbstractStatement >> parentIfStatement [
-	"Relation named: #parentIfStatement type: #FASTFortranIfLogicalStatement opposite: #statement"
-
-	<generated>
-	<FMComment: 'Parent if statement'>
-	<container>
-	<derived>
-	^ parentIfStatement
-]
-
-{ #category : 'accessing' }
-FASTFortranAbstractStatement >> parentIfStatement: anObject [
-
-	<generated>
-	parentIfStatement := anObject
-]
-
-{ #category : 'navigation' }
-FASTFortranAbstractStatement >> parentIfStatementGroup [
-	<generated>
-	<navigation: 'ParentIfStatement'>
-	^ MooseSpecializedGroup with: self parentIfStatement
 ]

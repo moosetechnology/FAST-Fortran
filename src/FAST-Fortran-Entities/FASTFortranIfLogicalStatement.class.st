@@ -1,23 +1,11 @@
 "
 The logical IF statement executes one single statement, or does not execute it, depending on the value of a logical expression.
 
-## Relations
-======================
-
-### Children
-| Relation | Origin | Opposite | Type | Comment |
-|---|
-| `statement` | `FASTFortranIfLogicalStatement` | `parentIfStatement` | `FASTFortranAbstractStatement` | Statement of the logical if|
-
-
 
 "
 Class {
 	#name : 'FASTFortranIfLogicalStatement',
 	#superclass : 'FASTFortranConditionalStatement',
-	#instVars : [
-		'#statement => FMOne type: #FASTFortranAbstractStatement opposite: #parentIfStatement'
-	],
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
 	#tag : 'Entities'
@@ -33,24 +21,31 @@ FASTFortranIfLogicalStatement class >> annotation [
 ]
 
 { #category : 'accessing' }
-FASTFortranIfLogicalStatement >> statement [
-	"Relation named: #statement type: #FASTFortranAbstractStatement opposite: #parentIfStatement"
+FASTFortranIfLogicalStatement >> falseBranch [
+	"IfLogicalStatement has only a 'true' branch"
 
-	<generated>
-	<FMComment: 'Statement of the logical if'>
-	^ statement
+	self shouldNotImplement 
 ]
 
 { #category : 'accessing' }
-FASTFortranIfLogicalStatement >> statement: anObject [
+FASTFortranIfLogicalStatement >> falseBranch: aStatement [
+	"IfLogicalStatement has only a 'true' branch"
 
-	<generated>
-	statement := anObject
+	self shouldNotImplement 
 ]
 
-{ #category : 'navigation' }
-FASTFortranIfLogicalStatement >> statementGroup [
-	<generated>
-	<navigation: 'Statement'>
-	^ MooseSpecializedGroup with: self statement
+{ #category : 'accessing' }
+FASTFortranIfLogicalStatement >> statement [
+	"IfLogicalStatement has only a 'true' branch"
+
+	self mustHaveBranches: 1.
+	^branches at: 1 ifAbsent: [ nil ]
+]
+
+{ #category : 'accessing' }
+FASTFortranIfLogicalStatement >> statement: aStatement [
+	"IfLogicalStatement has only a 'true' branch"
+
+	self mustHaveBranches: 1.
+	branches at: 1 put: aStatement 
 ]
