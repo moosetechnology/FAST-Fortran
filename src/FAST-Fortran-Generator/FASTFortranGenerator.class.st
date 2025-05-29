@@ -739,9 +739,9 @@ FASTFortranGenerator >> defineRelations [
 	((goToAssignedStatement property: #selectorExpression) comment: 'The expression which value selects the label to go to')
 	<>- (abstractExpression property: #parentGotoAssignedStatement).
 
-	((ifLogicalStatement property: #statement) comment:
+	"((ifLogicalStatement property: #statement) comment:
 		 'Statement of the logical if')
-	<>- ((abstractStatement property: #parentIfStatement) comment: 'Parent if statement').
+	<>- ((abstractStatement property: #parentIfStatement) comment: 'Parent if statement')."
 
 	(implicitStatement property: #typingRules)
 	<>-* (implicitTypingRule property: #parentImplicitStatement).
