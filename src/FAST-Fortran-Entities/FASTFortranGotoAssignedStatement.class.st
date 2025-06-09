@@ -27,7 +27,7 @@ I represent Fortran Go To( Assigned) statement
 
 "
 Class {
-	#name : 'FASTFortranGoToAssignedStatement',
+	#name : 'FASTFortranGotoAssignedStatement',
 	#superclass : 'FASTFortranEntity',
 	#traits : 'FASTTBranchStatement',
 	#classTraits : 'FASTTBranchStatement classTrait',
@@ -37,9 +37,9 @@ Class {
 }
 
 { #category : 'meta' }
-FASTFortranGoToAssignedStatement class >> annotation [
+FASTFortranGotoAssignedStatement class >> annotation [
 
-	<FMClass: #GoToAssignedStatement super: #FASTFortranEntity>
+	<FMClass: #GotoAssignedStatement super: #FASTFortranEntity>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self

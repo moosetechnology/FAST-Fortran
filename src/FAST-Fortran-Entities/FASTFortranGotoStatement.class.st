@@ -1,5 +1,5 @@
 "
-I represent Fortran Go To (Computed) statement
+I represent Fortran Go To (unconditional) statement
 
 ## Relations
 ======================
@@ -10,12 +10,6 @@ I represent Fortran Go To (Computed) statement
 | `parentBranchStatement` | `FASTTStatement` | `branches` | `FASTTBranchStatement` | My parent BranchStatement (of which I am a branch)|
 | `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
 
-### Children
-| Relation | Origin | Opposite | Type | Comment |
-|---|
-| `branches` | `FASTTBranchStatement` | `parentBranchStatement` | `FASTTStatement` | The various children branches of this BranchStatement|
-| `expression` | `FASTTBranchStatement` | `parentBranchStatement` | `FASTTExpression` | The expression commanding which branch is executed|
-
 
 ## Properties
 ======================
@@ -23,23 +17,24 @@ I represent Fortran Go To (Computed) statement
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
+| `gotoLabel` | `String` | nil | The goto destination label. Note: property ""label"" already used by tLabeledStatement|
 | `startPos` | `Number` | nil | |
 
 "
 Class {
-	#name : 'FASTFortranGoToComputedStatement',
+	#name : 'FASTFortranGotoStatement',
 	#superclass : 'FASTFortranEntity',
-	#traits : 'FASTTBranchStatement',
-	#classTraits : 'FASTTBranchStatement classTrait',
+	#traits : 'FASTTGotoStatement',
+	#classTraits : 'FASTTGotoStatement classTrait',
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
 	#tag : 'Entities'
 }
 
 { #category : 'meta' }
-FASTFortranGoToComputedStatement class >> annotation [
+FASTFortranGotoStatement class >> annotation [
 
-	<FMClass: #GoToComputedStatement super: #FASTFortranEntity>
+	<FMClass: #GotoStatement super: #FASTFortranEntity>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
