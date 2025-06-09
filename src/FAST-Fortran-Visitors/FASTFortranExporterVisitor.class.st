@@ -357,15 +357,13 @@ FASTFortranExporterVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStateme
 	self
 		visitFASTFortranAbstractStatement: aFASTFortranDoStatement;
 		<< 'do '.
-	aFASTFortranDoStatement labelReferences ifNotEmpty: [ :references | "there is only 1 reference"
-		references anyOne accept: self.
-		self << ' ' ].
+	aFASTFortranDoStatement doLabel ifNotNil: [ :label | self << label << ' ' ].
 
 	aFASTFortranDoStatement loopControl accept: self.
 	self newLine.
 	aFASTFortranDoStatement body accept: self.
 
-	aFASTFortranDoStatement labelReferences ifEmpty: [
+	aFASTFortranDoStatement doLabel ifNil: [
 		self
 			sixSpaces;
 			<< 'end do';

@@ -373,7 +373,7 @@ FASTFortranExporterVisitorTest >> testDoStatementWithLabel [
 	stmt := self doStatement:  #(i 1 max) statements: {
 		FASTFortranContinueStatement new label: '110'}.
 
-	stmt labelReferences: { self labelReference: '110' }.
+	stmt doLabel: '110'.
 
 	self
 		assertExport: stmt
