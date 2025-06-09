@@ -1966,15 +1966,10 @@ FortranToFASTTests >> testGoto [
 	self assert: result first statementBlock statements size equals: 1.
 
 	stmt := result first statementBlock statements first.
-	self assert: stmt class equals: FASTFortranGoToStatement.
+	self assert: stmt class equals: FASTFortranGotoStatement.
 	self assert: stmt startPos equals: 30.
 	self assert: stmt endPos equals: 37.
-
-
-	self assert: stmt labelReferences size equals: 1.
-	self assert: stmt labelReferences anyOne label equals: '100'.
-	self assert: stmt labelReferences anyOne startPos equals: 35.
-
+	self assert: stmt gotoLabel equals: '100'
 ]
 
 { #category : 'tests-statement' }
@@ -1991,28 +1986,28 @@ FortranToFASTTests >> testGotoComputed [
 	self assert: result first statementBlock statements size equals: 1.
 
 	stmt := result first statementBlock statements first.
-	self assert: stmt class equals: FASTFortranGoToComputedStatement.
+	self assert: stmt class equals: FASTFortranGotoComputedStatement.
 	self assert: stmt startPos equals: 30.
 	self assert: stmt endPos equals: 55.
 
 
-	self assert: stmt labelReferences size equals: 4.
-	stmt labelReferences do: [ :label |
-		self assert: label class equals: FASTFortranLabelReference.
-		self assert: (label label endsWith: '00').
-		self assert: (#(36 40 44 48) includes: label startPos)
+	self assert: stmt branches size equals: 4.
+	stmt branches do: [ :gotoBranch |
+		self assert: gotoBranch class equals: FASTFortranGotoStatement.
+		self assert: (gotoBranch gotoLabel endsWith: '00').
+		self assert: (#(36 40 44 48) includes: gotoBranch startPos)
 	].
 
-	self assert: stmt selectorExpression class equals: FASTFortranScalarVariable.
-	self assert: stmt selectorExpression name equals: 'var'.
-	self assert: stmt selectorExpression startPos equals: 53.
+	self assert: stmt expression class equals: FASTFortranScalarVariable.
+	self assert: stmt expression name equals: 'var'.
+	self assert: stmt expression startPos equals: 53.
 
 ]
 
 { #category : 'tests-statement' }
 FortranToFASTTests >> testIfArithmetic [
 
-	| result conditional |
+	| result stmt |
 	fortranCode := '      PROGRAM MYPROG
          IF ( A ) 10, 20, 30
       END
@@ -2020,26 +2015,26 @@ FortranToFASTTests >> testIfArithmetic [
 	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"tmpFASTSource.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:10)-(2:28)","statement":{"anno":[],"equal":{"anno":[],"span":"(2:23)-(2:24)","tag":"value","value":{"contents":["20",null],"tag":"integer"}},"expression":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":"a","tag":"variable"}},"greater":{"anno":[],"span":"(2:27)-(2:28)","tag":"value","value":{"contents":["30",null],"tag":"integer"}},"less":{"anno":[],"span":"(2:19)-(2:20)","tag":"value","value":{"contents":["10",null],"tag":"integer"}},"span":"(2:10)-(2:28)","tag":"if_arithmetic"},"tag":"statement"}],"name":"myprog","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
 	result := self visitJsonCode.
 
-	conditional := result first statementBlock statements first.
-	self assert: conditional class equals: FASTFortranIfArithmeticStatement.
-	self assert: conditional startPos equals: 31.
-	self assert: conditional endPos equals: 49.
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranIfArithmeticStatement.
+	self assert: stmt startPos equals: 31.
+	self assert: stmt endPos equals: 49.
 
-	self assert: conditional condition class equals: FASTFortranScalarVariable.
-	self assert: conditional condition name equals: 'a'.
-	self assert: conditional condition startPos equals: 36.
+	self assert: stmt expression class equals: FASTFortranScalarVariable.
+	self assert: stmt expression name equals: 'a'.
+	self assert: stmt expression startPos equals: 36.
 
-	self assert: conditional negativeLabel class equals: FASTFortranLabelReference.
-	self assert: conditional negativeLabel label equals: '10'.
-	self assert: conditional negativeLabel startPos equals: 40.
+	self assert: stmt negativeBranch class equals: FASTFortranGotoStatement.
+	self assert: stmt negativeBranch gotoLabel equals: '10'.
+	self assert: stmt negativeBranch startPos equals: 40.
 
-	self assert: conditional nullLabel class equals: FASTFortranLabelReference.
-	self assert: conditional nullLabel label equals: '20'.
-	self assert: conditional nullLabel startPos equals: 44.
+	self assert: stmt nullBranch class equals: FASTFortranGotoStatement.
+	self assert: stmt nullBranch gotoLabel equals: '20'.
+	self assert: stmt nullBranch startPos equals: 44.
 
-	self assert: conditional positiveLabel class equals: FASTFortranLabelReference.
-	self assert: conditional positiveLabel label equals: '30'.
-	self assert: conditional positiveLabel startPos equals: 48
+	self assert: stmt positiveBranch class equals: FASTFortranGotoStatement.
+	self assert: stmt positiveBranch gotoLabel equals: '30'.
+	self assert: stmt positiveBranch startPos equals: 48
 ]
 
 { #category : 'tests-statement' }

@@ -89,6 +89,16 @@ FASTFortranJsonVisitor >> invertLiteral: aFASTFortranLiteral class: class [
 	^aFASTFortranLiteral
 ]
 
+{ #category : 'private' }
+FASTFortranJsonVisitor >> labelReferenceToGoto: literal [
+
+	^model newGotoStatement
+		  gotoLabel: literal primitiveValue;
+		  startPos: literal startPos;
+		  endPos: literal endPos;
+		  yourself
+]
+
 { #category : 'accessing' }
 FASTFortranJsonVisitor >> model [
 
@@ -655,6 +665,12 @@ FASTFortranJsonVisitor >> visitEntryStatement: anEntryNode [
 ]
 
 { #category : 'visiting statement' }
+FASTFortranJsonVisitor >> visitEqualBranch: aLabel [
+
+	^self labelReferenceToGoto: aLabel 
+]
+
+{ #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitEquivalenceGroup: anEquivalenceGroup [
 
 	| data variables |
@@ -813,8 +829,8 @@ FASTFortranJsonVisitor >> visitGotoStatement: aGotoStatementNode [
 	| data |
 	data := super visitGotoStatement: aGotoStatementNode.
 
-	^ (self newEntity: FASTFortranGoToStatement atPosition: data first)
-		  label: data second primitiveValue ;
+	^ (self newEntity: FASTFortranGotoStatement atPosition: data first)
+		  gotoLabel: data second primitiveValue ;
 		  yourself
 ]
 
@@ -825,10 +841,16 @@ FASTFortranJsonVisitor >> visitGoto_computedStatement: aGotoComputedStatementNod
 	| data |
 	data := super visitGoto_computedStatement: aGotoComputedStatementNode.
 
-	^(self newEntity: FASTFortranGoToComputedStatement atPosition: data first)
-		labelReferences: (data second collect: [:lit | self integerLiteralToLabelRef: lit]) ;
-		selectorExpression: data third ;
+	^(self newEntity: FASTFortranGotoComputedStatement atPosition: data first)
+		branches: (data second collect: [:lit | self labelReferenceToGoto: lit]) ;
+		expression: data third ;
 		yourself
+]
+
+{ #category : 'visiting statement' }
+FASTFortranJsonVisitor >> visitGreaterBranch: aLabel [
+
+	^self labelReferenceToGoto: aLabel 
 ]
 
 { #category : 'visiting' }
@@ -887,10 +909,10 @@ FASTFortranJsonVisitor >> visitIf_arithmeticStatement: anIfArithmeticStatement [
 	data := super visitIf_arithmeticStatement: anIfArithmeticStatement.
 	
 	^(self newEntity: FASTFortranIfArithmeticStatement atPosition: data first)
-		condition: data second ;
-		lessLabel: data third ;
-		equalLabel: data fourth ;
-		greaterLabel: data fifth ;
+		expression: data second ;
+		negativeBranch: (self labelReferenceToGoto: data third) ;
+		nullBranch: (self labelReferenceToGoto: data fourth) ;
+		positiveBranch: (self labelReferenceToGoto: data fifth) ;
 		yourself
 ]
 
@@ -1013,6 +1035,12 @@ FASTFortranJsonVisitor >> visitLabelReference: aLabelReference [
 		startPos: data startPos ;
 		endPos: data endPos ;
 		yourself
+]
+
+{ #category : 'visiting statement' }
+FASTFortranJsonVisitor >> visitLessBranch: aLabel [
+
+	^self labelReferenceToGoto: aLabel 
 ]
 
 { #category : 'visiting' }
