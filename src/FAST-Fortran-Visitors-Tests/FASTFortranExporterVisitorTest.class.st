@@ -589,9 +589,9 @@ FASTFortranExporterVisitorTest >> testFunctionWithParameterNoStatement [
 { #category : 'tests - statements' }
 FASTFortranExporterVisitorTest >> testGotoComputedStatement [
 	| stmt |
-	stmt := FASTFortranGoToComputedStatement new
-		labelReferences: { self labelReference: '110' . self labelReference: '120' . self labelReference: '130'} ;
-		selectorExpression: (self scalarVariable: 'i') ;
+	stmt := FASTFortranGotoComputedStatement new
+		branches: { self gotoStatement: '110' . self gotoStatement: '120' . self gotoStatement: '130'} ;
+		expression: (self scalarVariable: 'i') ;
 		yourself.
 
 	self

@@ -327,8 +327,8 @@ FASTFortranAbstractVisitorTest >> gotoComputedStatement: labels expression: expr
 { #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> gotoStatement: label [
 
-	^FASTFortranGoToStatement new
-		labelReferences: { self labelReference: label asString } ;
+	^FASTFortranGotoStatement new
+		gotoLabel: label asString ;
 		yourself
 ]
 
