@@ -23,8 +23,8 @@ I represent Fortran Do statement
 
 | Name | Type | Default value | Comment |
 |---|
+| `doLabel` | `String` | nil | A label to come back to, at the end of the DO loop|
 | `endPos` | `Number` | nil | |
-| `label` | `String` | nil | A label to come back to at the end of the DO loop|
 | `startPos` | `Number` | nil | |
 
 "
@@ -33,6 +33,9 @@ Class {
 	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTFortranTWithLoopControl + FASTTLoopStatement',
 	#classTraits : 'FASTFortranTWithLoopControl classTrait + FASTTLoopStatement classTrait',
+	#instVars : [
+		'#doLabel => FMProperty'
+	],
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
 	#tag : 'Entities'
@@ -48,16 +51,16 @@ FASTFortranDoStatement class >> annotation [
 ]
 
 { #category : 'accessing' }
-FASTFortranDoStatement >> label [
+FASTFortranDoStatement >> doLabel [
 
-	<FMProperty: #label type: #String>
+	<FMProperty: #doLabel type: #String>
 	<generated>
-	<FMComment: 'A label to come back to at the end of the DO loop'>
-	^ label
+	<FMComment: 'A label to come back to, at the end of the DO loop'>
+	^ doLabel
 ]
 
 { #category : 'accessing' }
-FASTFortranDoStatement >> label: anObject [
+FASTFortranDoStatement >> doLabel: anObject [
 	<generated>
-	label := anObject
+	doLabel := anObject
 ]

@@ -392,24 +392,24 @@ FASTFortranTEntityCreator >> newFunctionTypeDeclarationStatement [
 ]
 
 { #category : 'entity creation' }
-FASTFortranTEntityCreator >> newGoToAssignedStatement [
+FASTFortranTEntityCreator >> newGotoAssignedStatement [
 
 	<generated>
-	^ self add: FASTFortranGoToAssignedStatement new
+	^ self add: FASTFortranGotoAssignedStatement new
 ]
 
 { #category : 'entity creation' }
-FASTFortranTEntityCreator >> newGoToComputedStatement [
+FASTFortranTEntityCreator >> newGotoComputedStatement [
 
 	<generated>
-	^ self add: FASTFortranGoToComputedStatement new
+	^ self add: FASTFortranGotoComputedStatement new
 ]
 
 { #category : 'entity creation' }
-FASTFortranTEntityCreator >> newGoToStatement [
+FASTFortranTEntityCreator >> newGotoStatement [
 
 	<generated>
-	^ self add: FASTFortranGoToStatement new
+	^ self add: FASTFortranGotoStatement new
 ]
 
 { #category : 'entity creation' }

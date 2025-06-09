@@ -25,9 +25,6 @@ Class {
 		'externalStatement',
 		'formatStatement',
 		'function',
-		'goToStatement',
-		'goToAssignedStatement',
-		'goToComputed',
 		'ifArithmeticStatement',
 		'ifBlockStatement',
 		'ifLogicalStatement',
@@ -143,7 +140,10 @@ Class {
 		'tBranchStatement',
 		'loopControlBlock',
 		'tGotoStatement',
-		'tLabeledStatement'
+		'tLabeledStatement',
+		'gotoComputed',
+		'gotoStatement',
+		'gotoAssignedStatement'
 	],
 	#category : 'FAST-Fortran-Generator',
 	#package : 'FAST-Fortran-Generator'
@@ -515,10 +515,9 @@ FASTFortranGenerator >> defineHierarchy [
 	functionTypeDeclarationStatement --|> tDeclaredType.
 	functionReturnStatement --|> tNamedEntity. "we use the name to track the function name"
 	functionReturnStatement --|> tReturnStatement. "not the same as return statement (the keyword)"
-	goToStatement --|> tGotoStatement.
-	goToAssignedStatement --|> tBranchStatement.
-	goToComputed --|> tBranchStatement.
-	ifArithmeticStatement --|> abstractStatement.
+	gotoStatement --|> tGotoStatement.
+	gotoAssignedStatement --|> tBranchStatement.
+	gotoComputed --|> tBranchStatement.
 	ifArithmeticStatement --|> tBranchStatement.
 	ifBlockStatement --|> conditionalStatement.
 	ifLogicalStatement --|> conditionalStatement.
@@ -630,8 +629,8 @@ FASTFortranGenerator >> defineProperties [
 	(callStatement property: #name type: #String)
 		comment: 'Name of called entity (a subroutine)'.
 
-	(doStatement property: #label type: #String)
-		comment: 'A label to come back to at the end of the DO loop'.
+	(doStatement property: #doLabel type: #String)
+		comment: 'A label to come back to, at the end of the DO loop'.
 
 	(formatStatement property: #formatDescription type: #String).
 
@@ -845,13 +844,13 @@ FASTFortranGenerator >> defineStatements [
 		newClassNamed: #FunctionReturnStatement
 		comment: 'I represent a return (not related to return keyword) for a function'.
 
-	goToStatement := self newClassNamed: #GoToStatement
+	gotoStatement := self newClassNamed: #GotoStatement
 		comment: 'I represent Fortran Go To (unconditional) statement'.
 
-	goToAssignedStatement := self newClassNamed: #GoToAssignedStatement
+	gotoAssignedStatement := self newClassNamed: #GotoAssignedStatement
 		comment: 'I represent Fortran Go To( Assigned) statement'.
-	goToComputed := self newClassNamed: #GoToComputedStatement
-		comment: 'I represent Fortran Go To (Computed) statement'.
+	gotoComputed := self newClassNamed: #GotoComputedStatement
+		comment: 'I represent Fortran GOTO (Computed) statement'.
 
 	ifArithmeticStatement := self newClassNamed: #IfArithmeticStatement
 	  	comment: 'I represent Fortran If (Arithmetic) statement'.
