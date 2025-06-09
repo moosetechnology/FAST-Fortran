@@ -1451,9 +1451,7 @@ FortranToFASTTests >> testDoStatementNestedOneContinue [
 	stmt := result first statementBlock statements anyOne.	
 	self assert: stmt class equals: FASTFortranDoStatement.
 	self assert: stmt body statements size equals: 3.
-	self assert: stmt labelReferences size equals: 1.
-	self assert: stmt labelReferences first class equals: FASTFortranLabelReference.
-	self assert: stmt labelReferences first label equals: '30'.
+	self assert: stmt label equals: '30'.
 
 	"A=1"
 	stmt := result first statementBlock statements first body statements first.
@@ -1463,9 +1461,7 @@ FortranToFASTTests >> testDoStatementNestedOneContinue [
 	stmt := result first statementBlock statements first body statements second.
 	self assert: stmt class equals: FASTFortranDoStatement.
 	self assert: stmt body statements size equals: 1.
-	self assert: stmt labelReferences size equals: 1.
-	self assert: stmt labelReferences first class equals: FASTFortranLabelReference.
-	self assert: stmt labelReferences first label equals: '30'.
+	self assert: stmt label equals: '30'.
 
 	"a=2"
 	stmt := stmt body statements first.
@@ -1521,9 +1517,7 @@ FortranToFASTTests >> testDoStatementWithLabelAndContinue [
 	self assert: stmt class equals: FASTFortranDoStatement.
 	self assert: stmt loopControl isNotNil.
 
-	self assert: stmt labelReferences size equals: 1.
-	self assert: stmt labelReferences anyOne class equals: FASTFortranLabelReference.
-	self assert: stmt labelReferences anyOne label equals: '100'.
+	self assert: stmt label equals: '100'.
 
 	self assert: stmt body statements size equals: 2.
 
@@ -1555,9 +1549,7 @@ FortranToFASTTests >> testDoStatementWithLabelAndTerminalStatement [
 	self assert: stmt class equals: FASTFortranDoStatement.
 	self assert: stmt loopControl isNotNil.
 
-	self assert: stmt labelReferences size equals: 1.
-	self assert: stmt labelReferences anyOne class equals: FASTFortranLabelReference.
-	self assert: stmt labelReferences anyOne label equals: '100'.
+	self assert: stmt label equals: '100'.
 
 	self assert: stmt body statements size equals: 1.
 	self assert: stmt body statements anyOne class equals: FASTFortranPrintStatement.

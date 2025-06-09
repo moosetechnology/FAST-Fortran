@@ -575,7 +575,7 @@ FASTFortranJsonVisitor >> visitDo: aDoNode [
 	ifNotNil: [ :target |
 		"the same 'target' was also pushed on top of #nestedDoEndLabel"
 		nestedDoEndLabel pop.
-		doStatement labelReferences: { (self integerLiteralToLabelRef: target) }.
+		doStatement label: target primitiveValue.
 		"if the target is still on top of #nestedDoEndLabel, then we have nested loops
 		with the same end_label"
 		inNestedLoop := nestedDoEndLabel notEmpty and: [nestedDoEndLabel top = target primitiveValue]
@@ -814,7 +814,7 @@ FASTFortranJsonVisitor >> visitGotoStatement: aGotoStatementNode [
 	data := super visitGotoStatement: aGotoStatementNode.
 
 	^ (self newEntity: FASTFortranGoToStatement atPosition: data first)
-		  labelReferences: { self integerLiteralToLabelRef: data second } ;
+		  label: data second primitiveValue ;
 		  yourself
 ]
 
