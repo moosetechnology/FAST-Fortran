@@ -88,7 +88,6 @@ Class {
 		'assignmentExpression',
 		'tEntryArgument',
 		'dataGroup',
-		'labelReference',
 		'abstractStatement',
 		'abstractExpression',
 		'abstractLiteral',
@@ -98,7 +97,6 @@ Class {
 		'tWithDeclarators',
 		'variableDeclarator',
 		'commonGroup',
-		'tWithLabelReferences',
 		'equivalenceGroup',
 		'tVariableGroup',
 		'tWithVariableGroup',
@@ -143,7 +141,9 @@ Class {
 		'tConditionalStatement',
 		'tLoopStatement',
 		'tBranchStatement',
-		'loopControlBlock'
+		'loopControlBlock',
+		'tGotoStatement',
+		'tLabeledStatement'
 	],
 	#category : 'FAST-Fortran-Generator',
 	#package : 'FAST-Fortran-Generator'
@@ -324,11 +324,6 @@ f77 allows the BYTE type as an array index, just as it allows the REAL type, but
 		               comment:
 			               'I represent Fortran Integer type'.
 
-	labelReference := self
-		newClassNamed: #LabelReference
-		comment: 'I represent a reference to a Fortran label, like in a GoTo statement.
-I contain the value of the label referred to'.
-
 	logicalType := self
 		               newClassNamed: #LogicalType
 		               comment:
@@ -389,72 +384,55 @@ FASTFortranGenerator >> defineFASTClasses [
 
 	entity  := self newClassNamed: #Entity.
 
-	includedFile := self
-		              newClassNamed: #IncludedFile
-		              comment:
-		              'A virtual entity representing all the content of an included file'.
-
-	programFile := self
-		               newClassNamed: #ProgramFile
-		               comment:
-		               'An entity that can contain fortran program units and comments'.
-
-	programUnit := self
-		               newClassNamed: #ProgramUnit
-		               comment:
-		               'A fortran program unit is a sequence of statements, terminated by an END statement. Every program unit is either a main program or a subprogram. If a program is to be executable, it must have a main program'.
+	blockData := self
+		newClassNamed: #BlockData
+		comment: 'The BLOCK DATA statement identifies a subprogram that initializes variables and arrays in labeled common blocks.'.
 
 	comment := self
-		           newClassNamed: #Comment
-		           comment: 'A fortran comment'.
-
-
-	subprogram := self
-		              newClassNamed: #Subprogram
-		              comment:
-		              'I represent a fortran subprogram: procedure or block data'.
-
-	mainprogram := self
-		               newClassNamed: #ProgramMain
-		               comment:
-		               'The PROGRAM statement identifies the program unit as a main program. program. For the loader, the main program is always named MAIN. The PROGRAM statement serves only the person who reads the program'.
-
-
-	procedure := self
-		             newClassNamed: #Procedure
-		             comment:
-		             'I represent a fortran subroutine or a function'.
+		newClassNamed: #Comment
+		comment: 'A fortran comment'.
 
 	function := self
-		            newClassNamed: #Function
-		            comment: 'I represent a Fortran Function'.
+		newClassNamed: #Function
+		comment: 'I represent a Fortran Function'.
 	
 	functionCall := self
-		                     newClassNamed: #FunctionCall
-		                     comment:
-		                     'I represent a call to a function (or function statement)'.
+		 newClassNamed: #FunctionCall
+		 comment: 'I represent a call to a function (or function statement)'.
+
+	includedFile := self
+		newClassNamed: #IncludedFile
+		comment: 'A virtual entity representing all the content of an included file'.
+
+	ioParameter := self
+		newClassNamed: #IOParameter
+		comment: self commentForIOParameter.
+
+	mainprogram := self
+		 newClassNamed: #ProgramMain
+		 comment: 'The PROGRAM statement identifies the program unit as a main program. program. For the loader, the main program is always named MAIN. The PROGRAM statement serves only the person who reads the program'.
+
+	procedure := self
+		 newClassNamed: #Procedure
+		 comment: 'I represent a fortran subroutine or a function'.
+
+	programFile := self
+		newClassNamed: #ProgramFile
+		comment: 'An entity that can contain fortran program units and comments'.
+
+	programUnit := self
+		newClassNamed: #ProgramUnit
+		comment:
+		               'A fortran program unit is a sequence of statements, terminated by an END statement. Every program unit is either a main program or a subprogram. If a program is to be executable, it must have a main program'.
+
+	subprogram := self
+		newClassNamed: #Subprogram
+		comment: 'I represent a fortran subprogram: procedure or block data'.
 
 	subroutine := self
-		              newClassNamed: #Subroutine
-		              comment:
-		              'The SUBROUTINE statement identifies a subprogram, a named program unit as a subroutine, and specifies arguments for it'.
+		 newClassNamed: #Subroutine
+		 comment: 'The SUBROUTINE statement identifies a subprogram, a named program unit as a subroutine, and specifies arguments for it'.
 
-	blockData := self
-		             newClassNamed: #BlockData
-		             comment:
-		             'The BLOCK DATA statement identifies a subprogram that initializes variables and arrays in labeled common blocks.'.
-
-	statementBlock := self
-		             newClassNamed: #StatementBlock
-		             comment:
-		             'Contains the block of Fortran statements'.
-
-	conditionalStatement := self newClassNamed: #ConditionalStatement comment: 'I represent a fortran statement with a condition: if-block, if-logical'.
-
-
-	ioParameter := self newClassNamed: #IOParameter comment: self commentForIOParameter.
-
-	functionReturnStatement := self newClassNamed: #FunctionReturnStatement comment: 'I represent a return (not related to return keyword) for a function'.
 ]
 
 { #category : 'definition' }
@@ -513,7 +491,6 @@ FASTFortranGenerator >> defineHierarchy [
 	dimensionStatement --|> abstractStatement.
 	dimensionStatement --|> tWithDeclarators.
 	doStatement --|> abstractStatement.
-	doStatement --|> tWithLabelReferences.
 	doStatement --|> tLoopStatement.
 	doStatement --|> tWithLoopControl.
 	doWhileStatement --|> abstractStatement.
@@ -538,12 +515,9 @@ FASTFortranGenerator >> defineHierarchy [
 	functionTypeDeclarationStatement --|> tDeclaredType.
 	functionReturnStatement --|> tNamedEntity. "we use the name to track the function name"
 	functionReturnStatement --|> tReturnStatement. "not the same as return statement (the keyword)"
-	goToStatement --|> abstractStatement.
-	goToStatement --|> tWithLabelReferences.
-	goToAssignedStatement --|> abstractStatement.
-	goToAssignedStatement --|> tWithLabelReferences.
-	goToComputed --|> abstractStatement.
-	goToComputed --|> tWithLabelReferences.
+	goToStatement --|> tGotoStatement.
+	goToAssignedStatement --|> tBranchStatement.
+	goToComputed --|> tBranchStatement.
 	ifArithmeticStatement --|> abstractStatement.
 	ifArithmeticStatement --|> tBranchStatement.
 	ifBlockStatement --|> conditionalStatement.
@@ -653,38 +627,39 @@ FASTFortranGenerator >> defineProperties [
 
 	super defineProperties.
 
-	(callStatement property: #name type: #String) comment:
-		'Name of called entity (a subroutine)'.
+	(callStatement property: #name type: #String)
+		comment: 'Name of called entity (a subroutine)'.
+
+	(doStatement property: #label type: #String)
+		comment: 'A label to come back to at the end of the DO loop'.
 
 	(formatStatement property: #formatDescription type: #String).
 
-	(functionCall property: #name type: #String) comment:
-		'Name of called function'.
+	(functionCall property: #name type: #String)
+		comment: 'Name of called function'.
 
-	(implicitRange property: #from type: #String) comment:
-		'Start of character range for implicit rule'.
+	(implicitRange property: #from type: #String)
+		comment: 'Start of character range for implicit rule'.
 
-	(implicitRange property: #to type: #String) comment:
-		'End of character range for implicit rule'.
-
-	(labelReference property: #label type: #String) comment: 'The value of the label. The value is an integer literal, stored in a String'.
+	(implicitRange property: #to type: #String)
+		comment: 'End of character range for implicit rule'.
 
 	(programFile property: #filename type: #String).
 
 	(returnStatement property: #alternateReturnLabel type: #String)
 		comment: 'Optional. Expression of type INTEGER or REAL'.
 
-	(pauseStatement property: #displayArgument type: #String) comment:
-		'Optional. Displayed when the program pauses. String of no more that 5 digits or a character constant'.
+	(pauseStatement property: #displayArgument type: #String)
+		comment: 'Optional. Displayed when the program pauses. String of no more that 5 digits or a character constant'.
 
-	(stopStatement property: #displayArgument type: #String) comment:
-		'Optional. Displayed when the program stops. String of no more that 5 digits or a character constant'.
+	(stopStatement property: #displayArgument type: #String)
+		comment: 'Optional. Displayed when the program stops. String of no more that 5 digits or a character constant'.
 
-	(tBinaryExpression property: #operator type: #String) comment:
-		'Binary expression operator'.
+	(tBinaryExpression property: #operator type: #String)
+		comment: 'Binary expression operator'.
 
-	(abstractStatement property: #label type: #String) comment:
-		'Determines the statement label which consists of 1 to 5 digits, with at least one nonzero'.
+	(abstractStatement property: #label type: #String)
+		comment: 'Determines the statement label which consists of 1 to 5 digits, with at least one nonzero'.
 
 ]
 
@@ -732,16 +707,6 @@ FASTFortranGenerator >> defineRelations [
 		 'Expression thats being assigned upon declaration to the var')
 	<>- ((abstractExpression property: #assignementExpressionOwner) comment:
 			 'The AssignementExpression owner (if possible)').
-
-	((goToComputed property: #selectorExpression) comment: 'The expression which value selects the label to go to')
-	<>- (abstractExpression property: #parentGotoComputedStatement).
-
-	((goToAssignedStatement property: #selectorExpression) comment: 'The expression which value selects the label to go to')
-	<>- (abstractExpression property: #parentGotoAssignedStatement).
-
-	"((ifLogicalStatement property: #statement) comment:
-		 'Statement of the logical if')
-	<>- ((abstractStatement property: #parentIfStatement) comment: 'Parent if statement')."
 
 	(implicitStatement property: #typingRules)
 	<>-* (implicitTypingRule property: #parentImplicitStatement).
@@ -802,11 +767,6 @@ FASTFortranGenerator >> defineRelations [
 	((tWithFormat property: #format) comment: 'The description of the format')
 	<>- ((tFormat property: #parentFormatedStatement) comment: 'A format description in a Format/Print/Read/Write statement').
 
-	((tWithLabelReferences property: #labelReferences) comment:
-		 'the label(s) referenced')
-	<>-* ((labelReference property: #referencer) comment:
-			 'A statement (like goto) referencing this label').
-
 	((tWithLoopControl property: #loopControl) comment: 'loop control')
 	<>-
 	((loopControlBlock property: #parentLoop) comment: 'Parent loop').
@@ -839,6 +799,9 @@ FASTFortranGenerator >> defineStatements [
 		comment: 'I represent Fortran Close statement'.
 	commonStatement := self newClassNamed: #CommonStatement
 		comment: 'I represent Fortran Common statement'.
+	conditionalStatement := self
+		newClassNamed: #ConditionalStatement
+		comment: 'I represent a fortran statement with a condition: if-block, if-logical'.
 	continueStatement := self newClassNamed: #ContinueStatement
 		comment: 'I represent Fortran Continue statement'.
 	dataStatement := self newClassNamed: #DataStatement
@@ -877,6 +840,10 @@ FASTFortranGenerator >> defineStatements [
 		
 	functionTypeDeclarationStatement := self newClassNamed: #FunctionTypeDeclarationStatement
 		comment: 'I represent a return type declaration statement'.
+
+	functionReturnStatement := self
+		newClassNamed: #FunctionReturnStatement
+		comment: 'I represent a return (not related to return keyword) for a function'.
 
 	goToStatement := self newClassNamed: #GoToStatement
 		comment: 'I represent Fortran Go To (unconditional) statement'.
@@ -936,6 +903,10 @@ FASTFortranGenerator >> defineStatements [
 	saveStatement := self newClassNamed: #SaveStatement
 		comment: 'I represent Fortran Save statement'.
 
+	statementBlock := self
+		newClassNamed: #StatementBlock
+		comment: 'Contains the block of Fortran statements'.
+
 	staticStatement := self newClassNamed: #StaticStatement
 		comment: 'I represent Fortran Static statement'.
 	stopStatement := self newClassNamed: #StopStatement
@@ -972,7 +943,6 @@ FASTFortranGenerator >> defineTraits [
 	tWithDeclarations := self newTraitNamed: #TWithDeclarations comment: 'I have declarations'.
 	tWithDeclarators := self newTraitNamed: #TWithDeclarators comment: 'I represent a declaration with several variable declarators'.
 	tWithFormat := self newTraitNamed: #TWithFormat comment: 'I represent a statement with a format (format, print)'.
-	tWithLabelReferences := self newTraitNamed: #TWithLabelReferences comment: 'I represent a statement (various kind of goto) that can have label references'.
 	tWithLoopControl := self newTraitNamed: #TWithLoopControl comment: 'I represent a loop control: initialization/limit/increment'.
 	tWithVariableGroup := self newTraitNamed: #TWithVariableGroups comment: 'I represent a statement with variable groups like a DataStatement or an EquivalenceStatement'.
 
@@ -987,7 +957,9 @@ FASTFortranGenerator >> defineTraits [
 	tCharacterLiteral := self remoteTrait: #TCharacterLiteral withPrefix: #FAST.
 	tComment := self remoteTrait: #TComment withPrefix: #FAST.
 	tConditionalStatement := self remoteTrait: #TConditionalStatement withPrefix: #FAST.
-	tExpression := self remoteTrait: #TExpression withPrefix: #FAST. 
+	tExpression := self remoteTrait: #TExpression withPrefix: #FAST.
+	tGotoStatement := self remoteTrait: #TGotoStatement withPrefix: #FAST.
+	tLabeledStatement := self remoteTrait: #TLabeledStatement withPrefix: #FAST.
 	tLoopStatement := self remoteTrait: #TLoopStatement withPrefix: #FAST.
 	tNamedEntity := self remoteTrait: #TNamedEntity withPrefix: #FAST.
 	tNumericalLiteral := self remoteTrait: #TNumericalLiteral withPrefix: #FAST.

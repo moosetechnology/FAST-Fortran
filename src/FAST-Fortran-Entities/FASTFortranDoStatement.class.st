@@ -15,7 +15,6 @@ I represent Fortran Do statement
 |---|
 | `branches` | `FASTTBranchStatement` | `parentBranchStatement` | `FASTTStatement` | The various children branches of this BranchStatement|
 | `expression` | `FASTTBranchStatement` | `parentBranchStatement` | `FASTTExpression` | The expression commanding which branch is executed|
-| `labelReferences` | `FASTFortranTWithLabelReferences` | `referencer` | `FASTFortranLabelReference` | the label(s) referenced|
 | `loopControl` | `FASTFortranTWithLoopControl` | `parentLoop` | `FASTFortranLoopControlExpression` | loop control|
 
 
@@ -25,14 +24,15 @@ I represent Fortran Do statement
 | Name | Type | Default value | Comment |
 |---|
 | `endPos` | `Number` | nil | |
+| `label` | `String` | nil | A label to come back to at the end of the DO loop|
 | `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : 'FASTFortranDoStatement',
 	#superclass : 'FASTFortranAbstractStatement',
-	#traits : 'FASTFortranTWithLabelReferences + FASTFortranTWithLoopControl + FASTTLoopStatement',
-	#classTraits : 'FASTFortranTWithLabelReferences classTrait + FASTFortranTWithLoopControl classTrait + FASTTLoopStatement classTrait',
+	#traits : 'FASTFortranTWithLoopControl + FASTTLoopStatement',
+	#classTraits : 'FASTFortranTWithLoopControl classTrait + FASTTLoopStatement classTrait',
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
 	#tag : 'Entities'
@@ -45,4 +45,19 @@ FASTFortranDoStatement class >> annotation [
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
+]
+
+{ #category : 'accessing' }
+FASTFortranDoStatement >> label [
+
+	<FMProperty: #label type: #String>
+	<generated>
+	<FMComment: 'A label to come back to at the end of the DO loop'>
+	^ label
+]
+
+{ #category : 'accessing' }
+FASTFortranDoStatement >> label: anObject [
+	<generated>
+	label := anObject
 ]

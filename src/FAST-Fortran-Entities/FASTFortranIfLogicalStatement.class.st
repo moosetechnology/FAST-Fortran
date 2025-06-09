@@ -19,33 +19,3 @@ FASTFortranIfLogicalStatement class >> annotation [
 	<generated>
 	^ self
 ]
-
-{ #category : 'accessing' }
-FASTFortranIfLogicalStatement >> falseBranch [
-	"IfLogicalStatement has only a 'true' branch"
-
-	self shouldNotImplement 
-]
-
-{ #category : 'accessing' }
-FASTFortranIfLogicalStatement >> falseBranch: aStatement [
-	"IfLogicalStatement has only a 'true' branch"
-
-	self shouldNotImplement 
-]
-
-{ #category : 'accessing' }
-FASTFortranIfLogicalStatement >> statement [
-	"IfLogicalStatement has only a 'true' branch"
-
-	self mustHaveBranches: 1.
-	^branches at: 1 ifAbsent: [ nil ]
-]
-
-{ #category : 'accessing' }
-FASTFortranIfLogicalStatement >> statement: aStatement [
-	"IfLogicalStatement has only a 'true' branch"
-
-	self mustHaveBranches: 1.
-	branches at: 1 put: aStatement 
-]

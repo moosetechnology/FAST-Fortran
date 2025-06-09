@@ -4,23 +4,33 @@ I represent Fortran Go To (Computed) statement
 ## Relations
 ======================
 
+### Parents
+| Relation | Origin | Opposite | Type | Comment |
+|---|
+| `parentBranchStatement` | `FASTTStatement` | `branches` | `FASTTBranchStatement` | My parent BranchStatement (of which I am a branch)|
+| `statementContainer` | `FASTTStatement` | `statements` | `FASTTStatementBlock` | Block containing this statement.|
+
 ### Children
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `labelReferences` | `FASTFortranTWithLabelReferences` | `referencer` | `FASTFortranLabelReference` | the label(s) referenced|
-| `selectorExpression` | `FASTFortranGoToComputedStatement` | `parentGotoComputedStatement` | `FASTFortranAbstractExpression` | The expression which value selects the label to go to|
+| `branches` | `FASTTBranchStatement` | `parentBranchStatement` | `FASTTStatement` | The various children branches of this BranchStatement|
+| `expression` | `FASTTBranchStatement` | `parentBranchStatement` | `FASTTExpression` | The expression commanding which branch is executed|
 
 
+## Properties
+======================
+
+| Name | Type | Default value | Comment |
+|---|
+| `endPos` | `Number` | nil | |
+| `startPos` | `Number` | nil | |
 
 "
 Class {
 	#name : 'FASTFortranGoToComputedStatement',
-	#superclass : 'FASTFortranAbstractStatement',
-	#traits : 'FASTFortranTWithLabelReferences',
-	#classTraits : 'FASTFortranTWithLabelReferences classTrait',
-	#instVars : [
-		'#selectorExpression => FMOne type: #FASTFortranAbstractExpression opposite: #parentGotoComputedStatement'
-	],
+	#superclass : 'FASTFortranEntity',
+	#traits : 'FASTTBranchStatement',
+	#classTraits : 'FASTTBranchStatement classTrait',
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
 	#tag : 'Entities'
@@ -29,31 +39,8 @@ Class {
 { #category : 'meta' }
 FASTFortranGoToComputedStatement class >> annotation [
 
-	<FMClass: #GoToComputedStatement super: #FASTFortranAbstractStatement>
+	<FMClass: #GoToComputedStatement super: #FASTFortranEntity>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
-]
-
-{ #category : 'accessing' }
-FASTFortranGoToComputedStatement >> selectorExpression [
-	"Relation named: #selectorExpression type: #FASTFortranAbstractExpression opposite: #parentGotoComputedStatement"
-
-	<generated>
-	<FMComment: 'The expression which value selects the label to go to'>
-	^ selectorExpression
-]
-
-{ #category : 'accessing' }
-FASTFortranGoToComputedStatement >> selectorExpression: anObject [
-
-	<generated>
-	selectorExpression := anObject
-]
-
-{ #category : 'navigation' }
-FASTFortranGoToComputedStatement >> selectorExpressionGroup [
-	<generated>
-	<navigation: 'SelectorExpression'>
-	^ MooseSpecializedGroup with: self selectorExpression
 ]

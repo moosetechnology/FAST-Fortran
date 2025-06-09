@@ -20,8 +20,6 @@ I am the super class of all Fortran expressions
 | `parentExpression` | `FASTTExpression` | `expression` | `FASTTUnaryExpression` | Parent (unary) expression|
 | `parentExpressionLeft` | `FASTTExpression` | `leftOperand` | `FASTTBinaryExpression` | Parent (binary) expression of which I am left side|
 | `parentExpressionRight` | `FASTTExpression` | `rightOperand` | `FASTTBinaryExpression` | Parent (binary) expression of which I am right side|
-| `parentGotoAssignedStatement` | `FASTFortranAbstractExpression` | `selectorExpression` | `FASTFortranGoToAssignedStatement` | |
-| `parentGotoComputedStatement` | `FASTFortranAbstractExpression` | `selectorExpression` | `FASTFortranGoToComputedStatement` | |
 | `parentLoopControlIncrement` | `FASTFortranAbstractExpression` | `increment` | `FASTFortranLoopControlExpression` | |
 | `parentLoopControlLimit` | `FASTFortranAbstractExpression` | `limit` | `FASTFortranLoopControlExpression` | |
 | `parentTypeSize` | `FASTFortranAbstractExpression` | `size` | `FASTFortranType` | |
@@ -44,12 +42,10 @@ Class {
 	#traits : 'FASTTExpression',
 	#classTraits : 'FASTTExpression classTrait',
 	#instVars : [
-		'#assignementExpressionOwner => FMOne type: #FASTFortranFunctionStatement opposite: #expression',
 		'#parentArrayDimensionDeclarator => FMOne type: #FASTFortranArrayRange opposite: #upperBound',
 		'#parentArrayExpression => FMOne type: #FASTFortranArrayVariable opposite: #indices',
 		'#parentDataStatement => FMOne type: #FASTFortranDataGroup opposite: #dataConstants',
-		'#parentGotoAssignedStatement => FMOne type: #FASTFortranGoToAssignedStatement opposite: #selectorExpression',
-		'#parentGotoComputedStatement => FMOne type: #FASTFortranGoToComputedStatement opposite: #selectorExpression',
+		'#assignementExpressionOwner => FMOne type: #FASTFortranFunctionStatement opposite: #expression',
 		'#parentLoopControlIncrement => FMOne type: #FASTFortranLoopControlExpression opposite: #increment',
 		'#parentLoopControlLimit => FMOne type: #FASTFortranLoopControlExpression opposite: #limit',
 		'#parentTypeSize => FMOne type: #FASTFortranType opposite: #size',
@@ -164,54 +160,6 @@ FASTFortranAbstractExpression >> parentDataStatementGroup [
 	<generated>
 	<navigation: 'ParentDataStatement'>
 	^ MooseSpecializedGroup with: self parentDataStatement
-]
-
-{ #category : 'accessing' }
-FASTFortranAbstractExpression >> parentGotoAssignedStatement [
-	"Relation named: #parentGotoAssignedStatement type: #FASTFortranGoToAssignedStatement opposite: #selectorExpression"
-
-	<generated>
-	<container>
-	<derived>
-	^ parentGotoAssignedStatement
-]
-
-{ #category : 'accessing' }
-FASTFortranAbstractExpression >> parentGotoAssignedStatement: anObject [
-
-	<generated>
-	parentGotoAssignedStatement := anObject
-]
-
-{ #category : 'navigation' }
-FASTFortranAbstractExpression >> parentGotoAssignedStatementGroup [
-	<generated>
-	<navigation: 'ParentGotoAssignedStatement'>
-	^ MooseSpecializedGroup with: self parentGotoAssignedStatement
-]
-
-{ #category : 'accessing' }
-FASTFortranAbstractExpression >> parentGotoComputedStatement [
-	"Relation named: #parentGotoComputedStatement type: #FASTFortranGoToComputedStatement opposite: #selectorExpression"
-
-	<generated>
-	<container>
-	<derived>
-	^ parentGotoComputedStatement
-]
-
-{ #category : 'accessing' }
-FASTFortranAbstractExpression >> parentGotoComputedStatement: anObject [
-
-	<generated>
-	parentGotoComputedStatement := anObject
-]
-
-{ #category : 'navigation' }
-FASTFortranAbstractExpression >> parentGotoComputedStatementGroup [
-	<generated>
-	<navigation: 'ParentGotoComputedStatement'>
-	^ MooseSpecializedGroup with: self parentGotoComputedStatement
 ]
 
 { #category : 'accessing' }

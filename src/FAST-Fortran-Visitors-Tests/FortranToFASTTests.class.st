@@ -2037,17 +2037,17 @@ FortranToFASTTests >> testIfArithmetic [
 	self assert: conditional condition name equals: 'a'.
 	self assert: conditional condition startPos equals: 36.
 
-	self assert: conditional lessLabel class equals: FASTFortranLabelReference.
-	self assert: conditional lessLabel label equals: '10'.
-	self assert: conditional lessLabel startPos equals: 40.
+	self assert: conditional negativeLabel class equals: FASTFortranLabelReference.
+	self assert: conditional negativeLabel label equals: '10'.
+	self assert: conditional negativeLabel startPos equals: 40.
 
-	self assert: conditional equalLabel class equals: FASTFortranLabelReference.
-	self assert: conditional equalLabel label equals: '20'.
-	self assert: conditional equalLabel startPos equals: 44.
+	self assert: conditional nullLabel class equals: FASTFortranLabelReference.
+	self assert: conditional nullLabel label equals: '20'.
+	self assert: conditional nullLabel startPos equals: 44.
 
-	self assert: conditional greaterLabel class equals: FASTFortranLabelReference.
-	self assert: conditional greaterLabel label equals: '30'.
-	self assert: conditional greaterLabel startPos equals: 48
+	self assert: conditional positiveLabel class equals: FASTFortranLabelReference.
+	self assert: conditional positiveLabel label equals: '30'.
+	self assert: conditional positiveLabel startPos equals: 48
 ]
 
 { #category : 'tests-statement' }

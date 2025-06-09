@@ -19,27 +19,3 @@ FASTFortranIfBlockStatement class >> annotation [
 	<generated>
 	^ self
 ]
-
-{ #category : 'as yet unclassified' }
-FASTFortranIfBlockStatement >> elseStatementBlock [
- 
-	^self falseBranch
-]
-
-{ #category : 'as yet unclassified' }
-FASTFortranIfBlockStatement >> elseStatementBlock: aFASTFortranStatementBlock [
- 
-	self falseBranch: aFASTFortranStatementBlock 
-]
-
-{ #category : 'as yet unclassified' }
-FASTFortranIfBlockStatement >> thenStatementBlock [
-
-	^self trueBranch
-]
-
-{ #category : 'as yet unclassified' }
-FASTFortranIfBlockStatement >> thenStatementBlock: aFASTFortranStatementBlock [
-
-	self trueBranch: aFASTFortranStatementBlock 
-]

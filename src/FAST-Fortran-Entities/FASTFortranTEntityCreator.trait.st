@@ -511,13 +511,6 @@ FASTFortranTEntityCreator >> newIntrinsicStatement [
 ]
 
 { #category : 'entity creation' }
-FASTFortranTEntityCreator >> newLabelReference [
-
-	<generated>
-	^ self add: FASTFortranLabelReference new
-]
-
-{ #category : 'entity creation' }
 FASTFortranTEntityCreator >> newLogicalType [
 
 	<generated>

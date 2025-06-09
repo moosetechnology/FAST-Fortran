@@ -1,22 +1,19 @@
 "
 I represent Fortran Go To (unconditional) statement
 
-## Relations
+## Properties
 ======================
 
-### Children
-| Relation | Origin | Opposite | Type | Comment |
+| Name | Type | Default value | Comment |
 |---|
-| `labelReferences` | `FASTFortranTWithLabelReferences` | `referencer` | `FASTFortranLabelReference` | the label(s) referenced|
-
-
+| `label` | `String` | nil | |
 
 "
 Class {
 	#name : 'FASTFortranGoToStatement',
-	#superclass : 'FASTFortranAbstractStatement',
-	#traits : 'FASTFortranTWithLabelReferences',
-	#classTraits : 'FASTFortranTWithLabelReferences classTrait',
+	#superclass : 'FASTFortranEntity',
+	#traits : 'FASTTGotoStatement',
+	#classTraits : 'FASTTGotoStatement classTrait',
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
 	#tag : 'Entities'
@@ -25,7 +22,7 @@ Class {
 { #category : 'meta' }
 FASTFortranGoToStatement class >> annotation [
 
-	<FMClass: #GoToStatement super: #FASTFortranAbstractStatement>
+	<FMClass: #GoToStatement super: #FASTFortranEntity>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
