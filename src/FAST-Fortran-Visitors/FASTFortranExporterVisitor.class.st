@@ -517,32 +517,29 @@ FASTFortranExporterVisitor >> visitFASTFortranFunctionTypeDeclarationStatement: 
 ]
 
 { #category : 'visiting - statements' }
-FASTFortranExporterVisitor >> visitFASTFortranGoToComputedStatement: aFASTFortranGoToComputedStatement [
-	"note: an unconditional goto use TWithLabelReferences, but it actually has only one"
+FASTFortranExporterVisitor >> visitFASTFortranGotoComputedStatement: aFASTFortranGoToComputedStatement [
 
 	self
 		visitFASTFortranAbstractStatement: aFASTFortranGoToComputedStatement;
-		<< 'goto ';
-		outputExpression: [
-			self visitNodeListSeparatedByCommas:
-					aFASTFortranGoToComputedStatement labelReferences ]
-		inParentheses: true;
-		space.
-	self outputTopLevelExpression: [
-		aFASTFortranGoToComputedStatement selectorExpression accept: self ].
-	self newLine
+		<< 'goto ('.
+	aFASTFortranGoToComputedStatement branches
+		do: [ :branch | self << branch gotoLabel ]
+		separatedBy: [ self << ',' ].
+	self
+		<< ') ' ;
+		outputTopLevelExpression: [ aFASTFortranGoToComputedStatement expression accept: self ] ;
+		newLine
 ]
 
 { #category : 'visiting - statements' }
-FASTFortranExporterVisitor >> visitFASTFortranGoToStatement: aFASTFortranGoToStatement [
+FASTFortranExporterVisitor >> visitFASTFortranGotoStatement: aFASTFortranGoToStatement [
 	"note: an unconditional goto use TWithLabelReferences, but it actually has only one"
 
 	self
 		visitFASTFortranAbstractStatement: aFASTFortranGoToStatement;
-		<< 'goto '.
-	self outputTopLevelExpression: [
-		aFASTFortranGoToStatement labelReferences anyOne accept: self ].
-	self newLine
+		<< 'goto ' ;
+		<< aFASTFortranGoToStatement gotoLabel ;
+		newLine
 ]
 
 { #category : 'visiting' }
