@@ -39,8 +39,8 @@ FASTFortranCFGCheckerTest >> newBlock: blockName [
 
 	| block |
 	block := cfg newBasicBlock: ((blockName asString first asLowercase = $c)
-		ifTrue: [ FASTFortranConditionalBasicBlock ]
-		ifFalse: [ FASTFortranBasicBlock ]).
+		ifTrue: [ FASTCFGConditionalBasicBlock ]
+		ifFalse: [ FASTCFGBasicBlock ]).
 	
 	(blockName asString first asLowercase = $s)
 		ifTrue: [ block isStart: true ].

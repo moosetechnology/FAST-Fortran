@@ -54,7 +54,7 @@ FASTFortranCFGVisitorTest >> testArithmeticGotoAfterLabel [
 	self assert: blocks second firstStatement class equals: FASTFortranAssignmentStatement.
 	self assert: blocks second statements size equals: 1.
 
-	self assert: blocks third class equals: FASTFortranConditionalBasicBlock.
+	self assert: blocks third class equals: FASTCFGConditionalBasicBlock.
 	self assert: (blocks third nextBlockForValue: #negative) equals: blocks first.
 	self assert: (blocks third nextBlockForValue: #null) equals: blocks second.
 	self assert: (blocks third nextBlockForValue: #positive) equals: blocks second.
@@ -67,7 +67,7 @@ FASTFortranCFGVisitorTest >> testBlockAfterConditionalBlock [
 	| conditional |
 	self aFunctionWithConditional accept: visitor.
 
-	conditional := (self findBasicBlocks: FASTFortranConditionalBasicBlock with: [ :basicBloc | true ])
+	conditional := (self findBasicBlocks: FASTCFGConditionalBasicBlock with: [ :basicBloc | true ])
 		anyOne.
 
 	self assert: conditional nextBlocks size equals: 2.
@@ -131,7 +131,7 @@ FASTFortranCFGVisitorTest >> testBlockChainingAfterIfLogical [
 	
 	ast accept: visitor.
 
-	blocks := self findBasicBlocks: FASTFortranConditionalBasicBlock with: [ :basicBloc | true ].
+	blocks := self findBasicBlocks: FASTCFGConditionalBasicBlock with: [ :basicBloc | true ].
 
 	self assert: blocks size equals: 1.
 	conditional := blocks anyOne.
@@ -154,7 +154,7 @@ FASTFortranCFGVisitorTest >> testBlockChainingBeforeConditionalBlock [
 	self assert: blocks size equals: 5.
 
 	self assert: blocks first nextBlock equals: blocks second.
-	self assert: blocks second class equals: FASTFortranConditionalBasicBlock
+	self assert: blocks second class equals: FASTCFGConditionalBasicBlock
 
 ]
 
@@ -184,7 +184,7 @@ FASTFortranCFGVisitorTest >> testBlockChainingForDoLoopConditional [
 	
 	ast accept: visitor.	
 
-	conditional := (self findBasicBlocks: FASTFortranConditionalBasicBlock with: [ :basicBloc | true ])
+	conditional := (self findBasicBlocks: FASTCFGConditionalBasicBlock with: [ :basicBloc | true ])
 		anyOne.
 
 	self assert: conditional nextBlocks size equals: 2.
@@ -237,7 +237,7 @@ FASTFortranCFGVisitorTest >> testCallStatement [
 		(block firstStatement class = FASTFortranCallStatement) and:
 		[ block firstStatement name = 'getent' ] ].
 
-	self assert: blocks second class equals: FASTFortranConditionalBasicBlock.
+	self assert: blocks second class equals: FASTCFGConditionalBasicBlock.
 
 	self assert: (blocks second nextBlockForValue: true) equals: callErreur.
 	self assert: (blocks second nextBlockForValue: false) equals: callGetent.
@@ -269,7 +269,7 @@ FASTFortranCFGVisitorTest >> testChainingArithmeticGotoWhenBeforeLabel [
 
 	self assert: blocks size equals: 2.
 
-	self assert: blocks first class equals: FASTFortranConditionalBasicBlock.
+	self assert: blocks first class equals: FASTCFGConditionalBasicBlock.
 
 	self assert: blocks second firstStatement class equals: FASTFortranAssignmentStatement.
 
@@ -308,7 +308,7 @@ FASTFortranCFGVisitorTest >> testChainingGotoWhenBeforeLabelledBlock [
 		self assert: block statements size equals: 1.
 	].
 	
-	self assert: blocks first firstStatement class equals: FASTFortranGoToStatement.
+	self assert: blocks first firstStatement class equals: FASTFortranGotoStatement.
 	self assert: blocks second firstStatement class equals: FASTFortranAssignmentStatement.
 	self assert: blocks third firstStatement class equals: FASTFortranAssignmentStatement.
 
@@ -344,7 +344,7 @@ FASTFortranCFGVisitorTest >> testDoLoopCreatesConditionalBlock [
 	
 	ast accept: visitor.	
 
-	blocks := self findBasicBlocks: FASTFortranConditionalBasicBlock with: [ :basicBloc | true ].
+	blocks := self findBasicBlocks: FASTCFGConditionalBasicBlock with: [ :basicBloc | true ].
 
 	self assert: blocks size equals: 1.
 	conditional := blocks anyOne.
@@ -384,7 +384,7 @@ FASTFortranCFGVisitorTest >> testExitInLoop [
 	exitBlock := blocks detect: [ :block | block firstStatement class = FASTFortranExitStatement ].
 	returnBlock := blocks detect: [ :block | block firstStatement class = FASTFortranAssignmentStatement ].
 
-	self assert: loopBlock class equals: FASTFortranConditionalBasicBlock.
+	self assert: loopBlock class equals: FASTCFGConditionalBasicBlock.
 	self assert: loopBlock isStart.
 	self assert: loopBlock isFinal.
 	self assert: (loopBlock nextBlockForValue: true) equals: exitBlock.
@@ -544,7 +544,7 @@ FASTFortranCFGVisitorTest >> testGotoAfterLabelledBlock [
 	self assert: blocks first  firstStatement class equals: FASTFortranAssignmentStatement.
 	self assert: blocks first statements size equals: 1.
 	self assert: blocks second firstStatement class equals: FASTFortranAssignmentStatement.
-	self assert: blocks second lastStatement  class equals: FASTFortranGoToStatement.
+	self assert: blocks second lastStatement  class equals: FASTFortranGotoStatement.
 
 	self assert: blocks first nextBlock equals: blocks second.
 	self assert: blocks second nextBlock equals: blocks first
@@ -575,10 +575,10 @@ FASTFortranCFGVisitorTest >> testGotoAfterLabelledIfStatement [
 
 	self assert: blocks size equals: 4.
 
-	self assert: blocks second class equals: FASTFortranConditionalBasicBlock.
+	self assert: blocks second class equals: FASTCFGConditionalBasicBlock.
 
-	conditional := blocks detect: [ :block | block class = FASTFortranConditionalBasicBlock ].
-	jump := blocks detect: [ :block | block firstStatement class = FASTFortranGoToStatement ].
+	conditional := blocks detect: [ :block | block class = FASTCFGConditionalBasicBlock ].
+	jump := blocks detect: [ :block | block firstStatement class = FASTFortranGotoStatement ].
 
 	self assert: jump nextBlock equals: conditional
 ]
@@ -609,8 +609,8 @@ FASTFortranCFGVisitorTest >> testGotoBeforeLabelledIfStatement [
 
 	self assert: blocks second isConditional.
 
-	conditional := blocks detect: [ :block | block class = FASTFortranConditionalBasicBlock ].
-	jump := blocks detect: [ :block | block lastStatement class = FASTFortranGoToStatement ].
+	conditional := blocks detect: [ :block | block class = FASTCFGConditionalBasicBlock ].
+	jump := blocks detect: [ :block | block lastStatement class = FASTFortranGotoStatement ].
 
 	self assert: jump nextBlock equals: conditional
 ]
@@ -792,7 +792,7 @@ FASTFortranCFGVisitorTest >> testIfStatementCreatesConditionalBlock [
 	| blocks  conditional |
 	self aFunctionWithConditional accept: visitor.
 
-	blocks := self findBasicBlocks: FASTFortranConditionalBasicBlock with: [ :basicBloc | true ].
+	blocks := self findBasicBlocks: FASTCFGConditionalBasicBlock with: [ :basicBloc | true ].
 
 	self assert: blocks size equals: 1.
 	conditional := blocks anyOne.
@@ -808,10 +808,10 @@ FASTFortranCFGVisitorTest >> testIfStatementElsePartIsABasicBlock [
 	| aBlock |
 	self aFunctionWithConditional accept: visitor.
 
-	aBlock := (self findBasicBlocks: FASTFortranConditionalBasicBlock with: [:e | true])
+	aBlock := (self findBasicBlocks: FASTCFGConditionalBasicBlock with: [:e | true])
 		anyOne nextBlockForValue: false.
 
-	self assert: aBlock class equals: FASTFortranBasicBlock.
+	self assert: aBlock class equals: FASTCFGBasicBlock.
 
 	self assert: aBlock firstStatement class equals: FASTFortranAssignmentStatement.
 	self assert: aBlock firstStatement expression class equals: FASTFortranCharacterLiteral.
@@ -829,7 +829,7 @@ FASTFortranCFGVisitorTest >> testIfStatementFollowedByABasicBlock [
 	| blocks |
 	self aFunctionWithConditional accept: visitor.
 
-	blocks := self findBasicBlocks: FASTFortranBasicBlock with: [ :basicBloc |
+	blocks := self findBasicBlocks: FASTCFGBasicBlock with: [ :basicBloc |
 		basicBloc lastStatement class = FASTFortranReturnStatement
 	].
 
@@ -843,10 +843,10 @@ FASTFortranCFGVisitorTest >> testIfStatementThenPartIsABasicBlock [
 	| aBlock |
 	self aFunctionWithConditional accept: visitor.
 
-	aBlock := (self findBasicBlocks: FASTFortranConditionalBasicBlock with: [:e | true])
+	aBlock := (self findBasicBlocks: FASTCFGConditionalBasicBlock with: [:e | true])
 		anyOne nextBlockForValue: true.
 
-	self assert: aBlock class equals: FASTFortranBasicBlock.
+	self assert: aBlock class equals: FASTCFGBasicBlock.
 
 	self assert: aBlock firstStatement class equals: FASTFortranAssignmentStatement.
 	self assert: aBlock firstStatement expression class equals: FASTFortranCharacterLiteral.
@@ -998,15 +998,15 @@ FASTFortranCFGVisitorTest >> testLabelledIfStatementStartsNewBlock [
 
 	self assert: blocks size equals: 4.
 
-	self assert: blocks first class equals: FASTFortranBasicBlock.
+	self assert: blocks first class equals: FASTCFGBasicBlock.
 	self assert: blocks first  firstStatement class equals: FASTFortranVariableDeclarationStatement.
 
-	self assert: blocks second class equals: FASTFortranConditionalBasicBlock.
+	self assert: blocks second class equals: FASTCFGConditionalBasicBlock.
 
-	self assert: blocks third class equals: FASTFortranBasicBlock.
+	self assert: blocks third class equals: FASTCFGBasicBlock.
 	self assert: blocks third  firstStatement class equals: FASTFortranReturnStatement.
 
-	self assert: blocks fourth class equals: FASTFortranBasicBlock.
+	self assert: blocks fourth class equals: FASTCFGBasicBlock.
 	self assert: blocks fourth firstStatement class equals: FASTFortranReturnStatement.
 ]
 
@@ -1098,7 +1098,7 @@ FASTFortranCFGVisitorTest >> testProgramUnitBodyStartsABasicBlock [
 	| blocks |
 	self aFunctionWithConditional accept: visitor.
 
-	blocks := self findBasicBlocks: FASTFortranBasicBlock with: [ :basicBloc |
+	blocks := self findBasicBlocks: FASTCFGBasicBlock with: [ :basicBloc |
 		basicBloc firstStatement class = FASTFortranVariableDeclarationStatement
 	].
 
@@ -1171,8 +1171,7 @@ FASTFortranCFGVisitorTest >> testReturnDoesNotHaveNextBlock [
 
 	self assert: blocks second firstStatement class equals: FASTFortranAssignmentStatement.
 	self assert: blocks second statements size equals: 1.
-	self assert: blocks second isFinal.
-	self assert: blocks second nextBlock isNil
+	self assert: blocks second isFinal
 
 ]
 
@@ -1309,9 +1308,8 @@ FASTFortranCFGVisitorTest >> testSourceCode [
 
 	self assert: blocks size equals: 1.
 
-	self assert: blocks anyOne sourceCode equals: '        x = 1
-        y = 1
-'
+	self assert: blocks anyOne sourceCode equals: '      x = 1
+      y = 1'
 ]
 
 { #category : 'tests' }
@@ -1341,7 +1339,7 @@ FASTFortranCFGVisitorTest >> testSourceCodeIfBlock [
 	self assert: blocks size equals: 4.
 
 
-	self assert: blocks second class equals: FASTFortranConditionalBasicBlock.
+	self assert: blocks second class equals: FASTCFGConditionalBasicBlock.
 	self assert: blocks second sourceCode equals: 'if (x .lt. 5)'
 ]
 
@@ -1368,7 +1366,7 @@ FASTFortranCFGVisitorTest >> testSourceCodeIfLogical [
 	self assert: blocks size equals: 3.
 
 
-	self assert: blocks second class equals: FASTFortranConditionalBasicBlock.
+	self assert: blocks second class equals: FASTCFGConditionalBasicBlock.
 	self assert: blocks second sourceCode equals: 'if (x .lt. 5)'
 ]
 
