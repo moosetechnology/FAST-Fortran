@@ -444,7 +444,7 @@ FASTFortranCopyVisitorTest >> testDoStatementWithLabel [
 	stmt := self doStatement:  #(i 1 max) statements: {
 		FASTFortranContinueStatement new label: '110'}.
 
-	stmt labelReferences: { self labelReference: '110' }.
+	stmt doLabel: '110'.
 
 	self
 		assertExportCopy: stmt
@@ -662,9 +662,9 @@ FASTFortranCopyVisitorTest >> testFunctionWithParameterNoStatement [
 { #category : 'tests - statements' }
 FASTFortranCopyVisitorTest >> testGotoComputedStatement [
 	| stmt |
-	stmt := FASTFortranGoToComputedStatement new
-		labelReferences: { self labelReference: '110' . self labelReference: '120' . self labelReference: '130'} ;
-		selectorExpression: (self scalarVariable: 'i') ;
+	stmt := FASTFortranGotoComputedStatement new
+		branches: { self gotoStatement: '110' . self gotoStatement: '120' . self gotoStatement: '130'} ;
+		expression: (self scalarVariable: 'i') ;
 		yourself.
 
 	self
