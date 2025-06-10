@@ -28,7 +28,7 @@ I represent Fortran GOTO (Computed) statement
 "
 Class {
 	#name : 'FASTFortranGotoComputedStatement',
-	#superclass : 'FASTFortranEntity',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTTBranchStatement',
 	#classTraits : 'FASTTBranchStatement classTrait',
 	#category : 'FAST-Fortran-Entities-Entities',
@@ -39,7 +39,7 @@ Class {
 { #category : 'meta' }
 FASTFortranGotoComputedStatement class >> annotation [
 
-	<FMClass: #GotoComputedStatement super: #FASTFortranEntity>
+	<FMClass: #GotoComputedStatement super: #FASTFortranAbstractStatement>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self

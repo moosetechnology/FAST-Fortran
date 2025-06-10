@@ -23,7 +23,7 @@ I represent Fortran Go To (unconditional) statement
 "
 Class {
 	#name : 'FASTFortranGotoStatement',
-	#superclass : 'FASTFortranEntity',
+	#superclass : 'FASTFortranAbstractStatement',
 	#traits : 'FASTTGotoStatement',
 	#classTraits : 'FASTTGotoStatement classTrait',
 	#category : 'FAST-Fortran-Entities-Entities',
@@ -34,7 +34,7 @@ Class {
 { #category : 'meta' }
 FASTFortranGotoStatement class >> annotation [
 
-	<FMClass: #GotoStatement super: #FASTFortranEntity>
+	<FMClass: #GotoStatement super: #FASTFortranAbstractStatement>
 	<package: #'FAST-Fortran-Entities'>
 	<generated>
 	^ self
