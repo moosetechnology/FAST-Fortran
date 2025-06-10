@@ -318,9 +318,9 @@ FASTFortranAbstractVisitorTest >> functionDeclaration: aName [
 { #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> gotoComputedStatement: labels expression: expr [
 
-	^FASTFortranGoToComputedStatement new
-		labelReferences: (labels collect: [:label | self labelReference: label asString]) ;
-		selectorExpression: (self makeSimpleExpression: expr) ;
+	^FASTFortranGotoComputedStatement new
+		branches: (labels collect: [:label | self gotoStatement: label asString]) ;
+		expression: (self makeSimpleExpression: expr) ;
 		yourself
 ]
 
@@ -335,10 +335,10 @@ FASTFortranAbstractVisitorTest >> gotoStatement: label [
 { #category : 'entity creation' }
 FASTFortranAbstractVisitorTest >> ifArithmetic: condition negative: negativeLabel  null: nullLabel  positive: positiveLabel [ 
 	^FASTFortranIfArithmeticStatement new
-		condition: (self makeSimpleExpression: condition) ;
-		negativeLabel:    (self labelReference: negativeLabel asString) ;
-		nullLabel:   (self labelReference: nullLabel asString) ;
-		positiveLabel: (self labelReference: positiveLabel asString).
+		expression: (self makeSimpleExpression: condition) ;
+		negativeBranch:    (self gotoStatement: negativeLabel asString) ;
+		nullBranch:   (self gotoStatement: nullLabel asString) ;
+		positiveBranch: (self gotoStatement: positiveLabel asString).
 ]
 
 { #category : 'entity creation' }
@@ -400,14 +400,6 @@ FASTFortranAbstractVisitorTest >> ioStatement: aClass ioParams: params arguments
 		arguments: (args collect: [:each | self makeSimpleExpression: each]) ;
 		startPos: 1 ;
 		endPos: 30 ;
-		yourself
-]
-
-{ #category : 'entity creation' }
-FASTFortranAbstractVisitorTest >> labelReference: aString [
-
-	^FASTFortranLabelReference new
-		label: aString ;
 		yourself
 ]
 
