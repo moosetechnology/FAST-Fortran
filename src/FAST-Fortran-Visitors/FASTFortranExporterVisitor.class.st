@@ -558,22 +558,18 @@ FASTFortranExporterVisitor >> visitFASTFortranIOParameter: aFASTFortranIOParamet
 FASTFortranExporterVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortranIfArithmeticStatementNode [
 
 	self
-		visitFASTFortranAbstractStatement:
-			aFASTFortranIfArithmeticStatementNode;
+		visitFASTFortranAbstractStatement: aFASTFortranIfArithmeticStatementNode;
 		<< 'if ';
 		outputExpression: [
-			aFASTFortranIfArithmeticStatementNode condition accept: self ]
+			aFASTFortranIfArithmeticStatementNode expression accept: self ]
 		inParentheses: true;
-		space.
-	self outputTopLevelExpression: [
-		aFASTFortranIfArithmeticStatementNode lessLabel accept: self ].
-	self << ', '.
-	self outputTopLevelExpression: [
-		aFASTFortranIfArithmeticStatementNode equalLabel accept: self ].
-	self << ', '.
-	self outputTopLevelExpression: [
-		aFASTFortranIfArithmeticStatementNode greaterLabel accept: self ].
-	self newLine
+		space ;
+		<< aFASTFortranIfArithmeticStatementNode negativeBranch gotoLabel ;
+		<< ', ' ;
+		<< aFASTFortranIfArithmeticStatementNode nullBranch gotoLabel ;
+		<< ', ' ;
+		<< aFASTFortranIfArithmeticStatementNode positiveBranch gotoLabel ;
+		newLine
 ]
 
 { #category : 'visiting - statements' }
