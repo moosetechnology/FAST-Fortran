@@ -6,3 +6,9 @@ FASTFortranEntity >> accept: aVisitor [
 	^ aVisitor visitFASTFortranEntity: self.
 
 ]
+
+{ #category : '*FAST-Fortran-Visitors' }
+FASTFortranEntity >> exportForCFG [
+
+	^FASTFortranExporterVisitor export: self
+]
