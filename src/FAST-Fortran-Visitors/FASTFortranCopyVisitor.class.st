@@ -656,7 +656,7 @@ FASTFortranCopyVisitor >> visitFASTFortranFunctionTypeDeclarationStatement: aFAS
 ]
 
 { #category : 'visiting' }
-FASTFortranCopyVisitor >> visitFASTFortranGoToAssignedStatement: aFASTFortranGoToAssignedStatement [
+FASTFortranCopyVisitor >> visitFASTFortranGotoAssignedStatement: aFASTFortranGoToAssignedStatement [
 	<generated>
 	^FASTFortranGoToAssignedStatement new
 		labelReferences: (self copy: aFASTFortranGoToAssignedStatement labelReferences) ;
@@ -669,7 +669,7 @@ FASTFortranCopyVisitor >> visitFASTFortranGoToAssignedStatement: aFASTFortranGoT
 ]
 
 { #category : 'visiting' }
-FASTFortranCopyVisitor >> visitFASTFortranGoToComputedStatement: aFASTFortranGoToComputedStatement [
+FASTFortranCopyVisitor >> visitFASTFortranGotoComputedStatement: aFASTFortranGoToComputedStatement [
 	<generated>
 	^FASTFortranGoToComputedStatement new
 		labelReferences: (self copy: aFASTFortranGoToComputedStatement labelReferences) ;
@@ -682,7 +682,7 @@ FASTFortranCopyVisitor >> visitFASTFortranGoToComputedStatement: aFASTFortranGoT
 ]
 
 { #category : 'visiting' }
-FASTFortranCopyVisitor >> visitFASTFortranGoToStatement: aFASTFortranGoToStatement [
+FASTFortranCopyVisitor >> visitFASTFortranGotoStatement: aFASTFortranGoToStatement [
 	<generated>
 	^FASTFortranGoToStatement new
 		labelReferences: (self copy: aFASTFortranGoToStatement labelReferences) ;
