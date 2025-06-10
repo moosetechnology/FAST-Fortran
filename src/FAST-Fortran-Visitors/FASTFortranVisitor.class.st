@@ -684,10 +684,10 @@ FASTFortranVisitor >> visitFASTFortranTAssignment: aFASTFortranTAssignment [
 
 { #category : 'visiting - traits' }
 FASTFortranVisitor >> visitFASTFortranTBehaviouralEntity: aFASTFortranTBehaviouralEntity [
+	"does not call visitFASTTBehaviouralEntity: ?!?!"
 
 	self visitFASTFortranTScopableEntity: aFASTFortranTBehaviouralEntity.
-
-	aFASTFortranTBehaviouralEntity statementBlock accept: self
+	self visitFASTTBehaviouralEntity: aFASTFortranTBehaviouralEntity.
 ]
 
 { #category : 'visiting - traits' }
@@ -811,16 +811,15 @@ FASTFortranVisitor >> visitFASTFortranTScopableEntity: aFASTFortranTScopableEnti
 
 { #category : 'visiting - traits' }
 FASTFortranVisitor >> visitFASTFortranTStatement: aFASTFortranTStatement [
-	<generated>
 
-	self visitFASTFortranTEntity: aFASTFortranTStatement
+
+	self visitFASTTStatement: aFASTFortranTStatement
 ]
 
 { #category : 'visiting - traits' }
 FASTFortranVisitor >> visitFASTFortranTStatementBlock: aFASTFortranTStatementBlock [
 
-	aFASTFortranTStatementBlock statements do: [ :statement |
-		statement accept: self ]
+	^self visitFASTTStatementBlock: aFASTFortranTStatementBlock 
 ]
 
 { #category : 'visiting - traits' }
