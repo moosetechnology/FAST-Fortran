@@ -359,24 +359,24 @@ FASTFortranVisitor >> visitFASTFortranFunctionTypeDeclarationStatement: aFASTFor
 ]
 
 { #category : 'visiting - statements' }
-FASTFortranVisitor >> visitFASTFortranGotoAssignedStatement: aFASTFortranGoToAssignedStatement [
+FASTFortranVisitor >> visitFASTFortranGotoAssignedStatement: aFASTFortranGotoAssignedStatement [
 	<generated>
 
-	self visitFASTFortranTStatement: aFASTFortranGoToAssignedStatement
+	self visitFASTFortranTStatement: aFASTFortranGotoAssignedStatement
 ]
 
 { #category : 'visiting - statements' }
-FASTFortranVisitor >> visitFASTFortranGotoComputedStatement: aFASTFortranGoToComputedStatement [
+FASTFortranVisitor >> visitFASTFortranGotoComputedStatement: aFASTFortranGotoComputedStatement [
 
-	aFASTFortranGoToComputedStatement selectorExpression accept: self.
-	self visitFASTFortranTStatement: aFASTFortranGoToComputedStatement
+	aFASTFortranGotoComputedStatement selectorExpression accept: self.
+	self visitFASTFortranTStatement: aFASTFortranGotoComputedStatement
 ]
 
 { #category : 'visiting - statements' }
-FASTFortranVisitor >> visitFASTFortranGotoStatement: aFASTFortranGoToStatement [
+FASTFortranVisitor >> visitFASTFortranGotoStatement: aFASTFortranGotoStatement [
 	<generated>
 
-	self visitFASTFortranTStatement: aFASTFortranGoToStatement
+	self visitFASTFortranTStatement: aFASTFortranGotoStatement
 ]
 
 { #category : 'visiting - statements' }

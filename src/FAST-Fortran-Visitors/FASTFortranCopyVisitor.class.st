@@ -656,39 +656,39 @@ FASTFortranCopyVisitor >> visitFASTFortranFunctionTypeDeclarationStatement: aFAS
 ]
 
 { #category : 'visiting' }
-FASTFortranCopyVisitor >> visitFASTFortranGotoAssignedStatement: aFASTFortranGoToAssignedStatement [
+FASTFortranCopyVisitor >> visitFASTFortranGotoAssignedStatement: aFASTFortranGotoAssignedStatement [
 	<generated>
-	^FASTFortranGoToAssignedStatement new
-		labelReferences: (self copy: aFASTFortranGoToAssignedStatement labelReferences) ;
-		label: (self copy: aFASTFortranGoToAssignedStatement label) ;
-		selectorExpression: (self copy: aFASTFortranGoToAssignedStatement selectorExpression) ;
-		startPos: (self copy: aFASTFortranGoToAssignedStatement startPos) ;
-		endPos: (self copy: aFASTFortranGoToAssignedStatement endPos) ;
+	^FASTFortranGotoAssignedStatement new
+		labelReferences: (self copy: aFASTFortranGotoAssignedStatement labelReferences) ;
+		label: (self copy: aFASTFortranGotoAssignedStatement label) ;
+		selectorExpression: (self copy: aFASTFortranGotoAssignedStatement selectorExpression) ;
+		startPos: (self copy: aFASTFortranGotoAssignedStatement startPos) ;
+		endPos: (self copy: aFASTFortranGotoAssignedStatement endPos) ;
 		yourself
 
 ]
 
 { #category : 'visiting' }
-FASTFortranCopyVisitor >> visitFASTFortranGotoComputedStatement: aFASTFortranGoToComputedStatement [
+FASTFortranCopyVisitor >> visitFASTFortranGotoComputedStatement: aFASTFortranGotoComputedStatement [
 	<generated>
-	^FASTFortranGoToComputedStatement new
-		labelReferences: (self copy: aFASTFortranGoToComputedStatement labelReferences) ;
-		label: (self copy: aFASTFortranGoToComputedStatement label) ;
-		selectorExpression: (self copy: aFASTFortranGoToComputedStatement selectorExpression) ;
-		startPos: (self copy: aFASTFortranGoToComputedStatement startPos) ;
-		endPos: (self copy: aFASTFortranGoToComputedStatement endPos) ;
+	^FASTFortranGotoComputedStatement new
+		labelReferences: (self copy: aFASTFortranGotoComputedStatement labelReferences) ;
+		label: (self copy: aFASTFortranGotoComputedStatement label) ;
+		selectorExpression: (self copy: aFASTFortranGotoComputedStatement selectorExpression) ;
+		startPos: (self copy: aFASTFortranGotoComputedStatement startPos) ;
+		endPos: (self copy: aFASTFortranGotoComputedStatement endPos) ;
 		yourself
 
 ]
 
 { #category : 'visiting' }
-FASTFortranCopyVisitor >> visitFASTFortranGotoStatement: aFASTFortranGoToStatement [
+FASTFortranCopyVisitor >> visitFASTFortranGotoStatement: aFASTFortranGotoStatement [
 	<generated>
-	^FASTFortranGoToStatement new
-		labelReferences: (self copy: aFASTFortranGoToStatement labelReferences) ;
-		label: (self copy: aFASTFortranGoToStatement label) ;
-		startPos: (self copy: aFASTFortranGoToStatement startPos) ;
-		endPos: (self copy: aFASTFortranGoToStatement endPos) ;
+	^FASTFortranGotoStatement new
+		labelReferences: (self copy: aFASTFortranGotoStatement labelReferences) ;
+		label: (self copy: aFASTFortranGotoStatement label) ;
+		startPos: (self copy: aFASTFortranGotoStatement startPos) ;
+		endPos: (self copy: aFASTFortranGotoStatement endPos) ;
 		yourself
 
 ]
