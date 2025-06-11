@@ -23,45 +23,6 @@ FASTFortranCFGVisitorTest >> newVisitor [
 ]
 
 { #category : 'tests - cfg' }
-FASTFortranCFGVisitorTest >> testArithmeticGotoAfterLabel [
-
-	| blocks |
-	"
-	INTEGER FUNCTION something()
-10	x = 1
-20	y = 1
-	IF (x) 10, 20, 30
-	END
-	"
-	self function: #something type: #integer.
-	self addStatement:
-		 (self labelled: 10 statement:
-			(self assignementStatement: #x value: 1)).
-	self addStatement:
-		(self labelled: 20 statement:
-			(self assignementStatement: #y value: 1)).
-	self addStatement: (self ifArithmetic: #x negative: 10 null: 20 positive: 20).
-
-	ast accept: visitor.
-
-	blocks := visitor basicBlocks.
-
-	self assert: blocks size equals: 3.
-
-	self assert: blocks first  firstStatement class equals: FASTFortranAssignmentStatement.
-	self assert: blocks first  statements size equals: 1.
-
-	self assert: blocks second firstStatement class equals: FASTFortranAssignmentStatement.
-	self assert: blocks second statements size equals: 1.
-
-	self assert: blocks third class equals: FASTCFGConditionalBasicBlock.
-	self assert: (blocks third nextBlockForValue: #negative) equals: blocks first.
-	self assert: (blocks third nextBlockForValue: #null) equals: blocks second.
-	self assert: (blocks third nextBlockForValue: #positive) equals: blocks second.
-
-]
-
-{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testBlockAfterConditionalBlock [
 
 	| conditional |
@@ -89,7 +50,7 @@ FASTFortranCFGVisitorTest >> testBlockAfterGotoIsNotNext [
       END 
 	"
 	doLoop := self doStatement: #(i 1 n) statements: {self assignementStatement: #i value: 0}.
-	doLoop labelReferences: { self labelReference: 110 }.
+	doLoop doLabel: 110.
 
 	self subroutine: 'TEST'.
 	self addStatement: (self assignementStatement: #x value: 1).
@@ -103,11 +64,12 @@ FASTFortranCFGVisitorTest >> testBlockAfterGotoIsNotNext [
 	self assert: blocks size equals: 2.
 
 	block := blocks first.
-	self assert: block nextBlock isNil.
+	self assert: block statements size equals: 2.
+	self assert: block isFinal.
 
 	block := blocks second.
 	self assert: block firstStatement expression primitiveValue equals: '2'.
-	self assert: block nextBlock isNil
+	self assert: block isFinal
 
 ]
 
@@ -248,38 +210,6 @@ FASTFortranCFGVisitorTest >> testCallStatement [
 ]
 
 { #category : 'tests - cfg' }
-FASTFortranCFGVisitorTest >> testChainingArithmeticGotoWhenBeforeLabel [
-
-	| blocks |
-	"
-	INTEGER FUNCTION something()
-	IF (x) 10, 10, 10
-10	x = 1
-	END
-	"
-	self function: #something type: #integer.
-	self addStatement: (self ifArithmetic: #x negative: 10 null: 10 positive: 10).
-	self addStatement:
-		 (self labelled: 10 statement:
-			(self assignementStatement: #x value: 1)).
-
-	ast accept: visitor.
-
-	blocks := visitor basicBlocks.
-
-	self assert: blocks size equals: 2.
-
-	self assert: blocks first class equals: FASTCFGConditionalBasicBlock.
-
-	self assert: blocks second firstStatement class equals: FASTFortranAssignmentStatement.
-
-	self assert: (blocks first nextBlockForValue: #negative) equals: blocks second.
-	self assert: (blocks first nextBlockForValue: #null)     equals: blocks second.
-	self assert: (blocks first nextBlockForValue: #positive) equals: blocks second.
-
-]
-
-{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testChainingGotoWhenBeforeLabelledBlock [
 
 	| blocks |
@@ -314,7 +244,39 @@ FASTFortranCFGVisitorTest >> testChainingGotoWhenBeforeLabelledBlock [
 
 	self assert: blocks first nextBlock equals: blocks third.
 	self assert: blocks second nextBlock equals: blocks third.
-	self assert: blocks third nextBlock equals: nil
+	self assert: blocks third isFinal
+
+]
+
+{ #category : 'tests - cfg' }
+FASTFortranCFGVisitorTest >> testChainingIfArithmeticWhenBeforeLabel [
+
+	| blocks |
+	"
+	INTEGER FUNCTION something()
+	IF (x) 10, 10, 10
+10	x = 1
+	END
+	"
+	self function: #something type: #integer.
+	self addStatement: (self ifArithmetic: #x negative: 10 null: 10 positive: 10).
+	self addStatement:
+		 (self labelled: 10 statement:
+			(self assignementStatement: #x value: 1)).
+
+	ast accept: visitor.
+
+	blocks := visitor basicBlocks.
+
+	self assert: blocks size equals: 2.
+
+	self assert: blocks first class equals: FASTCFGConditionalBasicBlock.
+
+	self assert: blocks second firstStatement class equals: FASTFortranAssignmentStatement.
+
+	self assert: (blocks first nextBlockForValue: #negative) equals: blocks second.
+	self assert: (blocks first nextBlockForValue: #null)     equals: blocks second.
+	self assert: (blocks first nextBlockForValue: #positive) equals: blocks second.
 
 ]
 
@@ -787,6 +749,45 @@ FASTFortranCFGVisitorTest >> testIOStatementWithErrLabel [
 ]
 
 { #category : 'tests - cfg' }
+FASTFortranCFGVisitorTest >> testIfArithmeticAfterLabel [
+
+	| blocks |
+	"
+	INTEGER FUNCTION something()
+10	x = 1
+20	y = 1
+	IF (x) 10, 20, 30
+	END
+	"
+	self function: #something type: #integer.
+	self addStatement:
+		 (self labelled: 10 statement:
+			(self assignementStatement: #x value: 1)).
+	self addStatement:
+		(self labelled: 20 statement:
+			(self assignementStatement: #y value: 1)).
+	self addStatement: (self ifArithmetic: #x negative: 10 null: 20 positive: 20).
+
+	ast accept: visitor.
+
+	blocks := visitor basicBlocks.
+
+	self assert: blocks size equals: 3.
+
+	self assert: blocks first  firstStatement class equals: FASTFortranAssignmentStatement.
+	self assert: blocks first  statements size equals: 1.
+
+	self assert: blocks second firstStatement class equals: FASTFortranAssignmentStatement.
+	self assert: blocks second statements size equals: 1.
+
+	self assert: blocks third class equals: FASTCFGConditionalBasicBlock.
+	self assert: (blocks third nextBlockForValue: #negative) equals: blocks first.
+	self assert: (blocks third nextBlockForValue: #null) equals: blocks second.
+	self assert: (blocks third nextBlockForValue: #positive) equals: blocks second.
+
+]
+
+{ #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testIfStatementCreatesConditionalBlock [
 
 	| blocks  conditional |
@@ -911,7 +912,7 @@ FASTFortranCFGVisitorTest >> testLabelledDoStatementAfterGoto [
       END 
 	"
 	doLoop := self doStatement: #(i 1 n) statements: {self assignementStatement: #i value: 0}.
-	doLoop labelReferences: { self labelReference: 110 }.
+	doLoop doLabel: 110.
 
 	self function: #something type: #integer.
 	self addStatement: (self gotoStatement: 10).
@@ -949,7 +950,7 @@ FASTFortranCFGVisitorTest >> testLabelledDoStatementBeforeGoto [
       END 
 	"
 	doLoop := self doStatement: #(i 1 n) statements: {self assignementStatement: #i value: 0}.
-	doLoop labelReferences: { self labelReference: 110 }.
+	doLoop doLabel: 110.
 
 	self function: #something type: #integer.
 	self addStatement: (self labelled: 10 statement: doLoop).
