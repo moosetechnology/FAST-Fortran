@@ -100,8 +100,8 @@ FASTFortranCFGVisitorTest >> testBlockChainingAfterIfLogical [
 
 	self assert: conditional nextBlocks size equals: 2.
 	self
-		assert: (conditional nextBlockForValue: true) nextBlock
-		equals: (conditional nextBlockForValue: false)
+		assert: (conditional nextBlockForValue: 'true') nextBlock
+		equals: (conditional nextBlockForValue: 'false')
 	
 ]
 
@@ -151,12 +151,12 @@ FASTFortranCFGVisitorTest >> testBlockChainingForDoLoopConditional [
 
 	self assert: conditional nextBlocks size equals: 2.
 
-	basicBlock := conditional nextBlockForValue: true.
+	basicBlock := conditional nextBlockForValue: 'true'.
 	self assert: basicBlock firstStatement class equals: FASTFortranAssignmentStatement.
 	self assert: basicBlock statements size equals: 1.
 	self assert: basicBlock nextBlock equals: conditional.
 
-	basicBlock := conditional nextBlockForValue: false.
+	basicBlock := conditional nextBlockForValue: 'false'.
 	self assert: basicBlock firstStatement class equals: FASTFortranReturnStatement.
 	self assert: basicBlock firstStatement expression class equals: FASTFortranScalarVariable.
 	self assert: basicBlock statements size equals: 1.
@@ -201,8 +201,8 @@ FASTFortranCFGVisitorTest >> testCallStatement [
 
 	self assert: blocks second class equals: FASTCFGConditionalBasicBlock.
 
-	self assert: (blocks second nextBlockForValue: true) equals: callErreur.
-	self assert: (blocks second nextBlockForValue: false) equals: callGetent.
+	self assert: (blocks second nextBlockForValue: 'true') equals: callErreur.
+	self assert: (blocks second nextBlockForValue: 'false') equals: callGetent.
 
 	self assert: callErreur nextBlock equals: callGetent.
 
@@ -385,11 +385,11 @@ FASTFortranCFGVisitorTest >> testFirstStatementIsConditional [
 
 	self assert: conditional isStart.
 
-	self deny: (blocks first nextBlockForValue: true) isStart.
-	self deny: (blocks first nextBlockForValue: true) isFinal.
+	self deny: (blocks first nextBlockForValue: 'true') isStart.
+	self deny: (blocks first nextBlockForValue: 'true') isFinal.
 
-	self deny: (blocks first nextBlockForValue: false) isStart.
-	self assert: (blocks first nextBlockForValue: false) isFinal.
+	self deny: (blocks first nextBlockForValue: 'false') isStart.
+	self assert: (blocks first nextBlockForValue: 'false') isFinal.
 ]
 
 { #category : 'tests - cfg' }
@@ -446,11 +446,11 @@ FASTFortranCFGVisitorTest >> testFirstStatementIsLoop [
 
 	self assert: conditional isStart.
 .
-	self deny: (blocks first nextBlockForValue: true) isStart.
-	self deny: (blocks first nextBlockForValue: true) isFinal.
+	self deny: (blocks first nextBlockForValue: 'true') isStart.
+	self deny: (blocks first nextBlockForValue: 'true') isFinal.
 
-	self deny: (blocks first nextBlockForValue: false) isStart.
-	self assert: (blocks first nextBlockForValue: false) isFinal.
+	self deny: (blocks first nextBlockForValue: 'false') isStart.
+	self assert: (blocks first nextBlockForValue: 'false') isFinal.
 ]
 
 { #category : 'tests - cfg' }
@@ -584,22 +584,22 @@ FASTFortranCFGVisitorTest >> testGotoComputedBeforeLabels [
 	"
 	INTEGER FUNCTION something()
    GOTO(10,20,30) x
-10	x = 1
-20	x = 2
-30	x = 3
+10	x = 'a'
+20	x = 'b'
+30	x = 'c'
 	END
 	"
 	self function: #something type: #integer.
 	self addStatement: (self gotoComputedStatement: #(10 20 30) expression: #x).
 	self addStatement:
 		(self labelled: 10 statement:
-			(self assignementStatement: #x value: 1)).
+			(self assignementStatement: #x value: 'a')).
 	self addStatement:
 		(self labelled: 20 statement:
-			(self assignementStatement: #x value: 2)).
+			(self assignementStatement: #x value: 'b')).
 	self addStatement:
 		(self labelled: 30 statement:
-			(self assignementStatement: #x value: 3)).
+			(self assignementStatement: #x value: 'c')).
 
 	ast accept: visitor.
 
@@ -610,18 +610,18 @@ FASTFortranCFGVisitorTest >> testGotoComputedBeforeLabels [
 	self assert: blocks first isConditional.
 	self assert: blocks first nextBlocks size equals: 3.
 
-	labeledBlock := blocks first nextBlockForValue: '10'.
-	self assert: labeledBlock firstStatement expression primitiveValue equals: '1'.
+	labeledBlock := blocks first nextBlockForValue: '1'.
+	self assert: labeledBlock firstStatement expression primitiveValue equals: 'a'.
 	self deny: labeledBlock isFinal.
 
 	labeledBlock := labeledBlock nextBlock.
-	self assert: labeledBlock equals: (blocks first nextBlockForValue: '20').
-	self assert: labeledBlock firstStatement expression primitiveValue equals: '2'.
+	self assert: labeledBlock equals: (blocks first nextBlockForValue: '2').
+	self assert: labeledBlock firstStatement expression primitiveValue equals: 'b'.
 	self deny: labeledBlock isFinal.
 
 	labeledBlock := labeledBlock nextBlock.
-	self assert: labeledBlock equals: (blocks first nextBlockForValue: '30').
-	self assert: labeledBlock firstStatement expression primitiveValue equals: '3'.
+	self assert: labeledBlock equals: (blocks first nextBlockForValue: '3').
+	self assert: labeledBlock firstStatement expression primitiveValue equals: 'c'.
 	self assert: labeledBlock isFinal.
 ]
 
@@ -705,7 +705,7 @@ FASTFortranCFGVisitorTest >> testIOStatementWithEndLabel [
 	self assert: blocks second isConditional.
 	self assert: blocks second isFinal.
 	self assert: (blocks second nextBlockForValue: 'end') equals: blocks first.
-	self assert: (blocks second nextBlockForValue: 'proceed') equals: nil.
+	self assert: (blocks second nextBlockForValue: 'proceed') class equals: FASTCFGNullBlock.
 
 ]
 
@@ -744,7 +744,7 @@ FASTFortranCFGVisitorTest >> testIOStatementWithErrLabel [
 	self assert: blocks second isConditional.
 	self assert: blocks second isFinal.
 	self assert: (blocks second nextBlockForValue: 'err') equals: blocks first.
-	self assert: (blocks second nextBlockForValue: 'proceed') equals: nil.
+	self assert: (blocks second nextBlockForValue: 'proceed') class equals: FASTCFGNullBlock.
 
 ]
 
@@ -810,7 +810,7 @@ FASTFortranCFGVisitorTest >> testIfStatementElsePartIsABasicBlock [
 	self aFunctionWithConditional accept: visitor.
 
 	aBlock := (self findBasicBlocks: FASTCFGConditionalBasicBlock with: [:e | true])
-		anyOne nextBlockForValue: false.
+		anyOne nextBlockForValue: 'false'.
 
 	self assert: aBlock class equals: FASTCFGBasicBlock.
 
@@ -845,7 +845,7 @@ FASTFortranCFGVisitorTest >> testIfStatementThenPartIsABasicBlock [
 	self aFunctionWithConditional accept: visitor.
 
 	aBlock := (self findBasicBlocks: FASTCFGConditionalBasicBlock with: [:e | true])
-		anyOne nextBlockForValue: true.
+		anyOne nextBlockForValue: 'true'.
 
 	self assert: aBlock class equals: FASTCFGBasicBlock.
 
@@ -893,8 +893,8 @@ FASTFortranCFGVisitorTest >> testIfStatementWithoutElsePart [
 	then := blocks detect: [ :block | block firstStatement class = FASTFortranAssignmentStatement ].
 	last := blocks detect: [ :block | block firstStatement class = FASTFortranReturnStatement ].
 
-	self assert: (conditional nextBlockForValue: true) equals: then.
-	self assert: (conditional nextBlockForValue: false) equals: last.
+	self assert: (conditional nextBlockForValue: 'true') equals: then.
+	self assert: (conditional nextBlockForValue: 'false') equals: last.
 
 	self assert: then nextBlock equals: last.
 
@@ -932,7 +932,7 @@ FASTFortranCFGVisitorTest >> testLabelledDoStatementAfterGoto [
 	self assert: block isConditional.
 	self assert: block isFinal.
 
-	block := blocks second nextBlockForValue: true.
+	block := blocks second nextBlockForValue: 'true'.
 	self deny: block isConditional.
 	self assert: block nextBlock equals: blocks second
 
@@ -965,11 +965,11 @@ FASTFortranCFGVisitorTest >> testLabelledDoStatementBeforeGoto [
 	block := blocks first.
 	self assert: block isConditional.
 
-	block := blocks first nextBlockForValue: true.
+	block := blocks first nextBlockForValue: 'true'.
 	self deny: block isConditional.
 	self assert: block nextBlock equals: blocks first.
 
-	block := blocks first nextBlockForValue: false.
+	block := blocks first nextBlockForValue: 'false'.
 	self deny: block isConditional.
 	self assert: block nextBlock equals: blocks first.
 
@@ -1088,7 +1088,7 @@ FASTFortranCFGVisitorTest >> testLastStatementIsConditional [
 	conditional := blocks detect: [ :block | block isConditional ].
 	self assert: blocks first nextBlock equals: conditional.
 
-	self assert: (conditional nextBlockForValue: true) isFinal.
+	self assert: (conditional nextBlockForValue: 'true') isFinal.
 	self assert: conditional isFinal.
 
 ]
@@ -1205,17 +1205,17 @@ FASTFortranCFGVisitorTest >> testReturnInThen [
 	self assert: blocks first isConditional.
 	self deny: blocks first isFinal.
 
-	self assert: (blocks first nextBlockForValue: true) statements size equals: 1.
+	self assert: (blocks first nextBlockForValue: 'true') statements size equals: 1.
 	self
-		assert: (blocks first nextBlockForValue: true) firstStatement class
+		assert: (blocks first nextBlockForValue: 'true') firstStatement class
 		equals: FASTFortranReturnStatement.
-	self assert: (blocks first nextBlockForValue: true) isFinal.
+	self assert: (blocks first nextBlockForValue: 'true') isFinal.
 
-	self assert: (blocks first nextBlockForValue: false) statements size equals: 1.
+	self assert: (blocks first nextBlockForValue: 'false') statements size equals: 1.
 	self
-		assert: (blocks first nextBlockForValue: false) firstStatement class
+		assert: (blocks first nextBlockForValue: 'false') firstStatement class
 		equals: FASTFortranAssignmentStatement.
-	self assert: (blocks first nextBlockForValue: false) isFinal.
+	self assert: (blocks first nextBlockForValue: 'false') isFinal.
 
 ]
 
@@ -1248,17 +1248,17 @@ FASTFortranCFGVisitorTest >> testReturnInThenFollowedByStatement [
 	self assert: blocks first isConditional.
 	self deny: blocks first isFinal.
 
-	self assert: (blocks first nextBlockForValue: true) statements size equals: 1.
+	self assert: (blocks first nextBlockForValue: 'true') statements size equals: 1.
 	self
-		assert: (blocks first nextBlockForValue: true) firstStatement class
+		assert: (blocks first nextBlockForValue: 'true') firstStatement class
 		equals: FASTFortranReturnStatement.
-	self assert: (blocks first nextBlockForValue: true) isFinal.
+	self assert: (blocks first nextBlockForValue: 'true') isFinal.
 
-	self assert: (blocks first nextBlockForValue: false) statements size equals: 1.
+	self assert: (blocks first nextBlockForValue: 'false') statements size equals: 1.
 	self
-		assert: (blocks first nextBlockForValue: false) firstStatement class
+		assert: (blocks first nextBlockForValue: 'false') firstStatement class
 		equals: FASTFortranAssignmentStatement.
-	self assert: (blocks first nextBlockForValue: false) isFinal.
+	self assert: (blocks first nextBlockForValue: 'false') isFinal.
 
 ]
 
@@ -1448,10 +1448,10 @@ FASTFortranCFGVisitorTest >> testThenWithConditionalAndBasicBlock [
 
 	self assert: blocks second equals: ifMode.
 	self assert: ifMode isFinal.
-	self assert: (ifMode nextBlockForValue: true) equals: ifGetcle.
+	self assert: (ifMode nextBlockForValue: 'true') equals: ifGetcle.
 
-	self assert: (ifGetcle nextBlockForValue: true) equals: callErreur.
-	self assert: (ifGetcle nextBlockForValue: false) equals: callGetobj.
+	self assert: (ifGetcle nextBlockForValue: 'true') equals: callErreur.
+	self assert: (ifGetcle nextBlockForValue: 'false') equals: callGetobj.
 
 	self assert: callGetobj isFinal
 ]
@@ -1485,11 +1485,11 @@ FASTFortranCFGVisitorTest >> testTwoSuccessiveLogicalIfs [
 
 	self assert: condX isStart.
 	self deny: condX isFinal.
-	self assert: (condX nextBlockForValue: true) isFinal.
-	self assert: (condX nextBlockForValue: false) equals: condY.
+	self assert: (condX nextBlockForValue: 'true') isFinal.
+	self assert: (condX nextBlockForValue: 'false') equals: condY.
 
 	self deny: condY isStart.
 	self assert: condY isFinal.
-	self assert: (condX nextBlockForValue: true) isFinal
+	self assert: (condX nextBlockForValue: 'true') isFinal
 
 ]
