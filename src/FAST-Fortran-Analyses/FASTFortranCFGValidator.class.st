@@ -49,7 +49,7 @@ FASTFortranCFGValidator >> runOnSourceFile: aFileReference [
 		].
 
 	ast ifNotNil: [
-		(FASTFortranCFGChecker on: (ast accept: FASTFortranCFGVisitor new))
+		(FASTCFGChecker on: (ast accept: FASTFortranCFGVisitor new))
 			ifNotEmpty: [ '  ** Found dead blocks **' traceCr ]
 	].
 ]
