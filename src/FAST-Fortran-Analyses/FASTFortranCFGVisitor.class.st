@@ -103,6 +103,30 @@ FASTFortranCFGVisitor >> ioStatementBranches: anIOStatement [
 ]
 
 { #category : 'visiting - statements' }
+FASTFortranCFGVisitor >> visitFASTFortranBranchedGotos: aFASTFortranBranchingGotos [
+	"a branching statement with several GOTOs"
+
+	| branchesPendingActions conditionalBlock |
+	branchesPendingActions := OrderedCollection new.
+
+	conditionalBlock := self newConditionalBlock: aFASTFortranBranchingGotos.
+
+	aFASTFortranBranchingGotos branches do: [ :aBranch |
+		self
+			value: self nextBranchValue
+			action: (self gotoAction: aBranch gotoLabel fromBlock: conditionalBlock).
+
+		branchesPendingActions addAll: self linkingActions.
+		self linkingActions removeAll
+	].
+
+	"put back all branches pendingNextBlocks for after this statement"
+	self linkingActions addAll: (branchesPendingActions select: #isActive).
+
+	^conditionalBlock 
+]
+
+{ #category : 'visiting - statements' }
 FASTFortranCFGVisitor >> visitFASTFortranCallStatement: aFASTFortranCallStatement [
 
 	^ self visitFASTFortranTStatement: aFASTFortranCallStatement
@@ -131,28 +155,12 @@ FASTFortranCFGVisitor >> visitFASTFortranExitStatement: aFASTFortranExitStatemen
 ]
 
 { #category : 'visiting - statements' }
-FASTFortranCFGVisitor >> visitFASTFortranGotoComputedStatement: aFASTFortranGoToComputedStatement [
-	"GoTo with several possible target labels
-	 - new ConditionalBlock (#nextBlock of current one)
-	 - need to chain labelled blocks to each target label"
+FASTFortranCFGVisitor >> visitFASTFortranGotoComputedStatement: aFASTFortranGotoComputedStatement [
+	"GoTo with several possible target labels"
 
-	| conditionalBlock |
+	branchValues := OrderedCollection withAll: (1 to: aFASTFortranGotoComputedStatement branches size).
 
-	conditionalBlock := self newConditionalBlock:
-		                    aFASTFortranGoToComputedStatement.
-	self checkLabelledConditionalStatement:
-		aFASTFortranGoToComputedStatement.
-
-	aFASTFortranGoToComputedStatement labelReferences do: [
-		:labelReference |
-		self
-			findLabelledBlock: labelReference label
-			setter: [ :labeledBlock |
-				conditionalBlock
-					nextBlock: labeledBlock
-					onValue: labelReference label ] ].
-
-	self closeCurrentBlock
+	^self visitFASTFortranBranchedGotos: aFASTFortranGotoComputedStatement 
 ]
 
 { #category : 'visiting - statements' }
@@ -167,45 +175,21 @@ FASTFortranCFGVisitor >> visitFASTFortranIOStatement: aFASTFortranIOStatement [
 	"IOStatements (see #ioStatementBranches:) can be regular statements or branching statements
 	 depending on their IO-parameters.
 	 If they are branching statements they are similar to ComputedGotos (several targets):
-	 - proceed : proceed to next statement after read (no end, no err)
-	 - end : goto specified label upon end-of-file
-	 - err : goto specified label upon error"
+	 - end=<label> : goto specified <label> upon end-of-file
+	 - err=<label> : goto specified <label> upon error
+	 - proceed : proceed to next statement after read (no end, no err)"
 
-	| branches ioBlock |
+	| ioBranches branchesPendingActions conditionalBlock |
 
-	branches := self ioStatementBranches: aFASTFortranIOStatement.
-	branches ifEmpty: [
-		^ self visitFASTFortranTStatement: aFASTFortranIOStatement ].
-
-	ioBlock := self newConditionalBlock: aFASTFortranIOStatement.
-	self checkLabelledConditionalStatement: aFASTFortranIOStatement.
-
-	branches do: [ :assignExpr |
-		self
-			findLabelledBlock: assignExpr expression primitiveValue
-			setter: [ :labeledBlock |
-				ioBlock nextBlock: labeledBlock onValue: assignExpr variable name ] ].
-	self addPendingNextBlockAction: [ :nextBlock |
-		ioBlock nextBlock: nextBlock onValue: 'proceed' ].
-
-	self closeCurrentBlock
-]
-
-{ #category : 'visiting - statements' }
-FASTFortranCFGVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortranIfArithmeticStatement [
-	"Note: next statement after an ArithmeticIf should be labelled or there is no way it gets executed"
-
-	| conditionalBlock branchesPendingActions |
-
-	branchValues := OrderedCollection withAll: #( negative null positive ).
+	ioBranches := self ioStatementBranches: aFASTFortranIOStatement.
 	branchesPendingActions := OrderedCollection new.
 
-	conditionalBlock := self newConditionalBlock: aFASTFortranIfArithmeticStatement.
+	conditionalBlock := self newConditionalBlock: aFASTFortranIOStatement.
 
-	aFASTFortranIfArithmeticStatement branches do: [ :aBranch |
+	ioBranches do: [ :assignementStatement |
 		self
-			value: self nextBranchValue
-			action: (self gotoAction: aBranch gotoLabel fromBlock: conditionalBlock).
+			value: assignementStatement variable name
+			action: (self gotoAction: assignementStatement expression primitiveValue fromBlock: conditionalBlock).
 
 		branchesPendingActions addAll: self linkingActions.
 		self linkingActions removeAll
@@ -214,7 +198,19 @@ FASTFortranCFGVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortranIfAr
 	"put back all branches pendingNextBlocks for after this statement"
 	self linkingActions addAll: (branchesPendingActions select: #isActive).
 
+	self
+		valueAction: 'proceed'
+		fromBlock: conditionalBlock.
+
 	^conditionalBlock 
+]
+
+{ #category : 'visiting - statements' }
+FASTFortranCFGVisitor >> visitFASTFortranIfArithmeticStatement: aFASTFortranIfArithmeticStatement [
+
+	branchValues := OrderedCollection withAll: #( negative null positive ).
+
+	^self visitFASTFortranBranchedGotos: aFASTFortranIfArithmeticStatement
 ]
 
 { #category : 'visiting - statements' }
