@@ -319,7 +319,7 @@ FASTFortranCFGVisitorTest >> testDoLoopCreatesConditionalBlock [
 { #category : 'tests - cfg' }
 FASTFortranCFGVisitorTest >> testExitInLoop [
 
-	| blocks loopBlock exitBlock returnBlock |
+	| blocks loopBlock exitBlock lastBlock |
 	"
 	INTEGER FUNCTION something()
 	DO i = 1, 10
@@ -344,20 +344,19 @@ FASTFortranCFGVisitorTest >> testExitInLoop [
 
 	loopBlock := blocks first.
 	exitBlock := blocks detect: [ :block | block firstStatement class = FASTFortranExitStatement ].
-	returnBlock := blocks detect: [ :block | block firstStatement class = FASTFortranAssignmentStatement ].
+	lastBlock := blocks detect: [ :block | block firstStatement class = FASTFortranAssignmentStatement ].
 
 	self assert: loopBlock class equals: FASTCFGConditionalBasicBlock.
 	self assert: loopBlock isStart.
 	self assert: loopBlock isFinal.
-	self assert: (loopBlock nextBlockForValue: true) equals: exitBlock.
+	self assert: (loopBlock nextBlockForValue: 'true') equals: exitBlock.
 
 	self deny: exitBlock isStart.
-	self deny: exitBlock isFinal.
-	self assert: exitBlock nextBlock equals: blocks first.
+	self assert: exitBlock isFinal.
 
-	self deny: returnBlock isStart.
-	self deny: returnBlock isFinal.
-	self assert: returnBlock nextBlock equals: loopBlock
+	self deny: lastBlock isStart.
+	self deny: lastBlock isFinal.
+	self assert: lastBlock nextBlock equals: loopBlock
 
 ]
 
