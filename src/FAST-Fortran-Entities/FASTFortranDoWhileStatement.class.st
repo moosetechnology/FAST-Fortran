@@ -29,8 +29,8 @@ I represent Fortran Do While statement
 Class {
 	#name : 'FASTFortranDoWhileStatement',
 	#superclass : 'FASTFortranAbstractStatement',
-	#traits : 'FASTTLoopStatement',
-	#classTraits : 'FASTTLoopStatement classTrait',
+	#traits : 'FASTTBreakableStatement + FASTTLoopStatement',
+	#classTraits : 'FASTTBreakableStatement classTrait + FASTTLoopStatement classTrait',
 	#category : 'FAST-Fortran-Entities-Entities',
 	#package : 'FAST-Fortran-Entities',
 	#tag : 'Entities'

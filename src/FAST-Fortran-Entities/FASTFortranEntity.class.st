@@ -71,6 +71,13 @@ FASTFortranEntity >> isBooleanLiteral [
 ]
 
 { #category : 'testing' }
+FASTFortranEntity >> isBreakableStatement [
+
+	<generated>
+	^ false
+]
+
+{ #category : 'testing' }
 FASTFortranEntity >> isCharacterLiteral [
 
 	<generated>

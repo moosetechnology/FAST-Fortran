@@ -31,8 +31,8 @@ I represent Fortran Do statement
 Class {
 	#name : 'FASTFortranDoStatement',
 	#superclass : 'FASTFortranAbstractStatement',
-	#traits : 'FASTFortranTWithLoopControl + FASTTLoopStatement',
-	#classTraits : 'FASTFortranTWithLoopControl classTrait + FASTTLoopStatement classTrait',
+	#traits : 'FASTFortranTWithLoopControl + FASTTBreakableStatement + FASTTLoopStatement',
+	#classTraits : 'FASTFortranTWithLoopControl classTrait + FASTTBreakableStatement classTrait + FASTTLoopStatement classTrait',
 	#instVars : [
 		'#doLabel => FMProperty'
 	],
