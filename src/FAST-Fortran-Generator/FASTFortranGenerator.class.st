@@ -143,7 +143,9 @@ Class {
 		'tLabeledStatement',
 		'gotoComputed',
 		'gotoStatement',
-		'gotoAssignedStatement'
+		'gotoAssignedStatement',
+		'tBreakableStatement',
+		'tBreakStatement'
 	],
 	#category : 'FAST-Fortran-Generator',
 	#package : 'FAST-Fortran-Generator'
@@ -485,6 +487,7 @@ FASTFortranGenerator >> defineHierarchy [
 	conditionalStatement --|> abstractStatement.
 	conditionalStatement --|> tConditionalStatement.
 	continueStatement --|> abstractStatement.
+	continueStatement --|> tBreakStatement.
 	dataStatement --|> abstractStatement.
 	dataStatement --|> tWithVariableGroup.
 	decodeStatement --|> abstractIOStatement.
@@ -493,8 +496,10 @@ FASTFortranGenerator >> defineHierarchy [
 	doStatement --|> abstractStatement.
 	doStatement --|> tLoopStatement.
 	doStatement --|> tWithLoopControl.
+	doStatement --|> tBreakableStatement.
 	doWhileStatement --|> abstractStatement.
 	doWhileStatement --|> tLoopStatement.
+	doWhileStatement --|> tBreakableStatement.
 	elseStatement --|> abstractStatement.
 	encodeStatement --|> abstractIOStatement.
 	endFileStatement --|> abstractIOStatement.
@@ -957,6 +962,8 @@ FASTFortranGenerator >> defineTraits [
 	tBinaryExpression := self remoteTrait: #TBinaryExpression withPrefix: #FAST. 
 	tBooleanLiteral := self remoteTrait: #TBooleanLiteral withPrefix: #FAST.
 	tBranchStatement := self remoteTrait: #TBranchStatement withPrefix: #FAST.
+	tBreakStatement := self remoteTrait: #TBreakStatement withPrefix: #FAST.
+	tBreakableStatement := self remoteTrait: #TBreakableStatement withPrefix: #FAST.
 	tCharacterLiteral := self remoteTrait: #TCharacterLiteral withPrefix: #FAST.
 	tComment := self remoteTrait: #TComment withPrefix: #FAST.
 	tConditionalStatement := self remoteTrait: #TConditionalStatement withPrefix: #FAST.
