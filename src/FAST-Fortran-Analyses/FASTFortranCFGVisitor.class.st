@@ -45,7 +45,7 @@ FASTFortranCFGVisitor >> checkLabelledStatement: aFASTFortranTStatement [
 	aFASTFortranTStatement label ifNil: [ ^ self ].
 
 	newBlock := self newBasicBlock: FASTCFGBasicBlock.
-	self unconditionalActionFromBlock: newBlock.
+	self newUnconditionalActionFromBlock: newBlock.
 
 	self
 		chainRegisteredJumps: aFASTFortranTStatement label
@@ -113,8 +113,8 @@ FASTFortranCFGVisitor >> visitFASTFortranBranchedGotos: aFASTFortranBranchingGot
 
 	aFASTFortranBranchingGotos branches do: [ :aBranch |
 		self
-			value: self nextBranchValue
-			action: (self gotoAction: aBranch gotoLabel fromBlock: conditionalBlock).
+			newValue: self nextBranchValue
+			action: (self newGotoAction: aBranch gotoLabel fromBlock: conditionalBlock).
 
 		branchesPendingActions addAll: self linkingActions.
 		self linkingActions removeAll
@@ -182,14 +182,17 @@ FASTFortranCFGVisitor >> visitFASTFortranIOStatement: aFASTFortranIOStatement [
 	| ioBranches branchesPendingActions conditionalBlock |
 
 	ioBranches := self ioStatementBranches: aFASTFortranIOStatement.
+	ioBranches ifEmpty: [
+		^ self visitFASTFortranTStatement: aFASTFortranIOStatement ].
+
 	branchesPendingActions := OrderedCollection new.
 
 	conditionalBlock := self newConditionalBlock: aFASTFortranIOStatement.
 
 	ioBranches do: [ :assignementStatement |
 		self
-			value: assignementStatement variable name
-			action: (self gotoAction: assignementStatement expression primitiveValue fromBlock: conditionalBlock).
+			newValue: assignementStatement variable name
+			action: (self newGotoAction: assignementStatement expression primitiveValue fromBlock: conditionalBlock).
 
 		branchesPendingActions addAll: self linkingActions.
 		self linkingActions removeAll
@@ -199,7 +202,7 @@ FASTFortranCFGVisitor >> visitFASTFortranIOStatement: aFASTFortranIOStatement [
 	self linkingActions addAll: (branchesPendingActions select: #isActive).
 
 	self
-		valueAction: 'proceed'
+		newValueAction: 'proceed'
 		fromBlock: conditionalBlock.
 
 	^conditionalBlock 
@@ -288,7 +291,7 @@ FASTFortranCFGVisitor >> visitFASTTStatement: aFASTTStatement [
 
 	self currentBlock ifNil: [
 		self newBasicBlock: FASTCFGBasicBlock.
-		self unconditionalActionFromBlock: currentBlock.
+		self newUnconditionalActionFromBlock: currentBlock.
 	].
 	self currentBlock addStatement: aFASTTStatement
 
