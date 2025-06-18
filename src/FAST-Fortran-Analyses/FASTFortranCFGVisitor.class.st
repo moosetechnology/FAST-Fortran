@@ -147,9 +147,7 @@ FASTFortranCFGVisitor >> visitFASTFortranDoStatement: aFASTFortranDoStatement [
 FASTFortranCFGVisitor >> visitFASTFortranExitStatement: aFASTFortranExitStatement [
 	"looks a bit like a GOTO, but does not need to specify the label (goes to enclosing loop)"
 
-	self visitFASTFortranTStatement: aFASTFortranExitStatement.
-
-	self chainPendingBlocksTo: (self findParentLoopBlock: nil). "aFASTFortranExitStatement label"
+	self visitFASTTBreakStatement: aFASTFortranExitStatement.
 
 	self closeCurrentBlock
 ]
