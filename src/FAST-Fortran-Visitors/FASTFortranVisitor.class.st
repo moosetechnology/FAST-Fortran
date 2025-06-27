@@ -150,7 +150,7 @@ FASTFortranVisitor >> visitFASTFortranComment: aFASTFortranComment [
 { #category : 'visiting' }
 FASTFortranVisitor >> visitFASTFortranCommonGroup: aFASTFortranCommonGroup [
 
-	aFASTFortranCommonGroup variables do: [ :var | var accept: self ]
+	aFASTFortranCommonGroup declarators do: [ :var | var accept: self ]
 ]
 
 { #category : 'visiting - statements' }

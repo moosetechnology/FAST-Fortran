@@ -470,6 +470,7 @@ FASTFortranJsonVisitor >> visitDataStatement: aDataStatement [
 FASTFortranJsonVisitor >> visitDeclarationStatement: aDeclarationStatementNode [
 
 	| data |
+
 	data := super visitDeclarationStatement: aDeclarationStatementNode.
 
 	^(self newEntity: FASTFortranVariableDeclarationStatement atPosition: data first)
