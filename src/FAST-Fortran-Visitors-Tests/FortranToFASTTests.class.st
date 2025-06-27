@@ -141,6 +141,27 @@ FortranToFASTTests >> testArrayDeclarationMultipleDimensions [
 ]
 
 { #category : 'tests-statement' }
+FortranToFASTTests >> testArrayDeclarationUpperUnknown [
+	
+	| result stmt declarator |
+	fortranCode := '      subroutine hello(tab)
+       integer tab(*)
+      end
+'.
+	jsonCode := '{"meta":{"miVersion":"fortran2003","miFilename":"srcCode.f"},"program_units":[{"anno":[],"arguments":{"anno":[],"list":[{"anno":[],"span":"(1:24)-(1:26)","tag":"value","value":{"contents":"tab","tag":"variable"}}],"span":"(1:24)-(1:26)"},"blocks":[{"anno":[],"label":null,"span":"(2:8)-(2:21)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"dims":{"anno":[],"list":[{"anno":[],"lower":null,"span":"(2:20)-(2:20)","upper":{"anno":[],"span":"(2:20)-(2:20)","tag":"value","value":{"tag":"star"}}}],"span":"(2:20)-(2:20)"},"initial":null,"length":null,"span":"(2:16)-(2:21)","type":"array","variable":{"anno":[],"span":"(2:16)-(2:18)","tag":"value","value":{"contents":"tab","tag":"variable"}}}],"span":"(2:16)-(2:21)"},"span":"(2:8)-(2:21)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:8)-(2:14)"}},"tag":"statement"}],"name":"hello","options":[null,null],"span":"(1:7)-(3:9)","subprograms":null,"tag":"subroutine"}]}'.
+	result := self visitJsonCode.
+	
+	stmt := result first statementBlock statements first.
+	self assert: stmt class equals: FASTFortranVariableDeclarationStatement.
+	self assert: stmt declarators size equals: 1.
+
+	declarator := stmt declarators first.
+	self assert: declarator name equals: 'tab'. 
+	self assert: declarator dimensions first lowerBound equals: nil. 
+	self assert: declarator dimensions first upperBound class equals: FASTFortranAsterisk.
+]
+
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testArrayDeclarationVariableBound [
 	
 	| result stmt declarator |
