@@ -939,11 +939,12 @@ FASTFortranJsonVisitor >> visitImplied_do:  anImpliedDoListsNode [
 	"span do_spec expressions"
 
 	| data |
-	data := super visitImplied_do:  anImpliedDoListsNode.
+
+	data := super visitImplied_do: anImpliedDoListsNode.
 
 	^(self newEntity: FASTFortranImpliedDoExpression atPosition: data first)
 		loopControl: data second ;
-		variables: (data copyFrom: 3 to: data size) ;
+		variables: data third ;
 		yourself
 ]
 
