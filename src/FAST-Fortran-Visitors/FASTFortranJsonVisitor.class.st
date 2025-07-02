@@ -310,9 +310,7 @@ FASTFortranJsonVisitor >> visitBody: aNode [
 
 	| data stmtBlock |
 
-	data := aNode 
-		ifNil: [ #() ]
-		ifNotNil: [ super visitBody: aNode ].
+	data := super visitBody: aNode.
 
 	stmtBlock := model newStatementBlock.
 	self putMembers: (data reject: #isNil) inBody: stmtBlock.
