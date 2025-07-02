@@ -310,9 +310,7 @@ FASTFortranJsonVisitor >> visitBody: aNode [
 
 	| data stmtBlock |
 
-	data := aNode 
-		ifNil: [ #() ]
-		ifNotNil: [ super visitBody: aNode ].
+	data := super visitBody: aNode.
 
 	stmtBlock := model newStatementBlock.
 	self putMembers: (data reject: #isNil) inBody: stmtBlock.
@@ -941,11 +939,12 @@ FASTFortranJsonVisitor >> visitImplied_do:  anImpliedDoListsNode [
 	"span do_spec expressions"
 
 	| data |
-	data := super visitImplied_do:  anImpliedDoListsNode.
+
+	data := super visitImplied_do: anImpliedDoListsNode.
 
 	^(self newEntity: FASTFortranImpliedDoExpression atPosition: data first)
 		loopControl: data second ;
-		variables: (data copyFrom: 3 to: data size) ;
+		variables: data third ;
 		yourself
 ]
 
