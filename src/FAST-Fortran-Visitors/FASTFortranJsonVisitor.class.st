@@ -183,7 +183,7 @@ FASTFortranJsonVisitor >> replaceByFunctionTypeDeclaration: variableDeclaration 
 
 { #category : 'visiting expression' }
 FASTFortranJsonVisitor >> sanitizeIndices: aCollection [
-	"15, it a theoric limit of subscrit array in fortran"
+	"15, it a theoretic limit of subscrit array in fortran"
 			
 	^ aCollection
 		collect: [ :expression | 
