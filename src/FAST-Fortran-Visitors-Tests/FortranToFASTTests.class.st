@@ -3017,6 +3017,38 @@ FortranToFASTTests >> testRewindStatementUnit [
 ]
 
 { #category : 'tests-statement' }
+FortranToFASTTests >> testSaveStatement [
+
+	| result stmt var |
+	fortranCode := '      program main
+      SAVE PI, T
+      end
+'.
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"srcCode.f"},"program_units":[{"anno":[],"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:16)","statement":{"anno":[],"span":"(2:7)-(2:16)","tag":"save","vars":{"anno":[],"list":[{"anno":[],"span":"(2:12)-(2:13)","tag":"value","value":{"contents":"pi","tag":"variable"}},{"anno":[],"span":"(2:16)-(2:16)","tag":"value","value":{"contents":"t","tag":"variable"}}],"span":"(2:12)-(2:16)"}},"tag":"statement"}],"name":"main","span":"(1:7)-(3:9)","subprograms":null,"tag":"main"}]}'.
+	result := self visitJsonCode.
+
+	self assert: result first statementBlock statements size equals: 1.
+
+	stmt := result first statementBlock statements first.	
+	self assert: stmt class equals: FASTFortranSaveStatement.
+	self assert: stmt startPos equals: 26.
+	self assert: stmt endPos equals: 35.
+	
+	self assert: stmt declarators size equals: 2.
+
+	var := stmt declarators first.
+	self assert: var class equals: FASTFortranVariableDeclarator.
+	self assert: var name equals: 'pi'.
+	self assert: var startPos equals: 31.
+
+	var := stmt declarators second.
+	self assert: var class equals: FASTFortranVariableDeclarator.
+	self assert: var name equals: 't'.
+	self assert: var startPos equals: 35.
+
+]
+
+{ #category : 'tests-statement' }
 FortranToFASTTests >> testStopStatementEmpty [
 
 	| stmt result |

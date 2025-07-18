@@ -153,7 +153,8 @@ FASTFortranJsonVisitor >> replaceByFunctionTypeDeclaration: variableDeclaration 
 	functionTypeDeclaration  := model newFunctionTypeDeclarationStatement
 		declaredType: variableDeclaration declaredType;
 		name: variableDeclaration declarators first name.
-	
+	model remove: variableDeclaration.
+
 	statementBlockCopy  := OrderedCollection new: statementBlock statements size.
 	
 	
@@ -179,6 +180,37 @@ FASTFortranJsonVisitor >> replaceByFunctionTypeDeclaration: variableDeclaration 
 		
 	
 	
+]
+
+{ #category : 'private' }
+FASTFortranJsonVisitor >> replaceByVariableDeclarator: scalarVariable [
+	
+	"Creates a FASTFortranVariableDeclarator from a FASTFortranScalarVariable"
+	
+	| declarator |
+
+	declarator  := model newVariableDeclarator 
+		name: scalarVariable name ;
+		startPos: scalarVariable startPos ;
+		endPos: scalarVariable endPos.
+
+	model remove: scalarVariable.
+
+	^declarator
+]
+
+{ #category : 'private' }
+FASTFortranJsonVisitor >> replaceVariableDeclarator: scalarVariable [
+	
+	"Creates a FASTFortranVariableDeclarator from a FASTFortranScalarVariable"
+	
+	| declarator |
+
+	declarator  := model newVariableDeclarator 
+		name: scalarVariable name.
+	model remove: scalarVariable.
+
+	^declarator
 ]
 
 { #category : 'visiting expression' }
@@ -1233,12 +1265,14 @@ FASTFortranJsonVisitor >> visitRewindStatement: aRewindStatementNode [
 
 { #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitSaveStatement: aSaveNode [
+	"SAVE statemment contains 'variables', need to convert them to Declarators"
 
 	| data |
 	data := super visitSaveStatement: aSaveNode.
 
-	^self newEntity: FASTFortranSaveStatement atPosition: data first
-
+	^(self newEntity: FASTFortranSaveStatement atPosition: data first)
+		declarators: (data second collect: [ :var | self replaceByVariableDeclarator: var ]) ;
+		yourself
 ]
 
 { #category : 'visiting' }
