@@ -568,6 +568,7 @@ FASTFortranGenerator >> defineHierarchy [
 	returnStatement --|> tReturnStatement.
 	rewindStatement --|> abstractIOStatement.
 	saveStatement --|> abstractStatement.
+	saveStatement --|> tWithDeclarators.
 	statementBlock --|> tStatementBlock.
 	statementBlock --|> tWithComments.
 	staticStatement --|> abstractStatement.
