@@ -32,7 +32,7 @@ FASTFortranDifferentialValidator >> initialize [
 
 	super initialize.
 
-	importer := FortranProjectImporter new
+	importer := FamixFortranImporter new
 ]
 
 { #category : 'testing' }

@@ -1,19 +1,19 @@
-Extension { #name : 'FortranProjectImporter' }
+Extension { #name : 'FamixFortranImporter' }
 
 { #category : '*FAST-Fortran-Visitors' }
-FortranProjectImporter >> defaultFASTSource [
+FamixFortranImporter >> defaultFASTSource [
 
 	^(self ensureEmptyFolder: self fastSrcFolder) / 'tmpFASTSource.E'.
 
 ]
 
 { #category : '*FAST-Fortran-Visitors' }
-FortranProjectImporter >> fastSrcFolder [
+FamixFortranImporter >> fastSrcFolder [
 	^'FastTmp' asFileReference 
 ]
 
 { #category : '*FAST-Fortran-Visitors' }
-FortranProjectImporter >> getFASTFor: sourceCode [
+FamixFortranImporter >> getFASTFor: sourceCode [
 
 	"Remove TAB at start of lines ???? "
 
@@ -41,7 +41,7 @@ FortranProjectImporter >> getFASTFor: sourceCode [
 ]
 
 { #category : '*FAST-Fortran-Visitors' }
-FortranProjectImporter >> jsonASTToFAST [
+FamixFortranImporter >> jsonASTToFAST [
 
 	| jsonAST |
 

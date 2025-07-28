@@ -6,14 +6,14 @@ Class {
 	#tag : 'Importer'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'api' }
 FASTFortranImporter class >> onFile: fileName [
 
 	^self new
 		onFile: fileName
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'api' }
 FASTFortranImporter class >> onSourceString: aString [
 
 	^self new
@@ -50,7 +50,7 @@ FASTFortranImporter >> onFile: srcFileName [
 
 	jsonFileReference  := self tempJsonFileNameFrom: srcFileName.
 
-	cmdReturn := FortranProjectImporter new
+	cmdReturn := FamixFortranImporter new
 		parseFortran77File: srcFileName asFileReference
 		to: jsonFileReference.
 

@@ -145,7 +145,7 @@ FASTFortranCFGVisualization >> openOnFilename: aFilename [
 
 	^self openOn: (((aFilename asFileReference
 		readStreamEncoded: 'iso-8859-1'
-		do: [ :st | FortranProjectImporter new getFASTFor: st contents ]) first)
+		do: [ :st | FamixFortranImporter new getFASTFor: st contents ]) first)
 			accept: FASTFortranCFGVisitor new)
 ]
 
