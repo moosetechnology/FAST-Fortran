@@ -26,15 +26,19 @@ FASTFortranJsonVisitor >> checkLabel: label forStatement: statement [
 	label ifNotNil: [ statement label: label primitiveValue ]
 ]
 
-{ #category : 'visiting statement' }
+{ #category : 'private' }
 FASTFortranJsonVisitor >> createContinueStatement: endLabel [
 
 	| lastStatement |
+
 	lastStatement := model newContinueStatement.
 	lastStatement startPos: endLabel startPos.
 	lastStatement endPos:
 		endLabel startPos + endLabel primitiveValue size - 1.
 	lastStatement label: endLabel primitiveValue.
+
+	model remove: endLabel.
+
 	^ lastStatement
 ]
 
