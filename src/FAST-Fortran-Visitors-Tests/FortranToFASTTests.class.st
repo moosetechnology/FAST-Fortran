@@ -12,6 +12,14 @@ FortranToFASTTests >> jsonVisitor [
 	^ FASTFortranJsonVisitor
 ]
 
+{ #category : 'running' }
+FortranToFASTTests >> rootEntities: aFASTModel [
+
+	^aFASTModel entities select: [ :entity |
+		entity parents isEmpty
+	]
+]
+
 { #category : 'tests-statement' }
 FortranToFASTTests >> testArrayAccess [
 	
@@ -1584,6 +1592,49 @@ FortranToFASTTests >> testDoStatementWithLabelAndTerminalStatement [
 	self assert: stmt body statements anyOne class equals: FASTFortranPrintStatement.
 	self assert: stmt body statements anyOne label equals: '100'.
 	self assert: stmt body statements anyOne startPos equals: 48.
+
+]
+
+{ #category : 'tests-programUnit' }
+FortranToFASTTests >> testEntitiesParentAreSet [
+
+	| visitor |
+	fortranCode := '      function aFct()
+      integer aFct
+      real x
+      end
+'.
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"./srcCode.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"label":null,"span":"(2:7)-(2:18)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(2:15)-(2:18)","type":"scalar","variable":{"anno":[],"span":"(2:15)-(2:18)","tag":"value","value":{"contents":"afct","tag":"variable"}}}],"span":"(2:15)-(2:18)"},"span":"(2:7)-(2:18)","tag":"declaration","type":{"anno":[],"base_type":"integer","selector":null,"span":"(2:7)-(2:13)"}},"tag":"statement"},{"anno":[],"label":null,"span":"(3:7)-(3:12)","statement":{"anno":[],"attributes":null,"declarators":{"anno":[],"list":[{"anno":[],"initial":null,"length":null,"span":"(3:12)-(3:12)","type":"scalar","variable":{"anno":[],"span":"(3:12)-(3:12)","tag":"value","value":{"contents":"x","tag":"variable"}}}],"span":"(3:12)-(3:12)"},"span":"(3:7)-(3:12)","tag":"declaration","type":{"anno":[],"base_type":"real","selector":null,"span":"(3:7)-(3:10)"}},"tag":"statement"}],"name":"afct","result":null,"span":"(1:7)-(4:9)","subprograms":null,"tag":"function","type":null}]}'.
+
+	visitor := self jsonVisitor new.
+
+	visitor visitProgramFile: (NeoJSONReader fromString: jsonCode).
+	
+	self assert: (self rootEntities: visitor model) size equals: 1.
+	self assert: (self rootEntities: visitor model) anyOne class equals: FASTFortranFunction.
+
+]
+
+{ #category : 'tests-statement' }
+FortranToFASTTests >> testEntitiesParentInLoopAreSet [
+
+	| visitor |
+	fortranCode := '      subroutine sub()
+      DO 30 L=1,10
+      A=1
+      DO 30 M=L,10
+      a=2
+   30 CONTINUE
+      end
+'.
+	jsonCode := '{"meta":{"miVersion":"fortran77","miFilename":"srcCode.f"},"program_units":[{"anno":[],"arguments":null,"blocks":[{"anno":[],"body":[{"anno":[],"label":null,"span":"(3:7)-(3:9)","statement":{"anno":[],"expression":{"anno":[],"span":"(3:9)-(3:9)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(3:7)-(3:9)","tag":"assign_expression","target":{"anno":[],"span":"(3:7)-(3:7)","tag":"value","value":{"contents":"a","tag":"variable"}}},"tag":"statement"},{"anno":[],"body":[{"anno":[],"label":null,"span":"(5:7)-(5:9)","statement":{"anno":[],"expression":{"anno":[],"span":"(5:9)-(5:9)","tag":"value","value":{"contents":["2",null],"tag":"integer"}},"span":"(5:7)-(5:9)","tag":"assign_expression","target":{"anno":[],"span":"(5:7)-(5:7)","tag":"value","value":{"contents":"a","tag":"variable"}}},"tag":"statement"}],"do_spec":{"anno":[],"increment":null,"initial":{"anno":[],"expression":{"anno":[],"span":"(4:15)-(4:15)","tag":"value","value":{"contents":"l","tag":"variable"}},"span":"(4:13)-(4:15)","tag":"assign_expression","target":{"anno":[],"span":"(4:13)-(4:13)","tag":"value","value":{"contents":"m","tag":"variable"}}},"limit":{"anno":[],"span":"(4:17)-(4:18)","tag":"value","value":{"contents":["10",null],"tag":"integer"}},"span":"(4:13)-(4:18)"},"end_label":{"anno":[],"span":"(6:4)-(6:5)","tag":"value","value":{"contents":["30",null],"tag":"integer"}},"label":null,"name":null,"span":"(4:7)-(5:9)","tag":"do","target":{"anno":[],"span":"(4:10)-(4:11)","tag":"value","value":{"contents":["30",null],"tag":"integer"}}}],"do_spec":{"anno":[],"increment":null,"initial":{"anno":[],"expression":{"anno":[],"span":"(2:15)-(2:15)","tag":"value","value":{"contents":["1",null],"tag":"integer"}},"span":"(2:13)-(2:15)","tag":"assign_expression","target":{"anno":[],"span":"(2:13)-(2:13)","tag":"value","value":{"contents":"l","tag":"variable"}}},"limit":{"anno":[],"span":"(2:17)-(2:18)","tag":"value","value":{"contents":["10",null],"tag":"integer"}},"span":"(2:13)-(2:18)"},"end_label":{"anno":[],"span":"(6:4)-(6:5)","tag":"value","value":{"contents":["30",null],"tag":"integer"}},"label":null,"name":null,"span":"(2:7)-(5:9)","tag":"do","target":{"anno":[],"span":"(2:10)-(2:11)","tag":"value","value":{"contents":["30",null],"tag":"integer"}}}],"name":"sub","options":[null,null],"span":"(1:7)-(7:9)","subprograms":null,"tag":"subroutine"}]}'.
+
+	visitor := self jsonVisitor new.
+
+	visitor visitProgramFile: (NeoJSONReader fromString: jsonCode).
+	
+	self assert: (self rootEntities: visitor model) size equals: 1.
+	self assert: (self rootEntities: visitor model) anyOne class equals: FASTFortranSubroutine.
 
 ]
 
