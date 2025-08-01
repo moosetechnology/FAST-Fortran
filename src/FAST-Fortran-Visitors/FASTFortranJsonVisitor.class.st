@@ -1051,6 +1051,8 @@ FASTFortranJsonVisitor >> visitLabelReference: aLabelReference [
 	| data |
 	data := super visitJsonElement: aLabelReference.
 
+	model remove: data.
+
 	^model newLabelReference
 		label: data primitiveValue ;
 		startPos: data startPos ;
