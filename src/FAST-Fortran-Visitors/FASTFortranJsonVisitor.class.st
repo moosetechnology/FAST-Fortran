@@ -631,12 +631,14 @@ FASTFortranJsonVisitor >> visitDo: aDoNode [
 
 	body := data sixth.
 
-	(inNestedLoop not and: [
-		(data fifth notNil) and: [
-		(data fifth endPos > doStatement endPos) ] ] )
-	ifTrue: [
-		"need to create a CONTINUE statement to close the loop"
-		body addStatement: (self createContinueStatement: (data fifth))
+	data fifth ifNotNil: [ :integerLiteral |
+		(inNestedLoop not and: [
+			(integerLiteral endPos > doStatement endPos) ] )
+		ifTrue: [
+			"need to create a CONTINUE statement to close the loop"
+			body addStatement: (self createContinueStatement: integerLiteral)
+		]
+		ifFalse: [ model remove: integerLiteral ]
 	].
 
 	doStatement body: body.
@@ -684,6 +686,7 @@ FASTFortranJsonVisitor >> visitEnd_label: endLabel [
 	 (see also #visitDo:)"
 
 	| data |
+
 	data := super visitEnd_label: endLabel.
 	data ifNotNil: [ nestedDoEndLabel push: data primitiveValue ].
 	^data
