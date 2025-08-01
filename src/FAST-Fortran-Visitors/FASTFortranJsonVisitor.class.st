@@ -1448,10 +1448,14 @@ FASTFortranJsonVisitor >> visitType: aTypeNode [
 
 { #category : 'visiting expression' }
 FASTFortranJsonVisitor >> visitUnary: aUnaryNode [
-	"possible negative number, if so invert it and forget about the unaryOperator"
+	"possible negative number, if so invert it and forget about the unaryOperator
+	 the operator is created as a BinaryExpression, need to convert it to UnaryExpression
+	 and drop the binary from the model"
 
 	| data |
 	data := super visitUnary: aUnaryNode.
+
+	model remove: data second.
 
 	(data second operator = '-')
 	ifTrue: [

@@ -304,6 +304,8 @@ FortranToFASTTests >> testAssignementNegativeIntegerLiteral [
 	self assert: stmt expression class equals: FASTFortranIntegerLiteral.
 	self assert: stmt expression primitiveValue equals: '-1'.
 
+	self assert: (stmt mooseModel allWithType: FASTFortranBinaryExpression) size equals: 0
+
 ]
 
 { #category : 'tests-expression' }
@@ -321,7 +323,9 @@ FortranToFASTTests >> testAssignementNegativeRealLiteral [
 	stmt := result first statementBlock statements first.
 
 	self assert: stmt expression class equals: FASTFortranRealLiteral.
-	self assert: stmt expression primitiveValue equals: '-2.12'
+	self assert: stmt expression primitiveValue equals: '-2.12'.
+
+	self assert: (stmt mooseModel allWithType: FASTFortranBinaryExpression) size equals: 0
 ]
 
 { #category : 'tests-expression' }
@@ -778,6 +782,7 @@ FortranToFASTTests >> testBinaryExpressionUnaryMinus [
 	self assert: expr expression class equals: FASTFortranScalarVariable.
 	self assert: expr expression name equals: 'i'.
 
+	self assert: (expr mooseModel allWithType: FASTFortranBinaryExpression) size equals: 0
 ]
 
 { #category : 'tests-programUnit' }
