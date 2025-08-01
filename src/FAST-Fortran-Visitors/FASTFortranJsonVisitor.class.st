@@ -20,7 +20,7 @@ FASTFortranJsonVisitor >> addSegmentDeclarationsTo: tWithDeclarations [
 	segmentDeclarations removeAll
 ]
 
-{ #category : 'visiting statement' }
+{ #category : 'private' }
 FASTFortranJsonVisitor >> checkLabel: label forStatement: statement [
 
 	label ifNotNil: [ statement label: label primitiveValue ]
@@ -342,7 +342,7 @@ FASTFortranJsonVisitor >> visitBlock_data: aBlockDataNode [
 		  yourself
 ]
 
-{ #category : 'visiting statement' }
+{ #category : 'visiting prog-unit' }
 FASTFortranJsonVisitor >> visitBody: aNode [
 
 	| data stmtBlock |
