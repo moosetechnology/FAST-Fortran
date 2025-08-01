@@ -22,8 +22,13 @@ FASTFortranJsonVisitor >> addSegmentDeclarationsTo: tWithDeclarations [
 
 { #category : 'private' }
 FASTFortranJsonVisitor >> checkLabel: label forStatement: statement [
+	"if statement is labelled, then sets its 'label' property to the value
+	 (and removed the unused IntegerLiteral"
 
-	label ifNotNil: [ statement label: label primitiveValue ]
+	label ifNotNil: [ 
+		model remove: label.
+		statement label: label primitiveValue
+	]
 ]
 
 { #category : 'private' }
