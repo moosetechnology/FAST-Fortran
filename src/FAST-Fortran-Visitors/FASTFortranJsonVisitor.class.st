@@ -632,7 +632,7 @@ FASTFortranJsonVisitor >> visitDo: aDoNode [
 { #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitDo_spec: aDoSpecNode [
 	"#(span initial limit increment)
-	 'init' is an AssignementStatement, need to convert it to an AssignementExpression"
+	 'init' is an AssignementStatement, we need to convert it to an AssignementExpression and remove it from the model"
 
 	| data assignementExpr |
 	data := super visitDo_spec: aDoSpecNode.
@@ -643,6 +643,7 @@ FASTFortranJsonVisitor >> visitDo_spec: aDoSpecNode [
 		variable: data second variable ;
 		expression: data second expression ;
 		yourself.
+		model remove: data second.
 
 	^ (self
 		   newEntity: FASTFortranLoopControlExpression
