@@ -50,6 +50,8 @@ FASTFortranJsonVisitor >> createContinueStatement: endLabel [
 { #category : 'private' }
 FASTFortranJsonVisitor >> functionCallToArrayVariable: invocation [
 
+	model remove: invocation.
+
 	^model newArrayVariable
 		name: invocation name ;
 		indices: invocation arguments ;
@@ -1391,16 +1393,20 @@ FASTFortranJsonVisitor >> visitSubscript: aSubscriptNode [
 	data := super visitSubscript: aSubscriptNode.
 
 	(data second class = FASTFortranScalarVariable)
-		ifTrue: [ ^(self newEntity: FASTFortranArrayVariable atPosition: data first)
-			name: data second name ;
-			indices: data third ;
-			yourself ].
+		ifTrue: [ 
+			model remove: data second.
+			^(self newEntity: FASTFortranArrayVariable atPosition: data first)
+				name: data second name ;
+				indices: data third ;
+				yourself
+		].
 	
 
 	(data second class = FASTFortranFieldAccess)
 		ifTrue: [  
 			self flag: '#FIXME: here we do not want ArrayVariable, we want something like FieldVariable, which can contain FieldVariableDimension for any indices'.
 
+			model remove: data second.
 			field := model newArrayVariable
 				startPos: data second field startPos ;
 				endPos: data second field endPos ;
