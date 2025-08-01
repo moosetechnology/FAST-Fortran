@@ -694,6 +694,8 @@ FASTFortranJsonVisitor >> visitEntryStatement: anEntryNode [
 	| data |
 	data := super visitEntryStatement: anEntryNode.
 
+	model remove: data second.
+
 	^ (self newEntity: FASTFortranEntryStatement atPosition: data first)
 		name: data second name ;
 		entryArguments: data third ;
