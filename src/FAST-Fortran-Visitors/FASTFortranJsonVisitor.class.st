@@ -20,26 +20,37 @@ FASTFortranJsonVisitor >> addSegmentDeclarationsTo: tWithDeclarations [
 	segmentDeclarations removeAll
 ]
 
-{ #category : 'visiting statement' }
+{ #category : 'private' }
 FASTFortranJsonVisitor >> checkLabel: label forStatement: statement [
+	"if statement is labelled, then sets its 'label' property to the value
+	 (and removed the unused IntegerLiteral"
 
-	label ifNotNil: [ statement label: label primitiveValue ]
+	label ifNotNil: [ 
+		model remove: label.
+		statement label: label primitiveValue
+	]
 ]
 
-{ #category : 'visiting statement' }
+{ #category : 'private' }
 FASTFortranJsonVisitor >> createContinueStatement: endLabel [
 
 	| lastStatement |
+
 	lastStatement := model newContinueStatement.
 	lastStatement startPos: endLabel startPos.
 	lastStatement endPos:
 		endLabel startPos + endLabel primitiveValue size - 1.
 	lastStatement label: endLabel primitiveValue.
+
+	model remove: endLabel.
+
 	^ lastStatement
 ]
 
 { #category : 'private' }
 FASTFortranJsonVisitor >> functionCallToArrayVariable: invocation [
+
+	model remove: invocation.
 
 	^model newArrayVariable
 		name: invocation name ;
@@ -69,11 +80,16 @@ FASTFortranJsonVisitor >> initialize [
 { #category : 'private' }
 FASTFortranJsonVisitor >> integerLiteralToLabelRef: literal [
 
-	^model newLabelReference
+	| labelRef |
+	labelRef := model newLabelReference
 		  label: literal primitiveValue;
 		  startPos: literal startPos;
 		  endPos: literal endPos;
-		  yourself
+		  yourself.
+
+	model remove: literal.
+
+	^labelRef
 ]
 
 { #category : 'private' }
@@ -337,7 +353,7 @@ FASTFortranJsonVisitor >> visitBlock_data: aBlockDataNode [
 		  yourself
 ]
 
-{ #category : 'visiting statement' }
+{ #category : 'visiting prog-unit' }
 FASTFortranJsonVisitor >> visitBody: aNode [
 
 	| data stmtBlock |
@@ -594,6 +610,7 @@ FASTFortranJsonVisitor >> visitDo: aDoNode [
 	think when to put the label in nestedDoEndLabel"
 
 	| data doStatement body inNestedLoop |
+
 	data := self visitJsonMap: aDoNode keys: #(span label do_spec target end_label body).
 
 	doStatement := self
@@ -614,12 +631,14 @@ FASTFortranJsonVisitor >> visitDo: aDoNode [
 
 	body := data sixth.
 
-	(inNestedLoop not and: [
-		(data fifth notNil) and: [
-		(data fifth endPos > doStatement endPos) ] ] )
-	ifTrue: [
-		"need to create a CONTINUE statement to close the loop"
-		body addStatement: (self createContinueStatement: (data fifth))
+	data fifth ifNotNil: [ :integerLiteral |
+		(inNestedLoop not and: [
+			(integerLiteral endPos > doStatement endPos) ] )
+		ifTrue: [
+			"need to create a CONTINUE statement to close the loop"
+			body addStatement: (self createContinueStatement: integerLiteral)
+		]
+		ifFalse: [ model remove: integerLiteral ]
 	].
 
 	doStatement body: body.
@@ -632,7 +651,7 @@ FASTFortranJsonVisitor >> visitDo: aDoNode [
 { #category : 'visiting statement' }
 FASTFortranJsonVisitor >> visitDo_spec: aDoSpecNode [
 	"#(span initial limit increment)
-	 'init' is an AssignementStatement, need to convert it to an AssignementExpression"
+	 'init' is an AssignementStatement, we need to convert it to an AssignementExpression and remove it from the model"
 
 	| data assignementExpr |
 	data := super visitDo_spec: aDoSpecNode.
@@ -643,6 +662,7 @@ FASTFortranJsonVisitor >> visitDo_spec: aDoSpecNode [
 		variable: data second variable ;
 		expression: data second expression ;
 		yourself.
+		model remove: data second.
 
 	^ (self
 		   newEntity: FASTFortranLoopControlExpression
@@ -666,6 +686,7 @@ FASTFortranJsonVisitor >> visitEnd_label: endLabel [
 	 (see also #visitDo:)"
 
 	| data |
+
 	data := super visitEnd_label: endLabel.
 	data ifNotNil: [ nestedDoEndLabel push: data primitiveValue ].
 	^data
@@ -677,6 +698,8 @@ FASTFortranJsonVisitor >> visitEntryStatement: anEntryNode [
 
 	| data |
 	data := super visitEntryStatement: anEntryNode.
+
+	model remove: data second.
 
 	^ (self newEntity: FASTFortranEntryStatement atPosition: data first)
 		name: data second name ;
@@ -1040,6 +1063,8 @@ FASTFortranJsonVisitor >> visitLabelReference: aLabelReference [
 	| data |
 	data := super visitJsonElement: aLabelReference.
 
+	model remove: data.
+
 	^model newLabelReference
 		label: data primitiveValue ;
 		startPos: data startPos ;
@@ -1371,16 +1396,20 @@ FASTFortranJsonVisitor >> visitSubscript: aSubscriptNode [
 	data := super visitSubscript: aSubscriptNode.
 
 	(data second class = FASTFortranScalarVariable)
-		ifTrue: [ ^(self newEntity: FASTFortranArrayVariable atPosition: data first)
-			name: data second name ;
-			indices: data third ;
-			yourself ].
+		ifTrue: [ 
+			model remove: data second.
+			^(self newEntity: FASTFortranArrayVariable atPosition: data first)
+				name: data second name ;
+				indices: data third ;
+				yourself
+		].
 	
 
 	(data second class = FASTFortranFieldAccess)
 		ifTrue: [  
 			self flag: '#FIXME: here we do not want ArrayVariable, we want something like FieldVariable, which can contain FieldVariableDimension for any indices'.
 
+			model remove: data second.
 			field := model newArrayVariable
 				startPos: data second field startPos ;
 				endPos: data second field endPos ;
