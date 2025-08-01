@@ -69,11 +69,16 @@ FASTFortranJsonVisitor >> initialize [
 { #category : 'private' }
 FASTFortranJsonVisitor >> integerLiteralToLabelRef: literal [
 
-	^model newLabelReference
+	| labelRef |
+	labelRef := model newLabelReference
 		  label: literal primitiveValue;
 		  startPos: literal startPos;
 		  endPos: literal endPos;
-		  yourself
+		  yourself.
+
+	model remove: literal.
+
+	^labelRef
 ]
 
 { #category : 'private' }
@@ -594,6 +599,7 @@ FASTFortranJsonVisitor >> visitDo: aDoNode [
 	think when to put the label in nestedDoEndLabel"
 
 	| data doStatement body inNestedLoop |
+
 	data := self visitJsonMap: aDoNode keys: #(span label do_spec target end_label body).
 
 	doStatement := self
