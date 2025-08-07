@@ -99,6 +99,12 @@ FASTFortranEntity >> isNumericalLiteral [
 ]
 
 { #category : 'testing' }
+FASTFortranEntity >> isProgramUnit [ 
+	
+	^ false
+]
+
+{ #category : 'testing' }
 FASTFortranEntity >> isQueryable [
 
 	<generated>

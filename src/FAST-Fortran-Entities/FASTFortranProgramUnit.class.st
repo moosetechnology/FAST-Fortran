@@ -51,6 +51,12 @@ FASTFortranProgramUnit class >> annotation [
 	^ self
 ]
 
+{ #category : 'testing' }
+FASTFortranProgramUnit >> isProgramUnit [ 
+
+	^ true
+]
+
 { #category : 'accessing' }
 FASTFortranProgramUnit >> programFile [
 	"Relation named: #programFile type: #FASTFortranProgramFile opposite: #programUnits"
