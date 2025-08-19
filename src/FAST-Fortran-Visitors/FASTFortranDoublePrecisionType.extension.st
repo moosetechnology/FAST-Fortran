@@ -6,3 +6,9 @@ FASTFortranDoublePrecisionType >> accept: aVisitor [
 	^ aVisitor visitFASTFortranDoublePrecisionType: self.
 
 ]
+
+{ #category : '*FAST-Fortran-Visitors' }
+FASTFortranDoublePrecisionType >> name [ 
+
+	^'doublePrecision'
+]
