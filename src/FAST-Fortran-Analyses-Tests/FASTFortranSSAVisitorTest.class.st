@@ -219,6 +219,7 @@ FASTFortranSSAVisitorTest >> testIfBlockAssignedBeforeInThenInElse [
 	"
 
 	| ifStmt varAccess |
+
 	self subroutine: #something.
 	self addStatement: (self declarationStatement: #integer variables: #(x)).
 	self addStatement: (self assignementStatement: #x value: 5).
@@ -521,13 +522,13 @@ FASTFortranSSAVisitorTest >> testParameterDeclaredAndAssigned [
 
 	varAccess := ssa parameters first.
 
-	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
+	self assert: varAccess ssaVersion class equals: FASTSsaVariableVersion.
 	self assert: varAccess ssaVersion version equals: 1.
 	self assert: varAccess ssaName equals: 'x_1'.
 
 	varAccess := ssa statementBlock statements second variable.
 
-	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
+	self assert: varAccess ssaVersion class equals: FASTSsaVariableVersion.
 	self assert: varAccess ssaVersion version equals: 2.
 	self assert: varAccess ssaName equals: 'x_2'.
 
@@ -552,7 +553,7 @@ FASTFortranSSAVisitorTest >> testParameterUndeclaredAndAssigned [
 
 	varAccess := ssa statementBlock statements first variable.
 
-	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
+	self assert: varAccess ssaVersion class equals: FASTSsaVariableVersion.
 	self assert: varAccess ssaVersion version equals: 2.
 	self assert: varAccess ssaName equals: 'x_2'.
 
@@ -575,7 +576,7 @@ FASTFortranSSAVisitorTest >> testParameterUndeclaredAndUsed [
 
 	varAccess := ssa statementBlock statements first arguments anyOne.
 
-	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
+	self assert: varAccess ssaVersion class equals: FASTSsaVariableVersion.
 	self assert: varAccess ssaVersion version equals: 1.
 	self assert: varAccess ssaName equals: 'x_1'.
 
@@ -599,7 +600,7 @@ FASTFortranSSAVisitorTest >> testReadStatement [
 
 	varAccess := ssa statementBlock statements second arguments anyOne.
 
-	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
+	self assert: varAccess ssaVersion class equals: FASTSsaVariableVersion.
 	self assert: varAccess ssaVersion version equals: 1.
 	self assert: varAccess ssaName equals: 'x_1'.
 
@@ -623,7 +624,7 @@ FASTFortranSSAVisitorTest >> testSingleAssignement [
 
 	varAccess := ssa statementBlock statements second variable.
 
-	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
+	self assert: varAccess ssaVersion class equals: FASTSsaVariableVersion.
 	self assert: varAccess ssaVersion version equals: 1.
 	self assert: varAccess ssaName equals: 'x_1'.
 
@@ -649,7 +650,7 @@ FASTFortranSSAVisitorTest >> testUnAssigned [
 
 	varAccess := ssa statementBlock statements second condition.
 
-	self assert: varAccess ssaVersion class equals: FASTFortranSSAVariableVersion.
+	self assert: varAccess ssaVersion class equals: FASTSsaVariableVersion.
 	self assert: varAccess ssaVersion version equals: 0.
 	self assert: varAccess ssaName equals: 'x_0'.
 

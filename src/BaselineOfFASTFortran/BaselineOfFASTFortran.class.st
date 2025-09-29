@@ -24,7 +24,7 @@ BaselineOfFASTFortran >> defineDependencies: spec [
 		with: [ 
 			spec
 				loads: #('tools');
-				repository: 'github://moosetechnology/FAST:v2' ];
+				repository: 'github://moosetechnology/FAST:feat/generic-fast-ssa' ];
 
 		"by default FAST not load Famix-Traits"
 		baseline: 'Famix'

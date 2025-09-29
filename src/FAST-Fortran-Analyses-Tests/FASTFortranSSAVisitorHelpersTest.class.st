@@ -34,12 +34,12 @@ FASTFortranSSAVisitorHelpersTest >> setUp [
 	}.
 
 	branchAB := {
-		FASTFortranSSAVariableVersion for: variables first .
-		FASTFortranSSAVariableVersion for: variables second
+		FASTSsaVariableVersion for: variables first .
+		FASTSsaVariableVersion for: variables second
 	}.
 	branchBC := {
-		FASTFortranSSAVariableVersion for: variables second .
-		FASTFortranSSAVariableVersion for: variables third
+		FASTSsaVariableVersion for: variables second .
+		FASTSsaVariableVersion for: variables third
 	}.
 
 ]
@@ -49,7 +49,7 @@ FASTFortranSSAVisitorHelpersTest >> testAddChoiceToPhi [
 
 	| phi |
 
-	phi := FASTFortranSSAVariablePhiVersion for: branchAB.
+	phi := FASTSsaVariablePhiVersion for: branchAB.
 
 	self assert: phi choices size equals: 2.
 	self assertCollection: phi choices equals: branchAB asOrderedCollection
@@ -60,9 +60,9 @@ FASTFortranSSAVisitorHelpersTest >> testAddPhiChoiceToPhi [
 
 	| phi |
 
-	phi := FASTFortranSSAVariablePhiVersion for: {
+	phi := FASTSsaVariablePhiVersion for: {
 		branchAB first .
-		FASTFortranSSAVariablePhiVersion for: branchBC
+		FASTSsaVariablePhiVersion for: branchBC
 	}.
 
 	self assert: phi choices size equals: 3.
