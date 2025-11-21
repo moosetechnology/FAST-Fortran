@@ -15,9 +15,8 @@ FortranToFASTTests >> jsonVisitor [
 { #category : 'running' }
 FortranToFASTTests >> rootEntities: aFASTModel [
 
-	^aFASTModel entities select: [ :entity |
-		entity parents isEmpty
-	]
+	^aFASTModel entities
+		select: [ :entity | entity containers isEmpty ]
 ]
 
 { #category : 'tests-statement' }
