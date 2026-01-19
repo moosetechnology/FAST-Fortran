@@ -1,9 +1,21 @@
 Extension { #name : 'FASTFortranEntity' }
 
 { #category : '*FAST-Fortran-Analyses' }
+FASTFortranEntity >> exporterForCFG [
+
+	^ FASTFortranExporterVisitor 
+]
+
+{ #category : '*FAST-Fortran-Analyses' }
 FASTFortranEntity >> isImplicitDeclaration [
 
 	^false
+]
+
+{ #category : '*FAST-Fortran-Analyses' }
+FASTFortranEntity >> newStatementBlockForCFG [
+
+	^ FASTFortranStatementBlock new 
 ]
 
 { #category : '*FAST-Fortran-Analyses' }
