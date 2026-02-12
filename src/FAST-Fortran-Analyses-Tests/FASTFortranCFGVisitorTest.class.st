@@ -1315,8 +1315,8 @@ FASTFortranCFGVisitorTest >> testSourceCode [
 
 	self assert: blocks size equals: 1.
 
-	self assert: blocks anyOne sourceCode equals: '        x = 1
-        y = 1
+	self assert: blocks anyOne sourceCode equals: '      x = 1
+      y = 1
 '
 ]
 
