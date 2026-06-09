@@ -41,6 +41,11 @@ FASTFortranImplicitLocalDeclaration >> isParameter [
 	^false
 ]
 
+{ #category : 'as yet unclassified' }
+FASTFortranImplicitLocalDeclaration >> localDeclarationName [
+	^ self localUses anyOne localDeclarationName 
+]
+
 { #category : 'accessing' }
 FASTFortranImplicitLocalDeclaration >> name [
 
