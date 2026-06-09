@@ -11,3 +11,8 @@ FASTFortranVariableDeclarator >> activeVersion: aSSAVersion [
 
 	^self attributeAt: #activeVersion put: aSSAVersion
 ]
+
+{ #category : '*FAST-Fortran-Analyses' }
+FASTFortranVariableDeclarator >> localDeclarationName [
+	^ self name
+]

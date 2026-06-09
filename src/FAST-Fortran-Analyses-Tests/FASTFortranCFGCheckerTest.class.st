@@ -3,7 +3,8 @@ Class {
 	#superclass : 'TestCase',
 	#instVars : [
 		'cfg',
-		'blocks'
+		'blocks',
+		'builder'
 	],
 	#category : 'FAST-Fortran-Analyses-Tests-CFG',
 	#package : 'FAST-Fortran-Analyses-Tests',
@@ -38,9 +39,9 @@ FASTFortranCFGCheckerTest >> makeCFG: desc [
 FASTFortranCFGCheckerTest >> newBlock: blockName [
 
 	| block |
-	block := cfg newBasicBlock: ((blockName asString first asLowercase = $c)
-		ifTrue: [ FASTFortranConditionalBasicBlock ]
-		ifFalse: [ FASTFortranBasicBlock ]).
+	block := builder newBasicBlock: ((blockName asString first asLowercase = $c)
+		ifTrue: [ FASTConditionalBasicBlock ]
+		ifFalse: [ FASTBasicBlock ]).
 	
 	(blockName asString first asLowercase = $s)
 		ifTrue: [ block isStart: true ].
@@ -52,7 +53,9 @@ FASTFortranCFGCheckerTest >> newBlock: blockName [
 FASTFortranCFGCheckerTest >> setUp [
 	super setUp.
 
+	builder := FASTFortranCFGBuilder new.
 	cfg := FASTFortranCFGVisitor new.
+	builder cfgVisitor: cfg.
 	blocks := Dictionary new
 ]
 
@@ -66,7 +69,7 @@ FASTFortranCFGCheckerTest >> testCFGDeadBlock [
 	
 	}.
 
-	check := FASTFortranCFGChecker on: cfg.
+	check := FASTFortranCFGChecker on: builder.
 
 	self assert: check size equals: 1.
 	self assert: check anyOne equals: (blocks at: #b3).
@@ -81,7 +84,7 @@ FASTFortranCFGCheckerTest >> testCFGLinear [
 	#b3 -> #b4
 	}.
 
-	self assert: (FASTFortranCFGChecker on: cfg) size equals: 0
+	self assert: (FASTFortranCFGChecker on: builder) size equals: 0
 ]
 
 { #category : 'tests' }
@@ -93,5 +96,5 @@ FASTFortranCFGCheckerTest >> testCFGWithBranch [
 	#c2 -> (false -> #b4) .
 	}.
 
-	self assert: (FASTFortranCFGChecker on: cfg) size equals: 0
+	self assert: (FASTFortranCFGChecker on: builder) size equals: 0
 ]

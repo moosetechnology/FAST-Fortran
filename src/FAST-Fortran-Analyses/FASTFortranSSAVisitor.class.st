@@ -29,7 +29,7 @@ FASTFortranSSAVisitor >> assignmentVariableVersion: aFASTFortranVariable [
 FASTFortranSSAVisitor >> createVariableVersion: aFASTFortranVariable [
 
 	| newSSA |
-	newSSA := FASTFortranSSAVariableVersion for: aFASTFortranVariable.
+	newSSA := FASTVariableVersionSSA for: aFASTFortranVariable.
 	aFASTFortranVariable localDeclaration activeVersion
 		ifNotNil: [ :lastSSA | newSSA version: lastSSA version ].
 	
@@ -104,7 +104,7 @@ FASTFortranSSAVisitor >> twoWaysPhiVersions: preVersions branch: branch [
 	branch do: [ :newVersion |
 		(preVersions includes: newVersion) 
 			ifFalse: [
-				phi := FASTFortranSSAVariablePhiVersion for:
+				phi := FASTVariablePhiVersionSSA for:
 					(preVersions
 						detect: [ :previousVersion | previousVersion sameVariableAs: newVersion ]
 						ifOne: [ :previousVersion | { previousVersion . newVersion } ]
